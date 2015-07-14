@@ -2,13 +2,14 @@
   "name": "julia-client",
   "main": "./lib/julia-client",
   "version": "0.0.0",
-  "description": "A short description of your package",
+  "description": "Julia Evaluation",
   "keywords": [
   ],
   "activationCommands": {
-    "atom-workspace": "julia-client:toggle"
+    "atom-workspace": ["julia-client:eval",
+                       "julia-client:open-a-repl"]
   },
-  "repository": "https://github.com/atom/julia-client",
+  "repository": "https://github.com/JunoLab/atom-julia-client",
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
