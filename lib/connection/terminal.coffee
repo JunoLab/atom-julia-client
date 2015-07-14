@@ -13,7 +13,7 @@ module.exports =
     if process.platform == "darwin"
       @exec "osascript -e 'tell application \"Terminal\" to activate'"
       @exec "osascript -e 'tell application \"Terminal\" to do script \"#{@escape(sh)}\"'"
-    elseif process.platform = "windows"
+    else if process.platform = "windows"
       @exec "cmd /C start cmd /C #{sh}"
     else
       console.log 'unsupported platform'
