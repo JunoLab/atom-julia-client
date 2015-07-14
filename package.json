@@ -1,0 +1,18 @@
+{
+  "name": "julia-client",
+  "main": "./lib/julia-client",
+  "version": "0.0.0",
+  "description": "A short description of your package",
+  "keywords": [
+  ],
+  "activationCommands": {
+    "atom-workspace": "julia-client:toggle"
+  },
+  "repository": "https://github.com/atom/julia-client",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {
+  }
+}
