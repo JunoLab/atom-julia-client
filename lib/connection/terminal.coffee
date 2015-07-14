@@ -2,7 +2,8 @@ child_process = require 'child_process'
 
 module.exports =
 
-  escape: (sh) -> sh.replace('"', '\\"')
+  escpath: (p) -> '"' + p + '"'
+  escape: (sh) -> sh.replace(/"/g, '\\"')
 
   exec: (sh) ->
     child_process.exec sh, (err, stdout, stderr) ->
@@ -14,12 +15,12 @@ module.exports =
       @exec "osascript -e 'tell application \"Terminal\" to activate'"
       @exec "osascript -e 'tell application \"Terminal\" to do script \"#{@escape(sh)}\"'"
     else if process.platform = "windows"
-      @exec "cmd /C start cmd /C #{sh}"
+      @exec "cmd /C start cmd /C #{@escape(sh)}"
     else
       console.log 'unsupported platform'
 
   jlpath: () -> atom.config.get("julia-client.juliaPath")
 
-  commands: (subs) ->
-    subs.add atom.commands.add 'atom-workspace',
-      'julia-client:open-a-repl': => @term @jlpath()
+  repl: -> @term @escpath @jlpath()
+
+  client: (port) -> @term "#{@escpath @jlpath()} -P \"println(:connecting)\""
