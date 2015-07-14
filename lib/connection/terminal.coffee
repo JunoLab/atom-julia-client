@@ -23,4 +23,4 @@ module.exports =
 
   repl: -> @term @escpath @jlpath()
 
-  client: (port) -> @term "#{@escpath @jlpath()} -P \"println(:connecting)\""
+  client: (port) -> @term "#{@escpath @jlpath()} -q -P \"using AtomClient; AtomClient.connect(#{port})\""
