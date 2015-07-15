@@ -29,6 +29,8 @@ module.exports = JuliaClient =
 
   eval: ->
     editor = atom.workspace.getActiveTextEditor()
-    selection = editor.getSelectedText()
-    return if selection == ""
-    console.log selection
+    for cursor in editor.getCursors()
+      {row, column} = cursor.getScreenPosition()
+      comm.msg 'eval-block', {row: row+1,
+                              column: column+1,
+                              code: editor.getText()}
