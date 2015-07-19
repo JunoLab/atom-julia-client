@@ -1,6 +1,7 @@
 {CompositeDisposable} = require 'atom'
 terminal = require './connection/terminal'
 comm = require './connection/comm'
+modules = require './modules'
 
 module.exports = JuliaClient =
   config:
@@ -12,9 +13,11 @@ module.exports = JuliaClient =
   activate: (state) ->
     @subscriptions = new CompositeDisposable
     @commands @subscriptions
+    modules.activate()
 
   deactivate: ->
     @subscriptions.dispose()
+    modules.deactivate()
 
   commands: (subs) ->
     subs.add atom.commands.add 'atom-text-editor',
@@ -26,6 +29,8 @@ module.exports = JuliaClient =
     subs.add atom.commands.add 'atom-workspace',
       'julia-client:open-repl-client': =>
         comm.listen (port) -> terminal.client port
+
+  consumeStatusBar: (bar) -> modules.consumeStatusBar(bar)
 
   eval: ->
     editor = atom.workspace.getActiveTextEditor()
