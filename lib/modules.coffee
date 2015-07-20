@@ -1,13 +1,18 @@
+comm = require './connection/comm'
+
 module.exports =
   activate: ->
     @createUI()
-    @reset 'Main', 'Lazy'
+
+    # TODO: subscribe to client creation/destruction
+    @activeItemSubscription = atom.workspace.onDidChangeActivePaneItem =>
+      @update()
+    @update()
 
   deactivate: ->
     @tile?.destroy()
     @tile = null
-
-  # UI
+    @activeItemSubscription.dispose()
 
   createUI: ->
     @dom = document.createElement 'span'
@@ -51,3 +56,11 @@ module.exports =
     @main.classList.add 'fade'
     @divider.classList.add 'fade'
     @sub.classList.add 'fade'
+
+  update: ->
+    pane = atom.workspace.getActivePaneItem()
+    unless pane.getGrammar?().scopeName == 'source.julia' && comm.isConnected()
+      @clear()
+      return
+    comm.msg 'module', {}, ({main, sub}) =>
+      @reset main, sub
