@@ -27,7 +27,7 @@ module.exports = JuliaClient =
       'julia-client:open-a-repl': => terminal.repl()
 
     subs.add atom.commands.add 'atom-workspace',
-      'julia-client:open-repl-client': =>
+      'julia-client:start-repl-client': =>
         return if comm.connectedError()
         comm.listen (port) -> terminal.client port
 
