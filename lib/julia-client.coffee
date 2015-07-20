@@ -13,6 +13,7 @@ module.exports = JuliaClient =
   activate: (state) ->
     @subscriptions = new CompositeDisposable
     @commands @subscriptions
+    comm.activate()
     modules.activate()
 
   deactivate: ->

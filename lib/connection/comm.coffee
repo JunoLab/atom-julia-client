@@ -1,6 +1,14 @@
+{Emitter} = require 'atom'
 net = require 'net'
 
 module.exports =
+
+  activate: ->
+    @emitter = new Emitter()
+
+  onConnected: (cb) -> @emitter.on('connected', cb)
+  onDisconnected: (cb) -> @emitter.on('disconnected', cb)
+
   server: null
   port: null
   client: null
@@ -14,8 +22,10 @@ module.exports =
     @server = net.createServer (c) =>
       if @isConnected() then return c.end()
       @client = c
+      @emitter.emit 'connected'
       c.on 'end', =>
         @client = null
+        @emitter.emit 'disconnected'
       # Data will be split into chunks, so we have to buffer it before parsing.
       buffer = ['']
       c.on 'data', (data) =>
