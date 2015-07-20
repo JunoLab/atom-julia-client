@@ -12,7 +12,10 @@ module.exports =
   listen: (f) ->
     return f?(@port) if @port?
     @server = net.createServer (c) =>
+      if @isConnected() then return c.end()
       @client = c
+      c.on 'end', =>
+        @client = null
       # Data will be split into chunks, so we have to buffer it before parsing.
       buffer = ['']
       c.on 'data', (data) =>
@@ -38,6 +41,16 @@ module.exports =
     @server.listen 0, =>
       @port = @server.address().port
       f?(@port)
+
+  isConnected: -> @client?
+
+  connectedError: ->
+    if @isConnected()
+      atom.notifications.addError "Can't create a new client.",
+                                  {detail: "There is already a Julia client running."}
+      true
+    else
+      false
 
   msg: (type, data, f) ->
     if f?
