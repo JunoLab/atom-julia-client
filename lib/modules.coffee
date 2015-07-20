@@ -27,6 +27,10 @@ module.exports =
     @divider = document.createElement 'span'
     @divider.innerText = '/'
 
+    @main.onclick = =>
+      atom.commands.dispatch atom.views.getView(atom.workspace.getActiveTextEditor()),
+                             'julia-client:set-working-module'
+
   consumeStatusBar: (bar) ->
     @tile = bar.addRightTile {item: @dom}
 
@@ -67,6 +71,7 @@ module.exports =
     ed = atom.workspace.getActivePaneItem()
     unless ed.getGrammar?().scopeName == 'source.julia' && comm.isConnected()
       @clear()
+      @moveSubscription = ed.onDidChangeGrammar => @update()
       return
     @moveSubscription = ed.onDidChangeCursorPosition => @update()
     {row, column} = ed.getCursors()[0].getScreenPosition()
@@ -76,8 +81,10 @@ module.exports =
       row: row+1, column: column+1
       held: ed.juliaModule
 
-    comm.msg 'module', data, ({main, sub}) =>
+    comm.msg 'module', data, ({main, sub, inactive, subInactive}) =>
       @reset main, sub
+      subInactive && @subInactive()
+      inactive && @inactive()
 
   # Selector
 
