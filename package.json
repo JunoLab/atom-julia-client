@@ -8,7 +8,7 @@
   "activationCommands": {
     "atom-workspace": ["julia-client:eval",
                        "julia-client:open-a-repl",
-                       "julia-client:open-repl-client"]
+                       "julia-client:start-repl-client"]
   },
   "repository": "https://github.com/JunoLab/atom-julia-client",
   "license": "MIT",
