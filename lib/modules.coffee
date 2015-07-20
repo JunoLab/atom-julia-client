@@ -4,9 +4,10 @@ module.exports =
   activate: ->
     @createUI()
 
-    # TODO: subscribe to client creation/destruction
     @activeItemSubscription = atom.workspace.onDidChangeActivePaneItem =>
       @update()
+    comm.onConnected => @update()
+    comm.onDisconnected => @update()
     @update()
 
   deactivate: ->
@@ -58,9 +59,17 @@ module.exports =
     @sub.classList.add 'fade'
 
   update: ->
-    pane = atom.workspace.getActivePaneItem()
-    unless pane.getGrammar?().scopeName == 'source.julia' && comm.isConnected()
+    @moveSubscription?.dispose()
+    ed = atom.workspace.getActivePaneItem()
+    unless ed.getGrammar().scopeName == 'source.julia' && comm.isConnected()
       @clear()
       return
-    comm.msg 'module', {}, ({main, sub}) =>
+    @moveSubscription = ed.onDidChangeCursorPosition => @update()
+    {row, column} = ed.getCursors()[0].getScreenPosition()
+    data =
+      path: ed.getPath()
+      code: ed.getText()
+      row: row+1, column: column+1
+
+    comm.msg 'module', data, ({main, sub}) =>
       @reset main, sub
