@@ -1,8 +1,10 @@
 comm = require './connection/comm'
+{SelectListView} = require 'atom-space-pen-views'
 
 module.exports =
   activate: ->
-    @createUI()
+    @createStatusUI()
+    @createSelector()
 
     @activeItemSubscription = atom.workspace.onDidChangeActivePaneItem =>
       @update()
@@ -15,7 +17,9 @@ module.exports =
     @tile = null
     @activeItemSubscription.dispose()
 
-  createUI: ->
+  # Status Bar
+
+  createStatusUI: ->
     @dom = document.createElement 'span'
     @dom.classList.add 'julia-client'
     @main = document.createElement 'a'
@@ -61,7 +65,7 @@ module.exports =
   update: ->
     @moveSubscription?.dispose()
     ed = atom.workspace.getActivePaneItem()
-    unless ed.getGrammar().scopeName == 'source.julia' && comm.isConnected()
+    unless ed.getGrammar?().scopeName == 'source.julia' && comm.isConnected()
       @clear()
       return
     @moveSubscription = ed.onDidChangeCursorPosition => @update()
@@ -70,6 +74,33 @@ module.exports =
       path: ed.getPath()
       code: ed.getText()
       row: row+1, column: column+1
+      held: ed.juliaModule
 
     comm.msg 'module', data, ({main, sub}) =>
       @reset main, sub
+
+  # Selector
+
+  createSelector: ->
+    @selector = new SelectListView
+    @selector.viewForItem = (item) =>
+      "<li>#{item}</li>"
+    @selector.confirmed = (item) =>
+      @panel.hide()
+      atom.workspace.getActiveTextEditor().juliaModule = item
+      @update()
+    @selector.cancelled = =>
+      @panel.hide()
+
+  chooseModule: ->
+    if comm.notConnectedError() then return
+    comm.msg 'all-modules', {}, (mods) =>
+      @selector.setItems mods
+      @panel ?= atom.workspace.addModalPanel(item: @selector)
+      @panel.show()
+      @selector.focusFilterEditor()
+
+  resetModule: ->
+    if comm.notConnectedError() then return
+    delete atom.workspace.getActiveTextEditor().juliaModule
+    @update()

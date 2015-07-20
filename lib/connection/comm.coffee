@@ -62,6 +62,14 @@ module.exports =
     else
       false
 
+  notConnectedError: ->
+    if not @isConnected()
+      atom.notifications.addError "Can't do that without a Julia client.",
+                                  {detail: "Try connecting a client by evaluating."}
+      true
+    else
+      false
+
   msg: (type, data, f) ->
     if f?
       data.callback = @id = @id+1
