@@ -31,6 +31,14 @@ module.exports =
       atom.commands.dispatch atom.views.getView(atom.workspace.getActiveTextEditor()),
                              'julia-client:set-working-module'
 
+    atom.tooltips.add @dom,
+      title: => "Currently working with module #{@currentModule()}"
+
+  currentModule: ->
+    if @isInactive then "Main"
+    else if @isSubInactive || @sub.innerText == "" then @main.innerText
+    else "#{@main.innerText}.#{@sub.innerText}"
+
   consumeStatusBar: (bar) ->
     @tile = bar.addRightTile {item: @dom}
 
