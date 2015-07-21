@@ -20,7 +20,8 @@ module.exports =
       console.log 'unsupported platform'
 
   jlpath: () -> atom.config.get("julia-client.juliaPath")
+  jlargs: () -> atom.config.get("julia-client.juliaArguments")
 
   repl: -> @term @escpath @jlpath()
 
-  client: (port) -> @term "#{@escpath @jlpath()} -q -P \"import AtomClient; AtomClient.connect(#{port})\""
+  client: (port) -> @term "#{@escpath @jlpath()} #{@jlargs()} -P \"import AtomClient; AtomClient.connect(#{port})\""

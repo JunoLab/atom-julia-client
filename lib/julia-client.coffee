@@ -9,6 +9,10 @@ module.exports = JuliaClient =
       type: 'string'
       default: 'julia'
       description: 'The location of the Julia binary'
+    juliaArguments:
+      type: 'string'
+      default: '-q'
+      description: 'Command-line arguments to pass to Julia'
 
   activate: (state) ->
     @subscriptions = new CompositeDisposable
