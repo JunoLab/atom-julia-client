@@ -19,7 +19,6 @@ module.exports =
       icon: @iconPath
     n.onclick = =>
       @window.focus()
-    console.log n
     @notes.push(n)
 
   clear: ->

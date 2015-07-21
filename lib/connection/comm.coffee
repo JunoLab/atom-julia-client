@@ -1,5 +1,6 @@
 {Emitter} = require 'atom'
 net = require 'net'
+loading = require '../ui/loading'
 
 module.exports =
 
@@ -23,6 +24,7 @@ module.exports =
       if @isConnected() then return c.end()
       @client = c
       @emitter.emit 'connected'
+      if @isBooting then loading.done()
       c.on 'end', =>
         @client = null
         @emitter.emit 'disconnected'
@@ -44,6 +46,7 @@ module.exports =
         else if @callbacks.hasOwnProperty type
           @callbacks[type] data
           delete @callbacks[type]
+          loading.done()
         else
           console.log "julia-client: unrecognised message #{type}"
           console.log data
@@ -53,6 +56,10 @@ module.exports =
       f?(@port)
 
   isConnected: -> @client?
+
+  booting: ->
+    @isBooting = true
+    loading.working()
 
   connectedError: ->
     if @isConnected()
@@ -74,6 +81,7 @@ module.exports =
     if f?
       data.callback = @id = @id+1
       @callbacks[@id] = f
+      loading.working()
     @client?.write(JSON.stringify([type, data]))
 
   handle: (type, f) ->
