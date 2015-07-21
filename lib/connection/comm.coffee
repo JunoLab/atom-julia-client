@@ -57,7 +57,7 @@ module.exports =
   connectedError: ->
     if @isConnected()
       atom.notifications.addError "Can't create a new client.",
-                                  {detail: "There is already a Julia client running."}
+        detail: "There is already a Julia client running."
       true
     else
       false
@@ -65,7 +65,7 @@ module.exports =
   notConnectedError: ->
     if not @isConnected()
       atom.notifications.addError "Can't do that without a Julia client.",
-                                  {detail: "Try connecting a client by evaluating."}
+        detail: "Try connecting a client by evaluating."
       true
     else
       false
