@@ -75,3 +75,6 @@ module.exports =
       data.callback = @id = @id+1
       @callbacks[@id] = f
     @client?.write(JSON.stringify([type, data]))
+
+  handle: (type, f) ->
+    @handlers[type] = f
