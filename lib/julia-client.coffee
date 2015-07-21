@@ -3,6 +3,7 @@ terminal = require './connection/terminal'
 comm = require './connection/comm'
 modules = require './modules'
 evaluation = require './eval'
+notifications = require './notifications'
 
 module.exports = JuliaClient =
   config:
@@ -14,12 +15,19 @@ module.exports = JuliaClient =
       type: 'string'
       default: '-q'
       description: 'Command-line arguments to pass to Julia'
+    notifications:
+      type: 'boolean'
+      default: true
+      description: 'Enable notifications for evaluation'
 
   activate: (state) ->
     @subscriptions = new CompositeDisposable
     @commands @subscriptions
     comm.activate()
     modules.activate()
+    notifications.activate()
+    comm.onConnected =>
+      notifications.show("Client Connected")
 
   deactivate: ->
     @subscriptions.dispose()

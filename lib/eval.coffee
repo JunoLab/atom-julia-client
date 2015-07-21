@@ -1,4 +1,5 @@
 comm = require './connection/comm'
+notifications = require './notifications'
 
 module.exports =
   cursor: ({row, column}) ->
@@ -20,4 +21,5 @@ module.exports =
     editor = atom.workspace.getActiveTextEditor()
     for sel in editor.getSelections()
       comm.msg 'eval', @evalData(editor, sel), (result) ->
+        notifications.show "Evaluation Finished"
         # console.log result
