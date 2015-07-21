@@ -6,8 +6,9 @@
   "keywords": [
   ],
   "activationCommands": {
-    "atom-workspace": ["julia-client:evaluate",
-                       "julia-client:open-a-repl",
+    "atom-text-editor": ["julia-client:evaluate",
+                         "julia-client:evaluate-all"],
+    "atom-workspace": ["julia-client:open-a-repl",
                        "julia-client:start-repl-client"]
   },
   "repository": "https://github.com/JunoLab/atom-julia-client",

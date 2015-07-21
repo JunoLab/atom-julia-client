@@ -20,6 +20,15 @@ module.exports =
   eval: ->
     editor = atom.workspace.getActiveTextEditor()
     for sel in editor.getSelections()
-      comm.msg 'eval', @evalData(editor, sel), (result) ->
+      comm.msg 'eval', @evalData(editor, sel), (result) =>
         notifications.show "Evaluation Finished"
-        # console.log result
+
+  evalAll: ->
+    editor = atom.workspace.getActiveTextEditor()
+    comm.msg 'eval-all', {
+                          path: editor.getPath()
+                          module: editor.juliaModule
+                          code: editor.getText()
+                         },
+      (result) =>
+        notifications.show "Evaluation Finished"

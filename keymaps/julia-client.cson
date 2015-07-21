@@ -9,3 +9,4 @@
 # https://atom.io/docs/latest/behind-atom-keymaps-in-depth
 'atom-text-editor[data-grammar="source julia"]:not([mini])':
   'cmd-enter': 'julia-client:evaluate'
+  'cmd-shift-enter': 'julia-client:evaluate-all'
