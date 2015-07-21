@@ -27,7 +27,7 @@ module.exports = JuliaClient =
 
   commands: (subs) ->
     subs.add atom.commands.add 'atom-text-editor',
-      'julia-client:eval': (event) => evaluation.eval()
+      'julia-client:evaluate': (event) => evaluation.eval()
 
     subs.add atom.commands.add 'atom-workspace',
       'julia-client:open-a-repl': => terminal.repl()

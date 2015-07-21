@@ -6,7 +6,7 @@
   "keywords": [
   ],
   "activationCommands": {
-    "atom-workspace": ["julia-client:eval",
+    "atom-workspace": ["julia-client:evaluate",
                        "julia-client:open-a-repl",
                        "julia-client:start-repl-client"]
   },
