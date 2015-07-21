@@ -87,7 +87,7 @@ module.exports =
       path: ed.getPath()
       code: ed.getText()
       row: row+1, column: column+1
-      held: ed.juliaModule
+      module: ed.juliaModule
 
     comm.msg 'module', data, ({main, sub, inactive, subInactive}) =>
       @reset main, sub

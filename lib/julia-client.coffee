@@ -2,6 +2,7 @@
 terminal = require './connection/terminal'
 comm = require './connection/comm'
 modules = require './modules'
+evaluation = require './eval'
 
 module.exports = JuliaClient =
   config:
@@ -26,7 +27,7 @@ module.exports = JuliaClient =
 
   commands: (subs) ->
     subs.add atom.commands.add 'atom-text-editor',
-      'julia-client:eval': (event) => @eval()
+      'julia-client:eval': (event) => evaluation.eval()
 
     subs.add atom.commands.add 'atom-workspace',
       'julia-client:open-a-repl': => terminal.repl()
@@ -39,9 +40,3 @@ module.exports = JuliaClient =
       'julia-client:reset-working-module': -> modules.resetModule()
 
   consumeStatusBar: (bar) -> modules.consumeStatusBar(bar)
-
-  eval: ->
-    editor = atom.workspace.getActiveTextEditor()
-    for cursor in editor.getCursors()
-      {row, column} = cursor.getScreenPosition()
-      comm.msg 'eval-block', {row: row+1, column: column+1, code: editor.getText()}
