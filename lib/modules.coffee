@@ -77,9 +77,9 @@ module.exports =
   update: ->
     @moveSubscription?.dispose()
     ed = atom.workspace.getActivePaneItem()
-    unless ed.getGrammar?().scopeName == 'source.julia' && comm.isConnected()
+    unless ed?.getGrammar?().scopeName == 'source.julia' && comm.isConnected()
       @clear()
-      @moveSubscription = ed.onDidChangeGrammar? => @update()
+      @moveSubscription = ed?.onDidChangeGrammar? => @update()
       return
     @moveSubscription = ed.onDidChangeCursorPosition => @update()
     {row, column} = ed.getCursors()[0].getScreenPosition()
