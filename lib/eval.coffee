@@ -9,7 +9,7 @@ module.exports =
     start = selection.getHeadBufferPosition()
     end = selection.getTailBufferPosition()
     if not start.isLessThan end then [start, end] = [end, start]
-    
+
     code: editor.getText()
     module: editor.juliaModule
     path: editor.getPath()
