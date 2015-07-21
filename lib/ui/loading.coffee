@@ -52,11 +52,14 @@ module.exports =
     else
       @off()
 
+  timeout: (t, f) -> setTimeout f, t
+
   loadCSS: (cb) ->
-    file = path.join atom.packages.activePackages['julia-client'].path, 'styles', 'spinner.css'
-    fs.readFile file, (err, data) =>
-      @css = data.toString()
-      cb?()
+    @timeout 100, => # Path isn't available immediately – is there a better way?
+      file = path.join atom.packages.activePackages['julia-client'].path, 'styles', 'spinner.css'
+      fs.readFile file, (err, data) =>
+        @css = data.toString()
+        cb?()
 
   style: () ->
     style = document.createElement 'style'

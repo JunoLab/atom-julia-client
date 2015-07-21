@@ -24,7 +24,9 @@ module.exports =
       if @isConnected() then return c.end()
       @client = c
       @emitter.emit 'connected'
-      if @isBooting then loading.done()
+      if @isBooting
+        @isBooting = false
+        loading.done()
       c.on 'end', =>
         @client = null
         @emitter.emit 'disconnected'
@@ -78,11 +80,23 @@ module.exports =
       false
 
   msg: (type, data, f) ->
+    return unless @client?
     if f?
       data.callback = @id = @id+1
       @callbacks[@id] = f
       loading.working()
-    @client?.write(JSON.stringify([type, data]))
+    @client.write(JSON.stringify([type, data]))
 
   handle: (type, f) ->
     @handlers[type] = f
+
+  withClient: (f) ->
+    return f() if @client?
+    if not @isBooting
+      atom.commands.dispatch atom.views.getView(atom.workspace),
+                             'julia-client:start-repl-client'
+      listener = @onConnected =>
+        listener.dispose()
+        f()
+      return
+    # Queue commands if booting?
