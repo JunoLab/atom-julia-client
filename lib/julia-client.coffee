@@ -4,6 +4,7 @@ comm = require './connection/comm'
 modules = require './modules'
 evaluation = require './eval'
 notifications = require './notifications'
+loading = require './ui/loading'
 
 module.exports = JuliaClient =
   config:
