@@ -35,6 +35,7 @@ module.exports =
   on: (ed) ->
     return if @edSubscription?
     @edSubscription = atom.workspace.observeTextEditors (ed) =>
+      return unless ed.getGrammar().scopeName == 'source.julia'
       @insert ed
 
   off: ->
