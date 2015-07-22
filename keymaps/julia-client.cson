@@ -7,6 +7,12 @@
 
 # For more detailed documentation see
 # https://atom.io/docs/latest/behind-atom-keymaps-in-depth
-'atom-text-editor[data-grammar="source julia"]:not([mini])':
+
+'.platform-darwin atom-text-editor[data-grammar="source julia"]:not([mini])':
   'cmd-enter': 'julia-client:evaluate'
   'cmd-shift-enter': 'julia-client:evaluate-all'
+
+'.platform-win32 atom-text-editor[data-grammar="source julia"]:not([mini]),
+ .platform-linux atom-text-editor[data-grammar="source julia"]:not([mini])':
+  'ctrl-enter': 'julia-client:evaluate'
+  'ctrl-shift-enter': 'julia-client:evaluate-all'
