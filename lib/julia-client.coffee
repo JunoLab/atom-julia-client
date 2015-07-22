@@ -5,6 +5,7 @@ modules = require './modules'
 evaluation = require './eval'
 notifications = require './notifications'
 loading = require './ui/loading'
+block = require './ui/block'
 utils = require './utils'
 completions = require './completions'
 
@@ -29,6 +30,7 @@ module.exports = JuliaClient =
     comm.activate()
     modules.activate()
     notifications.activate()
+    block.activate()
     comm.onConnected =>
       notifications.show("Client Connected")
 

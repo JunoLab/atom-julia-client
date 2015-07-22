@@ -17,4 +17,13 @@ atom-text-editor::shadow {
     bottom: 10px;
     z-index: 1;
   }
+
+  div.block-notify .region {
+    background: @background-color-info;
+    opacity: 0.2;
+  }
+  div.block-notify.hidden .region {
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
 }
