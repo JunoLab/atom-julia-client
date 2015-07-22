@@ -9,7 +9,9 @@
     "atom-text-editor": ["julia-client:evaluate",
                          "julia-client:evaluate-all"],
     "atom-workspace": ["julia-client:open-a-repl",
-                       "julia-client:start-repl-client"]
+                       "julia-client:start-repl-client",
+                       "julia:open-startup-file",
+                       "julia:open-package-folder"]
   },
   "repository": "https://github.com/JunoLab/atom-julia-client",
   "license": "MIT",

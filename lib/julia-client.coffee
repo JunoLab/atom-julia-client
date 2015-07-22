@@ -5,6 +5,7 @@ modules = require './modules'
 evaluation = require './eval'
 notifications = require './notifications'
 loading = require './ui/loading'
+utils = require './utils'
 
 module.exports = JuliaClient =
   config:
@@ -53,5 +54,7 @@ module.exports = JuliaClient =
     subs.add atom.commands.add 'atom-text-editor[data-grammar="source julia"]:not([mini])',
       'julia-client:set-working-module': -> modules.chooseModule()
       'julia-client:reset-working-module': -> modules.resetModule()
+
+    utils.commands subs
 
   consumeStatusBar: (bar) -> modules.consumeStatusBar(bar)
