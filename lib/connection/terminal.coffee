@@ -27,4 +27,4 @@ module.exports =
 
   client: (port) ->
     comm.booting()
-    @term "#{@escpath @jlpath()} #{@jlargs()} -P \"import AtomClient; AtomClient.connect(#{port})\""
+    @term "#{@escpath @jlpath()} #{@jlargs()} -P \"import Atom; Atom.connect(#{port})\""
