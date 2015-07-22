@@ -11,6 +11,8 @@
 '.platform-darwin atom-text-editor[data-grammar="source julia"]:not([mini])':
   'cmd-enter': 'julia-client:evaluate'
   'cmd-shift-enter': 'julia-client:evaluate-all'
+  'cmd-i cmd-m': 'julia-client:set-working-module'
+  'cmd-shift-i cmd-shift-m': 'julia-client:reset-working-module'
 
 '.platform-darwin atom-workspace':
   'cmd-i cmd-r': 'julia-client:open-a-repl'
