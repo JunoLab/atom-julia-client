@@ -39,7 +39,7 @@ module.exports =
   commands: (subs) ->
     subs.add atom.commands.add 'atom-workspace',
       'julia:open-startup-file': => atom.workspace.open @home '.juliarc.jl'
-      'julia:open-package-folder': => shell.openItem @juliaHome
+      'julia:open-julia-home': => shell.openItem @juliaHome()
 
     subs.add atom.commands.add 'atom-text-editor',
       'julia-client:work-in-file-folder': =>
