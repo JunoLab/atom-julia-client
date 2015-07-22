@@ -2,6 +2,7 @@ path = require 'path'
 shell = require 'shell'
 fs = require 'fs'
 comm = require './connection/comm'
+selector = require './ui/selector'
 
 module.exports =
   homedir: ->
@@ -14,13 +15,26 @@ module.exports =
 
   juliaHome: -> process.env.JULIA_HOME or @home '.julia'
 
-  packages: (f) ->
+  pkgDir: (f) ->
     fs.readdir @juliaHome(), (err, data) =>
       dir = data?.filter((path)=>path.startsWith('v')).sort().pop()
-      dir? and fs.readdir path.join(@juliaHome(), dir), (err, data) =>
+      dir? and f path.join(@juliaHome(), dir)
+
+  packages: (f) ->
+    @pkgDir (dir) =>
+      fs.readdir dir, (err, data) =>
         ps = data?.filter((path)=>!path.startsWith('.') and
                                   ["METADATA","REQUIRE","META_BRANCH"].indexOf(path) < 0)
-        ps? and f(ps)
+        ps? and f(ps, dir)
+
+  openPackage: ->
+    dir = ''
+    ps = new Promise (resolve) =>
+      @packages (ps, d) =>
+        dir = d
+        resolve ps
+    selector.show ps, (pkg) =>
+      atom.open pathsToOpen: [path.join dir, pkg]
 
   cdHere: ->
     file = atom.workspace.getActiveTextEditor()?.getPath()
@@ -40,6 +54,7 @@ module.exports =
     subs.add atom.commands.add 'atom-workspace',
       'julia:open-startup-file': => atom.workspace.open @home '.juliarc.jl'
       'julia:open-julia-home': => shell.openItem @juliaHome()
+      'julia:open-package-in-new-window': => @openPackage()
 
     subs.add atom.commands.add 'atom-text-editor',
       'julia-client:work-in-file-folder': =>

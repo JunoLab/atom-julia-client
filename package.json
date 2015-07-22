@@ -11,7 +11,8 @@
     "atom-workspace": ["julia-client:open-a-repl",
                        "julia-client:start-repl-client",
                        "julia:open-startup-file",
-                       "julia:open-julia-home"]
+                       "julia:open-julia-home",
+                       "julia:open-package-in-new-window"]
   },
   "repository": "https://github.com/JunoLab/atom-julia-client",
   "license": "MIT",
