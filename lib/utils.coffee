@@ -42,10 +42,14 @@ module.exports =
     comm.msg 'cd', {path: path.dirname(file)}
 
   cdProject: ->
-    # TODO: multiple folders
-    dir = atom.project.getPaths()?[0]
-    dir? or atom.notifications.addError 'This project has no folders.'
-    comm.msg 'cd', {path: dir}
+    dirs = atom.project.getPaths()
+    if dirs.length < 1
+      atom.notifications.addError 'This project has no folders.'
+    else if dirs.length == 1
+      comm.msg 'cd', {path: dirs[0]}
+    else
+      selector.show dirs, (dir) =>
+        comm.msg 'cd', {path: dir}
 
   cdHome: ->
     comm.msg 'cd', {path: @home()}
