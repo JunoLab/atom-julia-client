@@ -15,17 +15,8 @@
 '.platform-darwin atom-workspace':
   'cmd-i cmd-r': 'julia-client:open-a-repl'
   'cmd-shift-i cmd-shift-r': 'julia-client:start-repl-client'
-  'cmd-i cmd-m': 'julia-client:set-working-module'
-  'cmd-shift-i cmd-shift-m': 'julia-client:reset-working-module'
 
 '.platform-win32 atom-text-editor[data-grammar="source julia"]:not([mini]),
  .platform-linux atom-text-editor[data-grammar="source julia"]:not([mini])':
   'ctrl-enter': 'julia-client:evaluate'
   'ctrl-shift-enter': 'julia-client:evaluate-all'
-
-'.platform-win32 atom-workspace
- .platform-linux atom-workspace':
-  'ctrl-i ctrl-r': 'julia-client:open-a-repl'
-  'ctrl-shift-i ctrl-shift-r': 'julia-client:start-repl-client'
-  'ctrl-i ctrl-m': 'julia-client:set-working-module'
-  'ctrl-shift-i ctrl-shift-m': 'julia-client:reset-working-module'
