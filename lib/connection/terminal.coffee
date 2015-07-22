@@ -23,7 +23,7 @@ module.exports =
   jlpath: () -> atom.config.get("julia-client.juliaPath")
   jlargs: () -> atom.config.get("julia-client.juliaArguments")
 
-  repl: -> @term @escpath @jlpath()
+  repl: -> @term "#{@escpath @jlpath()} #{@jlargs()}"
 
   client: (port) ->
     comm.booting()
