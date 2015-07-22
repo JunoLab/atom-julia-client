@@ -1,10 +1,9 @@
 comm = require './connection/comm'
-{SelectListView} = require 'atom-space-pen-views'
+selector = require './ui/selector'
 
 module.exports =
   activate: ->
     @createStatusUI()
-    @createSelector()
 
     @activeItemSubscription = atom.workspace.onDidChangeActivePaneItem =>
       @update()
@@ -94,26 +93,14 @@ module.exports =
       subInactive && @subInactive()
       inactive && @inactive()
 
-  # Selector
-
-  createSelector: ->
-    @selector = new SelectListView
-    @selector.viewForItem = (item) =>
-      "<li>#{item}</li>"
-    @selector.confirmed = (item) =>
-      @panel.hide()
-      atom.workspace.getActiveTextEditor().juliaModule = item
-      @update()
-    @selector.cancelled = =>
-      @panel.hide()
-
   chooseModule: ->
     comm.requireClient =>
-      comm.msg 'all-modules', {}, (mods) =>
-        @selector.setItems mods
-        @panel ?= atom.workspace.addModalPanel(item: @selector)
-        @panel.show()
-        @selector.focusFilterEditor()
+      mods = new Promise (resolve) =>
+        comm.msg 'all-modules', {}, (mods) =>
+          resolve mods
+      selector.show mods, (mod) =>
+        atom.workspace.getActiveTextEditor().juliaModule = mod
+        @update()
 
   resetModule: ->
     comm.requireClient =>
