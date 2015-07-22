@@ -74,10 +74,13 @@ module.exports =
   notConnectedError: ->
     if not @isConnected()
       atom.notifications.addError "Can't do that without a Julia client.",
-        detail: "Try connecting a client by evaluating."
+        detail: "Try connecting a client by evaluating something."
       true
     else
       false
+
+  requireClient: (f) -> @notConnectedError() or f()
+  requireNoClient: (f) -> @connectedError() or f()
 
   msg: (type, data, f) ->
     return unless @client?

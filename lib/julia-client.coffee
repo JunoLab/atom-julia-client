@@ -45,8 +45,8 @@ module.exports = JuliaClient =
     subs.add atom.commands.add 'atom-workspace',
       'julia-client:open-a-repl': => terminal.repl()
       'julia-client:start-repl-client': =>
-        return if comm.connectedError()
-        comm.listen (port) -> terminal.client port
+        comm.requireNoClient =>
+          comm.listen (port) => terminal.client port
       'julia-client:reset-loading-indicator': =>
         loading.reset()
         comm.isBooting = false

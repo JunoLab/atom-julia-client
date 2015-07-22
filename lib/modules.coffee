@@ -108,14 +108,14 @@ module.exports =
       @panel.hide()
 
   chooseModule: ->
-    if comm.notConnectedError() then return
-    comm.msg 'all-modules', {}, (mods) =>
-      @selector.setItems mods
-      @panel ?= atom.workspace.addModalPanel(item: @selector)
-      @panel.show()
-      @selector.focusFilterEditor()
+    comm.requireClient =>
+      comm.msg 'all-modules', {}, (mods) =>
+        @selector.setItems mods
+        @panel ?= atom.workspace.addModalPanel(item: @selector)
+        @panel.show()
+        @selector.focusFilterEditor()
 
   resetModule: ->
-    if comm.notConnectedError() then return
-    delete atom.workspace.getActiveTextEditor().juliaModule
-    @update()
+    comm.requireClient =>
+      delete atom.workspace.getActiveTextEditor().juliaModule
+      @update()
