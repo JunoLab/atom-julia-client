@@ -4,7 +4,6 @@ comm = require './connection/comm'
 modules = require './modules'
 evaluation = require './eval'
 notifications = require './notifications'
-loading = require './ui/loading'
 utils = require './utils'
 completions = require './completions'
 
@@ -49,7 +48,7 @@ module.exports = JuliaClient =
         comm.requireNoClient =>
           comm.listen (port) => terminal.client port
       'julia-client:reset-loading-indicator': =>
-        loading.reset()
+        @ink?.reset()
         comm.isBooting = false
 
     subs.add atom.commands.add 'atom-text-editor[data-grammar="source julia"]:not([mini])',
@@ -59,6 +58,8 @@ module.exports = JuliaClient =
     utils.commands subs
 
   consumeInk: (ink) ->
+    @ink = ink
+    comm.ink = ink
     comm.handle 'show-block', ({start, end}) =>
       ink.highlight atom.workspace.getActiveTextEditor(), start-1, end-1
 
