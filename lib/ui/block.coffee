@@ -14,7 +14,6 @@ module.exports =
           class: 'block-notify'
     @timeout 20, =>
       for region in atom.views.getView(ed).rootElement.querySelectorAll '.block-notify'
-        console.log region
         region.classList.add 'hidden'
     @timeout 320, =>
       m.destroy()
