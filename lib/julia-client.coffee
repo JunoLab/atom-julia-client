@@ -5,7 +5,6 @@ modules = require './modules'
 evaluation = require './eval'
 notifications = require './notifications'
 loading = require './ui/loading'
-block = require './ui/block'
 utils = require './utils'
 completions = require './completions'
 
@@ -30,7 +29,6 @@ module.exports = JuliaClient =
     comm.activate()
     modules.activate()
     notifications.activate()
-    block.activate()
     comm.onConnected =>
       notifications.show("Client Connected")
 
@@ -59,6 +57,10 @@ module.exports = JuliaClient =
       'julia-client:reset-working-module': -> modules.resetModule()
 
     utils.commands subs
+
+  consumeInk: (ink) ->
+    comm.handle 'show-block', ({start, end}) =>
+      ink.highlight atom.workspace.getActiveTextEditor(), start-1, end-1
 
   consumeStatusBar: (bar) -> modules.consumeStatusBar(bar)
 
