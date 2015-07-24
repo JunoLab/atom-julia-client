@@ -25,7 +25,7 @@ module.exports =
       @emitter.emit 'connected'
       if @isBooting
         @isBooting = false
-        @ink?.done()
+        @loading?.done()
       c.on 'end', =>
         @client = null
         @emitter.emit 'disconnected'
@@ -47,7 +47,7 @@ module.exports =
         else if @callbacks.hasOwnProperty type
           @callbacks[type] data
           delete @callbacks[type]
-          @ink?.done()
+          @loading?.done()
         else
           console.log "julia-client: unrecognised message #{type}"
           console.log data
@@ -60,7 +60,7 @@ module.exports =
 
   booting: ->
     @isBooting = true
-    @ink?.working()
+    @loading?.working()
 
   connectedError: ->
     if @isConnected()
@@ -86,7 +86,7 @@ module.exports =
     if f?
       data.callback = @id = @id+1
       @callbacks[@id] = f
-      @ink?.working()
+      @loading?.working()
     @client.write(JSON.stringify([type, data]))
 
   handle: (type, f) ->

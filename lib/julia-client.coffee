@@ -59,7 +59,7 @@ module.exports = JuliaClient =
 
   consumeInk: (ink) ->
     @ink = ink
-    comm.ink = ink
+    comm.loading = ink.loading
     comm.handle 'show-block', ({start, end}) =>
       ink.highlight atom.workspace.getActiveTextEditor(), start-1, end-1
 
