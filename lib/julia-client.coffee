@@ -48,17 +48,19 @@ module.exports = JuliaClient =
         comm.requireNoClient =>
           comm.listen (port) => terminal.client port
       'julia-client:reset-loading-indicator': =>
-        @ink?.reset()
+        @ink?.loading.reset()
         comm.isBooting = false
 
     subs.add atom.commands.add 'atom-text-editor[data-grammar="source julia"]:not([mini])',
-      'julia-client:set-working-module': -> modules.chooseModule()
-      'julia-client:reset-working-module': -> modules.resetModule()
+      'julia-client:set-working-module': => modules.chooseModule()
+      'julia-client:reset-working-module': => modules.resetModule()
+      'julia-client:clear-inline-results': => @ink?.results.removeAll()
 
     utils.commands subs
 
   consumeInk: (ink) ->
     @ink = ink
+    evaluation.ink = ink
     comm.loading = ink.loading
     comm.handle 'show-block', ({start, end}) =>
       ink.highlight atom.workspace.getActiveTextEditor(), start-1, end-1
