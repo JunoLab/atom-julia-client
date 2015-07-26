@@ -93,6 +93,7 @@ module.exports =
       subInactive && @subInactive()
       inactive && @inactive()
 
+  # TODO: auto detect option, remove reset command
   chooseModule: ->
     comm.requireClient =>
       mods = new Promise (resolve) =>
