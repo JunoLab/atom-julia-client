@@ -15,8 +15,11 @@ module.exports =
     if process.platform == "darwin"
       @exec "osascript -e 'tell application \"Terminal\" to activate'"
       @exec "osascript -e 'tell application \"Terminal\" to do script \"#{@escape(sh)}\"'"
-    else if process.platform = "windows"
+    else if process.platform == "windows"
       @exec "cmd /C start cmd /C #{@escape(sh)}"
+    else if process.platform == "linux"
+      # probably debian-specific
+      @exec "x-terminal-emulator -e \"#{@escape(sh)}\""
     else
       console.log 'unsupported platform'
 
