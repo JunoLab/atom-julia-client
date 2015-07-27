@@ -1,5 +1,5 @@
 comm = require './connection/comm'
-notifications = require './notifications'
+notifications = require './ui/notifications'
 
 module.exports =
   cursor: ({row, column}) ->

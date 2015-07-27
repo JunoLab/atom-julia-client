@@ -1,5 +1,5 @@
 remote = require('remote')
-comm = require './connection/comm'
+comm = require '../connection/comm'
 
 module.exports =
   notes: []

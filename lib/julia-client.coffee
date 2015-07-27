@@ -3,7 +3,7 @@ terminal = require './connection/terminal'
 comm = require './connection/comm'
 modules = require './modules'
 evaluation = require './eval'
-notifications = require './notifications'
+notifications = require './ui/notifications'
 utils = require './utils'
 completions = require './completions'
 
