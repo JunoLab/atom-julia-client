@@ -3,6 +3,7 @@
 module.exports =
   show: (xs, f) ->
     @selector ?= new SelectListView
+    @selector.storeFocusedElement()
     @selector.viewForItem = (item) =>
       "<li>#{item}</li>"
 
@@ -13,14 +14,15 @@ module.exports =
     else
       @selector.setItems xs
 
-    @panel ?= atom.workspace.addModalPanel(item: @selector)
-
-    @panel.show()
-    @selector.storeFocusedElement()
+    panel = atom.workspace.addModalPanel(item: @selector)
+    panel.show()
     @selector.focusFilterEditor()
 
+    confirmed = false
     @selector.confirmed = (item) =>
-      @panel.hide()
+      panel.destroy()
       f(item)
+      confirmed = true
     @selector.cancelled = =>
-      @panel.hide()
+      panel.destroy()
+      f() unless confirmed

@@ -100,6 +100,7 @@ module.exports =
         comm.msg 'all-modules', {}, (mods) =>
           resolve mods
       selector.show mods, (mod) =>
+        return unless mod?
         atom.workspace.getActiveTextEditor().juliaModule = mod
         @update()
 

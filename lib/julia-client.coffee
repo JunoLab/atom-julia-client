@@ -6,6 +6,7 @@ evaluation = require './eval'
 notifications = require './ui/notifications'
 utils = require './utils'
 completions = require './completions'
+frontend = require './frontend'
 
 module.exports = JuliaClient =
   config:
@@ -28,6 +29,7 @@ module.exports = JuliaClient =
     comm.activate()
     modules.activate()
     notifications.activate()
+    frontend.activate()
     comm.onConnected =>
       notifications.show("Client Connected")
 

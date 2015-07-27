@@ -34,6 +34,7 @@ module.exports =
         dir = d
         resolve ps
     selector.show ps, (pkg) =>
+      return unless pkg?
       atom.open pathsToOpen: [path.join dir, pkg]
 
   cdHere: ->
@@ -49,6 +50,7 @@ module.exports =
       comm.msg 'cd', {path: dirs[0]}
     else
       selector.show dirs, (dir) =>
+        return unless dir?
         comm.msg 'cd', {path: dir}
 
   cdHome: ->
