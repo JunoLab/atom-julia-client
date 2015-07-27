@@ -17,6 +17,7 @@ module.exports =
   callbacks: {}
   id: 0
 
+  # TODO: refactor this
   listen: (f) ->
     return f?(@port) if @port?
     @server = net.createServer (c) =>
@@ -29,6 +30,7 @@ module.exports =
       c.on 'end', =>
         @client = null
         @emitter.emit 'disconnected'
+        @loading?.reset()
       # Data will be split into chunks, so we have to buffer it before parsing.
       buffer = ['']
       c.on 'data', (data) =>
@@ -43,7 +45,11 @@ module.exports =
       line = (s) =>
         [type, data] = JSON.parse s
         if @handlers.hasOwnProperty type
-          @handlers[type] data
+          if data.callback?
+            @handlers[type] data, (result) =>
+              @msg data.callback, result
+          else
+            @handlers[type] data
         else if @callbacks.hasOwnProperty type
           @callbacks[type] data
           delete @callbacks[type]
@@ -92,6 +98,8 @@ module.exports =
   handle: (type, f) ->
     @handlers[type] = f
 
+  # TODO: this behaves weirdly because f is evaluated late
+  # Should instead evalute f immediately and make sure messages are queued.
   withClient: (f) ->
     return f() if @client?
     if not @isBooting
@@ -101,4 +109,4 @@ module.exports =
         listener.dispose()
         f()
       return
-    # Queue commands if booting?
+    # TODO: Queue commands if booting?
