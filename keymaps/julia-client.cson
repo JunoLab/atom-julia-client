@@ -22,3 +22,10 @@
  .platform-linux atom-text-editor[data-grammar="source julia"]:not([mini])':
   'ctrl-enter': 'julia-client:evaluate'
   'ctrl-shift-enter': 'julia-client:evaluate-all'
+  'ctrl-i ctrl-m': 'julia-client:set-working-module'
+  'ctrl-alt-i ctrl-alt-m': 'julia-client:reset-working-module'
+
+'.platform-win32 atom-workspace,
+ .platform-linux atom-workspace':
+  'ctrl-i ctrl-r': 'julia-client:open-a-repl'
+  'ctrl-alt-i ctrl-alt-r': 'julia-client:start-repl-client'
