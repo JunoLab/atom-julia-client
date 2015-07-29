@@ -10,6 +10,7 @@
                          "julia-client:evaluate-all"],
     "atom-workspace": ["julia-client:open-a-repl",
                        "julia-client:start-repl-client",
+                       "julia-client:toggle-console",
                        "julia:open-startup-file",
                        "julia:open-julia-home",
                        "julia:open-package-in-new-window"]

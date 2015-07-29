@@ -7,6 +7,7 @@ notifications = require './ui/notifications'
 utils = require './utils'
 completions = require './completions'
 frontend = require './frontend'
+cons = require './console'
 
 defaultTerminal =
   switch process.platform
@@ -62,6 +63,7 @@ module.exports = JuliaClient =
       'julia-client:start-repl-client': =>
         comm.requireNoClient =>
           comm.listen (port) => terminal.client port
+      'julia-client:toggle-console': -> cons.toggle()
       'julia-client:reset-loading-indicator': =>
         @ink?.loading.reset()
         comm.isBooting = false
@@ -76,6 +78,7 @@ module.exports = JuliaClient =
   consumeInk: (ink) ->
     @ink = ink
     evaluation.ink = ink
+    cons.ink = ink
     comm.loading = ink.loading
     comm.handle 'show-block', ({start, end}) =>
       ink.highlight atom.workspace.getActiveTextEditor(), start-1, end-1
