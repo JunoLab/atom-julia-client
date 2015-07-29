@@ -8,6 +8,15 @@ utils = require './utils'
 completions = require './completions'
 frontend = require './frontend'
 
+defaultTerminal =
+  switch process.platform
+    when 'darwin'
+      'Terminal.app'
+    when 'linux'
+      'x-terminal-emulator -e'
+    else
+      'cmd /C start cmd /C'
+
 module.exports = JuliaClient =
   config:
     juliaPath:
@@ -22,6 +31,10 @@ module.exports = JuliaClient =
       type: 'boolean'
       default: true
       description: 'Enable notifications for evaluation'
+    terminal:
+      type: 'string'
+      default: defaultTerminal
+      description: 'Command used to open a terminal. (Windows/Linux only)'
 
   activate: (state) ->
     @subscriptions = new CompositeDisposable
