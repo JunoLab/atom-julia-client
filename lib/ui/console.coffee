@@ -21,6 +21,7 @@ module.exports =
         @c.input()
         @c.view.focusInput true
       @c.input()
+      comm.cons = @c
     @c
 
   toggle: -> @create()?.toggle()
