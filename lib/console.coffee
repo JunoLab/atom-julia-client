@@ -1,5 +1,6 @@
 module.exports =
   create: ->
+    return unless @ink?
     if not @c?
       @c = @ink.console.create()
       @c.view.getTitle = -> "Julia"
@@ -11,7 +12,7 @@ module.exports =
       @c.input()
     @c
 
-  toggle: -> @create().toggle()
+  toggle: -> @create()?.toggle()
 
   eval: (ed) ->
     if ed.getText()
