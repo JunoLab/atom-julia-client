@@ -13,6 +13,7 @@ module.exports =
     return unless @ink?
     if not @c?
       @c = @ink.console.create()
+      @c.setGrammar atom.grammars.grammarForScopeName('source.julia')
       @c.view.getTitle = -> "Julia"
       @c.onEval (ed) =>
         @eval ed
@@ -26,6 +27,7 @@ module.exports =
 
   eval: (ed) ->
     if ed.getText()
-      @c.done()
-      comm.msg 'eval-repl', {code: ed.getText()}, (result) =>
-        @c.input()
+      comm.withClient =>
+        @c.done()
+        comm.msg 'eval-repl', {code: ed.getText()}, (result) =>
+          @c.input()
