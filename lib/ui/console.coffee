@@ -1,3 +1,5 @@
+comm = require '../connection/comm'
+
 module.exports =
   activate: ->
     @cmd = atom.commands.add 'atom-workspace',
@@ -25,5 +27,5 @@ module.exports =
   eval: (ed) ->
     if ed.getText()
       @c.done()
-      @c.out ed.getText()
-      @c.input()
+      comm.msg 'eval-repl', {code: ed.getText()}, (result) =>
+        @c.input()
