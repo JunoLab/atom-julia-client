@@ -7,7 +7,7 @@ notifications = require './ui/notifications'
 utils = require './utils'
 completions = require './completions'
 frontend = require './frontend'
-cons = require './console'
+cons = require './ui/console'
 
 defaultTerminal =
   switch process.platform
