@@ -1,4 +1,12 @@
 module.exports =
+  activate: ->
+    @cmd = atom.commands.add 'atom-workspace',
+      "julia-client:clear-console": =>
+        @c?.clear()
+
+  deactivate: ->
+    @cmd.dispose()
+
   create: ->
     return unless @ink?
     if not @c?

@@ -104,7 +104,7 @@ module.exports =
     return f() if @client?
     if not @isBooting
       atom.commands.dispatch atom.views.getView(atom.workspace),
-                             'julia-client:start-repl-client'
+                             'julia-client:start-julia'
       listener = @onConnected =>
         listener.dispose()
         f()

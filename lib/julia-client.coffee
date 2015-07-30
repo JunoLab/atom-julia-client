@@ -1,6 +1,7 @@
 {CompositeDisposable} = require 'atom'
 terminal = require './connection/terminal'
 comm = require './connection/comm'
+process = require './connection/process'
 modules = require './modules'
 evaluation = require './eval'
 notifications = require './ui/notifications'
@@ -44,12 +45,14 @@ module.exports = JuliaClient =
     modules.activate()
     notifications.activate()
     frontend.activate()
+    cons.activate()
     comm.onConnected =>
       notifications.show("Client Connected")
 
   deactivate: ->
     @subscriptions.dispose()
     modules.deactivate()
+    cons.deactivate()
 
   commands: (subs) ->
     subs.add atom.commands.add 'atom-text-editor',
@@ -63,6 +66,8 @@ module.exports = JuliaClient =
       'julia-client:start-repl-client': =>
         comm.requireNoClient =>
           comm.listen (port) => terminal.client port
+      'julia-client:start-julia': =>
+        comm.listen (port) => process.start port, cons.create()
       'julia-client:toggle-console': -> cons.toggle()
       'julia-client:reset-loading-indicator': =>
         @ink?.loading.reset()

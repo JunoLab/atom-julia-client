@@ -17,7 +17,9 @@
 '.platform-darwin atom-workspace':
   'cmd-i cmd-r': 'julia-client:open-a-repl'
   'cmd-shift-i cmd-shift-r': 'julia-client:start-repl-client'
+  'cmd-i cmd-s': 'julia-client:start-julia'
   'ctrl-`': 'julia-client:toggle-console'
+  'cmd-i cmd-c': 'julia-client:clear-console'
 
 '.platform-win32 atom-text-editor[data-grammar="source julia"]:not([mini]),
  .platform-linux atom-text-editor[data-grammar="source julia"]:not([mini])':
