@@ -21,6 +21,7 @@ module.exports =
         @c.input()
         @c.view.focusInput true
       @c.input()
+      # TODO: refactor this
       comm.cons = @c
     @c
 

@@ -2,10 +2,14 @@ process = require 'child_process'
 comm = require './comm'
 
 module.exports =
+  jlpath: () -> atom.config.get("julia-client.juliaPath")
+  # TODO: this is very naïve.
+  jlargs: () -> atom.config.get("julia-client.juliaArguments").split ' '
+
   start: (port, cons) ->
     return if @proc?
     comm.booting()
-    @proc = process.spawn 'julia', ['-e', "import Atom; @sync Atom.connect(#{port})"]
+    @proc = process.spawn @jlpath(), [@jlargs()..., '-e', "import Atom; @sync Atom.connect(#{port})"]
     @proc.on 'exit', (code, signal) =>
       console.log "Julia Exit: #{code}, #{signal}"
       @proc = null
