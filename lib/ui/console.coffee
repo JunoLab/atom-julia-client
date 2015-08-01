@@ -6,6 +6,10 @@ module.exports =
       "julia-client:clear-console": =>
         @c?.clear()
 
+    comm.handle 'info', ({msg}) =>
+      console.log @c
+      @c.info msg
+
   deactivate: ->
     @cmd.dispose()
 
