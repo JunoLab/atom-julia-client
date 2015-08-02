@@ -11,7 +11,8 @@ module.exports =
     comm.booting()
     @proc = process.spawn @jlpath(), [@jlargs()..., '-e', "import Atom; @sync Atom.connect(#{port})"]
     @proc.on 'exit', (code, signal) =>
-      console.log "Julia Exit: #{code}, #{signal}"
+      cons.err "Julia has stopped: #{code}, #{signal}"
+      cons.input()
       @proc = null
     @proc.stdout.on 'data', (data) =>
       text = data.toString().trim()
