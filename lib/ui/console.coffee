@@ -20,6 +20,7 @@ module.exports =
     @c = new @ink.Console
     @c.setGrammar atom.grammars.grammarForScopeName('source.julia')
     @c.view.getTitle = -> "Julia"
+    @c.modes = => @replModes
     @c.onEval (ed) => @eval ed
     @c.input()
     @loading.onWorking => @c.view.loading true
@@ -31,5 +32,14 @@ module.exports =
     if ed.getText()
       comm.withClient =>
         @c.done()
-        comm.msg 'eval-repl', {code: ed.getText()}, (result) =>
+        comm.msg 'eval-repl', {code: ed.getText(), mode: ed.inkConsoleMode}, (result) =>
           @c.input()
+
+  replModes:
+    ';':
+      name: 'shell'
+      icon: 'terminal'
+      grammar: atom.grammars.grammarForScopeName('source.shell')
+    '?':
+      name: 'help'
+      icon: 'question'
