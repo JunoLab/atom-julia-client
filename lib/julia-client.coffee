@@ -45,9 +45,10 @@ module.exports = JuliaClient =
     modules.activate()
     notifications.activate()
     frontend.activate()
-    cons.activate()
     comm.onConnected =>
       notifications.show("Client Connected")
+    @withInk =>
+      cons.activate()
 
   deactivate: ->
     @subscriptions.dispose()
@@ -68,7 +69,7 @@ module.exports = JuliaClient =
         comm.requireNoClient =>
           comm.listen (port) => terminal.client port
       'julia-client:start-julia': =>
-        comm.listen (port) => process.start port, cons.create()
+        comm.listen (port) => process.start port, cons
       'julia-client:toggle-console': => @withInk => cons.toggle()
       'julia-client:reset-loading-indicator': =>
         @loading.reset()

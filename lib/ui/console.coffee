@@ -4,9 +4,11 @@ comm = require '../connection/comm'
 
 module.exports =
   activate: ->
+    @create()
+
     @cmd = atom.commands.add 'atom-workspace',
       "julia-client:clear-console": =>
-        @c?.reset()
+        @c.reset()
 
     comm.handle 'info', ({msg}) =>
       @c.info msg
@@ -15,19 +17,15 @@ module.exports =
     @cmd.dispose()
 
   create: ->
-    return unless @ink?
-    if not @c?
-      @c = new @ink.Console
-      @c.setGrammar atom.grammars.grammarForScopeName('source.julia')
-      @c.view.getTitle = -> "Julia"
-      @c.onEval (ed) =>
-        @eval ed
-      @c.input()
-      @loading.onWorking => @c.view.loading true
-      @loading.onDone => @c.view.loading false
-    @c
+    @c = new @ink.Console
+    @c.setGrammar atom.grammars.grammarForScopeName('source.julia')
+    @c.view.getTitle = -> "Julia"
+    @c.onEval (ed) => @eval ed
+    @c.input()
+    @loading.onWorking => @c.view.loading true
+    @loading.onDone => @c.view.loading false
 
-  toggle: -> @create()?.toggle()
+  toggle: -> @c.toggle()
 
   eval: (ed) ->
     if ed.getText()
