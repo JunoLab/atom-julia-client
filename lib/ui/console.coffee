@@ -4,10 +4,9 @@ module.exports =
   activate: ->
     @cmd = atom.commands.add 'atom-workspace',
       "julia-client:clear-console": =>
-        @c?.clear()
+        @c?.reset()
 
     comm.handle 'info', ({msg}) =>
-      console.log @c
       @c.info msg
 
   deactivate: ->
@@ -21,9 +20,6 @@ module.exports =
       @c.view.getTitle = -> "Julia"
       @c.onEval (ed) =>
         @eval ed
-      @c.onClear =>
-        @c.input()
-        @c.view.focusInput true
       @c.input()
       # TODO: refactor this
       comm.cons = @c
