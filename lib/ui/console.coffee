@@ -14,7 +14,7 @@ module.exports =
   deactivate: ->
     @cmd.dispose()
 
-  create: ->
+  create: (loading) ->
     return unless @ink?
     if not @c?
       @c = new @ink.Console
@@ -23,8 +23,8 @@ module.exports =
       @c.onEval (ed) =>
         @eval ed
       @c.input()
-      # TODO: refactor this
-      comm.cons = @c
+      loading.onWorking => @c.view.loading true
+      loading.onDone => @c.view.loading false
     @c
 
   toggle: -> @create()?.toggle()

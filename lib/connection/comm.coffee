@@ -26,11 +26,11 @@ module.exports =
       @emitter.emit 'connected'
       if @isBooting
         @isBooting = false
-        @done()
+        @loading.done()
       c.on 'end', =>
         @client = null
         @emitter.emit 'disconnected'
-        @reset()
+        @loading.reset()
       # Data will be split into chunks, so we have to buffer it before parsing.
       buffer = ['']
       c.on 'data', (data) =>
@@ -53,7 +53,7 @@ module.exports =
         else if @callbacks.hasOwnProperty type
           @callbacks[type] data
           delete @callbacks[type]
-          @done()
+          @loading.done()
         else
           console.log "julia-client: unrecognised message #{type}"
           console.log data
@@ -66,7 +66,7 @@ module.exports =
 
   booting: ->
     @isBooting = true
-    @working()
+    @loading.working()
 
   connectedError: ->
     if @isConnected()
@@ -92,7 +92,7 @@ module.exports =
     if f?
       data.callback = @id = @id+1
       @callbacks[@id] = f
-      @working()
+      @loading.working()
     @client.write(JSON.stringify([type, data]))
 
   handle: (type, f) ->
@@ -110,15 +110,3 @@ module.exports =
         f()
       return
     # TODO: Queue commands if booting?
-
-  working: ->
-    @loading?.working()
-    if @loading?.isWorking() then @cons?.view.loading true
-
-  done: ->
-    @loading?.done()
-    if not @loading?.isWorking() then @cons?.view.loading false
-
-  reset: ->
-    @loading?.reset()
-    @cons?.view.loading false
