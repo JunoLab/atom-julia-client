@@ -1,3 +1,5 @@
+# TODO: modules, history, modes
+
 comm = require '../connection/comm'
 
 module.exports =
