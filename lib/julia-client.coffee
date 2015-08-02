@@ -68,8 +68,8 @@ module.exports = JuliaClient =
         comm.requireNoClient =>
           comm.listen (port) => terminal.client port
       'julia-client:start-julia': =>
-        comm.listen (port) => process.start port, cons.create @loading
-      'julia-client:toggle-console': -> cons.toggle()
+        comm.listen (port) => process.start port, cons.create()
+      'julia-client:toggle-console': => @withInk => cons.toggle()
       'julia-client:reset-loading-indicator': =>
         @loading.reset()
         comm.isBooting = false
@@ -87,9 +87,21 @@ module.exports = JuliaClient =
     cons.ink = ink
     @loading = new ink.Loading
     comm.loading = @loading
+    cons.loading = @loading
     @spinner = new ink.Spinner comm.loading
     comm.handle 'show-block', ({start, end}) =>
       ink.highlight atom.workspace.getActiveTextEditor(), start-1, end-1
+
+  withInk: (f, err) ->
+    if @ink?
+      f()
+    else if err
+      atom.notifications.addError 'Please install the Ink package.',
+        detail: 'Julia Client requires the Ink package to run.
+                 You can install it from the settings view.'
+        dismissable: true
+    else
+      setTimeout (=> @withInk f, true), 100
 
   consumeStatusBar: (bar) -> modules.consumeStatusBar(bar)
 
