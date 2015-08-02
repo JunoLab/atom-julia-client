@@ -53,6 +53,7 @@ module.exports = JuliaClient =
     @subscriptions.dispose()
     modules.deactivate()
     cons.deactivate()
+    @spinner.dispose()
 
   commands: (subs) ->
     subs.add atom.commands.add 'atom-text-editor',
@@ -84,7 +85,8 @@ module.exports = JuliaClient =
     @ink = ink
     evaluation.ink = ink
     cons.ink = ink
-    comm.loading = ink.loading
+    comm.loading = new ink.Loading
+    @spinner = new ink.Spinner comm.loading
     comm.handle 'show-block', ({start, end}) =>
       ink.highlight atom.workspace.getActiveTextEditor(), start-1, end-1
 
