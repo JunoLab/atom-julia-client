@@ -17,7 +17,7 @@ module.exports =
   create: ->
     return unless @ink?
     if not @c?
-      @c = @ink.console.create()
+      @c = new @ink.Console
       @c.setGrammar atom.grammars.grammarForScopeName('source.julia')
       @c.view.getTitle = -> "Julia"
       @c.onEval (ed) =>
