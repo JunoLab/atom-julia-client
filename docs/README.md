@@ -34,9 +34,9 @@ conventional, though not required, to do this in `~/github`):
 
 ```shell
 git clone git@github.com:JunoLab/atom-ink ink
-apm link ink
+cd ink && apm install && apm link . && cd .. # install package dependencies
 git clone git@github.com:JunoLab/atom-julia-client julia-client
-apm link julia-client
+cd julia-client && apm install && apm link . && cd .. # install package dependencies
 ```
 
 It's a good idea to keep these up to date by running `Pkg.update()` in Julia and syncing the
