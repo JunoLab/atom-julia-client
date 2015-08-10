@@ -25,8 +25,8 @@ You can install *language-julia* by using Atom's `Install Packages And Themes` c
 searching for it. The Julia packages, *Atom.jl* and *CodeTools.jl*, can be installed via
 
 ```julia
-Pkg.clone("git@github.com:JunoLab/Atom.jl")
-Pkg.clone("git@github.com:JunoLab/CodeTools.jl")
+Pkg.clone("http://github.com/JunoLab/Atom.jl")
+Pkg.clone("http://github.com/JunoLab/CodeTools.jl")
 ```
 
 To install the packages, run the following commands in a folder of your choice (it's
