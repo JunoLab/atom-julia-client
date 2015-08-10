@@ -32,3 +32,6 @@
  .platform-linux atom-workspace':
   'ctrl-i ctrl-r': 'julia-client:open-a-repl'
   'ctrl-alt-i ctrl-alt-r': 'julia-client:start-repl-client'
+  'ctrl-i ctrl-s': 'julia-client:start-julia'
+  'ctrl-`': 'julia-client:toggle-console'
+  'ctrl-i ctrl-c': 'julia-client:clear-console'
