@@ -33,9 +33,9 @@ To install the packages, run the following commands in a folder of your choice (
 conventional, though not required, to do this in `~/github`):
 
 ```shell
-git clone git@github.com:JunoLab/atom-ink ink
+git clone http://github.com/JunoLab/atom-ink ink
 cd ink && apm install && apm link . && cd .. # install package dependencies
-git clone git@github.com:JunoLab/atom-julia-client julia-client
+git clone http://github.com/JunoLab/atom-julia-client julia-client
 cd julia-client && apm install && apm link . && cd .. # install package dependencies
 ```
 
