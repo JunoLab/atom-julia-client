@@ -6,6 +6,10 @@
 * [Communication](communication.md) – Details how Atom and Julia both communicate with
   each other.
 
+These docs are evolving as we figure out the best way to get people involved. If it's hard
+to get things working, or anything seems out of date, broken, or just plain confusing,
+please do let us know so we can fix it. Even better, file a PR!
+
 # Developer Install
 
 Julia support in Atom consists of a number of packages for both Julia and Atom:
