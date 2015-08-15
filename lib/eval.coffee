@@ -22,10 +22,13 @@ module.exports =
   eval: ->
     editor = atom.workspace.getActiveTextEditor()
     for sel in editor.getSelections()
-      comm.msg 'eval', @evalData(editor, sel), ({start, end, header, body}) =>
+      comm.msg 'eval', @evalData(editor, sel), ({start, end, result}) =>
+        [header, [body]] = result
         @ink?.results.showForLines editor, start-1, end-1,
-          header: header
-          body: body
+          content:
+            @ink.results.collapsible
+              header: header
+              body: body
         notifications.show "Evaluation Finished"
 
   evalAll: ->
