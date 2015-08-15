@@ -1,6 +1,7 @@
 # TODO: modules, history, modes
 
 comm = require '../connection/comm'
+notifications = require '../ui/notifications'
 
 module.exports =
   activate: ->
@@ -34,6 +35,7 @@ module.exports =
         @c.done()
         comm.msg 'eval-repl', {code: ed.getText(), mode: ed.inkConsoleMode}, (result) =>
           @c.input()
+          notifications.show "Evaluation Finished"
 
   replModes:
     ';':
