@@ -78,7 +78,6 @@ module.exports = JuliaClient =
     subs.add atom.commands.add 'atom-text-editor[data-grammar="source julia"]:not([mini])',
       'julia-client:set-working-module': => modules.chooseModule()
       'julia-client:reset-working-module': => modules.resetModule()
-      'julia-client:clear-inline-results': => @ink?.results.removeAll()
 
     utils.commands subs
 
