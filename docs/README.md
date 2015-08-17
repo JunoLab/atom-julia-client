@@ -51,7 +51,9 @@ cd ..
 ```
 
 It's a good idea to keep these up to date by running `Pkg.update()` in Julia and syncing the
-package repos every now and then.
+package repos every now and then. I also update Atom.jl's dependencies occasionally, so if
+you see errors booting the Julia client you may want to try `Pkg.clone`ing Media, Hiccup,
+MacroTools etc.
 
 Atom will need to be reloaded, either by closing and reopening it or by running the `Window:
 Reload` command. At this point, you should find that there are a bunch of new Julia commands
