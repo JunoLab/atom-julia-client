@@ -12,6 +12,9 @@ please do let us know so we can fix it. Even better, file a PR!
 
 # Developer Install
 
+Firstly, you need to be working in Julia v0.4 for Atom. Currently, you can either build Julia
+from source or download a [nightly build](http://julialang.org/downloads/).
+
 Julia support in Atom consists of a number of packages for both Julia and Atom:
 
 * [language-julia](https://github.com/JuliaLang/atom-language-julia) – Provides basic
@@ -57,7 +60,9 @@ MacroTools etc.
 
 Atom will need to be reloaded, either by closing and reopening it or by running the `Window:
 Reload` command. At this point, you should find that there are a bunch of new Julia commands
-available in Atom – type "Julia" into the command palette to see what's available.
+available in Atom – type "Julia" into the command palette to see what's available. If the
+`julia` command isn't on your path already, set the Julia path in the julia-client settings
+panel.
 
 Get started by going into a buffer set to Julia syntax, typing `2+2`, and pressing
 `C-Enter` (where `C` stands for `Ctrl`, or `Cmd` on OS X). After the client boots you
