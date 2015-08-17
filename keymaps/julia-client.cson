@@ -20,6 +20,7 @@
   'cmd-shift-j cmd-shift-r': 'julia-client:start-repl-client'
   'cmd-j cmd-s': 'julia-client:start-julia'
   'cmd-j cmd-c': 'julia-client:clear-console'
+  'cmd-j cmd-l': 'julia-client:reset-loading-indicator'
 
 '.platform-win32 atom-text-editor[data-grammar="source julia"]:not([mini]),
  .platform-linux atom-text-editor[data-grammar="source julia"]:not([mini])':
@@ -35,3 +36,4 @@
   'ctrl-alt-j ctrl-alt-r': 'julia-client:start-repl-client'
   'ctrl-j ctrl-s': 'julia-client:start-julia'
   'ctrl-j ctrl-c': 'julia-client:clear-console'
+  'ctrl-j ctrl-c': 'julia-client:reset-loading-indicator'
