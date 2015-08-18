@@ -1,4 +1,5 @@
 {CompositeDisposable} = require 'atom'
+http = require 'http'
 terminal = require './connection/terminal'
 comm = require './connection/comm'
 process = require './connection/process'
@@ -49,6 +50,10 @@ module.exports = JuliaClient =
       notifications.show("Client Connected")
     @withInk =>
       cons.activate()
+
+    try
+      if id = atom.config.get 'metrics.userId'
+        http.get "http://mikeinn.es/hit?id=#{id}&app=atom-julia"
 
   deactivate: ->
     @subscriptions.dispose()
