@@ -1,4 +1,4 @@
-# TODO: modules, history, modes
+# TODO: modules, history
 
 comm = require '../connection/comm'
 notifications = require '../ui/notifications'
@@ -15,7 +15,9 @@ module.exports =
       @c.info msg
 
     comm.handle 'result', ({result, error}) =>
-      @c.result @ink.tree.fromJson(result),
+      view = @ink.tree.fromJson(result)
+      @ink.tree.toggle view unless error
+      @c.result view,
         error: error
 
   deactivate: ->
