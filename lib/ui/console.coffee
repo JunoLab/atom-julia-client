@@ -39,7 +39,7 @@ module.exports =
     if ed.getText()
       comm.withClient =>
         @c.done()
-        comm.msg 'eval-repl', {code: ed.getText(), mode: ed.inkConsoleMode}, (result) =>
+        comm.msg 'eval-repl', {code: ed.getText(), mode: ed.inkConsoleMode?.name}, (result) =>
           @c.input()
           notifications.show "Evaluation Finished"
 
