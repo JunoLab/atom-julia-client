@@ -10,9 +10,11 @@ module.exports =
     return if @proc?
     comm.booting()
     @proc = process.spawn @jlpath(), [@jlargs()..., '-e', "import Atom; @sync Atom.connect(#{port})"]
+    @onStart()
     @proc.on 'exit', (code, signal) =>
       cons.c.err "Julia has stopped: #{code}, #{signal}"
-      cons.c.input()
+      cons.c.input() unless cons.c.isInput
+      @onStop()
       @proc = null
     @proc.stdout.on 'data', (data) =>
       text = data.toString().trim()
@@ -20,3 +22,11 @@ module.exports =
     @proc.stderr.on 'data', (data) =>
       text = data.toString().trim()
       if text then cons.c.err text
+
+  onStart: ->
+    @cmds = atom.commands.add 'atom-workspace',
+      'julia-client:kill-julia': => @proc.kill()
+      'julia-client:interrupt-julia': => @proc.kill 'SIGINT'
+
+  onStop: ->
+    @cmds?.dispose()
