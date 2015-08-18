@@ -16,6 +16,7 @@ module.exports =
       cons.c.input() unless cons.c.isInput
       @onStop()
       @proc = null
+      comm.notBooting()
     @proc.stdout.on 'data', (data) =>
       text = data.toString().trim()
       if text then cons.c.out text

@@ -68,6 +68,11 @@ module.exports =
     @isBooting = true
     @loading.working()
 
+  notBooting: ->
+    if @isBooting
+      @isBooting = false
+      @loading.done()
+
   connectedError: ->
     if @isConnected()
       atom.notifications.addError "Can't create a new client.",
