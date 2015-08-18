@@ -14,6 +14,10 @@ module.exports =
     comm.handle 'info', ({msg}) =>
       @c.info msg
 
+    comm.handle 'result', ({result, error}) =>
+      @c.result @ink.tree.fromJson(result),
+        error: error
+
   deactivate: ->
     @cmd.dispose()
 
