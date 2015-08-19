@@ -17,9 +17,11 @@ module.exports =
       else
         @handlers[type] data
     else if @callbacks.hasOwnProperty type
-      @callbacks[type] data
-      delete @callbacks[type]
-      @loading.done()
+      try
+        @callbacks[type] data
+      finally
+        delete @callbacks[type]
+        @loading.done()
     else
       console.log "julia-client: unrecognised message #{type}"
       console.log data
