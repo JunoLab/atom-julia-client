@@ -32,21 +32,7 @@ module.exports =
         while buffer.length > 1
           line buffer.shift()
 
-      line = (s) =>
-        [type, data] = JSON.parse s
-        if client.handlers.hasOwnProperty type
-          if data.callback?
-            client.handlers[type] data, (result) =>
-              @msg data.callback, result
-          else
-            client.handlers[type] data
-        else if client.callbacks.hasOwnProperty type
-          client.callbacks[type] data
-          delete client.callbacks[type]
-          client.loading.done()
-        else
-          console.log "julia-client: unrecognised message #{type}"
-          console.log data
+      line = (s) => client.input JSON.parse s
 
     @server.listen 0, =>
       @port = @server.address().port

@@ -11,6 +11,21 @@ module.exports =
   callbacks: {}
   id: 0
 
+  input: ([type, data]) ->
+    if @handlers.hasOwnProperty type
+      if data.callback?
+        @handlers[type] data, (result) =>
+          @msg data.callback, result
+      else
+        @handlers[type] data
+    else if @callbacks.hasOwnProperty type
+      @callbacks[type] data
+      delete @callbacks[type]
+      @loading.done()
+    else
+      console.log "julia-client: unrecognised message #{type}"
+      console.log data
+
   isConnected: -> false
 
   booting: ->
