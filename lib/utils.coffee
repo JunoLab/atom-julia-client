@@ -64,8 +64,8 @@ module.exports =
 
     subs.add atom.commands.add 'atom-text-editor',
       'julia-client:work-in-file-folder': =>
-        client.requireClient => @cdHere()
+        client.require => @cdHere()
       'julia-client:work-in-project-folder': =>
-        client.requireClient => @cdProject()
+        client.require => @cdProject()
       'julia-client:work-in-home-folder': =>
-        client.requireClient => @cdHome()
+        client.require => @cdHome()

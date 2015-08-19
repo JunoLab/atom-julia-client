@@ -64,17 +64,21 @@ module.exports = JuliaClient =
   commands: (subs) ->
     subs.add atom.commands.add 'atom-text-editor',
       'julia-client:evaluate': (event) =>
-        @withInk => client.withClient => evaluation.eval()
+        @withInk =>
+          client.start()
+          evaluation.eval()
       'julia-client:evaluate-all': (event) =>
-        client.withClient => evaluation.evalAll()
+        @withInk =>
+          client.start()
+          evaluation.evalAll()
 
     subs.add atom.commands.add 'atom-workspace',
       'julia-client:open-a-repl': => terminal.repl()
       'julia-client:start-repl-client': =>
-        client.requireNoClient =>
+        client.disrequire =>
           tcp.listen (port) => terminal.client port
       'julia-client:start-julia': =>
-        client.requireNoClient =>
+        client.disrequire =>
           tcp.listen (port) => process.start port, cons
       'julia-client:toggle-console': => @withInk => cons.toggle()
       'julia-client:reset-loading-indicator': => client.reset()

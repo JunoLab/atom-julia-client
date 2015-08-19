@@ -95,11 +95,10 @@ module.exports =
     else
       false
 
-  requireClient: (f) -> @notConnectedError() or f()
-  requireNoClient: (f) -> @connectedError() or f()
+  require: (f) -> @notConnectedError() or f()
+  disrequire: (f) -> @connectedError() or f()
 
-  withClient: (f) ->
-    f()
+  start: ->
     if not @isConnected() and not @isBooting
       atom.commands.dispatch atom.views.getView(atom.workspace),
                              'julia-client:start-julia'

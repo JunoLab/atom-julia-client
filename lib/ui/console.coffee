@@ -37,11 +37,11 @@ module.exports =
 
   eval: (ed) ->
     if ed.getText()
-      client.withClient =>
-        @c.done()
-        client.msg 'eval-repl', {code: ed.getText(), mode: ed.inkConsoleMode?.name}, (result) =>
-          @c.input()
-          notifications.show "Evaluation Finished"
+      client.start()
+      @c.done()
+      client.msg 'eval-repl', {code: ed.getText(), mode: ed.inkConsoleMode?.name}, (result) =>
+        @c.input()
+        notifications.show "Evaluation Finished"
 
   replModes:
     ';':
