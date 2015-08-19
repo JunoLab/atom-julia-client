@@ -57,12 +57,12 @@ module.exports =
   requireNoClient: (f) -> @connectedError() or f()
 
   msg: (type, data, f) ->
-    return unless @sock?
+    return unless @isConnected()
     if f?
       data.callback = @id = @id+1
       @callbacks[@id] = f
       @loading.working()
-    @sock.write(JSON.stringify([type, data]))
+    @output [type, data]
 
   handle: (type, f) ->
     @handlers[type] = f
@@ -70,7 +70,7 @@ module.exports =
   # TODO: this behaves weirdly because f is evaluated late
   # Should instead evalute f immediately and make sure messages are queued.
   withClient: (f) ->
-    return f() if @sock?
+    return f() if @isConnected()
     if not @isBooting
       atom.commands.dispatch atom.views.getView(atom.workspace),
                              'julia-client:start-julia'

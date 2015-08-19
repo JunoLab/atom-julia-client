@@ -9,10 +9,10 @@ module.exports =
   listen: (f) ->
     return f?(@port) if @port?
     client.isConnected = => @sock?
+    client.output = (data) => @sock.write JSON.stringify data
     @server = net.createServer (c) =>
       if @sock then return c.end()
       @sock = c
-      client.sock = @sock
       client.emitter.emit 'connected'
       if client.isBooting
         client.isBooting = false
