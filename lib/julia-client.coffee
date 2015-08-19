@@ -93,7 +93,8 @@ module.exports = JuliaClient =
     cons.loading = @loading
     @spinner = new ink.Spinner client.loading
     client.handle 'show-block', ({start, end}) =>
-      ink.highlight atom.workspace.getActiveTextEditor(), start-1, end-1
+      if ed = atom.workspace.getActiveTextEditor()
+        ink.highlight ed, start-1, end-1
 
   withInk: (f, err) ->
     if @ink?
