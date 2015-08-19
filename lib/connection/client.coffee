@@ -45,14 +45,28 @@ module.exports =
 
   isConnected: -> false
 
+  connected: ->
+    @emitter.emit 'connected'
+    if @isBooting
+      @isBooting = false
+      @loading.done()
+
+  disconnected: ->
+    @emitter.emit 'disconnected'
+    @reset()
+
   booting: ->
     @isBooting = true
     @loading.working()
 
-  notBooting: ->
+  cancelBoot: ->
     if @isBooting
       @isBooting = false
-      @loading.done()
+      @reset()
+
+  reset: ->
+    @cancelBoot()
+    @loading.reset()
 
   # Management & UI
 

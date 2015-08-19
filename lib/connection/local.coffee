@@ -13,14 +13,10 @@ module.exports =
     @server = net.createServer (c) =>
       if @sock then return c.end()
       @sock = c
-      client.emitter.emit 'connected'
-      if client.isBooting
-        client.isBooting = false
-        client.loading.done()
+      client.connected()
       c.on 'end', =>
         @sock = null
-        client.emitter.emit 'disconnected'
-        client.loading.reset()
+        client.disconnected()
       # Data will be split into chunks, so we have to buffer it before parsing.
       buffer = ['']
       c.on 'data', (data) =>
