@@ -3,7 +3,7 @@ http = require 'http'
 terminal = require './connection/terminal'
 client = require './connection/client'
 process = require './connection/process'
-local = require './connection/local'
+tcp = require './connection/tcp'
 modules = require './modules'
 evaluation = require './eval'
 notifications = require './ui/notifications'
@@ -72,9 +72,9 @@ module.exports = JuliaClient =
       'julia-client:open-a-repl': => terminal.repl()
       'julia-client:start-repl-client': =>
         client.requireNoClient =>
-          local.listen (port) => terminal.client port
+          tcp.listen (port) => terminal.client port
       'julia-client:start-julia': =>
-        local.listen (port) => process.start port, cons
+        tcp.listen (port) => process.start port, cons
       'julia-client:toggle-console': => @withInk => cons.toggle()
       'julia-client:reset-loading-indicator': => client.reset()
 
