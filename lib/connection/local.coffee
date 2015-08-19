@@ -6,6 +6,16 @@ module.exports =
   port: null
   sock: null
 
+  buffer: (f) ->
+    buffer = ['']
+    (data) ->
+      str = data.toString()
+      lines = str.split '\n'
+      buffer[0] += lines.shift()
+      buffer.push lines...
+      while buffer.length > 1
+        f buffer.shift()
+
   listen: (f) ->
     return f?(@port) if @port?
     client.isConnected = => @sock?
@@ -17,18 +27,8 @@ module.exports =
       c.on 'end', =>
         @sock = null
         client.disconnected()
-      # Data will be split into chunks, so we have to buffer it before parsing.
-      buffer = ['']
-      c.on 'data', (data) =>
-        str = data.toString()
-        lines = str.split '\n'
-        buffer[0] += lines.shift()
-        buffer.push lines...
-
-        while buffer.length > 1
-          line buffer.shift()
-
-      line = (s) => client.input JSON.parse s
+      c.on 'data', @buffer (s) =>
+        client.input JSON.parse s
 
     @server.listen 0, =>
       @port = @server.address().port
