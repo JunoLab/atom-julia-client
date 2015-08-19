@@ -3,6 +3,7 @@ http = require 'http'
 terminal = require './connection/terminal'
 client = require './connection/client'
 process = require './connection/process'
+local = require './connection/local'
 modules = require './modules'
 evaluation = require './eval'
 notifications = require './ui/notifications'
@@ -42,7 +43,6 @@ module.exports = JuliaClient =
   activate: (state) ->
     @subscriptions = new CompositeDisposable
     @commands @subscriptions
-    client.activate()
     modules.activate()
     notifications.activate()
     frontend.activate()
@@ -72,9 +72,9 @@ module.exports = JuliaClient =
       'julia-client:open-a-repl': => terminal.repl()
       'julia-client:start-repl-client': =>
         client.requireNoClient =>
-          client.listen (port) => terminal.client port
+          local.listen (port) => terminal.client port
       'julia-client:start-julia': =>
-        client.listen (port) => process.start port, cons
+        local.listen (port) => process.start port, cons
       'julia-client:toggle-console': => @withInk => cons.toggle()
       'julia-client:reset-loading-indicator': =>
         @loading.reset()
