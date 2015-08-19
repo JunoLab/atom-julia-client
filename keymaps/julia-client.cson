@@ -9,6 +9,7 @@
 
 '.platform-darwin .console':
   'ctrl-c': 'julia-client:interrupt-julia'
+  'ctrl-`': 'julia-client:toggle-console'
 
 '.platform-darwin atom-workspace':
   'cmd-j cmd-r': 'julia-client:open-a-repl'
@@ -29,6 +30,7 @@
 '.platform-win32 .console,
  .platform-linux .console':
   'ctrl-shift-c': 'julia-client:interrupt-julia'
+  'ctrl-`': 'julia-client:toggle-console'
 
 '.platform-win32 atom-workspace,
  .platform-linux atom-workspace':
