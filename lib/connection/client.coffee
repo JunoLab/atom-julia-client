@@ -6,6 +6,7 @@ module.exports =
 
   handlers: {}
   callbacks: {}
+  queue: []
   id: 0
 
   input: ([type, data]) ->
@@ -26,12 +27,14 @@ module.exports =
   output: (data) ->
 
   msg: (type, data, f) ->
-    return unless @isConnected()
     if f?
       data.callback = @id = @id+1
       @callbacks[@id] = f
       @loading.working()
-    @output [type, data]
+    if @isConnected()
+      @output [type, data]
+    else
+      @queue.push [type, data]
 
   handle: (type, f) ->
     @handlers[type] = f
@@ -50,6 +53,8 @@ module.exports =
     if @isBooting
       @isBooting = false
       @loading.done()
+    @output msg for msg in @queue
+    @queue = []
 
   disconnected: ->
     @emitter.emit 'disconnected'
@@ -67,6 +72,8 @@ module.exports =
   reset: ->
     @cancelBoot()
     @loading.reset()
+    @queue = []
+    @callbacks = {}
 
   # Management & UI
 
@@ -89,15 +96,8 @@ module.exports =
   requireClient: (f) -> @notConnectedError() or f()
   requireNoClient: (f) -> @connectedError() or f()
 
-  # TODO: this behaves weirdly because f is evaluated late
-  # Should instead evalute f immediately and make sure messages are queued.
   withClient: (f) ->
-    return f() if @isConnected()
-    if not @isBooting
+    f()
+    if not @isConnected() and not @isBooting
       atom.commands.dispatch atom.views.getView(atom.workspace),
                              'julia-client:start-julia'
-      listener = @onConnected =>
-        listener.dispose()
-        f()
-      return
-    # TODO: Queue commands if booting?

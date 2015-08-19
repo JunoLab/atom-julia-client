@@ -64,7 +64,7 @@ module.exports = JuliaClient =
   commands: (subs) ->
     subs.add atom.commands.add 'atom-text-editor',
       'julia-client:evaluate': (event) =>
-        client.withClient => evaluation.eval()
+        @withInk => client.withClient => evaluation.eval()
       'julia-client:evaluate-all': (event) =>
         client.withClient => evaluation.evalAll()
 
