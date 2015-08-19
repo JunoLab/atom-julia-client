@@ -1,4 +1,4 @@
-comm = require './connection/comm'
+client = require './connection/client'
 notifications = require './ui/notifications'
 
 module.exports =
@@ -22,7 +22,7 @@ module.exports =
   eval: ->
     editor = atom.workspace.getActiveTextEditor()
     for sel in editor.getSelections()
-      comm.msg 'eval', @evalData(editor, sel), ({start, end, result, error}) =>
+      client.msg 'eval', @evalData(editor, sel), ({start, end, result, error}) =>
         @ink?.results.showForLines editor, start-1, end-1,
           content: @ink.tree.fromJson(result)[0]
           error: error
@@ -30,7 +30,7 @@ module.exports =
 
   evalAll: ->
     editor = atom.workspace.getActiveTextEditor()
-    comm.msg 'eval-all', {
+    client.msg 'eval-all', {
                           path: editor.getPath()
                           module: editor.juliaModule
                           code: editor.getText()

@@ -1,5 +1,5 @@
 process = require 'child_process'
-comm = require './comm'
+client = require './client'
 
 module.exports =
   jlpath: () -> atom.config.get("julia-client.juliaPath")
@@ -8,7 +8,7 @@ module.exports =
 
   start: (port, cons) ->
     return if @proc?
-    comm.booting()
+    client.booting()
     @proc = process.spawn @jlpath(), [@jlargs()..., '-e', "import Atom; @sync Atom.connect(#{port})"]
     @onStart()
     @proc.on 'exit', (code, signal) =>
@@ -16,7 +16,7 @@ module.exports =
       cons.c.input() unless cons.c.isInput
       @onStop()
       @proc = null
-      comm.notBooting()
+      client.notBooting()
     @proc.stdout.on 'data', (data) =>
       text = data.toString().trim()
       if text then cons.c.out text

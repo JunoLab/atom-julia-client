@@ -1,4 +1,4 @@
-comm = require './connection/comm'
+client = require './connection/client'
 selector = require './ui/selector'
 
 module.exports =
@@ -7,8 +7,8 @@ module.exports =
 
     @activeItemSubscription = atom.workspace.onDidChangeActivePaneItem =>
       @update()
-    comm.onConnected => @update()
-    comm.onDisconnected => @update()
+    client.onConnected => @update()
+    client.onDisconnected => @update()
     @update()
 
   deactivate: ->
@@ -76,7 +76,7 @@ module.exports =
   update: ->
     @moveSubscription?.dispose()
     ed = atom.workspace.getActivePaneItem()
-    unless ed?.getGrammar?().scopeName == 'source.julia' && comm.isConnected()
+    unless ed?.getGrammar?().scopeName == 'source.julia' && client.isConnected()
       @clear()
       @moveSubscription = ed?.onDidChangeGrammar? => @update()
       return
@@ -88,16 +88,16 @@ module.exports =
       row: row+1, column: column+1
       module: ed.juliaModule
 
-    comm.msg 'module', data, ({main, sub, inactive, subInactive}) =>
+    client.msg 'module', data, ({main, sub, inactive, subInactive}) =>
       @reset main, sub
       subInactive && @subInactive()
       inactive && @inactive()
 
   # TODO: auto detect option, remove reset command
   chooseModule: ->
-    comm.requireClient =>
+    client.requireClient =>
       mods = new Promise (resolve) =>
-        comm.msg 'all-modules', {}, (mods) =>
+        client.msg 'all-modules', {}, (mods) =>
           resolve mods
       selector.show mods, (mod) =>
         return unless mod?
@@ -105,6 +105,6 @@ module.exports =
         @update()
 
   resetModule: ->
-    comm.requireClient =>
+    client.requireClient =>
       delete atom.workspace.getActiveTextEditor().juliaModule
       @update()

@@ -1,4 +1,4 @@
-comm = require './connection/comm'
+client = require './connection/client'
 run = require './eval'
 
 module.exports =
@@ -14,7 +14,7 @@ module.exports =
     path: ed.getPath()
 
   getCompletions: (ed, pos, f) ->
-    comm.msg 'completions', @completionsData(ed, pos), (data) ->
+    client.msg 'completions', @completionsData(ed, pos), (data) ->
       f data
 
   toCompletion: (c) ->
@@ -24,7 +24,7 @@ module.exports =
       c
 
   getSuggestions: ({editor, bufferPosition}) ->
-    return [] unless comm.isConnected()
+    return [] unless client.isConnected()
     new Promise (resolve) =>
       @getCompletions editor, bufferPosition, (completions) =>
         resolve completions?.map(@toCompletion) or []

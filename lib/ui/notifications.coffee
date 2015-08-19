@@ -1,5 +1,5 @@
 remote = require('remote')
-comm = require '../connection/comm'
+client = require '../connection/client'
 
 module.exports =
   notes: []
@@ -27,5 +27,5 @@ module.exports =
     @notes = []
 
   msgHandlers: ->
-    comm.handle 'error', (options) =>
+    client.handle 'error', (options) =>
       atom.notifications.addError options.msg, options

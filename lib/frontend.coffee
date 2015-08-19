@@ -1,8 +1,8 @@
-comm = require './connection/comm'
+client = require './connection/client'
 selector = require './ui/selector'
 
 module.exports =
   activate: ->
-    comm.handle 'select', ({items}, resolve) =>
+    client.handle 'select', ({items}, resolve) =>
       selector.show items, (item) =>
         resolve item: item

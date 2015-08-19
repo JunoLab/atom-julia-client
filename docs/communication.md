@@ -6,8 +6,8 @@ each other. Messages are JSON objects, with a type header to tell the receiver h
 message should be handled.
 
 The code handling low-level communication is kept in
-[comm.coffee](https://github.com/JunoLab/atom-julia-client/blob/master/lib/connection/comm.coffee)
-and [comm.jl](https://github.com/JunoLab/Atom.jl/blob/master/src/comm.jl). However, the
+[client.coffee](https://github.com/JunoLab/atom-julia-client/blob/master/lib/connection/client.coffee)
+and [client.jl](https://github.com/JunoLab/Atom.jl/blob/master/src/client.jl). However, the
 details of those files aren't particularly important – you only need to understand the
 communication API, which we'll go over here.
 
@@ -19,7 +19,7 @@ the original sender. For example, on the Atom side messages are sent in CoffeeSc
 follows:
 
 ```coffeescript
-comm.msg 'eval', {code: '2+2'}
+client.msg 'eval', {code: '2+2'}
 ```
 
 On the Julia side, we need to set up a handler for this message, which happens as follows:
@@ -39,7 +39,7 @@ display the result. We don't need to change anything on the Julia side to accomp
 it's as simple as adding a callback to the original `msg` call:
 
 ```coffeescript
-comm.msg 'eval', {code: '2+2'}, ({result}) =>
+client.msg 'eval', {code: '2+2'}, ({result}) =>
   console.log data
 ```
 
@@ -66,7 +66,7 @@ msg("type", data)
 Handlers are defined on the Atom side as follows:
 
 ```coffeescript
-comm.handle 'type', (data) =>
+client.handle 'type', (data) =>
   console.log data
 ```
 
@@ -76,7 +76,7 @@ back to Julia. To clarify this a little, say you have a handler in Atom which lo
 this:
 
 ```coffeescript
-comm.handle 'echo', (data, resolve) =>
+client.handle 'echo', (data, resolve) =>
   resolve data
 ```
 

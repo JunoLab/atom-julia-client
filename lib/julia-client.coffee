@@ -1,7 +1,7 @@
 {CompositeDisposable} = require 'atom'
 http = require 'http'
 terminal = require './connection/terminal'
-comm = require './connection/comm'
+client = require './connection/client'
 process = require './connection/process'
 modules = require './modules'
 evaluation = require './eval'
@@ -42,11 +42,11 @@ module.exports = JuliaClient =
   activate: (state) ->
     @subscriptions = new CompositeDisposable
     @commands @subscriptions
-    comm.activate()
+    client.activate()
     modules.activate()
     notifications.activate()
     frontend.activate()
-    comm.onConnected =>
+    client.onConnected =>
       notifications.show("Client Connected")
     @withInk =>
       cons.activate()
@@ -64,21 +64,21 @@ module.exports = JuliaClient =
   commands: (subs) ->
     subs.add atom.commands.add 'atom-text-editor',
       'julia-client:evaluate': (event) =>
-        comm.withClient => evaluation.eval()
+        client.withClient => evaluation.eval()
       'julia-client:evaluate-all': (event) =>
-        comm.withClient => evaluation.evalAll()
+        client.withClient => evaluation.evalAll()
 
     subs.add atom.commands.add 'atom-workspace',
       'julia-client:open-a-repl': => terminal.repl()
       'julia-client:start-repl-client': =>
-        comm.requireNoClient =>
-          comm.listen (port) => terminal.client port
+        client.requireNoClient =>
+          client.listen (port) => terminal.client port
       'julia-client:start-julia': =>
-        comm.listen (port) => process.start port, cons
+        client.listen (port) => process.start port, cons
       'julia-client:toggle-console': => @withInk => cons.toggle()
       'julia-client:reset-loading-indicator': =>
         @loading.reset()
-        comm.isBooting = false
+        client.isBooting = false
 
     subs.add atom.commands.add 'atom-text-editor[data-grammar="source julia"]:not([mini])',
       'julia-client:set-working-module': => modules.chooseModule()
@@ -91,10 +91,10 @@ module.exports = JuliaClient =
     evaluation.ink = ink
     cons.ink = ink
     @loading = new ink.Loading
-    comm.loading = @loading
+    client.loading = @loading
     cons.loading = @loading
-    @spinner = new ink.Spinner comm.loading
-    comm.handle 'show-block', ({start, end}) =>
+    @spinner = new ink.Spinner client.loading
+    client.handle 'show-block', ({start, end}) =>
       ink.highlight atom.workspace.getActiveTextEditor(), start-1, end-1
 
   withInk: (f, err) ->

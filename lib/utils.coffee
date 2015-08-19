@@ -1,7 +1,7 @@
 path = require 'path'
 shell = require 'shell'
 fs = require 'fs'
-comm = require './connection/comm'
+client = require './connection/client'
 selector = require './ui/selector'
 
 module.exports =
@@ -40,21 +40,21 @@ module.exports =
   cdHere: ->
     file = atom.workspace.getActiveTextEditor()?.getPath()
     file? or atom.notifications.addError 'This file has no path.'
-    comm.msg 'cd', {path: path.dirname(file)}
+    client.msg 'cd', {path: path.dirname(file)}
 
   cdProject: ->
     dirs = atom.project.getPaths()
     if dirs.length < 1
       atom.notifications.addError 'This project has no folders.'
     else if dirs.length == 1
-      comm.msg 'cd', {path: dirs[0]}
+      client.msg 'cd', {path: dirs[0]}
     else
       selector.show dirs, (dir) =>
         return unless dir?
-        comm.msg 'cd', {path: dir}
+        client.msg 'cd', {path: dir}
 
   cdHome: ->
-    comm.msg 'cd', {path: @home()}
+    client.msg 'cd', {path: @home()}
 
   commands: (subs) ->
     subs.add atom.commands.add 'atom-workspace',
@@ -64,8 +64,8 @@ module.exports =
 
     subs.add atom.commands.add 'atom-text-editor',
       'julia-client:work-in-file-folder': =>
-        comm.requireClient => @cdHere()
+        client.requireClient => @cdHere()
       'julia-client:work-in-project-folder': =>
-        comm.requireClient => @cdProject()
+        client.requireClient => @cdProject()
       'julia-client:work-in-home-folder': =>
-        comm.requireClient => @cdHome()
+        client.requireClient => @cdHome()

@@ -1,5 +1,5 @@
 child_process = require 'child_process'
-comm = require './comm'
+client = require './client'
 
 module.exports =
 
@@ -27,5 +27,5 @@ module.exports =
   repl: -> @term "#{@escpath @jlpath()} #{@jlargs()}"
 
   client: (port) ->
-    comm.booting()
+    client.booting()
     @term "#{@escpath @jlpath()} #{@jlargs()} -P \"import Atom; Atom.connect(#{port})\""
