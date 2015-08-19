@@ -2,10 +2,7 @@
 
 module.exports =
 
-  emitter: new Emitter()
-
-  onConnected: (cb) -> @emitter.on('connected', cb)
-  onDisconnected: (cb) -> @emitter.on('disconnected', cb)
+  # Messaging
 
   handlers: {}
   callbacks: {}
@@ -26,6 +23,26 @@ module.exports =
       console.log "julia-client: unrecognised message #{type}"
       console.log data
 
+  output: (data) ->
+
+  msg: (type, data, f) ->
+    return unless @isConnected()
+    if f?
+      data.callback = @id = @id+1
+      @callbacks[@id] = f
+      @loading.working()
+    @output [type, data]
+
+  handle: (type, f) ->
+    @handlers[type] = f
+
+  # Connecting & Booting
+
+  emitter: new Emitter()
+
+  onConnected: (cb) -> @emitter.on('connected', cb)
+  onDisconnected: (cb) -> @emitter.on('disconnected', cb)
+
   isConnected: -> false
 
   booting: ->
@@ -36,6 +53,8 @@ module.exports =
     if @isBooting
       @isBooting = false
       @loading.done()
+
+  # Management & UI
 
   connectedError: ->
     if @isConnected()
@@ -55,17 +74,6 @@ module.exports =
 
   requireClient: (f) -> @notConnectedError() or f()
   requireNoClient: (f) -> @connectedError() or f()
-
-  msg: (type, data, f) ->
-    return unless @isConnected()
-    if f?
-      data.callback = @id = @id+1
-      @callbacks[@id] = f
-      @loading.working()
-    @output [type, data]
-
-  handle: (type, f) ->
-    @handlers[type] = f
 
   # TODO: this behaves weirdly because f is evaluated late
   # Should instead evalute f immediately and make sure messages are queued.
