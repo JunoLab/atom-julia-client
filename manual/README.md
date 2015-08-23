@@ -17,9 +17,9 @@ run `Pkg.checkout("JuliaParser")` in order to avoid errors from the latest relea
 Next, go to the Atom settings pane and install the packages `language-julia`, `ink` and
 `julia-client`. If you open the command palette and type `Julia` you should see that
 Julia-related commands are now available. The last step is to make sure Atom can find Julia –
-if the `julia` command is not on your path, you need to set the path setting to the Julia
-binary, which is `[wherever you installed Julia]/bin/julia` (or `[same]\bin\julia.exe` on
-Windows).
+if the `julia` command is not on your path, you need to go into the julia-client settings
+and set the path to the Julia binary, which is `[wherever you installed
+Julia]/bin/julia` (or `[same]\bin\julia.exe` on Windows).
 
 Finally, run the `Julia Client: Toggle Console` command from Atom. When the console opens,
 type a Julia expression (e.g. `2+2`) and press `Enter` to evaluate it. This may take a while
