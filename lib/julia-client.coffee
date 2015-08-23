@@ -52,7 +52,7 @@ module.exports = JuliaClient =
       cons.activate()
 
     try
-      if id = atom.config.get 'metrics.userId'
+      if id = localStorage.getItem 'metrics.userId'
         http.get "http://mikeinn.es/hit?id=#{id}&app=atom-julia"
 
   deactivate: ->
