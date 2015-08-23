@@ -36,8 +36,11 @@ Pkg.clone("http://github.com/JunoLab/Atom.jl")
 Pkg.clone("http://github.com/JunoLab/CodeTools.jl")
 ```
 
-To install the packages, run the following commands in a folder of your choice (it's
-conventional, though not required, to do this in `~/github`):
+If you already have these packages change `clone` to `checkout` here.
+
+To install the Atom packages, start by uninstalling them completely if you have them
+already, then run the following commands in a folder of your choice (it's conventional,
+though not required, to do this in `~/github`):
 
 ```shell
 git clone http://github.com/JunoLab/atom-ink ink
@@ -54,9 +57,7 @@ cd ..
 ```
 
 It's a good idea to keep these up to date by running `Pkg.update()` in Julia and syncing the
-package repos every now and then. I also update Atom.jl's dependencies occasionally, so if
-you see errors booting the Julia client you may want to try `Pkg.clone`ing Media, Hiccup,
-MacroTools, Lazy etc.
+package repos every now and then.
 
 Atom will need to be reloaded, either by closing and reopening it or by running the `Window:
 Reload` command. At this point, you should find that there are a bunch of new Julia commands

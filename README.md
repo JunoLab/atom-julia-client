@@ -1,5 +1,8 @@
-# julia-client package
+# Julia Client
 
-A short description of your package.
+Julia client provides interactive IDE-like features for the Atom editor. You can spin up
+a Julia process to run in the background, evaluate code inline, get live autocompletion
+results, work with the inline console, and more.
 
-![A screenshot of your package](https://f.cloud.github.com/assets/69169/2290250/c35d867a-a017-11e3-86be-cd7c5bf3ff9b.gif)
+For set up instructions, please see [the manual](manual/). This software is very much in
+alpha stage so expect to get your hands a little dirty.
