@@ -17,10 +17,12 @@ open a [discussion](http://discuss.junolab.org/) under the "dev" category – we
 to help people flesh out their ideas or get unstuck on problems.
 
 If you look over the GitHub issues for the various packages, you may notice some labelled
-"up for grabs". These are features or bugs for which the implementation or fix is reasonably
-straightforward – they might take a few hours of effort or more, but they won't involve enormous
-expert-level challenges. As above, feel free to open up a discussion on these and we'll help
-you get going.
+[up for
+grabs](https://github.com/JunoLab/atom-julia-client/issues?q=is%3Aopen+is%3Aissue+label%3A%22up+for+grabs%22).
+These are features or bugs for which the implementation or fix is reasonably straightforward –
+they might take a few hours of effort or more, but they won't involve enormous expert-level
+challenges. As above, feel free to open up a discussion on these and we'll help you get
+going.
 
 Please read the [developer set up guidelines](docs/) to get started. There's a basic
 development tutorial there, but as you get deeper you'll want some more general resources:
