@@ -27,6 +27,11 @@ module.exports =
       c.on 'end', =>
         @sock = null
         client.disconnected()
+      c.on 'error', (e) =>
+        console.error 'Julia Client: TCP connection error:'
+        console.error e
+        @sock = null
+        client.disconnected()
       c.on 'data', @buffer (s) =>
         client.input JSON.parse s
 
