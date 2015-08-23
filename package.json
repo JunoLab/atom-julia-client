@@ -1,20 +1,23 @@
 {
   "name": "julia-client",
   "main": "./lib/julia-client",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Julia Evaluation",
-  "keywords": [
-  ],
+  "keywords": [],
   "activationCommands": {
-    "atom-text-editor": ["julia-client:evaluate",
-                         "julia-client:evaluate-all"],
-    "atom-workspace": ["julia-client:open-a-repl",
-                       "julia-client:start-repl-client",
-                       "julia-client:start-julia",
-                       "julia-client:toggle-console",
-                       "julia:open-startup-file",
-                       "julia:open-julia-home",
-                       "julia:open-package-in-new-window"]
+    "atom-text-editor": [
+      "julia-client:evaluate",
+      "julia-client:evaluate-all"
+    ],
+    "atom-workspace": [
+      "julia-client:open-a-repl",
+      "julia-client:start-repl-client",
+      "julia-client:start-julia",
+      "julia-client:toggle-console",
+      "julia:open-startup-file",
+      "julia:open-julia-home",
+      "julia:open-package-in-new-window"
+    ]
   },
   "repository": "https://github.com/JunoLab/atom-julia-client",
   "license": "MIT",
