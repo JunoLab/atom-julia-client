@@ -23,8 +23,10 @@ module.exports =
     editor = atom.workspace.getActiveTextEditor()
     for sel in editor.getSelections()
       client.msg 'eval', @evalData(editor, sel), ({start, end, result, error}) =>
+        view = @ink.tree.fromJson(result)[0]
+        @ink.links.linkify view
         @ink?.results.showForLines editor, start-1, end-1,
-          content: @ink.tree.fromJson(result)[0]
+          content: view
           error: error
         notifications.show "Evaluation Finished"
 
