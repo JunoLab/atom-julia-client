@@ -16,6 +16,7 @@ module.exports =
 
     client.handle 'result', ({result, error}) =>
       view = @ink.tree.fromJson(result)
+      @ink.links.linkify view[0]
       @ink.tree.toggle view unless error
       @c.result view,
         error: error
@@ -26,6 +27,7 @@ module.exports =
   create: ->
     @c = new @ink.Console
     @c.setGrammar atom.grammars.grammarForScopeName('source.julia')
+    @c.view[0].classList.add 'julia'
     @c.view.getTitle = -> "Julia"
     @c.modes = => @replModes
     @c.onEval (ed) => @eval ed

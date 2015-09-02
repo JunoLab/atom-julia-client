@@ -28,6 +28,7 @@ module.exports =
         @ink?.results.showForLines editor, start-1, end-1,
           content: view
           error: error
+          clas: 'julia'
         notifications.show "Evaluation Finished"
 
   evalAll: ->
