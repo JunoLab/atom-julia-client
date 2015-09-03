@@ -16,6 +16,15 @@
       padding-left: 5px;
     }
   }
+  &.error, .error {
+    color: @text-color-error;
+    .fade {
+      color: fade(@text-color-error, 75%);
+    }
+    a {
+      color: @text-color-error;
+    }
+  }
 }
 
 atom-text-editor::shadow {
