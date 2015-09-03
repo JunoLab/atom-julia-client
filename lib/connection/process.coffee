@@ -18,10 +18,10 @@ module.exports =
       @proc = null
       client.cancelBoot()
     @proc.stdout.on 'data', (data) =>
-      text = data.toString().trim()
+      text = data.toString()
       if text then cons.c.out text
     @proc.stderr.on 'data', (data) =>
-      text = data.toString().trim()
+      text = data.toString()
       if text then cons.c.err text
 
   onStart: ->
