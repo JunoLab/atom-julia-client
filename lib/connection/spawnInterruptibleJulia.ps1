@@ -1,8 +1,9 @@
-param([Int32] $port, [string] $jlpath = "julia") # additionally: [string] $jlargs
-# powershell -ExecutionPolicy bypass "& "D:\Dokumente\Git\atom-julia-client\lib\connection\start_julia_and_listen_to_interrupts.ps1" -port 1234"
+param([Int32] $port, [string] $jlpath = "julia", [string] $jloptions = "") 
 
 echo "Starting Julia..."
-$proc = Start-Process julia "-e `"import Atom; ccall(:jl_exit_on_sigint, Void, (Cint,), false); @sync Atom.connect($port)`"" -NoNewWindow -PassThru # start the julia client
+echo "path: $jlpath"
+echo "options: $jloptions"
+$proc = Start-Process julia "$jloptions -e `"import Atom; @sync Atom.connect($port)`"" -NoNewWindow -PassThru
 echo "Julia (pid $($proc.Id)) listens on port $port"
 
 $MethodDefinition = @'
@@ -37,6 +38,7 @@ function Receive-TCPMessage {
 	catch [exception]{}
 }
 
+## the port should be determined dynamically (by nodejs):
 echo "listening to SIGINTs on port 26992"
 while ($true){
 	$msg = Receive-TCPMessage -Port 26992 # wait for interrupts
