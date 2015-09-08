@@ -1,5 +1,7 @@
 process = require 'child_process'
 client = require './client'
+path = require 'path'
+net = require 'net'
 
 module.exports =
   jlpath: () -> atom.config.get("julia-client.juliaPath")
@@ -9,7 +11,7 @@ module.exports =
   start: (port, cons) ->
     return if @proc?
     client.booting()
-    @proc = process.spawn @jlpath(), [@jlargs()..., '-e', "import Atom; @sync Atom.connect(#{port})"]
+    @spawnJulia(port)
     @onStart()
     @proc.on 'exit', (code, signal) =>
       cons.c.err "Julia has stopped: #{code}, #{signal}"
@@ -27,7 +29,21 @@ module.exports =
   onStart: ->
     @cmds = atom.commands.add 'atom-workspace',
       'julia-client:kill-julia': => @proc.kill()
-      'julia-client:interrupt-julia': => @proc.kill 'SIGINT'
+      'julia-client:interrupt-julia': => @interruptJulia()
 
   onStop: ->
     @cmds?.dispose()
+
+  spawnJulia: (port) ->
+    switch process.platform
+      when 'darwin' || 'linux'
+        @proc = process.spawn(@jlpath(), [@jlargs()..., '-e', "import Atom; @sync Atom.connect(#{port})"])
+      else
+        @proc = process.spawn("powershell", ["-ExecutionPolicy", "bypass", "& \"#{__dirname}\\spawnInterruptibleJulia.ps1\" -port #{port}"])
+
+  interruptJulia: ->
+    switch process.platform
+      when 'darwin' || 'linux'
+        @proc.kill('SIGINT')
+      else
+        process.spawn("powershell", ["-ExecutionPolicy", "bypass", "& \"#{__dirname}\\interruptJulia.ps1\""])
