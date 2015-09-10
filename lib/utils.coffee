@@ -6,7 +6,7 @@ selector = require './ui/selector'
 
 module.exports =
   homedir: ->
-    if process.plaform == 'win32'
+    if process.platform == 'win32'
       process.env.USERPROFILE
     else
       process.env.HOME
