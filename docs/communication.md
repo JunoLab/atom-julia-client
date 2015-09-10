@@ -7,7 +7,7 @@ message should be handled.
 
 The code handling low-level communication is kept in
 [client.coffee](https://github.com/JunoLab/atom-julia-client/blob/master/lib/connection/client.coffee)
-and [client.jl](https://github.com/JunoLab/Atom.jl/blob/master/src/client.jl). However, the
+and [comm.jl](https://github.com/JunoLab/Atom.jl/blob/master/src/comm.jl). However, the
 details of those files aren't particularly important – you only need to understand the
 communication API, which we'll go over here.
 
