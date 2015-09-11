@@ -23,7 +23,7 @@ function Receive-TCPMessage {
         $listener.start() 
  
         $data = $listener.AcceptTcpClient() # will block here until connection 
-        $bytes = New-Object System.Byte[] 1024
+        $bytes = New-Object System.Byte[] 6
         $stream = $data.GetStream() 
  
         while (($i = $stream.Read($bytes,0,$bytes.Length)) -ne 0){
@@ -46,7 +46,7 @@ while ($true){
 		echo "SIGINT received."
 		$err = $Kernel32::GenerateConsoleCtrlEvent(0, $proc.Id)
 		if ($err){
-			echo "Successfully sent GenerateConsoleCtrlEvent."
+			echo "Successfully sent ^C-Event."
 		}
 	}
 }

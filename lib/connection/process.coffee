@@ -46,4 +46,7 @@ module.exports =
       when 'darwin' || 'linux'
         @proc.kill('SIGINT')
       else
-        process.spawn("powershell", ["-ExecutionPolicy", "bypass", "& \"#{__dirname}\\interruptJulia.ps1\""])
+        client = net.connect port: 26992
+        client.setNoDelay()
+        console.log client.write("SIGINT")
+        client.end()
