@@ -1,5 +1,6 @@
 process = require 'child_process'
 client = require './client'
+path = require 'path'
 net = require 'net'
 
 module.exports =
@@ -27,7 +28,7 @@ module.exports =
 
   onStart: ->
     @cmds = atom.commands.add 'atom-workspace',
-      'julia-client:kill-julia': => @proc.kill()
+      'julia-client:kill-julia': => @killJulia()
       'julia-client:interrupt-julia': => @interruptJulia()
 
   onStop: ->
@@ -45,7 +46,18 @@ module.exports =
       when 'darwin' || 'linux'
         @proc.kill('SIGINT')
       else
-        client = net.connect port: 26992
-        client.setNoDelay()
-        console.log client.write("SIGINT")
-        client.end()
+        @sendSignalToPS("SIGINT")
+
+
+  killJulia: ->
+    if process.platform != 'darwin' && process.platform != 'linux'
+      @sendSignalToPS("KILL")
+      console.log "Sent KILL"
+    else
+      @proc.kill()
+
+  sendSignalToPS: (signal) ->
+      client = net.connect port: 26992
+      client.setNoDelay()
+      client.write(signal)
+      client.end()

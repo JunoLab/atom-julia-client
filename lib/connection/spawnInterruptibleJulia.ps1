@@ -49,4 +49,9 @@ while ($true){
 			echo "Successfully sent ^C-Event."
 		}
 	}
+	if ($msg -match "KILL"){
+		echo "KILL received."
+		$proc.Kill()
+		Exit
+	}
 }
