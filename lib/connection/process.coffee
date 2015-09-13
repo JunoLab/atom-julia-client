@@ -46,18 +46,17 @@ module.exports =
       when 'darwin' || 'linux'
         @proc.kill('SIGINT')
       else
-        @sendSignalToPS("SIGINT")
+        @sendSignalToPS('SIGINT')
 
 
   killJulia: ->
     if process.platform != 'darwin' && process.platform != 'linux'
-      @sendSignalToPS("KILL")
-      console.log "Sent KILL"
+      @sendSignalToPS('KILL')
     else
       @proc.kill()
 
   sendSignalToPS: (signal) ->
-      client = net.connect port: 26992
-      client.setNoDelay()
-      client.write(signal)
-      client.end()
+    wrapper = net.connect(port: 26992)
+    wrapper.setNoDelay()
+    wrapper.write(signal)
+    wrapper.end()
