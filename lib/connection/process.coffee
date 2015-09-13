@@ -1,6 +1,5 @@
 process = require 'child_process'
 client = require './client'
-path = require 'path'
 net = require 'net'
 
 module.exports =
