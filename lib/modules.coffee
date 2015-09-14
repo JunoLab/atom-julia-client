@@ -5,16 +5,33 @@ module.exports =
   activate: ->
     @createStatusUI()
 
-    @activeItemSubscription = atom.workspace.onDidChangeActivePaneItem =>
-      @update()
-    client.onConnected => @update()
-    client.onDisconnected => @update()
-    @update()
+    # configure all the events that might require setting or clearing the
+    # cursor move callback
+    atom.workspace.onDidChangeActivePaneItem => @activePaneChanged()
+    client.onConnected => @editorStateChanged()
+    client.onDisconnected => @editorStateChanged()
+    @activePaneChanged()
 
   deactivate: ->
     @tile?.destroy()
     @tile = null
     @activeItemSubscription.dispose()
+
+  activePaneChanged: ->
+    @grammarChangeSubscription?.dispose()
+    ed = atom.workspace.getActivePaneItem()
+    @grammarChangeSubscription = ed?.onDidChangeGrammar => @editorStateChanged()
+    @editorStateChanged()
+
+  # sets or clears the callback on cursor change based on the editor state
+  editorStateChanged: ->
+    ed = atom.workspace.getActivePaneItem()
+    if ed?.getGrammar?().scopeName == 'source.julia' && client.isConnected()
+      @moveSubscription = ed.onDidChangeCursorPosition => @update()
+      @update()
+    else
+      @clear()
+      @moveSubscription?.dispose()
 
   # Status Bar
 
@@ -73,14 +90,10 @@ module.exports =
     @divider.classList.add 'fade'
     @sub.classList.add 'fade'
 
+  # gets the current module from the Julia process and updates the display.
+  # does nothing if we're not connected or not in a julia file
   update: ->
-    @moveSubscription?.dispose()
     ed = atom.workspace.getActivePaneItem()
-    unless ed?.getGrammar?().scopeName == 'source.julia' && client.isConnected()
-      @clear()
-      @moveSubscription = ed?.onDidChangeGrammar? => @update()
-      return
-    @moveSubscription = ed.onDidChangeCursorPosition => @update()
     {row, column} = ed.getCursors()[0].getScreenPosition()
     data =
       path: ed.getPath()
