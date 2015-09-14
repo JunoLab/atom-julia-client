@@ -20,7 +20,7 @@ module.exports =
   activePaneChanged: ->
     @grammarChangeSubscription?.dispose()
     ed = atom.workspace.getActivePaneItem()
-    @grammarChangeSubscription = ed?.onDidChangeGrammar => @editorStateChanged()
+    @grammarChangeSubscription = ed?.onDidChangeGrammar? => @editorStateChanged()
     @editorStateChanged()
 
   # sets or clears the callback on cursor change based on the editor state
