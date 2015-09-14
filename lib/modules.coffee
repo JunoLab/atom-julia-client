@@ -25,15 +25,17 @@ module.exports =
 
   # sets or clears the callback on cursor change based on the editor state
   editorStateChanged: ->
+    # first clear the display and remove any old subscription
+    @clear()
+    @moveSubscription?.dispose()
+
+    # now see if we need to resubscribe
     ed = atom.workspace.getActivePaneItem()
     if ed?.getGrammar?().scopeName == 'source.julia' && client.isConnected()
       @moveSubscription = ed.onDidChangeCursorPosition =>
         if @pendingUpdate then clearTimeout @pendingUpdate
         @pendingUpdate = setTimeout (=> @update()), 300
       @update()
-    else
-      @clear()
-      @moveSubscription?.dispose()
 
   # Status Bar
 
@@ -93,7 +95,7 @@ module.exports =
     @sub.classList.add 'fade'
 
   # gets the current module from the Julia process and updates the display.
-  # does nothing if we're not connected or not in a julia file
+  # assumes that we're connected and in a julia file
   update: ->
     ed = atom.workspace.getActivePaneItem()
     {row, column} = ed.getCursors()[0].getScreenPosition()
