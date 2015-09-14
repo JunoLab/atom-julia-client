@@ -5,17 +5,18 @@ module.exports =
   activate: ->
     @createStatusUI()
 
-    # configure all the events that might require setting or clearing the
-    # cursor move callback
-    atom.workspace.onDidChangeActivePaneItem => @activePaneChanged()
-    client.onConnected => @editorStateChanged()
-    client.onDisconnected => @editorStateChanged()
+    # configure all the events that persist until we're deactivated
+    @activeItemSubscription = atom.workspace.onDidChangeActivePaneItem => @activePaneChanged()
+    @connectedSubscription = client.onConnected => @editorStateChanged()
+    @disconnectedSubscription = client.onDisconnected => @editorStateChanged()
     @activePaneChanged()
 
   deactivate: ->
     @tile?.destroy()
     @tile = null
     @activeItemSubscription.dispose()
+    @connectedSubscription.dispose()
+    @disconnectedSubscription.dispose()
 
   activePaneChanged: ->
     @grammarChangeSubscription?.dispose()
