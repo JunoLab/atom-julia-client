@@ -27,7 +27,9 @@ module.exports =
   editorStateChanged: ->
     ed = atom.workspace.getActivePaneItem()
     if ed?.getGrammar?().scopeName == 'source.julia' && client.isConnected()
-      @moveSubscription = ed.onDidChangeCursorPosition => @update()
+      @moveSubscription = ed.onDidChangeCursorPosition =>
+        if @pendingUpdate then clearTimeout @pendingUpdate
+        @pendingUpdate = setTimeout (=> @update()), 300
       @update()
     else
       @clear()
