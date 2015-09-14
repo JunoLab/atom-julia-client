@@ -19,8 +19,8 @@ type you want to experiment with your work in the REPL. Here's what you might do
 - Edit `foo.jl`
 - Fire up Julia and `include("foo.jl")` to load up your new types and methods
 - Return to the editor to make more changes to `foo.jl`
-- Go back to your REPL session and `include("foo.jl")` again, only to be greeted by the
-  following error message:
+- Go back to your REPL session and `include("foo.jl")` again, only to be greeted
+  by the following error message:
 
 ```
 julia> include("foo.jl")
@@ -81,7 +81,8 @@ looks and then explain a few of the details that make it possible:
 
 ![](static/scratch_modulename.png)
 
-- Now you are prepared to treat `scratch.jl` like the Julia REPL by writing code and evaluating it using `cmd-enter` (or `ctrl-enter` on Linux or Windows).
+- Now you are prepared to treat `scratch.jl` like the Julia REPL by writing code
+  and evaluating it using `cmd-enter` (or `ctrl-enter` on Linux or Windows).
     - The key difference is that this "REPL" will have  _unqualifed_ access to
       all members of `Tmp`: i.e. you can use `Bar` instead of `ModuleName.Bar`
       as you had to in option 2 above.
@@ -116,31 +117,27 @@ within the `Tmp` module _as if_ we had put the code in the module to begin with.
 This workflow can take some getting used to, but can yield massive productivity
 boosts once you master it. Here are some tips to help as you learn:
 
-Don't ever set the current working module to the module defined in the buffer
+- Don't ever set the current working module to the module defined in the buffer
 you are working on.
-
-- In the example above this means that if we wouldn't set the module to `Tmp`
-  from within `foo.jl`.
-- Doing so would show `Tmp/Tmp` in the status bar and would make it awkward
-  to re-evaluate the entire buffer later on.
-- If you do get in this situation, set the current working module to `Main` to
-  restore `Main/Tmp` in the status bar
-
-
-Use the  `Julia Client: Work in file Folder` or `Julia Client: Work in project
+    - In the example above this means that if we wouldn't set the module to `Tmp`
+      from within `foo.jl`.
+    - Doing so would show `Tmp/Tmp` in the status bar and would make it awkward
+      to re-evaluate the entire buffer later on.
+    - If you do get in this situation, set the current working module to `Main`
+      to restore `Main/Tmp` in the status bar
+- Use the  `Julia Client: Work in file Folder` or `Julia Client: Work in project
 folder` commands to prevent issues when evaluating `include` statements with
 relative paths.
-
-- By default the atom Julia client starts at the root of your file system (`/`)
-- Often you want the Julia client to work from the directory of the current
-  buffer's file. I have the following in my `keymap.cson`:
+    - By default the atom Julia client starts at the root of your file system (`/`)
+    - Often you want the Julia client to work from the directory of the current
+      buffer's file. I have the following in my `keymap.cson`:
 
 ```coffeescript
 'atom-text-editor[data-grammar="source julia"]':
     'cmd-j cmd-f': 'julia-client:work-in-file-folder'
 ```
 
-You can't change a type definition and re-evaluate with `cmd-enter` (or
+- You can't change a type definition and re-evaluate with `cmd-enter` (or
 `ctrl-enter`). Instead, whenever you modify a type definition you should
 re-evaluate whole buffer using `cmd-shift-enter` (`ctrl-shift-enter`).
 
