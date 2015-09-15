@@ -1,20 +1,46 @@
 client = require './connection/client'
 selector = require './ui/selector'
+{CompositeDisposable} = require 'atom'
 
 module.exports =
   activate: ->
+    @subscriptions = new CompositeDisposable
     @createStatusUI()
 
-    @activeItemSubscription = atom.workspace.onDidChangeActivePaneItem =>
-      @update()
-    client.onConnected => @update()
-    client.onDisconnected => @update()
-    @update()
+    # configure all the events that persist until we're deactivated
+    @subscriptions.add atom.workspace.onDidChangeActivePaneItem => @activePaneChanged()
+    @subscriptions.add client.onConnected => @editorStateChanged()
+    @subscriptions.add client.onDisconnected => @editorStateChanged()
+    @activePaneChanged()
 
   deactivate: ->
     @tile?.destroy()
     @tile = null
-    @activeItemSubscription.dispose()
+    @subscriptions.dispose()
+    @grammarChangeSubscription?.dispose()
+    @moveSubscription?.dispose()
+    if @pendingUpdate then clearTimeout @pendingUpdate
+
+
+  activePaneChanged: ->
+    @grammarChangeSubscription?.dispose()
+    ed = atom.workspace.getActivePaneItem()
+    @grammarChangeSubscription = ed?.onDidChangeGrammar? => @editorStateChanged()
+    @editorStateChanged()
+
+  # sets or clears the callback on cursor change based on the editor state
+  editorStateChanged: ->
+    # first clear the display and remove any old subscription
+    @clear()
+    @moveSubscription?.dispose()
+
+    # now see if we need to resubscribe
+    ed = atom.workspace.getActivePaneItem()
+    if ed?.getGrammar?().scopeName == 'source.julia' && client.isConnected()
+      @moveSubscription = ed.onDidChangeCursorPosition =>
+        if @pendingUpdate then clearTimeout @pendingUpdate
+        @pendingUpdate = setTimeout (=> @update()), 300
+      @update()
 
   # Status Bar
 
@@ -73,14 +99,10 @@ module.exports =
     @divider.classList.add 'fade'
     @sub.classList.add 'fade'
 
+  # gets the current module from the Julia process and updates the display.
+  # assumes that we're connected and in a julia file
   update: ->
-    @moveSubscription?.dispose()
     ed = atom.workspace.getActivePaneItem()
-    unless ed?.getGrammar?().scopeName == 'source.julia' && client.isConnected()
-      @clear()
-      @moveSubscription = ed?.onDidChangeGrammar? => @update()
-      return
-    @moveSubscription = ed.onDidChangeCursorPosition => @update()
     {row, column} = ed.getCursors()[0].getScreenPosition()
     data =
       path: ed.getPath()
