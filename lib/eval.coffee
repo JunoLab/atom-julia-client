@@ -13,7 +13,7 @@ module.exports =
 
     code: editor.getText()
     module: editor.juliaModule
-    path: editor.getPath()
+    path: editor.getPath() || 'untitled-' + editor.getBuffer().inkId
     start: @cursor start
     end: @cursor end
 
