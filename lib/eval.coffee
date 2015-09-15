@@ -29,10 +29,12 @@ module.exports =
           view = result
         view = @ink.tree.fromJson(view)[0]
         @ink.links.linkify view
-        @ink?.results.showForLines editor, start-1, end-1,
+        r = @ink?.results.showForLines editor, start-1, end-1,
           content: view
           error: result.type == 'error'
           clas: 'julia'
+        if result.type == 'error' and result.highlights
+          @showError r, result.highlights
         notifications.show "Evaluation Finished"
 
   evalAll: ->
@@ -44,3 +46,14 @@ module.exports =
                          },
       (result) =>
         notifications.show "Evaluation Finished"
+
+  showError: (r, lines) ->
+    @errorLines?.lights.destroy()
+    lights = @ink.highlights.errorLines lines
+    @errorLines = {r, lights}
+
+    destroyResult = r.destroy.bind r
+    r.destroy = =>
+      if @errorLines?.r == r
+        @errorLines.lights.destroy()
+      destroyResult()
