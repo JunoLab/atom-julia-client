@@ -49,7 +49,7 @@ module.exports =
 
   showError: (r, lines) ->
     @errorLines?.lights.destroy()
-    lights = @ink.highlights.errorLines lines
+    lights = @ink.highlights.errorLines (file: file, line: line-1 for {file, line} in lines)
     @errorLines = {r, lights}
 
     destroyResult = r.destroy.bind r
