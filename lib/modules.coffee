@@ -1,22 +1,26 @@
 client = require './connection/client'
 selector = require './ui/selector'
+{CompositeDisposable} = require 'atom'
 
 module.exports =
   activate: ->
+    @subscriptions = new CompositeDisposable
     @createStatusUI()
 
     # configure all the events that persist until we're deactivated
-    @activeItemSubscription = atom.workspace.onDidChangeActivePaneItem => @activePaneChanged()
-    @connectedSubscription = client.onConnected => @editorStateChanged()
-    @disconnectedSubscription = client.onDisconnected => @editorStateChanged()
+    @subscriptions.add atom.workspace.onDidChangeActivePaneItem => @activePaneChanged()
+    @subscriptions.add client.onConnected => @editorStateChanged()
+    @subscriptions.add client.onDisconnected => @editorStateChanged()
     @activePaneChanged()
 
   deactivate: ->
     @tile?.destroy()
     @tile = null
-    @activeItemSubscription.dispose()
-    @connectedSubscription.dispose()
-    @disconnectedSubscription.dispose()
+    @subscriptions.dispose()
+    @grammarChangeSubscription?.dispose()
+    @moveSubscription?.dispose()
+    if @pendingUpdate then clearTimeout @pendingUpdate
+
 
   activePaneChanged: ->
     @grammarChangeSubscription?.dispose()
