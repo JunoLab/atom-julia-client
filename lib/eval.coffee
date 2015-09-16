@@ -23,10 +23,7 @@ module.exports =
     editor = atom.workspace.getActiveTextEditor()
     for sel in editor.getSelections()
       client.msg 'eval', @evalData(editor, sel), ({start, end, result}) =>
-        if result.type
-          view = result.view
-        else
-          view = result
+        view = if result.type then result.view else result
         view = @ink.tree.fromJson(view)[0]
         @ink.links.linkify view
         r = @ink?.results.showForLines editor, start-1, end-1,
