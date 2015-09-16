@@ -73,22 +73,22 @@ looks and then explain a few of the details that make it possible:
 - If `foo.jl` is not on the Julia `LOAD_PATH` you should evaluate the
   whole file by executing the `Julia client: evaluate all` command
   (`cmd-shift-enter` or `ctrl-shift-enter`)
-- Now open a different buffer in Julia mode (I create files named `scratch.jl`)
-  and while this buffer is active run the `Julia Client: Set working module`
-  command (`cmd-j cmd-m` or `ctrl-j ctrl-m`) and select the name of the module
-  defined in `foo.jl`. After doing this you should see `Tmp` on the status
-  bar where `Main/Tmp` was:
+- Now open a different buffer and set the syntax to Julia (`ctrl+shift+l` on all
+  platforms and select `Julia`). While this buffer is active run the
+  `Julia Client: Set working module` command (`cmd-j cmd-m` or `ctrl-j ctrl-m`)
+  and select the name of the module defined in `foo.jl`. After doing this you
+  should see `Tmp` on the status bar where `Main/Tmp` was:
 
 ![](static/scratch_modulename.png)
 
-- Now you are prepared to treat `scratch.jl` like the Julia REPL by writing code
+- Now you are prepared to treat this buffer like the Julia REPL by writing code
   and evaluating it using `cmd-enter` (or `ctrl-enter` on Linux or Windows).
     - The key difference is that this "REPL" will have  _unqualifed_ access to
       all members of `Tmp`: i.e. you can use `Bar` instead of `ModuleName.Bar`
-      as you had to in option 2 above.
+      as was required in option 2 above.
     - What's more is that you can go back to `foo.jl`, edit and evaluate method
       definitions (again using `cmd-enter` or `ctrl-enter`) and the new methods
-      are automatically ready to go when you return to working in `scratch.jl`
+      are automatically ready to go when you return to the second buffer
 
 ### How it works
 
@@ -125,22 +125,38 @@ you are working on.
       to re-evaluate the entire buffer later on.
     - If you do get in this situation, set the current working module to `Main`
       to restore `Main/Tmp` in the status bar
-- Use the  `Julia Client: Work in file Folder` or `Julia Client: Work in project
-folder` commands to prevent issues when evaluating `include` statements with
-relative paths.
-    - By default the atom Julia client starts at the root of your file system (`/`)
-    - Often you want the Julia client to work from the directory of the current
-      buffer's file. I have the following in my `keymap.cson`:
-
-```coffeescript
-'atom-text-editor[data-grammar="source julia"]':
-    'cmd-j cmd-f': 'julia-client:work-in-file-folder'
-```
-
 - You can't change a type definition and re-evaluate with `cmd-enter` (or
-`ctrl-enter`). Instead, whenever you modify a type definition you should
-re-evaluate whole buffer using `cmd-shift-enter` (`ctrl-shift-enter`).
-
-Using this workflow is especially helpful when working on `Base` Julia. As you
-make changes to the files you don't need to re-build Julia to interact with
-them. The same logic applies to other large modules and packages.
+  `ctrl-enter`). Instead, whenever you modify a type definition you should
+  re-evaluate whole buffer using `cmd-shift-enter` (`ctrl-shift-enter`).
+- In the description of the workflow we mentioned opening up throwaway buffer
+  and simply setting the grammar (active syntax) to Julia. Here are two
+  alternatives:
+    1. You could treat the main file itself (`foo.jl` in the example) as the
+       REPL. This saves you from having to set the working module in a
+       different buffer, but also means you probably need to do some cleanup
+       when you are done.
+    2. Instead of throwing away the second buffer, you could save it as a
+       scratch file (I create files named `scratch.jl`). This file then becomes
+       like a persistent REPL where test code can survive across coding sessions.
+        - This can be helpful when you are working on the same code over
+          multiple work sessions as it means you do not have to construct
+          intermediate test objects from nothing each time.
+- Using this workflow is especially helpful when working on `Base` Julia. As you
+  make changes to the files you don't need to re-build Julia to interact with
+  them. The same logic applies to other large modules and packages.
+- While Juno understands how to deal with dependence on the current working
+  directory in calls to functions like `include`, sometimes it is still useful
+  to have the Julia instance work from the directory of your main file (e.g.
+  when you are writing output files to disk)
+    - The commands `Julia Client: Work in File Folder` will set the working
+      directory for the Julia process to be the directory where your file is
+      contained
+    - I bind this function to a keybinding in my `~/.atom/keymaps.cson` to make
+      this more convenient:
+        ```coffeescript
+        'atom-text-editor[data-grammar="source julia"]':
+          'cmd-j cmd-f': 'julia-client:work-in-file-folder'
+        ```
+    - There are also commands `Julia Client: Work in Project Folder` and
+      `Julia Client: Work in Home Folder` that can set the directory for the
+      Julia process.
