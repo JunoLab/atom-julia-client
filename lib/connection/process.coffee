@@ -38,23 +38,23 @@ module.exports =
       when 'darwin' || 'linux'
         @proc = process.spawn(@jlpath(), [@jlargs()..., '-e', "import Atom; @sync Atom.connect(#{port})"])
       else
-        @proc = process.spawn("powershell", ["-ExecutionPolicy", "bypass", "& \"#{__dirname}\\spawnInterruptibleJulia.ps1\" -port #{port} -jlpath \"#{@jlpath()}\" -jloptions \"#{@jlargs().join(" ")}\""])
+        @proc = process.spawn("powershell", ["-ExecutionPolicy", "bypass", "& \"#{__dirname}\\spawnInterruptibleJulia.ps1\" -port #{port} -jlpath \"#{@jlpath()}\" -jloptions \"#{@jlargs().join(' ')}\""])
 
   interruptJulia: ->
     switch process.platform
       when 'darwin' || 'linux'
         @proc.kill('SIGINT')
       else
-        @sendSignalToPS('SIGINT')
+        @sendSignalToWrapper('SIGINT')
 
 
   killJulia: ->
     if process.platform != 'darwin' && process.platform != 'linux'
-      @sendSignalToPS('KILL')
+      @sendSignalToWrapper('KILL')
     else
       @proc.kill()
 
-  sendSignalToPS: (signal) ->
+  sendSignalToWrapper: (signal) ->
     wrapper = net.connect(port: 26992)
     wrapper.setNoDelay()
     wrapper.write(signal)
