@@ -16,10 +16,10 @@ defaultTerminal =
   switch process.platform
     when 'darwin'
       'Terminal.app'
-    when 'linux'
-      'x-terminal-emulator -e'
-    else
+    when 'win32'
       'cmd /C start cmd /C'
+    else
+      'x-terminal-emulator -e'
 
 module.exports = JuliaClient =
   config:
