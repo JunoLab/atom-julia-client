@@ -25,3 +25,6 @@ Finally, run the `Julia Client: Toggle Console` command from Atom. When the cons
 type a Julia expression (e.g. `2+2`) and press `Enter` to evaluate it. This may take a while
 the first time as precompilation runs, but booting Julia next time around will be much
 quicker.
+
+To get LaTeX-style tab completions, install the `latex-completions` package. 
+This allows to write e.g. `\alpha<TAB>` and produce the Unicode `α`.
