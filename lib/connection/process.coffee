@@ -1,4 +1,4 @@
-process = require 'child_process'
+child_process = require 'child_process'
 client = require './client'
 net = require 'net'
 
@@ -36,9 +36,9 @@ module.exports =
   spawnJulia: (port) ->
     switch process.platform
       when 'win32'
-        @proc = process.spawn("powershell", ["-ExecutionPolicy", "bypass", "& \"#{__dirname}\\spawnInterruptibleJulia.ps1\" -port #{port} -jlpath \"#{@jlpath()}\" -jloptions \"#{@jlargs().join(' ')}\""])
+        @proc = child_process.spawn("powershell", ["-ExecutionPolicy", "bypass", "& \"#{__dirname}\\spawnInterruptibleJulia.ps1\" -port #{port} -jlpath \"#{@jlpath()}\" -jloptions \"#{@jlargs().join(' ')}\""])
       else
-        @proc = process.spawn(@jlpath(), [@jlargs()..., '-e', "import Atom; @sync Atom.connect(#{port})"])
+        @proc = child_process.spawn(@jlpath(), [@jlargs()..., '-e', "import Atom; @sync Atom.connect(#{port})"])
 
   interruptJulia: ->
     switch process.platform
