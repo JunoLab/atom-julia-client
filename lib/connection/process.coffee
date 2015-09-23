@@ -50,9 +50,9 @@ module.exports =
   killJulia: ->
     switch process.platform
       when 'win32'
-        @proc.kill()
-      else
         @sendSignalToWrapper('KILL')
+      else
+        @proc.kill()
 
   sendSignalToWrapper: (signal) ->
     wrapper = net.connect(port: 26992)
