@@ -10,7 +10,7 @@ module.exports =
   start: (port, cons) ->
     return if @proc?
     client.booting()
-    @spawnJulia(port)
+    @spawnJulia(port, cons)
     @onStart()
     @proc.on 'exit', (code, signal) =>
       cons.c.err "Julia has stopped: #{code}, #{signal}"
@@ -33,23 +33,28 @@ module.exports =
   onStop: ->
     @cmds?.dispose()
 
-  spawnJulia: (port) ->
+  spawnJulia: (port, cons) ->
     switch process.platform
       when 'win32'
-        @proc = child_process.spawn("powershell", ["-ExecutionPolicy", "bypass", "& \"#{__dirname}\\spawnInterruptibleJulia.ps1\" -port #{port} -jlpath \"#{@jlpath()}\" -jloptions \"#{@jlargs().join(' ')}\""])
+        @useWrapper = parseInt(child_process.spawnSync("powershell", ["$PSVersionTable.PSVersion.Major"]).output[1].toString()) > 2
+        if @useWrapper
+          @proc = child_process.spawn("powershell", ["-ExecutionPolicy", "bypass", "& \"#{__dirname}\\spawnInterruptibleJulia.ps1\" -port #{port} -jlpath \"#{@jlpath()}\" -jloptions \"#{@jlargs().join(' ')}\""])
+        else
+          cons.c.out "PowerShell version < 3 encountered. Running without wrapper (interrupts won't work)."
+          @proc = child_process.spawn(@jlpath(), [@jlargs()..., '-e', "import Atom; @sync Atom.connect(#{port})"])
       else
         @proc = child_process.spawn(@jlpath(), [@jlargs()..., '-e', "import Atom; @sync Atom.connect(#{port})"])
 
   interruptJulia: ->
     switch process.platform
-      when 'win32'
+      when 'win32' && @useWrapper
         @sendSignalToWrapper('SIGINT')
       else
         @proc.kill('SIGINT')
 
   killJulia: ->
     switch process.platform
-      when 'win32'
+      when 'win32' && @useWrapper
         @sendSignalToWrapper('KILL')
       else
         @proc.kill()
