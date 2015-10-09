@@ -1,14 +1,6 @@
-<!--
-TODO: should we call "this project" Juno? I saw in communication.md we did,
-but I'm not sure
- -->
-
 # Workflow
 
-One of the goals of this project is to help users adopt a more efficient
-workflow when editing Julia code. To understand how to gain this productivity
-boost, we will consider a common workflow for many Julia developers and a Juno
-based workflow.
+One of the goals of Juno is to help users adopt a more efficient workflow when editing Julia code. In this section, we compare a typical workflow for many Julia developers to the enhanced workflow made available by Juno.
 
 ## Status quo
 
@@ -19,8 +11,7 @@ type you want to experiment with your work in the REPL. Here's what you might do
 - Edit `foo.jl`
 - Fire up Julia and `include("foo.jl")` to load up your new types and methods
 - Return to the editor to make more changes to `foo.jl`
-- Go back to your REPL session and `include("foo.jl")` again, only to be greeted
-  by the following error message:
+- Go back to your REPL session and `include("foo.jl")` again, only to be greeted by the following error message:
 
 ```
 julia> include("foo.jl")
@@ -32,10 +23,8 @@ while loading /Users/sglyon/Desktop/temp/julia/junk/foo.jl, in expression starti
 
 At this point you have two options:
 
-1. Quit Julia completely and start over. Then we will be able to
-   `include("foo.jl")` one time before seeing that error message again.
-2. Follow the [workflow tips](http://docs.julialang.org/en/latest/manual/workflow-tips/#repl-based-workflow)
-   section of the manual and wrap the code in a module.
+1. Quit Julia completely and start over. Then we will be able to `include("foo.jl")` one time before seeing that error message again.
+2. Follow the [workflow tips](http://docs.julialang.org/en/latest/manual/workflow-tips/#repl-based-workflow) section of the manual and wrap the code in a module.
 
 Option 1 is painful for obvious reasons: every time we make a change to anything
 in `foo.jl` we have to restart Julia  and reload everything associated with our
@@ -58,7 +47,7 @@ Wouldn't it be great if we had a solution that allowed:
 
 ## Enter Juno
 
-Juno provides a way to do just that. I will first describe how the Juno workflow
+Juno provides a way to do just that. Below, we first describe how the Juno workflow
 looks and then explain a few of the details that make it possible:
 
 - Start by putting the code from `foo.jl` in a module (as in option 2 above).
@@ -73,22 +62,22 @@ looks and then explain a few of the details that make it possible:
 - If `foo.jl` is not on the Julia `LOAD_PATH` you should evaluate the
   whole file by executing the `Julia client: evaluate all` command
   (`cmd-shift-enter` or `ctrl-shift-enter`)
-- Now open a different buffer and set the syntax to Julia (`ctrl+shift+l` on all
-  platforms and select `Julia`). While this buffer is active run the
+- Now open a different file and set the syntax to Julia (`ctrl+shift+l` on all
+  platforms and select `Julia`). With this file active, run the
   `Julia Client: Set working module` command (`cmd-j cmd-m` or `ctrl-j ctrl-m`)
   and select the name of the module defined in `foo.jl`. After doing this you
   should see `Tmp` on the status bar where `Main/Tmp` was:
 
 ![](static/scratch_modulename.png)
 
-- Now you are prepared to treat this buffer like the Julia REPL by writing code
+- Now you are prepared to treat this file like the Julia REPL by writing code
   and evaluating it using `cmd-enter` (or `ctrl-enter` on Linux or Windows).
     - The key difference is that this "REPL" will have  _unqualifed_ access to
       all members of `Tmp`: i.e. you can use `Bar` instead of `ModuleName.Bar`
       as was required in option 2 above.
     - What's more is that you can go back to `foo.jl`, edit and evaluate method
       definitions (again using `cmd-enter` or `ctrl-enter`) and the new methods
-      are automatically ready to go when you return to the second buffer
+      are automatically ready to go when you return to the second file
 
 ### How it works
 
@@ -108,7 +97,7 @@ Notice that if one argument is given, `Expr` is evaluated in the current working
 module. However, if two arguments are given the first argument gives the name of
 the module in which the `Expr` should be evaluated. So, when you run `Julia
 Client: Set working module` what you are doing is telling Atom to evaluate all
-the code from the current buffer directly into the chosen module. In our example
+the code from the current file directly into the chosen module. In our example
 above, this means that all the code we evaluate from `scratch.jl` is evaluated
 within the `Tmp` module _as if_ we had put the code in the module to begin with.
 
