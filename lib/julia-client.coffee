@@ -79,7 +79,7 @@ module.exports = JuliaClient =
           tcp.listen (port) => terminal.client port
       'julia-client:start-julia': =>
         client.disrequire =>
-          tcp.listen (port) => proc.start port, cons
+          tcp.connect (port) => proc.start port, cons
       'julia-client:toggle-console': => @withInk => cons.toggle()
       'julia-client:reset-loading-indicator': => client.reset()
 

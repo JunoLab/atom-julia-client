@@ -1,10 +1,12 @@
 net = require 'net'
+child_process = require 'child_process'
 client = require './client'
 
 module.exports =
   server: null
   port: null
   sock: null
+  host: null
 
   buffer: (f) ->
     buffer = ['']
@@ -16,25 +18,31 @@ module.exports =
       while buffer.length > 1
         f buffer.shift()
 
-  listen: (f) ->
-    return f?(@port) if @port?
+  connect: (f) ->
+    # return f?(@port) if @port?
+    @port = 9000
+    julia_docker = process.env["JULIA_DOCKER_MACHINE"]
+    if julia_docker?
+      @host = String(child_process.execSync "docker-machine inspect -f '{{.Driver.IPAddress}}' #{julia_docker}").trim()
+    else
+      @host = "localhost"
+    console.log "Host set to #{@host}"
     client.isConnected = => @sock?
     client.output = (data) => @sock.write JSON.stringify data
-    @server = net.createServer (c) =>
-      if @sock then return c.end()
-      @sock = c
-      client.connected()
-      c.on 'end', =>
+    f @port
+    console.log "Waiting for Julia server to start"
+    setTimeout (=>
+      console.log "Attempting connection"
+      @sock = net.connect @port, @host, =>
+        console.log "Connected"
+        client.connected()
+      @sock.on 'end', =>
         @sock = null
         client.disconnected()
-      c.on 'error', (e) =>
+      @sock.on 'error', (e) =>
         console.error 'Julia Client: TCP connection error:'
         console.error e
         @sock = null
         client.disconnected()
-      c.on 'data', @buffer (s) =>
-        client.input JSON.parse s
-
-    @server.listen 0, =>
-      @port = @server.address().port
-      f?(@port)
+      @sock.on 'data', @buffer (s) =>
+        client.input JSON.parse s), 10000
