@@ -41,9 +41,16 @@ module.exports =
           @proc = child_process.spawn("powershell", ["-ExecutionPolicy", "bypass", "& \"#{__dirname}\\spawnInterruptibleJulia.ps1\" -port #{port} -jlpath \"#{@jlpath()}\" -jloptions \"#{@jlargs().join(' ')}\""])
         else
           cons.c.out "PowerShell version < 3 encountered. Running without wrapper (interrupts won't work)."
-          @proc = child_process.spawn(@jlpath(), [@jlargs()..., '-e', "import Atom; @sync Atom.connect(#{port})"])
+          @proc = child_process.spawn(@jlpath(), [@jlargs()..., '-e', "import Atom; @sync Atom.startup(#{port})"])
       else
-        @proc = child_process.spawn(@jlpath(), [@jlargs()..., '-e', "import Atom; @sync Atom.connect(#{port})"])
+        # @proc = child_process.spawn(@jlpath(), [@jlargs()..., '-e', "import Atom; @sync Atom.connect(#{port})"])
+        env = process.env
+        image = env["JULIA_DOCKER_IMAGE"]
+        if image?
+          @proc = child_process.spawn "/usr/local/bin/docker",  ["run", "-p", "#{port}:#{port}", "-v", "#{env.HOME}:#{env.HOME}", "-i", image, "/julia/julia", '-e', "import Atom; @sync Atom.startup(#{port})"]
+        else
+          @proc = child_process.spawn(@jlpath(), [@jlargs()..., '-e', "import Atom; @sync Atom.startup(#{port})"])
+
 
   interruptJulia: ->
     switch process.platform
