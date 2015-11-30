@@ -3,6 +3,13 @@ client = require './client'
 net = require 'net'
 
 module.exports =
+  workingDir: ->
+    paths = atom.workspace.project.getDirectories()
+    if paths.length == 1
+      paths[0].path
+    else
+      process.env.HOME || process.env.USERPROFILE
+
   jlpath: -> atom.config.get("julia-client.juliaPath")
   # TODO: this is very naïve.
   jlargs: -> atom.config.get("julia-client.juliaArguments").split ' '
@@ -34,16 +41,15 @@ module.exports =
     @cmds?.dispose()
 
   spawnJulia: (port, cons) ->
-    switch process.platform
-      when 'win32'
-        @useWrapper = parseInt(child_process.spawnSync("powershell", ["$PSVersionTable.PSVersion.Major"]).output[1].toString()) > 2
-        if @useWrapper
-          @proc = child_process.spawn("powershell", ["-ExecutionPolicy", "bypass", "& \"#{__dirname}\\spawnInterruptibleJulia.ps1\" -port #{port} -jlpath \"#{@jlpath()}\" -jloptions \"#{@jlargs().join(' ')}\""])
-        else
-          cons.c.out "PowerShell version < 3 encountered. Running without wrapper (interrupts won't work)."
-          @proc = child_process.spawn(@jlpath(), [@jlargs()..., '-e', "import Atom; @sync Atom.connect(#{port})"])
+    if process.platform == 'win32'
+      if parseInt(child_process.spawnSync("powershell", ["$PSVersionTable.PSVersion.Major"]).output[1].toString()) > 2
+        @proc = child_process.spawn("powershell", ["-ExecutionPolicy", "bypass", "& \"#{__dirname}\\spawnInterruptibleJulia.ps1\" -port #{port} -jlpath \"#{@jlpath()}\" -jloptions \"#{@jlargs().join(' ')}\""], cwd: @workingDir())
+        return
       else
-        @proc = child_process.spawn(@jlpath(), [@jlargs()..., '-e', "import Atom; @sync Atom.connect(#{port})"])
+        cons.c.out "PowerShell version < 3 encountered. Running without wrapper (interrupts won't work)."
+
+    @proc = child_process.spawn(@jlpath(), [@jlargs()..., '-e', "import Atom; @sync Atom.connect(#{port})"], cwd: @workingDir())
+    return
 
   interruptJulia: ->
     switch process.platform
