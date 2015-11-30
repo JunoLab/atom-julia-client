@@ -1,6 +1,4 @@
-# TODO: don't apply all these commands to the console
-
-'.platform-darwin .item-views > atom-text-editor[data-grammar="source julia"]:not([mini])':
+'.platform-darwin .item-views > atom-text-editor[data-grammar="source julia"]':
   'cmd-enter': 'julia-client:evaluate'
   'cmd-shift-enter': 'julia-client:evaluate-all'
   'cmd-j cmd-m': 'julia-client:set-working-module'
@@ -20,8 +18,8 @@
   'cmd-j cmd-l': 'julia-client:reset-loading-indicator'
   'cmd-j cmd-k': 'julia-client:kill-julia'
 
-'.platform-win32 .item-views > atom-text-editor[data-grammar="source julia"]:not([mini]),
- .platform-linux .item-views > atom-text-editor[data-grammar="source julia"]:not([mini])':
+'.platform-win32 .item-views > atom-text-editor[data-grammar="source julia"],
+ .platform-linux .item-views > atom-text-editor[data-grammar="source julia"]':
   'ctrl-enter': 'julia-client:evaluate'
   'ctrl-shift-enter': 'julia-client:evaluate-all'
   'ctrl-j ctrl-m': 'julia-client:set-working-module'

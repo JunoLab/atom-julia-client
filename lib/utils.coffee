@@ -62,7 +62,7 @@ module.exports =
       'julia:open-julia-home': => shell.openItem @juliaHome()
       'julia:open-package-in-new-window': => @openPackage()
 
-    subs.add atom.commands.add 'atom-text-editor',
+    subs.add atom.commands.add '.item-views > atom-text-editor',
       'julia-client:work-in-file-folder': =>
         client.require => @cdHere()
       'julia-client:work-in-project-folder': =>
