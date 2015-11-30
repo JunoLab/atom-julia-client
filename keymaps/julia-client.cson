@@ -6,6 +6,7 @@
   'cmd-j cmd-m': 'julia-client:set-working-module'
   'cmd-shift-j cmd-shift-m': 'julia-client:reset-working-module'
   'ctrl-`': 'julia-client:toggle-console'
+  'ctrl-c': 'julia-client:interrupt-julia'
 
 '.platform-darwin .ink-console':
   'ctrl-c': 'julia-client:interrupt-julia'
@@ -26,6 +27,7 @@
   'ctrl-j ctrl-m': 'julia-client:set-working-module'
   'ctrl-alt-j ctrl-alt-m': 'julia-client:reset-working-module'
   'ctrl-`': 'julia-client:toggle-console'
+  'ctrl-shift-c': 'julia-client:interrupt-julia'
 
 '.platform-win32 .ink-console,
  .platform-linux .ink-console':
