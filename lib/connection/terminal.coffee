@@ -21,8 +21,8 @@ module.exports =
 
   terminal: -> atom.config.get("julia-client.terminal")
 
-  jlpath: () -> atom.config.get("julia-client.juliaPath")
-  jlargs: () -> atom.config.get("julia-client.juliaArguments")
+  jlpath: -> atom.config.get("julia-client.juliaPath")
+  jlargs: -> atom.config.get("julia-client.juliaArguments")
 
   repl: -> @term "#{@escpath @jlpath()} #{@jlargs()}"
 

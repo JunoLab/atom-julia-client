@@ -3,9 +3,9 @@ client = require './client'
 net = require 'net'
 
 module.exports =
-  jlpath: () -> atom.config.get("julia-client.juliaPath")
+  jlpath: -> atom.config.get("julia-client.juliaPath")
   # TODO: this is very naïve.
-  jlargs: () -> atom.config.get("julia-client.juliaArguments").split ' '
+  jlargs: -> atom.config.get("julia-client.juliaArguments").split ' '
 
   start: (port, cons) ->
     return if @proc?

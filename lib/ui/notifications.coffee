@@ -10,7 +10,7 @@ module.exports =
       @clear()
     @msgHandlers()
 
-  enabled: () -> atom.config.get('julia-client.notifications')
+  enabled: -> atom.config.get('julia-client.notifications')
 
   show: (msg) ->
     return unless @enabled() and not document.hasFocus()
