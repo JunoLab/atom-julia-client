@@ -53,7 +53,7 @@ module.exports = JuliaClient =
 
     try
       if id = localStorage.getItem 'metrics.userId'
-        http.get "http://mikeinn.es/hit?id=#{id}&app=atom-julia"
+        http.get "http://data.junolab.org/hit?id=#{id}&app=atom-julia"
 
   deactivate: ->
     @subscriptions.dispose()
