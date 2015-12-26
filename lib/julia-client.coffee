@@ -71,6 +71,14 @@ module.exports = JuliaClient =
         @withInk =>
           client.start()
           evaluation.evalAll()
+      'julia-client:toggle-documentation': =>
+        @withInk =>
+          client.start()
+          evaluation.toggleMeta 'docs'
+      'julia-client:toggle-methods': =>
+        @withInk =>
+          client.start()
+          evaluation.toggleMeta 'methods'
 
     subs.add atom.commands.add 'atom-workspace',
       'julia-client:open-a-repl': => terminal.repl()
