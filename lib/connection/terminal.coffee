@@ -16,6 +16,8 @@ module.exports =
       when "darwin"
         @exec "osascript -e 'tell application \"Terminal\" to activate'"
         @exec "osascript -e 'tell application \"Terminal\" to do script \"#{@escape(sh)}\"'"
+      when "win32"
+        @exec "#{@terminal()} \"#{sh}\""
       else
         @exec "#{@terminal()} \"#{@escape(sh)}\""
 
