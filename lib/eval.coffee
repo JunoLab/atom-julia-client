@@ -22,7 +22,7 @@ module.exports =
   eval: ->
     editor = atom.workspace.getActiveTextEditor()
     for sel in editor.getSelections()
-      client.msg 'eval', @evalData(editor, sel), ({start, end, result}) =>
+      client.msg 'eval', @evalData(editor, sel), ({start, end, result, plainresult}) =>
         view = if result.type then result.view else result
         view = @ink.tree.fromJson(view)[0]
         @ink.links.linkify view
@@ -30,6 +30,7 @@ module.exports =
           content: view
           error: result.type == 'error'
           clas: 'julia'
+          plainresult: plainresult
         if result.type == 'error' and result.highlights
           @showError r, result.highlights
         notifications.show "Evaluation Finished"
