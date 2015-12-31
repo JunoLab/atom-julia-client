@@ -3,7 +3,6 @@ run = require './eval'
 
 module.exports =
   selector: '.source.julia'
-  inclusionPriority: 0
   filterSuggestions: true
   excludeLowerPriority: false
 
