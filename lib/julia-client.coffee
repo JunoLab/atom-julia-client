@@ -39,6 +39,10 @@ module.exports = JuliaClient =
       type: 'string'
       default: defaultTerminal
       description: 'Command used to open a terminal. (Windows/Linux only)'
+    spawnWrapper:
+      type: 'boolean'
+      default: true
+      description: 'Use a powershell wrapper to spawn Julia. Necessary to enable interrupts. Windows only, requires powershell version > 2.'
 
   activate: (state) ->
     @subscriptions = new CompositeDisposable

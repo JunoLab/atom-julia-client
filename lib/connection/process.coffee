@@ -14,6 +14,8 @@ module.exports =
   # TODO: this is very naïve.
   jlargs: -> atom.config.get("julia-client.juliaArguments").split ' '
 
+  useWrapper: true
+
   start: (port, cons) ->
     return if @proc?
     client.booting()
@@ -42,28 +44,26 @@ module.exports =
 
   spawnJulia: (port, cons) ->
     if process.platform == 'win32'
-      if parseInt(child_process.spawnSync("powershell", ["-NoProfile", "$PSVersionTable.PSVersion.Major"]).output[1].toString()) > 2
+      @useWrapper = atom.config.get("julia-client.spawnWrapper") &&
+                    parseInt(child_process.spawnSync("powershell", ["-NoProfile", "$PSVersionTable.PSVersion.Major"]).output[1].toString()) > 2
+      if @useWrapper
         @proc = child_process.spawn("powershell", ["-NoProfile", "-ExecutionPolicy", "bypass", "& \"#{__dirname}\\spawnInterruptibleJulia.ps1\" -port #{port} -jlpath \"#{@jlpath()}\" -jloptions \"#{@jlargs().join(' ')}\""], cwd: @workingDir())
         return
       else
         cons.c.out "PowerShell version < 3 encountered. Running without wrapper (interrupts won't work)."
-
     @proc = child_process.spawn(@jlpath(), [@jlargs()..., '-e', "import Atom; @sync Atom.connect(#{port})"], cwd: @workingDir())
-    return
 
   interruptJulia: ->
-    switch process.platform
-      when 'win32' && @useWrapper
-        @sendSignalToWrapper('SIGINT')
-      else
-        @proc.kill('SIGINT')
+    if  process.platform == 'win32' && @useWrapper
+      @sendSignalToWrapper('SIGINT')
+    else
+      @proc.kill('SIGINT')
 
   killJulia: ->
-    switch process.platform
-      when 'win32' && @useWrapper
-        @sendSignalToWrapper('KILL')
-      else
-        @proc.kill()
+    if process.platform == 'win32' && @useWrapper
+      @sendSignalToWrapper('KILL')
+    else
+      @proc.kill()
 
   sendSignalToWrapper: (signal) ->
     wrapper = net.connect(port: 26992)
