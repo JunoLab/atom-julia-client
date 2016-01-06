@@ -27,7 +27,7 @@ if process.platform != 'darwin'
     order: 4
 
 if process.platform == 'win32'
-  config.spawnWrapper =
+  config.enablePowershellWrapper =
     type: 'boolean'
     default: true
     description: 'Use a powershell wrapper to spawn Julia. Necessary to enable interrupts.'
