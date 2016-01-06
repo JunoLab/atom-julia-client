@@ -8,7 +8,6 @@ modules = require './modules'
 evaluation = require './eval'
 notifications = require './ui/notifications'
 utils = require './utils'
-completions = require './completions'
 frontend = require './frontend'
 cons = require './ui/console'
 
@@ -126,4 +125,4 @@ module.exports = JuliaClient =
 
   consumeStatusBar: (bar) -> modules.consumeStatusBar(bar)
 
-  completions: -> completions
+  completions: -> require './completions'
