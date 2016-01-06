@@ -12,37 +12,8 @@ completions = require './completions'
 frontend = require './frontend'
 cons = require './ui/console'
 
-defaultTerminal =
-  switch process.platform
-    when 'darwin'
-      'Terminal.app'
-    when 'win32'
-      'cmd /C start cmd /C'
-    else
-      'x-terminal-emulator -e'
-
 module.exports = JuliaClient =
-  config:
-    juliaPath:
-      type: 'string'
-      default: 'julia'
-      description: 'The location of the Julia binary'
-    juliaArguments:
-      type: 'string'
-      default: '-q'
-      description: 'Command-line arguments to pass to Julia'
-    notifications:
-      type: 'boolean'
-      default: true
-      description: 'Enable notifications for evaluation'
-    terminal:
-      type: 'string'
-      default: defaultTerminal
-      description: 'Command used to open a terminal. (Windows/Linux only)'
-    spawnWrapper:
-      type: 'boolean'
-      default: true
-      description: 'Use a powershell wrapper to spawn Julia. Necessary to enable interrupts. Windows only, requires powershell version > 2.'
+  config: require './config'
 
   activate: (state) ->
     @subscriptions = new CompositeDisposable
