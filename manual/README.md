@@ -11,8 +11,7 @@ In order to get Julia-Client working you need to install its dependencies in bot
 Atom. To start with, you'll need to work with Julia v0.4, if you're not already. You can
 [build Julia from source](https://github.com/JuliaLang/julia) or [download the nightly
 build](http://julialang.org/downloads/) – the download is easier to get started with,
-particularly on Windows. From Julia, install the `Atom` package. You currently also need to
-run `Pkg.checkout("JuliaParser")` in order to avoid errors from the latest release.
+particularly on Windows. From Julia, install the `Atom` package.
 
 Next, go to the Atom settings pane and install the packages `language-julia`, `ink` and
 `julia-client`. If you open the command palette and type `Julia` you should see that
