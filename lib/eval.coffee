@@ -41,13 +41,17 @@ module.exports =
     [word, range] = @getWord editor
     # if we only find numbers or nothing, return prematurely
     if word.length == 0 || !isNaN(word) then return
-    client.msg type, {code: word}, ({result}) =>
-      view = if result.type then result.view else result
-      view = @ink.tree.fromJson(view)[0]
-      @ink.links.linkify view
-      r = @ink?.results.toggleUnderline editor, range,
-        content: view
-        clas: 'julia'
+    if type == 'docs'
+      client.msg type, {code: word}, ({result}) =>
+        view = if result.type then result.view else result
+        view = @ink.tree.fromJson(view)[0]
+        @ink.links.linkify view
+        r = @ink?.results.toggleUnderline editor, range,
+          content: view
+          clas: 'julia'
+    else
+      client.msg type, {code: word}, ({result}) =>
+        @ink.methodview.displayMethodView(result)
 
   # gets the word and its range in the `editor` which the last cursor is on
   getWord: (editor) ->
