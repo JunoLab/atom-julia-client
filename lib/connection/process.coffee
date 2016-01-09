@@ -44,7 +44,7 @@ module.exports =
 
   spawnJulia: (port, cons) ->
     if process.platform == 'win32'
-      @useWrapper = atom.config.get("julia-client.spawnWrapper") &&
+      @useWrapper = atom.config.get("julia-client.enablePowershellWrapper") &&
                     parseInt(child_process.spawnSync("powershell", ["-NoProfile", "$PSVersionTable.PSVersion.Major"]).output[1].toString()) > 2
       if @useWrapper
         @proc = child_process.spawn("powershell", ["-NoProfile", "-ExecutionPolicy", "bypass", "& \"#{__dirname}\\spawnInterruptibleJulia.ps1\" -port #{port} -jlpath \"#{@jlpath()}\" -jloptions \"#{@jlargs().join(' ')}\""], cwd: @workingDir())
