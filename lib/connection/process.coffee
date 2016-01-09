@@ -1,8 +1,17 @@
 child_process = require 'child_process'
 client = require './client'
 net = require 'net'
+path = require 'path'
+fs = require 'fs'
 
 module.exports =
+
+  bundledExe: ->
+    res = path.dirname(atom.config.resourcePath)
+    p = if process.platform == 'darwin'
+      path.join res, 'julia/bin/julia'
+    if fs.existsSync p then p
+
   workingDir: ->
     paths = atom.workspace.project.getDirectories()
     if paths.length == 1

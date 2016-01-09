@@ -1,7 +1,9 @@
+proc = require './connection/process'
+
 config =
   juliaPath:
     type: 'string'
-    default: 'julia'
+    default: proc.bundledExe() || 'julia'
     description: 'The location of the Julia binary'
     order: 1
   juliaArguments:
