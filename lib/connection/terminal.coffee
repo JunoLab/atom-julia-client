@@ -24,10 +24,9 @@ module.exports =
   terminal: -> atom.config.get("julia-client.terminal")
 
   jlpath: -> atom.config.get("julia-client.juliaPath")
-  jlargs: -> atom.config.get("julia-client.juliaArguments")
 
-  repl: -> @term "#{@escpath @jlpath()} #{@jlargs()}"
+  repl: -> @term "#{@escpath @jlpath()} -q"
 
   client: (port) ->
     client.booting()
-    @term "#{@escpath @jlpath()} #{@jlargs()} -P \"import Atom; Atom.connect(#{port})\""
+    @term "#{@escpath @jlpath()} -q -P \"import Atom; Atom.connect(#{port})\""
