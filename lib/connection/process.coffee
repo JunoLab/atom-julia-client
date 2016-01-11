@@ -12,11 +12,14 @@ module.exports =
       path.join res, 'julia/bin/julia'
     if fs.existsSync p then p
 
+  packageDir: (s...) ->
+    path.join __dirname, '..', '..', s...
+
   initialiseClient: (f) ->
     packageDir = path.join __dirname, '..', '..'
     atom.config.unset('julia-client.initialiseClient')
     if (jlpath = @bundledExe())
-      proc = child_process.spawn jlpath, [path.join(packageDir, 'jl', 'caches.jl')]
+      proc = child_process.spawn jlpath, [@packageDir('jl', 'caches.jl')]
       proc.on 'exit', ->
         f()
     else
@@ -70,7 +73,7 @@ module.exports =
         return
       else
         cons.c.out "PowerShell version < 3 encountered. Running without wrapper (interrupts won't work)."
-    @proc = child_process.spawn(@jlpath(), ['-e', "import Atom; @sync Atom.connect(#{port})"], cwd: @workingDir())
+    @proc = child_process.spawn(@jlpath(), [@packageDir("jl", "boot.jl"), port], cwd: @workingDir())
 
   interruptJulia: ->
     if  process.platform == 'win32' && @useWrapper
