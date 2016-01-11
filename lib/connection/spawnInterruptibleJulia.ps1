@@ -1,11 +1,11 @@
 param(
-	[Int32] $port, 
-	[string] $jlpath, 
-	[string] $jloptions
+	[Int32] $port,
+	[string] $jlpath,
+	[string] $boot
 )
 
 # start Julia
-$proc = Start-Process $jlpath "$jloptions -e `"import Atom; @sync Atom.connect($port)`"" -NoNewWindow -PassThru
+$proc = Start-Process $jlpath @($boot, $port) -NoNewWindow -PassThru
 
 # import GenerateConsoleCtrlEvent:
 $MethodDefinition = @'

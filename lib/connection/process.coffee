@@ -8,8 +8,10 @@ module.exports =
 
   bundledExe: ->
     res = path.dirname(atom.config.resourcePath)
-    p = if process.platform == 'darwin'
+    p = if process.platform is 'darwin'
       path.join res, 'julia/bin/julia'
+    else if process.platform is 'win32'
+      path.join res, 'julia/bin/julia.exe'
     if fs.existsSync p then p
 
   packageDir: (s...) ->
@@ -65,11 +67,13 @@ module.exports =
     @cmds?.dispose()
 
   spawnJulia: (port, cons) ->
-    if process.platform == 'win32'
-      @useWrapper = atom.config.get("julia-client.enablePowershellWrapper") &&
-                    parseInt(child_process.spawnSync("powershell", ["-NoProfile", "$PSVersionTable.PSVersion.Major"]).output[1].toString()) > 2
+    if process.platform is 'win32' and atom.config.get("julia-client.enablePowershellWrapper")
+      @useWrapper = parseInt(child_process.spawnSync("powershell", ["-NoProfile", "$PSVersionTable.PSVersion.Major"]).output[1].toString()) > 2
       if @useWrapper
-        @proc = child_process.spawn("powershell", ["-NoProfile", "-ExecutionPolicy", "bypass", "& \"#{__dirname}\\spawnInterruptibleJulia.ps1\" -port #{port} -jlpath \"#{@jlpath()}\""], cwd: @workingDir())
+        @proc = child_process.spawn("powershell",
+                                    ["-NoProfile", "-ExecutionPolicy", "bypass",
+                                     "& \"#{__dirname}\\spawnInterruptibleJulia.ps1\"
+                                     -port #{port} -jlpath \"#{@jlpath()}\" -boot \"#{@packageDir('jl', 'boot.jl')}\""], cwd: @workingDir())
         return
       else
         cons.c.out "PowerShell version < 3 encountered. Running without wrapper (interrupts won't work)."
