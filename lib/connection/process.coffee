@@ -12,6 +12,16 @@ module.exports =
       path.join res, 'julia/bin/julia'
     if fs.existsSync p then p
 
+  initialiseClient: (f) ->
+    packageDir = path.join __dirname, '..', '..'
+    atom.config.unset('julia-client.initialiseClient')
+    if (jlpath = @bundledExe())
+      proc = child_process.spawn jlpath, [path.join(packageDir, 'jl', 'caches.jl')]
+      proc.on 'exit', ->
+        f()
+    else
+      f()
+
   workingDir: ->
     paths = atom.workspace.project.getDirectories()
     if paths.length == 1
@@ -27,6 +37,8 @@ module.exports =
 
   start: (port, cons) ->
     return if @proc?
+    if atom.config.get 'julia-client.initialiseClient'
+      return @initialiseClient => @start port, cons
     client.booting()
     @spawnJulia(port, cons)
     @onStart()
