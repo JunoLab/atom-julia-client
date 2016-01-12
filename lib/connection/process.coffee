@@ -8,17 +8,14 @@ module.exports =
 
   bundledExe: ->
     res = path.dirname(atom.config.resourcePath)
-    p = if process.platform is 'darwin'
-      path.join res, 'julia/bin/julia'
-    else if process.platform is 'win32'
-      path.join res, 'julia/bin/julia.exe'
+    exe = if process.platform is 'win32' then 'julia.exe' else 'julia'
+    p = path.join res, "julia/bin/#{exe}"
     if fs.existsSync p then p
 
   packageDir: (s...) ->
     path.join __dirname, '..', '..', s...
 
   initialiseClient: (f) ->
-    packageDir = path.join __dirname, '..', '..'
     atom.config.unset('julia-client.initialiseClient')
     if (jlpath = @bundledExe())
       proc = child_process.spawn jlpath, [@packageDir('jl', 'caches.jl')]
