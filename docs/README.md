@@ -70,6 +70,6 @@ Get started by going into a buffer set to Julia syntax, typing `2+2`, and pressi
 should see the result pop up next to the text. You can also work in the Atom REPL by pressing
 `` Ctrl-` `` – just type in the input box and `Shift-Enter` to evaluate.
 
-On OS X you may an error because the Julia command cannot be found, even though it's on your
+On OS X you may see an error because the Julia command cannot be found, even though it's on your
 path. To solve this you can either set the full path in the package settings, or start Atom
 from the terminal with the `atom` command.
