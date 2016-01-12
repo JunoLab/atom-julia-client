@@ -36,27 +36,48 @@ module.exports =
 
   jlpath: -> atom.config.get("julia-client.juliaPath")
 
+  checkExe: (path, cb) ->
+    which = if process.platform is 'win32' then 'where' else 'which'
+    proc = child_process.spawn which, [path]
+    proc.on 'exit', (status) ->
+      cb status == 0
+
+  jlNotFound: (path) ->
+    atom.notifications.addError "Julia could not be found.",
+      detail: """
+      We tried to launch Julia from:
+      #{path}
+      """
+      dismissable: true
+
   useWrapper: true
 
   start: (port, cons) ->
     return if @proc?
-    if atom.config.get 'julia-client.initialiseClient'
-      return @initialiseClient => @start port, cons
     client.booting()
-    @spawnJulia(port, cons)
-    @onStart()
-    @proc.on 'exit', (code, signal) =>
-      cons.c.err "Julia has stopped: #{code}, #{signal}"
-      cons.c.input() unless cons.c.isInput
-      @onStop()
-      @proc = null
-      client.cancelBoot()
-    @proc.stdout.on 'data', (data) =>
-      text = data.toString()
-      if text then cons.c.out text
-    @proc.stderr.on 'data', (data) =>
-      text = data.toString()
-      if text then cons.c.err text
+
+    @checkExe @jlpath(), (exists) =>
+      if not exists
+        @jlNotFound @jlpath()
+        client.cancelBoot()
+        return
+
+      if atom.config.get 'julia-client.initialiseClient'
+        return @initialiseClient => @start port, cons
+      @spawnJulia(port, cons)
+      @onStart()
+      @proc.on 'exit', (code, signal) =>
+        cons.c.err "Julia has stopped: #{code}, #{signal}"
+        cons.c.input() unless cons.c.isInput
+        @onStop()
+        @proc = null
+        client.cancelBoot()
+      @proc.stdout.on 'data', (data) =>
+        text = data.toString()
+        if text then cons.c.out text
+      @proc.stderr.on 'data', (data) =>
+        text = data.toString()
+        if text then cons.c.err text
 
   onStart: ->
     @cmds = atom.commands.add 'atom-workspace',
