@@ -54,7 +54,7 @@ module.exports =
     @proc = child_process.spawn(@jlpath(), [@jlargs()..., '-e', "import Atom; @sync Atom.connect(#{port})"], cwd: @workingDir())
 
   interruptJulia: ->
-    if  process.platform == 'win32' && @useWrapper
+    if false #process.platform == 'win32' && @useWrapper
       @sendSignalToWrapper('SIGINT')
     else
       @proc.kill('SIGINT')
