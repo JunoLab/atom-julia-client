@@ -44,6 +44,8 @@ module.exports =
       detail: """
       We tried to launch Julia from:
       #{path}
+
+      This path can be changed in the settings.
       """
       dismissable: true
 
