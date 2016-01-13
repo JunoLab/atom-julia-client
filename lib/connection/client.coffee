@@ -12,8 +12,7 @@ module.exports =
   input: ([type, data]) ->
     if @handlers.hasOwnProperty type
       if data.callback?
-        @handlers[type] data, (result) =>
-          @msg data.callback, result
+        @msg data.callback, @handlers[type] data.args...
       else
         @handlers[type] data
     else if @callbacks.hasOwnProperty type
@@ -29,6 +28,10 @@ module.exports =
   output: (data) ->
 
   msg: (type, data, f) ->
+    if data?.constructor is Promise
+      data.then (data) =>
+        @msg type, data, f
+      return
     if f?
       data.callback = @id = @id+1
       @callbacks[@id] = f

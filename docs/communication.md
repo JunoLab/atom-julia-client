@@ -1,7 +1,7 @@
 # Communication
 
 Juno works by booting a Julia client from Atom. When Julia starts it connects to Atom over a
-TCP port, and the upshot is that from that point on Julia and Atom can each send messages to
+TCP port, and from that point on Julia and Atom can each send messages to
 each other. Messages are JSON objects, with a type header to tell the receiver how the
 message should be handled.
 
@@ -66,19 +66,19 @@ msg("type", data)
 Handlers are defined on the Atom side as follows:
 
 ```coffeescript
-client.handle 'type', (data) =>
+client.handle 'log', (data) ->
   console.log data
 ```
 
 It's also possible for Julia to wait for a response from Atom, using the `rpc` function.
-An extra argument is provided to the JS handler which can be called with the data to send
-back to Julia. To clarify this a little, say you have a handler in Atom which looks like
-this:
 
 ```coffeescript
-client.handle 'echo', (data, resolve) =>
-  resolve data
+client.handle 'echo', (data) ->
+  data
 ```
+
+Async code can return a `Promise` object and the RPC will automatically wait to return
+the value of the promise to Julia.
 
 (It's very easy to add this code to `julia-client`'s [`activate`
 function](https://github.com/JunoLab/atom-julia-client/blob/master/lib/julia-client.coffee)

@@ -3,9 +3,10 @@ selector = require './ui/selector'
 
 module.exports =
   activate: ->
-    client.handle 'select', ({items}, resolve) =>
-      selector.show items, (item) =>
-        resolve item: item
+    client.handle 'select', (items) ->
+      new Promise (resolve) ->
+        selector.show items, (item) =>
+          resolve item
 
-    client.handle 'atompath', (_, resolve) =>
-      resolve result: atom.config.resourcePath
+    client.handle 'atompath', ->
+      atom.config.resourcePath
