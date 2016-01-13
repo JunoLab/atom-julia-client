@@ -100,7 +100,7 @@ module.exports =
     @proc = child_process.spawn(@jlpath(), [@packageDir("jl", "boot.jl"), port], cwd: @workingDir())
 
   interruptJulia: ->
-    if false #process.platform == 'win32' && @useWrapper
+    if process.platform == 'win32' && @useWrapper
       @sendSignalToWrapper('SIGINT')
     else
       @proc.kill('SIGINT')
