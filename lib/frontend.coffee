@@ -8,5 +8,5 @@ module.exports =
         selector.show items, (item) =>
           resolve item
 
-    client.handle 'atompath', ->
-      atom.config.resourcePath
+    client.handle 'electronexe', ->
+      process.execPath
