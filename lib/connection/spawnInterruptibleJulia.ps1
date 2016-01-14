@@ -64,7 +64,9 @@ while ($true){
 		}
 	}
 	if ($msg -match "KILL"){
-		$proc.Kill()
+		if (!($proc.HasExited)){
+			$proc.Kill()
+		}
 		Exit
 	}
 }
