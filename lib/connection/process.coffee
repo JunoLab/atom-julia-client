@@ -49,8 +49,6 @@ module.exports =
       """
       dismissable: true
 
-  useWrapper: true
-
   start: (port, cons) ->
     return if @proc?
     client.booting()
