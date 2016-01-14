@@ -63,4 +63,8 @@ while ($true){
 			echo "julia-client: Internal Error: Interrupting Julia failed."
 		}
 	}
+	if ($msg -match "KILL"){
+		$proc.Kill()
+		Exit
+	}
 }

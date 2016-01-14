@@ -4,7 +4,7 @@ net = require 'net'
 path = require 'path'
 fs = require 'fs'
 
-module.exports =
+module.exports = jlprocess =
 
   bundledExe: ->
     res = path.dirname(atom.config.resourcePath)
@@ -69,7 +69,8 @@ module.exports =
       @spawnJulia(port, cons)
       @onStart()
       @proc.on 'exit', (code, signal) =>
-        cons.c.err "Julia has stopped: #{code}, #{signal}"
+        cons.c.err "Julia has stopped"
+        if not @useWrapper then cons.c.err ": #{code}, #{signal}"
         cons.c.input() unless cons.c.isInput
         @onStop()
         @proc = null
@@ -101,12 +102,15 @@ module.exports =
     @proc = child_process.spawn(@jlpath(), [@packageDir("jl", "boot.jl"), port], cwd: @workingDir())
 
   interruptJulia: ->
-    if process.platform == 'win32' && @useWrapper
+    if @useWrapper
       @sendSignalToWrapper('SIGINT')
     else
       @proc.kill('SIGINT')
 
   killJulia: ->
+    if @useWrapper
+      @sendSignalToWrapper('KILL')
+    else
       @proc.kill()
 
   sendSignalToWrapper: (signal) ->
@@ -114,3 +118,7 @@ module.exports =
     wrapper.setNoDelay()
     wrapper.write(signal)
     wrapper.end()
+
+client.onDisconnected ->
+  if jlprocess.useWrapper and jlprocess.proc
+    jlprocess.proc.kill()
