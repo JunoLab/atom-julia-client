@@ -107,9 +107,6 @@ module.exports =
       @proc.kill('SIGINT')
 
   killJulia: ->
-    if process.platform == 'win32' && @useWrapper
-      @sendSignalToWrapper('KILL')
-    else
       @proc.kill()
 
   sendSignalToWrapper: (signal) ->
