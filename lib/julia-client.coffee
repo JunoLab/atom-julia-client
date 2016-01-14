@@ -10,6 +10,7 @@ notifications = require './ui/notifications'
 utils = require './utils'
 frontend = require './frontend'
 cons = require './ui/console'
+blink = require './ui/blink'
 
 module.exports = JuliaClient =
   config: require './config'

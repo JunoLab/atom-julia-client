@@ -7,6 +7,3 @@ module.exports =
       new Promise (resolve) ->
         selector.show items, (item) =>
           resolve item
-
-    client.handle 'electronexe', ->
-      process.execPath
