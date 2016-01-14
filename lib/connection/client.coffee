@@ -9,15 +9,17 @@ module.exports =
   queue: []
   id: 0
 
-  input: ([type, data]) ->
+  input: ([type, args...]) ->
+    if type.constructor == Object
+      {type, callback} = type
     if @handlers.hasOwnProperty type
-      if data.callback?
-        @msg data.callback, @handlers[type] data.args...
+      if callback
+        @msg callback, @handlers[type] args...
       else
-        @handlers[type] data
+        @handlers[type] args...
     else if @callbacks.hasOwnProperty type
       try
-        @callbacks[type] data
+        @callbacks[type] args...
       finally
         delete @callbacks[type]
         @loading.done()
