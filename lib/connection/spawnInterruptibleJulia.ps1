@@ -1,8 +1,12 @@
 param(
 	[Int32] $port,
 	[string] $jlpath,
-	[string] $boot
+	[string] $boot,
+	[string] $cwd
 )
+
+# change to working dir:
+cd $cwd
 
 # start Julia
 $proc = Start-Process $jlpath @($boot, $port) -NoNewWindow -PassThru
@@ -11,9 +15,14 @@ $proc = Start-Process $jlpath @($boot, $port) -NoNewWindow -PassThru
 $MethodDefinition = @'
 [DllImport("Kernel32.dll", CharSet = CharSet.Unicode)]
 public static extern bool GenerateConsoleCtrlEvent(uint dwCtrlEvent, uint dwProcessGroupId);
+[DllImport("Kernel32.dll", CharSet = CharSet.Unicode)]
+public static extern bool SetConsoleCtrlHandler(EventHandler handler, bool add);
 '@
 
 $Kernel32 = Add-Type -MemberDefinition $MethodDefinition -Name 'Kernel32' -Namespace 'Win32' -PassThru
+
+# keep us alive!
+$status = $Kernel32::SetConsoleCtrlHandler($null, $true)
 
 function Receive-TCPMessage {
     param ( [ValidateNotNullOrEmpty()]

@@ -34,6 +34,9 @@ module.exports =
   jlpath: -> atom.config.get("julia-client.juliaPath")
 
   checkExe: (path, cb) ->
+    if fs.existsSync(path)
+      cb true
+      return
     which = if process.platform is 'win32' then 'where' else 'which'
     proc = child_process.spawn which, [path]
     proc.on 'exit', (status) ->
@@ -90,10 +93,8 @@ module.exports =
     if process.platform is 'win32' and atom.config.get("julia-client.enablePowershellWrapper")
       @useWrapper = parseInt(child_process.spawnSync("powershell", ["-NoProfile", "$PSVersionTable.PSVersion.Major"]).output[1].toString()) > 2
       if @useWrapper
-        @proc = child_process.spawn("powershell",
-                                    ["-NoProfile", "-ExecutionPolicy", "bypass",
-                                     "& \"#{__dirname}\\spawnInterruptibleJulia.ps1\"
-                                     -port #{port} -jlpath \"#{@jlpath()}\" -boot \"#{@packageDir('jl', 'boot.jl')}\""], cwd: @workingDir())
+        @proc = child_process.spawn("powershell", ["-NoProfile", "-ExecutionPolicy", "bypass",
+                                    "& \"#{__dirname}\\spawnInterruptibleJulia.ps1\" -cwd #{@workingDir()} -port #{port} -jlpath \"#{@jlpath()}\" -boot \"#{@packageDir('jl', 'boot.jl')}\""])
         return
       else
         cons.c.out "PowerShell version < 3 encountered. Running without wrapper (interrupts won't work)."
