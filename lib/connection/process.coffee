@@ -4,7 +4,7 @@ net = require 'net'
 path = require 'path'
 fs = require 'fs'
 
-module.exports =
+module.exports = jlprocess =
 
   bundledExe: ->
     res = path.dirname(atom.config.resourcePath)
@@ -34,6 +34,9 @@ module.exports =
   jlpath: -> atom.config.get("julia-client.juliaPath")
 
   checkExe: (path, cb) ->
+    if fs.existsSync(path)
+      cb true
+      return
     which = if process.platform is 'win32' then 'where' else 'which'
     proc = child_process.spawn which, [path]
     proc.on 'exit', (status) ->
@@ -64,7 +67,8 @@ module.exports =
       @spawnJulia(port, cons)
       @onStart()
       @proc.on 'exit', (code, signal) =>
-        cons.c.err "Julia has stopped: #{code}, #{signal}"
+        cons.c.err "Julia has stopped"
+        if not @useWrapper then cons.c.err ": #{code}, #{signal}"
         cons.c.input() unless cons.c.isInput
         @onStop()
         @proc = null
@@ -88,23 +92,21 @@ module.exports =
     if process.platform is 'win32' and atom.config.get("julia-client.enablePowershellWrapper")
       @useWrapper = parseInt(child_process.spawnSync("powershell", ["-NoProfile", "$PSVersionTable.PSVersion.Major"]).output[1].toString()) > 2
       if @useWrapper
-        @proc = child_process.spawn("powershell",
-                                    ["-NoProfile", "-ExecutionPolicy", "bypass",
-                                     "& \"#{__dirname}\\spawnInterruptibleJulia.ps1\"
-                                     -port #{port} -jlpath \"#{@jlpath()}\" -boot \"#{@packageDir('jl', 'boot.jl')}\""], cwd: @workingDir())
+        @proc = child_process.spawn("powershell", ["-NoProfile", "-ExecutionPolicy", "bypass",
+                                    "& \"#{__dirname}\\spawnInterruptibleJulia.ps1\" -cwd #{@workingDir()} -port #{port} -jlpath \"#{@jlpath()}\" -boot \"#{@packageDir('jl', 'boot.jl')}\""])
         return
       else
         cons.c.out "PowerShell version < 3 encountered. Running without wrapper (interrupts won't work)."
     @proc = child_process.spawn(@jlpath(), [@packageDir("jl", "boot.jl"), port], cwd: @workingDir())
 
   interruptJulia: ->
-    if process.platform == 'win32' && @useWrapper
+    if @useWrapper
       @sendSignalToWrapper('SIGINT')
     else
       @proc.kill('SIGINT')
 
   killJulia: ->
-    if process.platform == 'win32' && @useWrapper
+    if @useWrapper
       @sendSignalToWrapper('KILL')
     else
       @proc.kill()
@@ -114,3 +116,7 @@ module.exports =
     wrapper.setNoDelay()
     wrapper.write(signal)
     wrapper.end()
+
+client.onDisconnected ->
+  if jlprocess.useWrapper and jlprocess.proc
+    jlprocess.proc.kill()
