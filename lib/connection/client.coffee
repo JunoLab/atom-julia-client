@@ -25,7 +25,7 @@ module.exports =
         @loading.done()
     else
       console.log "julia-client: unrecognised message #{type}"
-      console.log data
+      console.log args
 
   output: (data) ->
 
