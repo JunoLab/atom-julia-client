@@ -52,9 +52,9 @@ module.exports = jlprocess =
       """
       dismissable: true
 
-  start: (port, cons) ->
+  start: (port, cons, boot = true) ->
     return if @proc?
-    client.booting()
+    boot && client.booting()
 
     @checkExe @jlpath(), (exists) =>
       if not exists
@@ -63,7 +63,7 @@ module.exports = jlprocess =
         return
 
       if atom.config.get 'julia-client.initialiseClient'
-        return @initialiseClient => @start port, cons
+        return @initialiseClient => @start port, cons, false
       @spawnJulia(port, cons)
       @onStart()
       @proc.on 'exit', (code, signal) =>
