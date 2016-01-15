@@ -21,6 +21,9 @@ client.handle 'createWindow', (opts) ->
 client.handle 'withWin', (id, code) ->
   evalwith windows[id], code
 
+client.handle 'winActive', (id) ->
+  windows.hasOwnProperty id
+
 client.onDisconnected ->
   for id, win of windows
     delete windows[id]
