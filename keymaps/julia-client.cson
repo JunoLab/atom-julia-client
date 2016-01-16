@@ -1,11 +1,12 @@
 '.platform-darwin .item-views > atom-text-editor[data-grammar="source julia"]':
   'cmd-enter': 'julia-client:evaluate'
   'cmd-shift-enter': 'julia-client:evaluate-all'
-  'cmd-j cmd-m': 'julia-client:set-working-module'
-  'cmd-shift-j cmd-shift-m': 'julia-client:reset-working-module'
+  'cmd-shift-j cmd-shift-m': 'julia-client:set-working-module'
+  'cmd-alt-j cmd-alt-m': 'julia-client:reset-working-module'
   'ctrl-`': 'julia-client:toggle-console'
   'ctrl-c': 'julia-client:interrupt-julia'
   'cmd-j cmd-d': 'julia-client:toggle-documentation'
+  'cmd-j cmd-m': 'julia-client:toggle-methods'
 
 '.platform-darwin .ink-console':
   'ctrl-c': 'julia-client:interrupt-julia'
@@ -23,11 +24,12 @@
  .platform-linux .item-views > atom-text-editor[data-grammar="source julia"]':
   'ctrl-enter': 'julia-client:evaluate'
   'ctrl-shift-enter': 'julia-client:evaluate-all'
-  'ctrl-j ctrl-m': 'julia-client:set-working-module'
+  'ctrl-shift-j ctrl-shift-m': 'julia-client:set-working-module'
   'ctrl-alt-j ctrl-alt-m': 'julia-client:reset-working-module'
   'ctrl-`': 'julia-client:toggle-console'
   'ctrl-shift-c': 'julia-client:interrupt-julia'
   'ctrl-j ctrl-d': 'julia-client:toggle-documentation'
+  'ctrl-j ctrl-m': 'julia-client:toggle-methods'
 
 '.platform-win32 .ink-console,
  .platform-linux .ink-console':
