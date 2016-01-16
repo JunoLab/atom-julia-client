@@ -1,5 +1,8 @@
 client = require './connection/client'
 notifications = require './ui/notifications'
+modules = require './modules'
+methodview = require './ui/method-view'
+
 
 module.exports =
   cursor: ({row, column}) ->
@@ -37,12 +40,14 @@ module.exports =
 
   # get documentation or methods for the current word
   toggleMeta: (type) ->
+    mod = modules.currentModule()
+    mod = if mod then mod else 'Main'
     editor = atom.workspace.getActiveTextEditor()
     [word, range] = @getWord editor
     # if we only find numbers or nothing, return prematurely
     if word.length == 0 || !isNaN(word) then return
-    if type == 'docs'
-      client.msg type, {code: word}, ({result}) =>
+    if type is 'docs'
+      client.msg type, {code: word, module: mod}, ({result}) =>
         view = if result.type then result.view else result
         view = @ink.tree.fromJson(view)[0]
         @ink.links.linkify view
@@ -50,8 +55,10 @@ module.exports =
           content: view
           clas: 'julia'
     else
-      client.msg type, {code: word}, ({result}) =>
-        @ink.methodview.displayMethodView(result)
+      methods = new Promise (resolve) =>
+        client.msg type, {code: word, module: mod}, (result) =>
+          resolve result
+      methodview.displayMethodView(methods)
 
   # gets the word and its range in the `editor` which the last cursor is on
   getWord: (editor) ->
