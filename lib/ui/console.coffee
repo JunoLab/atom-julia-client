@@ -2,6 +2,7 @@
 
 client = require '../connection/client'
 notifications = require '../ui/notifications'
+views = require './views'
 
 module.exports =
   activate: ->
@@ -15,13 +16,8 @@ module.exports =
       @c.info msg
 
     client.handle 'result', ({result}) =>
-      view = if result.type then result.view else result
-      view = @ink.tree.fromJson view
-      @ink.links.linkify view[0]
-      error = result.type == 'error'
-      @ink.tree.toggle view unless error
-      @c.result view,
-        error: error
+      view = views.render result
+      @c.result view, {}
 
   deactivate: ->
     @cmd.dispose()

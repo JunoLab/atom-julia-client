@@ -1,5 +1,6 @@
 client = require './connection/client'
 notifications = require './ui/notifications'
+views = require './ui/views'
 
 module.exports =
   cursor: ({row, column}) ->
@@ -23,16 +24,11 @@ module.exports =
     editor = atom.workspace.getActiveTextEditor()
     for sel in editor.getSelections()
       client.msg 'eval', @evalData(editor, sel), ({start, end, result, plainresult}) =>
-        view = if result.type then result.view else result
-        view = @ink.tree.fromJson(view)[0]
-        @ink.links.linkify view
+        view = views.render result
         r = @ink?.results.showForLines editor, start-1, end-1,
           content: view
-          error: result.type == 'error'
           clas: 'julia'
           plainresult: plainresult
-        if result.type == 'error' and result.highlights
-          @showError r, result.highlights
         notifications.show "Evaluation Finished"
 
   # get documentation or methods for the current word

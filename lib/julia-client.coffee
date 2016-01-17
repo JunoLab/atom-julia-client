@@ -1,3 +1,5 @@
+# TODO: clean this up
+
 {CompositeDisposable} = require 'atom'
 http = require 'http'
 terminal = require './connection/terminal'
@@ -11,6 +13,7 @@ utils = require './utils'
 frontend = require './frontend'
 cons = require './ui/console'
 blink = require './ui/blink'
+views = require './ui/views'
 
 module.exports = JuliaClient =
   config: require './config'
@@ -76,6 +79,7 @@ module.exports = JuliaClient =
     @ink = ink
     evaluation.ink = ink
     cons.ink = ink
+    views.ink = ink
     @loading = new ink.Loading
     client.loading = @loading
     cons.loading = @loading

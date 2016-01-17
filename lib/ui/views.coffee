@@ -1,30 +1,34 @@
 module.exports = views =
-  handlers:
-    dom: ({tag, attrs, contents}) ->
-      view = document.createElement tag
-      for k, v of attrs
-        view.setAttribute k, v
-      if contents?
-        # Special case -- avoid the nested <span>
-        if contents.constructor is String
-          view.innerText = contents
-        else
-          if contents.constructor isnt Array
-            contents = [contents]
-          for child in contents
-            view.appendChild @render child
-      view
+  dom: ({tag, attrs, contents}) ->
+    view = document.createElement tag
+    for k, v of attrs
+      view.setAttribute k, v
+    if contents?
+      if contents.constructor isnt Array
+        contents = [contents]
+      for child in contents
+        view.appendChild @render child
+    view
 
-    html: ({contents}) ->
-      view = @render @tags.div()
-      view.innerHTML = contents
-      view
+  html: ({content}) ->
+    view = @render @tags.div()
+    view.innerHTML = content
+    view
+
+  tree: ({head, children}) ->
+    @ink.tree.treeView @render(head), children.map((x)=>@render(x))
+
+  views:
+    dom:  (x) -> views.dom x
+    html: (x) -> views.html x
+    tree: (x) -> views.tree x
 
   render: (data) ->
-    if @handlers.hasOwnProperty(data.type)
-      @handlers[data.type].call this, data
+    console.log data
+    if @views.hasOwnProperty(data.type)
+      @views[data.type](data)
     else if data?.constructor is String
-      @render @tags.span data
+      new Text data
     else
       @render "can't render #{data?.type}"
 
