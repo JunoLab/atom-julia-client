@@ -110,7 +110,7 @@ module.exports =
       row: row+1, column: column+1
       module: ed.juliaModule
 
-    client.msg 'module', data, ({main, sub, inactive, subInactive}) =>
+    client.rpc('module', data).then ({main, sub, inactive, subInactive}) =>
       @reset main, sub
       subInactive && @subInactive()
       inactive && @inactive()
@@ -119,7 +119,7 @@ module.exports =
   chooseModule: ->
     client.require =>
       mods = new Promise (resolve) =>
-        client.msg 'all-modules', {}, (mods) =>
+        client.rpc('all-modules').then (mods) =>
           resolve mods
       selector.show mods, (mod) =>
         return unless mod?

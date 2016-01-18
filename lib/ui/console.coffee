@@ -12,10 +12,10 @@ module.exports =
       "julia-client:clear-console": =>
         @c.reset()
 
-    client.handle 'info', ({msg}) =>
+    client.handle 'info', (msg) =>
       @c.info msg
 
-    client.handle 'result', ({result}) =>
+    client.handle 'result', (result) =>
       view = if result.type == 'error' then result.view else result
       @c.result views.render(view),
         error: result.type == 'error'
@@ -40,7 +40,7 @@ module.exports =
     if ed.getText()
       client.start()
       @c.done()
-      client.msg 'eval-repl', {code: ed.getText(), mode: ed.inkConsoleMode?.name}, (result) =>
+      client.rpc('eval-repl', code: ed.getText(), mode: ed.inkConsoleMode?.name).then (result) =>
         @c.input()
         notifications.show "Evaluation Finished"
 

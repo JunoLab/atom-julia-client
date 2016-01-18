@@ -19,27 +19,27 @@ the original sender. For example, on the Atom side messages are sent in CoffeeSc
 follows:
 
 ```coffeescript
-client.msg 'eval', {code: '2+2'}
+client.msg 'eval', '2+2'
 ```
 
 On the Julia side, we need to set up a handler for this message, which happens as follows:
 
 ```julia
-handle("eval") do data
-  Dict(:result => eval(parse(data["code"])))
+handle("eval") do code
+  eval(parse(code))
 end
 ```
 
 This is a very simplified version of the `eval` handler that you can find in the Atom.jl
 source code. It simply evaluates whatever it's given and returns the result – in this case,
-`4` – inside a dictionary.
+`4`.
 
 Often we want to do something with that return result in Atom – in this case, we'd like to
 display the result. We don't need to change anything on the Julia side to accomplish this;
-it's as simple as adding a callback to the original `msg` call:
+we can just use the `rpc` function from JS:
 
 ```coffeescript
-client.msg 'eval', {code: '2+2'}, ({result}) =>
+client.rpc('eval', '2+2').then (result) =>
   console.log data
 ```
 
@@ -60,14 +60,14 @@ a type other than `eval` to avoid clashes with actual evaluation.)
 Julia has a similar mechanism to talk to Atom via the function
 
 ```julia
-msg("type", data)
+msg("type", args...)
 ```
 
 Handlers are defined on the Atom side as follows:
 
 ```coffeescript
-client.handle 'log', (data) ->
-  console.log data
+client.handle 'log', (args...) ->
+  console.log args
 ```
 
 It's also possible for Julia to wait for a response from Atom, using the `rpc` function.
@@ -76,9 +76,6 @@ It's also possible for Julia to wait for a response from Atom, using the `rpc` f
 client.handle 'echo', (data) ->
   data
 ```
-
-Async code can return a `Promise` object and the RPC will automatically wait to return
-the value of the promise to Julia.
 
 (It's very easy to add this code to `julia-client`'s [`activate`
 function](https://github.com/JunoLab/atom-julia-client/blob/master/lib/julia-client.coffee)

@@ -40,21 +40,21 @@ module.exports =
   cdHere: ->
     file = atom.workspace.getActiveTextEditor()?.getPath()
     file? or atom.notifications.addError 'This file has no path.'
-    client.msg 'cd', {path: path.dirname(file)}
+    client.msg 'cd', path.dirname(file)
 
   cdProject: ->
     dirs = atom.project.getPaths()
     if dirs.length < 1
       atom.notifications.addError 'This project has no folders.'
     else if dirs.length == 1
-      client.msg 'cd', {path: dirs[0]}
+      client.msg 'cd', dirs[0]
     else
       selector.show dirs, (dir) =>
         return unless dir?
-        client.msg 'cd', {path: dir}
+        client.msg 'cd', dir
 
   cdHome: ->
-    client.msg 'cd', {path: @home()}
+    client.msg 'cd', @home()
 
   commands: (subs) ->
     subs.add atom.commands.add 'atom-workspace',

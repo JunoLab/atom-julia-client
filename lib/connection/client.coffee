@@ -9,17 +9,23 @@ module.exports =
   queue: []
   id: 0
 
+  unwrapPromise: (x, f) ->
+    if x.constructor is Promise
+      x.then (x) => @unwrapPromise x, f
+    else
+      f x
+
   input: ([type, args...]) ->
     if type.constructor == Object
       {type, callback} = type
     if @handlers.hasOwnProperty type
+      result = @handlers[type] args...
       if callback
-        @msg callback, @handlers[type] args...
-      else
-        @handlers[type] args...
+        @unwrapPromise result, (result) =>
+          @msg callback, result
     else if @callbacks.hasOwnProperty type
       try
-        @callbacks[type] args...
+        @callbacks[type] args[0]
       finally
         delete @callbacks[type]
         @loading.done()
@@ -27,21 +33,21 @@ module.exports =
       console.log "julia-client: unrecognised message #{type}"
       console.log args
 
+  # Will be replaced by the connection logic
   output: (data) ->
 
-  msg: (type, data, f) ->
-    if data?.constructor is Promise
-      data.then (data) =>
-        @msg type, data, f
-      return
-    if f?
-      data.callback = @id = @id+1
-      @callbacks[@id] = f
-      @loading.working()
+  msg: (type, args...) ->
     if @isConnected()
-      @output [type, data]
+      @output [type, args...]
     else
-      @queue.push [type, data]
+      @queue.push [type, args...]
+
+  rpc: (type, args...) ->
+    new Promise (resolve) =>
+      @id = @id+1
+      @callbacks[@id] = resolve
+      @msg {type: type, callback: @id}, args...
+      @loading.working()
 
   handle: (type, f) ->
     @handlers[type] = f
