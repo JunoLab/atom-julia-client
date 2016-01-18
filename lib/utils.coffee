@@ -1,3 +1,5 @@
+# TODO: working directory dialog
+
 path = require 'path'
 shell = require 'shell'
 fs = require 'fs'
