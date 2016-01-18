@@ -27,11 +27,18 @@ module.exports = views =
     else
       @tags.span "gutted", [label, child]
 
+  link: ({file, line, contents}) ->
+    view = @render @tags.a {href: '#'}, contents
+    atom.tooltips.add view, title: -> file
+    view.onclick = -> atom.workspace.open file, initialLine: line
+    view
+
   views:
     dom:     (a...) -> views.dom  a...
     html:    (a...) -> views.html a...
     tree:    (a...) -> views.tree a...
     subtree: (a...) -> views.subtree a...
+    link:    (a...) -> views.link a...
 
   render: (data) ->
     if @views.hasOwnProperty(data.type)
@@ -53,7 +60,7 @@ module.exports = views =
 
   tags: {}
 
-for tag in ['div', 'span', 'strong', 'table', 'tr', 'td']
+for tag in ['div', 'span', 'a', 'strong', 'table', 'tr', 'td']
   do (tag) ->
     views.tags[tag] = (attrs, contents) ->
       views.tag tag, attrs, contents
