@@ -28,11 +28,11 @@ module.exports =
       @client.eval(@evalData(editor, sel)).then ({start, end, result, plainresult}) =>
         error = result.type == 'error'
         view = if error then result.view else result
-        r = @ink?.results.showForLines editor, start-1, end-1,
+        fade = not @ink.Result.removeLines editor, start-1, end-1
+        r = new @ink.Result editor, [start-1, end-1],
           content: views.render view
-          clas: 'julia'
           error: error
-          plainresult: plainresult
+          fade: fade
         if error and result.highlights?
           @showError r, result.highlights
         notifications.show "Evaluation Finished"
@@ -47,7 +47,7 @@ module.exports =
       view = if result.type then result.view else result
       view = @ink.tree.fromJson(view)[0]
       @ink.links.linkify view
-      r = @ink?.results.toggleUnderline editor, range,
+      r = @ink.results.toggleUnderline editor, range,
         content: view
         clas: 'julia'
 
