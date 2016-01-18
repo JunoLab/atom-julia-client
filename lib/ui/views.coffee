@@ -16,7 +16,7 @@ module.exports = views =
     view
 
   tree: ({head, children}) ->
-    @ink.tree.treeView @render(head), children.map((x)=>@render @tags.div [x])
+    @ink.tree.treeView(@render(head), children.map((x)=>@render @tags.div [x]))[0]
 
   subtree: ({label, child}) ->
     @render if child.type == "tree"
