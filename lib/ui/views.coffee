@@ -27,6 +27,14 @@ module.exports = views =
     else
       @tags.span "gutted", [label, child]
 
+  copy: ({view, text}) ->
+    view = @render view
+    atom.commands.add view,
+      'core:copy': (e) ->
+        atom.clipboard.write text
+        e.stopPropagation()
+    view
+
   link: ({file, line, contents}) ->
     view = @render @tags.a {href: '#'}, contents
     atom.tooltips.add view, title: -> file
@@ -41,6 +49,7 @@ module.exports = views =
     tree:    (a...) -> views.tree a...
     subtree: (a...) -> views.subtree a...
     link:    (a...) -> views.link a...
+    copy:    (a...) -> views.copy a...
 
   render: (data) ->
     if @views.hasOwnProperty(data.type)
