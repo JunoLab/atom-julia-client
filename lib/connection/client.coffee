@@ -52,7 +52,7 @@ module.exports =
   handle: (type, f) ->
     @handlers[type] = f
 
-  require: (fs, rpc = false, mod = {}) ->
+  import: (fs, rpc = false, mod = {}) ->
     return unless fs?
     if fs.rpc? or fs.msg?
       mod = {}

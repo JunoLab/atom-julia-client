@@ -3,7 +3,7 @@ notifications = require './ui/notifications'
 views = require './ui/views'
 
 module.exports =
-  client: client.require ['eval', 'evalall'], true
+  client: client.import ['eval', 'evalall'], true
 
   cursor: ({row, column}) ->
     row: row+1

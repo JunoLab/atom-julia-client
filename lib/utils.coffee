@@ -6,7 +6,7 @@ selector = require './ui/selector'
 
 module.exports =
 
-  client: client.require ['cd']
+  client: client.import ['cd']
 
   homedir: ->
     if process.platform == 'win32'
