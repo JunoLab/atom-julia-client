@@ -30,7 +30,9 @@ module.exports = views =
   link: ({file, line, contents}) ->
     view = @render @tags.a {href: '#'}, contents
     atom.tooltips.add view, title: -> file
-    view.onclick = -> atom.workspace.open file, initialLine: line
+    view.onclick = ->
+      atom.workspace.open file,
+        initialLine: if line >= 0 then line
     view
 
   views:
