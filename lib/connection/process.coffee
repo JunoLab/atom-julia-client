@@ -6,6 +6,14 @@ fs = require 'fs'
 
 module.exports = jlprocess =
 
+  activate: ->
+    @cmds = atom.commands.add 'atom-workspace',
+      'julia-client:kill-julia': => @killJulia()
+      'julia-client:interrupt-julia': => @interruptJulia()
+
+  deactivate: ->
+    @cmds.dispose()
+
   bundledExe: ->
     res = path.dirname(atom.config.resourcePath)
     exe = if process.platform is 'win32' then 'julia.exe' else 'julia'
@@ -65,12 +73,10 @@ module.exports = jlprocess =
       if atom.config.get 'julia-client.initialiseClient'
         return @initialiseClient => @start port, cons, false
       @spawnJulia(port, cons)
-      @onStart()
       @proc.on 'exit', (code, signal) =>
         cons.c.err "Julia has stopped"
         if not @useWrapper then cons.c.err ": #{code}, #{signal}"
         cons.c.input() unless cons.c.isInput
-        @onStop()
         @proc = null
         client.cancelBoot()
       @proc.stdout.on 'data', (data) =>
@@ -79,14 +85,6 @@ module.exports = jlprocess =
       @proc.stderr.on 'data', (data) =>
         text = data.toString()
         if text then cons.c.err text
-
-  onStart: ->
-    @cmds = atom.commands.add 'atom-workspace',
-      'julia-client:kill-julia': => @killJulia()
-      'julia-client:interrupt-julia': => @interruptJulia()
-
-  onStop: ->
-    @cmds?.dispose()
 
   spawnJulia: (port, cons) ->
     if process.platform is 'win32' and atom.config.get("julia-client.enablePowershellWrapper")
@@ -99,17 +97,28 @@ module.exports = jlprocess =
         cons.c.out "PowerShell version < 3 encountered. Running without wrapper (interrupts won't work)."
     @proc = child_process.spawn(@jlpath(), [@packageDir("jl", "boot.jl"), port], cwd: @workingDir())
 
-  interruptJulia: ->
-    if @useWrapper
-      @sendSignalToWrapper('SIGINT')
+  # TODO: make 'kill' try to exit gracefully first
+
+  require: (f) ->
+    if not @proc
+      atom.notifications.addError "There's no Julia process running.",
+        detail: "Try starting one by evaluating something."
     else
-      @proc.kill('SIGINT')
+      f()
+
+  interruptJulia: ->
+    @require =>
+      if @useWrapper
+        @sendSignalToWrapper('SIGINT')
+      else
+        @proc.kill('SIGINT')
 
   killJulia: ->
-    if @useWrapper
-      @sendSignalToWrapper('KILL')
-    else
-      @proc.kill()
+    @require =>
+      if @useWrapper
+        @sendSignalToWrapper('KILL')
+      else
+        @proc.kill()
 
   sendSignalToWrapper: (signal) ->
     wrapper = net.connect(port: 26992)

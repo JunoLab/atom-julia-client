@@ -24,6 +24,7 @@ module.exports = JuliaClient =
     modules.activate()
     notifications.activate()
     frontend.activate()
+    proc.activate()
     client.onConnected =>
       notifications.show("Client Connected")
     @withInk =>
@@ -37,6 +38,7 @@ module.exports = JuliaClient =
     @subscriptions.dispose()
     modules.deactivate()
     cons.deactivate()
+    proc.deactivate()
     @spinner.dispose()
 
   commands: (subs) ->
