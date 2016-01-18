@@ -29,7 +29,7 @@ function Receive-TCPMessage {
         [int] $Port
     )
     try {
-        $endpoint = new-object System.Net.IPEndPoint([ipaddress]::any, $port)
+        $endpoint = new-object System.Net.IPEndPoint([ipaddress]::Loopback, $port)
         $listener = new-object System.Net.Sockets.TcpListener $endpoint
         $listener.start()
 
