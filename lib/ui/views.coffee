@@ -16,23 +16,34 @@ module.exports = views =
     view
 
   tree: ({head, children}) ->
-    @ink.tree.treeView @render(head), children.map((x)=>@render(x))
+    @ink.tree.treeView @render(head), children.map((x)=>@render @tags.div [x])
+
+  subtree: ({label, child}) ->
+    @render if child.type == "tree"
+      type: "tree"
+      head: @tags.span [label, child.head]
+      children: child.children
+      # children: child.children.map((x) => @tags.span "gutted", x)
+    else
+      @tags.span "gutted", [label, child]
 
   views:
-    dom:  (x) -> views.dom x
-    html: (x) -> views.html x
-    tree: (x) -> views.tree x
+    dom:     (a...) -> views.dom  a...
+    html:    (a...) -> views.html a...
+    tree:    (a...) -> views.tree a...
+    subtree: (a...) -> views.subtree a...
 
   render: (data) ->
-    console.log data
     if @views.hasOwnProperty(data.type)
       @views[data.type](data)
     else if data?.constructor is String
       new Text data
     else
-      @render "can't render #{data?.type}"
+      @render "julia-client: can't render #{data?.type}"
 
   tag: (tag, attrs, contents) ->
+    if attrs?.constructor is String
+      attrs = class: attrs
     if attrs?.constructor isnt Object
       [contents, attrs] = [attrs, undefined]
     type: 'dom'
