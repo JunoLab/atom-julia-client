@@ -6,6 +6,8 @@ module.exports =
   filterSuggestions: true
   excludeLowerPriority: false
 
+  client: client.require ['completions'], true
+
   completionsData: (ed, pos) ->
     module: ed.juliaModule
     cursor: run.cursor pos
@@ -13,7 +15,7 @@ module.exports =
     path: ed.getPath()
 
   getCompletions: (ed, pos) ->
-    client.rpc 'completions', @completionsData(ed, pos)
+    @client.completions @completionsData(ed, pos)
 
   toCompletion: (c) ->
     if c.constructor == String

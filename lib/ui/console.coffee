@@ -40,7 +40,7 @@ module.exports =
     if ed.getText()
       client.start()
       @c.done()
-      client.rpc('eval-repl', code: ed.getText(), mode: ed.inkConsoleMode?.name).then (result) =>
+      client.rpc('evalrepl', code: ed.getText(), mode: ed.inkConsoleMode?.name).then (result) =>
         @c.input()
         notifications.show "Evaluation Finished"
 

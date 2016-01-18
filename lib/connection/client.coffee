@@ -52,6 +52,19 @@ module.exports =
   handle: (type, f) ->
     @handlers[type] = f
 
+  require: (fs, rpc = false, mod = {}) ->
+    return unless fs?
+    if fs.rpc? or fs.msg?
+      mod = {}
+      @require fs.rpc, true, {}
+      @require fs.msg, false, {}
+    else
+      for f in fs
+        do (f) =>
+          mod[f] = (args...) =>
+            if rpc then @rpc f, args... else @msg f, args...
+    mod
+
   # Connecting & Booting
 
   emitter: new Emitter()

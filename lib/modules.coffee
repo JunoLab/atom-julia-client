@@ -119,7 +119,7 @@ module.exports =
   chooseModule: ->
     client.require =>
       mods = new Promise (resolve) =>
-        client.rpc('all-modules').then (mods) =>
+        client.rpc('allmodules').then (mods) =>
           resolve mods
       selector.show mods, (mod) =>
         return unless mod?

@@ -5,6 +5,9 @@ client = require './connection/client'
 selector = require './ui/selector'
 
 module.exports =
+
+  client: client.require ['cd']
+
   homedir: ->
     if process.platform == 'win32'
       process.env.USERPROFILE
@@ -40,21 +43,21 @@ module.exports =
   cdHere: ->
     file = atom.workspace.getActiveTextEditor()?.getPath()
     file? or atom.notifications.addError 'This file has no path.'
-    client.msg 'cd', path.dirname(file)
+    @client.cd path.dirname(file)
 
   cdProject: ->
     dirs = atom.project.getPaths()
     if dirs.length < 1
       atom.notifications.addError 'This project has no folders.'
     else if dirs.length == 1
-      client.msg 'cd', dirs[0]
+      @client.cd dirs[0]
     else
       selector.show dirs, (dir) =>
         return unless dir?
-        client.msg 'cd', dir
+        @client.cd dir
 
   cdHome: ->
-    client.msg 'cd', @home()
+    @client.cd @home()
 
   commands: (subs) ->
     subs.add atom.commands.add 'atom-workspace',

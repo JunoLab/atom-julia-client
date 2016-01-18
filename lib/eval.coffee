@@ -3,6 +3,8 @@ notifications = require './ui/notifications'
 views = require './ui/views'
 
 module.exports =
+  client: client.require ['eval', 'evalall'], true
+
   cursor: ({row, column}) ->
     row: row+1
     column: column+1
@@ -23,7 +25,7 @@ module.exports =
   eval: ->
     editor = atom.workspace.getActiveTextEditor()
     for sel in editor.getSelections()
-      client.rpc('eval', @evalData(editor, sel)).then ({start, end, result, plainresult}) =>
+      @client.eval(@evalData(editor, sel)).then ({start, end, result, plainresult}) =>
         error = result.type == 'error'
         view = if error then result.view else result
         r = @ink?.results.showForLines editor, start-1, end-1,
@@ -62,12 +64,11 @@ module.exports =
 
   evalAll: ->
     editor = atom.workspace.getActiveTextEditor()
-    client.msg 'eval-all', {
-                          path: editor.getPath()
-                          module: editor.juliaModule
-                          code: editor.getText()
-                         },
-      (result) =>
+    @client.evalall({
+                      path: editor.getPath()
+                      module: editor.juliaModule
+                      code: editor.getText()
+                    }).then (result) =>
         notifications.show "Evaluation Finished"
 
   showError: (r, lines) ->
