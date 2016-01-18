@@ -24,11 +24,15 @@ module.exports =
     editor = atom.workspace.getActiveTextEditor()
     for sel in editor.getSelections()
       client.msg 'eval', @evalData(editor, sel), ({start, end, result, plainresult}) =>
-        view = views.render result
+        error = result.type == 'error'
+        view = if error then result.view else result
         r = @ink?.results.showForLines editor, start-1, end-1,
-          content: view
+          content: views.render view
           clas: 'julia'
+          error: error
           plainresult: plainresult
+        if error and result.highlights?
+          @showError r, result.highlights
         notifications.show "Evaluation Finished"
 
   # get documentation or methods for the current word

@@ -16,8 +16,9 @@ module.exports =
       @c.info msg
 
     client.handle 'result', ({result}) =>
-      view = views.render result
-      @c.result view, {}
+      view = if result.type == 'error' then result.view else result
+      @c.result views.render(view),
+        error: result.type == 'error'
 
   deactivate: ->
     @cmd.dispose()
