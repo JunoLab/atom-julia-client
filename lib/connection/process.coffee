@@ -15,20 +15,19 @@ module.exports = jlprocess =
     @cmds.dispose()
 
   bundledExe: ->
-    res = path.dirname(atom.config.resourcePath)
+    res = path.dirname atom.config.resourcePath
     exe = if process.platform is 'win32' then 'julia.exe' else 'julia'
-    p = path.join res, "julia/bin/#{exe}"
+    p = path.join res, 'julia', 'bin', exe
     if fs.existsSync p then p
 
   packageDir: (s...) ->
-    path.join __dirname, '..', '..', s...
+    packageRoot = path.resolve __dirname, '..', '..'
+    resourcePath = atom.config.resourcePath
+    if path.extname(resourcePath) is '.asar' and packageRoot.indexOf(resourcePath) is 0
+        packageRoot = path.join("#{resourcePath}.unpacked", 'node_modules', 'julia-client')
+    path.join packageRoot, s...
 
-  script: (s) ->
-    scriptDir = path.join path.dirname(atom.config.resourcePath), 'julia', 'script'
-    if fs.existsSync scriptDir
-      path.join scriptDir, s
-    else
-      @packageDir 'script', s
+  script: (s...) -> @packageDir 'script', s...
 
   initialiseClient: (f) ->
     atom.config.unset('julia-client.initialiseClient')
