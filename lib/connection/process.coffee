@@ -23,7 +23,12 @@ module.exports = jlprocess =
   packageDir: (s...) ->
     path.join __dirname, '..', '..', s...
 
-  script: (s) -> @packageDir 'script', s
+  script: (s) ->
+    scriptDir = path.join path.dirname(atom.config.resourcePath), 'julia', 'script'
+    if fs.existsSync scriptDir
+      path.join scriptDir, s
+    else
+      @packageDir 'script', s
 
   initialiseClient: (f) ->
     atom.config.unset('julia-client.initialiseClient')
