@@ -25,6 +25,7 @@ module.exports = JuliaClient =
     notifications.activate()
     frontend.activate()
     proc.activate()
+    client.activate()
     client.onConnected =>
       notifications.show("Client Connected")
     @withInk =>

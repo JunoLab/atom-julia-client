@@ -22,16 +22,22 @@ module.exports =
       result = @handlers[type] args...
       if callback
         @unwrapPromise result, (result) =>
-          @msg callback, result
-    else if @callbacks.hasOwnProperty type
-      try
-        @callbacks[type] args[0]
-      finally
-        delete @callbacks[type]
-        @loading.done()
+          @msg 'cb', callback, result
     else
       console.log "julia-client: unrecognised message #{type}"
       console.log args
+
+  activate: ->
+    @handle 'cb', (id, result) =>
+      try
+        @callbacks[id] result
+      finally
+        delete @callbacks[id]
+        @loading.done()
+
+    @handle 'cancelCallback', (id) =>
+      delete @callbacks[id]
+      @loading.done()
 
   # Will be replaced by the connection logic
   output: (data) ->
