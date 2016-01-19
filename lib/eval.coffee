@@ -26,16 +26,17 @@ module.exports =
     editor = atom.workspace.getActiveTextEditor()
     for sel in editor.getSelections()
       @client.eval(@evalData(editor, sel)).then ({start, end, result, plainresult}) =>
-        error = result.type == 'error'
-        view = if error then result.view else result
-        fade = not @ink.Result.removeLines editor, start-1, end-1
-        r = new @ink.Result editor, [start-1, end-1],
-          content: views.render view
-          error: error
-          fade: fade
-        if error and result.highlights?
-          @showError r, result.highlights
-        notifications.show "Evaluation Finished"
+        if result?
+          error = result.type == 'error'
+          view = if error then result.view else result
+          fade = not @ink.Result.removeLines editor, start-1, end-1
+          r = new @ink.Result editor, [start-1, end-1],
+            content: views.render view
+            error: error
+            fade: fade
+          if error and result.highlights?
+            @showError r, result.highlights
+          notifications.show "Evaluation Finished"
 
   # get documentation or methods for the current word
   toggleMeta: (type) ->
