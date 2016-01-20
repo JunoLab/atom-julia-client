@@ -10,7 +10,7 @@ module.exports =
   id: 0
 
   unwrapPromise: (x, f) ->
-    if x.constructor is Promise
+    if x?.constructor is Promise
       x.then (x) => @unwrapPromise x, f
     else
       f x
