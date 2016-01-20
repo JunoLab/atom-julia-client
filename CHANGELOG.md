@@ -1,3 +1,9 @@
+## 0.3.0
+* New Packages->Julia menu
+* Option to launch Julia on startup
+* Windows firewall no longer complains on first run
+* Shiny new Juno bundles
+
 ## 0.2.0
 * Improved scrolling for inline results
 * Inter-file links in errors and `methods` output
