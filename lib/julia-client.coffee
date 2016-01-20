@@ -25,9 +25,9 @@ module.exports = JuliaClient =
     frontend.activate()
     proc.activate()
     client.activate()
-    client.onConnected =>
+    client.onConnected ->
       notifications.show("Client Connected")
-    @withInk =>
+    @withInk ->
       cons.activate()
 
     try
@@ -44,42 +44,45 @@ module.exports = JuliaClient =
   commands: (subs) ->
     subs.add atom.commands.add '.item-views > atom-text-editor',
       'julia-client:evaluate': (event) =>
-        @withInk =>
+        @withInk ->
           client.start()
           evaluation.eval()
       'julia-client:evaluate-all': (event) =>
-        @withInk =>
+        @withInk ->
           client.start()
           evaluation.evalAll()
       'julia-client:toggle-documentation': =>
-        @withInk =>
+        @withInk ->
           client.start()
           evaluation.toggleMeta 'docs'
       'julia-client:toggle-methods': =>
-        @withInk =>
+        @withInk ->
           client.start()
           evaluation.toggleMeta 'methods'
 
     subs.add atom.commands.add 'atom-workspace',
-      'julia-client:open-a-repl': => terminal.repl()
-      'julia-client:start-repl-client': =>
-        client.disrequire =>
-          tcp.listen (port) => terminal.client port
-      'julia-client:start-julia': =>
-        client.disrequire =>
-          tcp.listen (port) => proc.start port, cons
-      'julia-client:toggle-console': => @withInk => cons.toggle()
-      'julia-client:reset-loading-indicator': => client.reset()
-      'julia-client:settings': -> atom.workspace.open('atom://config/packages/julia-client')
+      'julia-client:open-a-repl': -> terminal.repl()
+      'julia-client:start-repl-client': ->
+        client.disrequire ->
+          tcp.listen (port) -> terminal.client port
+      'julia-client:start-julia': ->
+        client.disrequire ->
+          tcp.listen (port) -> proc.start port, cons
+      'julia-client:toggle-console': => @withInk -> cons.toggle()
+      'julia-client:reset-loading-indicator': -> client.reset()
+      'julia-client:settings': ->
+        atom.workspace.open('atom://config/packages/julia-client')
 
-    subs.add atom.commands.add '.item-views > atom-text-editor[data-grammar="source julia"]',
-      'julia-client:set-working-module': => modules.chooseModule()
-      'julia-client:reset-working-module': => modules.resetModule()
+    subs.add atom.commands.add '.item-views >
+                                atom-text-editor[data-grammar="source julia"]',
+      'julia-client:set-working-module': -> modules.chooseModule()
+      'julia-client:reset-working-module': -> modules.resetModule()
 
     utils.commands subs
 
     if atom.config.get("julia-client.launchOnStartup")
-      atom.commands.dispatch atom.views.getView(atom.workspace), 'julia-client:start-julia'
+      atom.commands.dispatch atom.views.getView(atom.workspace),
+        'julia-client:start-julia'
 
   consumeInk: (ink) ->
     @ink = ink
@@ -90,7 +93,7 @@ module.exports = JuliaClient =
     client.loading = @loading
     cons.loading = @loading
     @spinner = new ink.Spinner client.loading
-    client.handle 'show-block', ({start, end}) =>
+    client.handle 'show-block', ({start, end}) ->
       if ed = atom.workspace.getActiveTextEditor()
         ink.highlight ed, start-1, end-1
 
