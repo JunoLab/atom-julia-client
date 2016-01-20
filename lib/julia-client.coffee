@@ -16,7 +16,7 @@ blink = require './ui/blink'
 views = require './ui/views'
 
 module.exports = JuliaClient =
-  config: require './config'
+  config: require './package/config'
 
   activate: (state) ->
     @subscriptions = new CompositeDisposable

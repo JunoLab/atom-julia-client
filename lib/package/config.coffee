@@ -1,4 +1,4 @@
-proc = require './connection/process'
+proc = require '../connection/process'
 
 config =
   launchOnStartup:
