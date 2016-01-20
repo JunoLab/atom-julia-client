@@ -29,6 +29,10 @@ menu: [
         {label: 'Open Startup File', command: 'julia:open-startup-file'}
         {label: 'Open Julia Home', command: 'julia:open-julia-home'}
         {label: 'Open Package in New Window...', command: 'julia:open-package-in-new-window'}
+
+        {type: 'separator'}
+
+        {label: 'Settings...', command: 'julia-client:settings'}
       ]
     }]
   }

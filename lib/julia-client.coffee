@@ -71,6 +71,7 @@ module.exports = JuliaClient =
           tcp.listen (port) => proc.start port, cons
       'julia-client:toggle-console': => @withInk => cons.toggle()
       'julia-client:reset-loading-indicator': => client.reset()
+      'julia-client:settings': -> atom.workspace.open('atom://config/packages/julia-client')
 
     subs.add atom.commands.add '.item-views > atom-text-editor[data-grammar="source julia"]',
       'julia-client:set-working-module': => modules.chooseModule()
