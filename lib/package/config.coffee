@@ -1,4 +1,4 @@
-proc = require '../connection/process'
+{process: proc, terminal} = require '../connection'
 
 config =
   launchOnStartup:
@@ -20,11 +20,7 @@ config =
 if process.platform != 'darwin'
   config.terminal =
     type: 'string'
-    default:
-      if process.platform == 'win32'
-        'cmd /C start cmd /C'
-      else
-        'x-terminal-emulator -e'
+    default: terminal.defaultTerminal()
     description: 'Command used to open a terminal.'
     order: 4
 

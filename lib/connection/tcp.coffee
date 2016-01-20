@@ -1,4 +1,5 @@
 net = require 'net'
+
 client = require './client'
 
 module.exports =

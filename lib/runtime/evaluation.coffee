@@ -1,6 +1,5 @@
-client = require './connection/client'
-notifications = require './ui/notifications'
-views = require './ui/views'
+{client} =  require '../connection'
+{notifications, views} = require '../ui'
 
 module.exports =
   client: client.import ['eval', 'evalall'], true

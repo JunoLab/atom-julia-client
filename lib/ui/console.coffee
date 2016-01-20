@@ -1,8 +1,8 @@
 # TODO: modules, history
 
-client = require '../connection/client'
-notifications = require '../ui/notifications'
-views = require './views'
+{client} =      require '../connection'
+notifications = require './notifications'
+views =         require './views'
 
 module.exports =
   activate: ->
@@ -25,14 +25,17 @@ module.exports =
 
   create: ->
     @c = new @ink.Console
-    @c.setGrammar atom.grammars.grammarForScopeName('source.julia')
+    # Ugly, but the grammar doesn't seem to be loaded immediately.
+    setTimeout (=>
+      @c.setGrammar atom.grammars.grammarForScopeName('source.julia')
+      @c.input()
+    ), 10
     @c.view[0].classList.add 'julia'
     @c.view.getTitle = -> "Julia"
     @c.modes = => @replModes
     @c.onEval (ed) => @eval ed
-    @c.input()
-    @loading.onWorking => @c.view.loading true
-    @loading.onDone => @c.view.loading false
+    client.loading.onWorking => @c.view.loading true
+    client.loading.onDone => @c.view.loading false
 
   toggle: -> @c.toggle()
 

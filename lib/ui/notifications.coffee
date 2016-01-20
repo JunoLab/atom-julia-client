@@ -1,5 +1,6 @@
-remote = require('remote')
-client = require '../connection/client'
+remote = require 'remote'
+
+{client} = require '../connection'
 
 module.exports =
   notes: []

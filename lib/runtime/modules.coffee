@@ -1,6 +1,7 @@
-client = require './connection/client'
-selector = require './ui/selector'
 {CompositeDisposable} = require 'atom'
+
+{client} = require '../connection'
+{selector} = require '../ui'
 
 module.exports =
   activate: ->

@@ -1,10 +1,11 @@
 # TODO: working directory dialog
 
-path = require 'path'
+path =  require 'path'
 shell = require 'shell'
-fs = require 'fs'
-client = require './connection/client'
-selector = require './ui/selector'
+fs =    require 'fs'
+
+{client} = require '../connection'
+{selector} = require '../ui'
 
 module.exports =
 
@@ -60,17 +61,3 @@ module.exports =
 
   cdHome: ->
     @client.cd @home()
-
-  commands: (subs) ->
-    subs.add atom.commands.add 'atom-workspace',
-      'julia:open-startup-file': => atom.workspace.open @home '.juliarc.jl'
-      'julia:open-julia-home': => shell.openItem @juliaHome()
-      'julia:open-package-in-new-window': => @openPackage()
-
-    subs.add atom.commands.add '.item-views > atom-text-editor',
-      'julia-client:work-in-file-folder': =>
-        client.require => @cdHere()
-      'julia-client:work-in-project-folder': =>
-        client.require => @cdProject()
-      'julia-client:work-in-home-folder': =>
-        client.require => @cdHome()

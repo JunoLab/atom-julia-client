@@ -1,13 +1,14 @@
-client = require './connection/client'
-selector = require './ui/selector'
 remote = require 'remote'
 BrowserWindow = remote.require 'browser-window'
 vm = require 'vm'
 
-evalwith = (obj, code) ->
-  vm.runInThisContext("(function(){return #{code}})").call obj
+{client} = require '../connection'
+{selector} = require '../ui'
 
 module.exports =
+
+  evalWith: (obj, code) ->
+    vm.runInThisContext("(function(){return #{code}})").call obj
 
   windows: {}
 
@@ -29,7 +30,7 @@ module.exports =
       return w.id
 
     client.handle 'withWin', (id, code) =>
-      evalwith @windows[id], code
+      @evalwith @windows[id], code
 
     client.handle 'winActive', (id) =>
       @windows.hasOwnProperty id

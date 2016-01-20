@@ -1,8 +1,9 @@
 child_process = require 'child_process'
+net =           require 'net'
+path =          require 'path'
+fs =            require 'fs'
+
 client = require './client'
-net = require 'net'
-path = require 'path'
-fs = require 'fs'
 
 module.exports = jlprocess =
 

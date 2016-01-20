@@ -1,5 +1,5 @@
-client = require './connection/client'
-run = require './eval'
+evaluation = require './evaluation'
+{client} =   require '../connection'
 
 module.exports =
   selector: '.source.julia'
@@ -10,7 +10,7 @@ module.exports =
 
   completionsData: (ed, pos) ->
     module: ed.juliaModule
-    cursor: run.cursor pos
+    cursor: evaluation.cursor pos
     code: ed.getText()
     path: ed.getPath()
 
