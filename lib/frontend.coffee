@@ -25,7 +25,7 @@ module.exports =
         w.loadUrl opts.url
       w.setMenu(null)
       @windows[w.id] = w
-      w.on 'close', -> delete @windows[w.id]
+      w.on 'close', => delete @windows[w.id]
       return w.id
 
     client.handle 'withWin', (id, code) =>
