@@ -25,7 +25,7 @@ module.exports =
 
   jlpath: -> atom.config.get("julia-client.juliaPath")
 
-  repl: -> @term "#{@escpath @jlpath()} -q"
+  repl: -> @term "#{@escpath @jlpath()}"
 
   client: (port) ->
     client.booting()
