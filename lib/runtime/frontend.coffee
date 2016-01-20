@@ -7,7 +7,7 @@ vm = require 'vm'
 
 module.exports =
 
-  evalWith: (obj, code) ->
+  evalwith: (obj, code) ->
     vm.runInThisContext("(function(){return #{code}})").call obj
 
   windows: {}
