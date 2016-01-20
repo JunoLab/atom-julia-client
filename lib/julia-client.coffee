@@ -79,6 +79,9 @@ module.exports = JuliaClient =
 
     utils.commands subs
 
+    if atom.config.get("julia-client.launchOnStartup")
+      atom.commands.dispatch atom.views.getView(atom.workspace), 'julia-client:start-julia'
+
   consumeInk: (ink) ->
     @ink = ink
     evaluation.ink = ink
