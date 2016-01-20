@@ -56,9 +56,9 @@ module.exports =
   getWord: (editor) ->
     cursor = editor.getLastCursor()
     # The following line is kinda iffy: The regex may or may not be well chosen
-    # and it duplicates the efforts from atom-language-julia. It might be
-    # better to select the current word via finding the smallest <span> containing
-    # the cursor which also has `function` or `macro` as its class.
+    # and it duplicates the efforts from atom-language-julia. It might be better
+    # to select the current word via finding the smallest <span> containing the
+    # cursor which also has `function` or `macro` as its class.
     range = cursor.getCurrentWordBufferRange({wordRegex: /[\u00A0-\uFFFF\w_!´]*\.?@?[\u00A0-\uFFFF\w_!´]+/})
     word = editor.getTextInBufferRange range
     [word, range]
@@ -69,7 +69,7 @@ module.exports =
                       path: editor.getPath()
                       module: editor.juliaModule
                       code: editor.getText()
-                    }).then (result) =>
+                    }).then (result) ->
         notifications.show "Evaluation Finished"
 
   showError: (r, lines) ->
