@@ -13,10 +13,7 @@ module.exports =
   windows: {}
 
   activate: ->
-    client.handle 'select', (items) ->
-      new Promise (resolve) ->
-        selector.show items, (item) =>
-          resolve item
+    client.handle 'select', (items) -> selector.show items
 
     # Blink APIs
 

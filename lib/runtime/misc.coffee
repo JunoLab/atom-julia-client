@@ -39,7 +39,7 @@ module.exports =
       @packages (ps, d) =>
         dir = d
         resolve ps
-    selector.show ps, (pkg) =>
+    selector.show(ps).then (pkg) =>
       return unless pkg?
       atom.open pathsToOpen: [path.join dir, pkg]
 
@@ -55,7 +55,7 @@ module.exports =
     else if dirs.length == 1
       @client.cd dirs[0]
     else
-      selector.show dirs, (dir) =>
+      selector.show(dirs).then (dir) =>
         return unless dir?
         @client.cd dir
 

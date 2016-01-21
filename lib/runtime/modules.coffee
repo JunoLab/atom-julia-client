@@ -122,7 +122,7 @@ module.exports =
       mods = new Promise (resolve) =>
         client.rpc('allmodules').then (mods) =>
           resolve mods
-      selector.show mods, (mod) =>
+      selector.show(mods).then (mod) =>
         return unless mod?
         atom.workspace.getActiveTextEditor().juliaModule = mod
         @update()
