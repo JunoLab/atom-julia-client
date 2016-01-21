@@ -70,6 +70,7 @@ module.exports =
 
   evalAll: ->
     editor = atom.workspace.getActiveTextEditor()
+    atom.commands.dispatch atom.views.getView(editor), 'inline-results:clear-all'
     @client.evalall({
                       path: editor.getPath()
                       module: editor.juliaModule
