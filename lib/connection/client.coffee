@@ -62,8 +62,8 @@ module.exports =
     return unless fs?
     if fs.rpc? or fs.msg?
       mod = {}
-      @require fs.rpc, true, {}
-      @require fs.msg, false, {}
+      @import fs.rpc, true,  mod
+      @import fs.msg, false, mod
     else
       for f in fs
         do (f) =>
