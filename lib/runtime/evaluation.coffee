@@ -10,14 +10,14 @@ module.exports =
 
   evalData: (editor, selection) ->
     start = selection.getHeadBufferPosition()
-    end = selection.getTailBufferPosition()
-    if not start.isLessThan end then [start, end] = [end, start]
+    stop = selection.getTailBufferPosition()
+    if not start.isLessThan stop then [start, stop] = [stop, start]
 
     code: editor.getText()
     module: editor.juliaModule
     path: editor.getPath() || 'untitled-' + editor.getBuffer().inkId
     start: @cursor start
-    end: @cursor end
+    stop: @cursor stop
 
   # TODO: get block bounds as a seperate step
   # TODO: implement block finding in Atom
