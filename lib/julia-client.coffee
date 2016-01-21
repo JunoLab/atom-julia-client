@@ -5,6 +5,7 @@ module.exports = JuliaClient =
   connection: require './connection'
   runtime:    require './runtime'
   ui:         require './ui'
+  misc:       require './misc'
 
   config: require './package/config'
 

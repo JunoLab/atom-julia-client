@@ -2,8 +2,9 @@ shell =                 require 'shell'
 {CompositeDisposable} = require 'atom'
 
 {client, process, tcp, terminal} = require '../connection'
-{evaluation, misc, modules} =      require '../runtime'
+{evaluation, modules} =            require '../runtime'
 {console} =                        require '../ui'
+{paths} =                          require '../misc'
 
 module.exports =
   activate: ->
@@ -47,17 +48,17 @@ module.exports =
 
 
     @subs.add atom.commands.add 'atom-workspace',
-      'julia:open-startup-file': -> atom.workspace.open misc.home '.juliarc.jl'
-      'julia:open-julia-home': -> shell.openItem misc.juliaHome()
-      'julia:open-package-in-new-window': -> misc.openPackage()
+      'julia:open-startup-file': -> atom.workspace.open paths.home '.juliarc.jl'
+      'julia:open-julia-home': -> shell.openItem paths.juliaHome()
+      'julia:open-package-in-new-window': -> paths.openPackage()
 
     @subs.add atom.commands.add '.item-views > atom-text-editor',
       'julia-client:work-in-file-folder': ->
-        client.require -> misc.cdHere()
+        client.require -> evaluation.cdHere()
       'julia-client:work-in-project-folder': ->
-        client.require -> misc.cdProject()
+        client.require -> evaluation.cdProject()
       'julia-client:work-in-home-folder': ->
-        client.require -> misc.cdHome()
+        client.require -> evaluation.cdHome()
 
   deactivate: ->
     @subs.dispose()

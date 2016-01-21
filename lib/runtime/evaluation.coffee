@@ -1,8 +1,13 @@
+path = require 'path'
+
 {client} =  require '../connection'
-{notifications, views} = require '../ui'
+{notifications, views, selector} = require '../ui'
+{paths} = require '../misc'
 
 module.exports =
-  client: client.import ['eval', 'evalall'], true
+  client: client.import
+    rpc: ['eval', 'evalall']
+    msg: ['cd']
 
   cursor: ({row, column}) ->
     row: row+1
@@ -82,3 +87,24 @@ module.exports =
       if @errorLines?.r == r
         @errorLines.lights.destroy()
       destroyResult()
+
+  # Working Directory
+
+  cdHere: ->
+    file = atom.workspace.getActiveTextEditor()?.getPath()
+    file? or atom.notifications.addError 'This file has no path.'
+    @client.cd path.dirname(file)
+
+  cdProject: ->
+    dirs = atom.project.getPaths()
+    if dirs.length < 1
+      atom.notifications.addError 'This project has no folders.'
+    else if dirs.length == 1
+      @client.cd dirs[0]
+    else
+      selector.show(dirs).then (dir) =>
+        return unless dir?
+        @client.cd dir
+
+  cdHome: ->
+    @client.cd paths.home()
