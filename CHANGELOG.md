@@ -3,6 +3,8 @@
 * Option to launch Julia on startup
 * Windows firewall no longer complains on first run
 * Shiny new Juno bundles
+* Console UI improvements
+* HTML support in inline results
 
 ## 0.2.0
 * Improved scrolling for inline results
