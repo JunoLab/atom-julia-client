@@ -47,7 +47,7 @@ module.exports =
 
   createStatusUI: ->
     @dom = document.createElement 'span'
-    @dom.classList.add 'julia-client'
+    @dom.classList.add 'julia-client', 'inline-block'
     @main = document.createElement 'a'
     @sub = document.createElement 'span'
     @divider = document.createElement 'span'
