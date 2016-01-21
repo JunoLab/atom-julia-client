@@ -8,23 +8,27 @@ module.exports =
     @selector.viewForItem = (item) =>
       "<li>#{item}</li>"
 
-    if xs.constructor == Promise
-      @selector.setLoading "Loading..."
-      xs.then (xs) =>
-        @selector.setItems xs
-    else
-      @selector.setItems xs
-
     panel = atom.workspace.addModalPanel(item: @selector)
     @selector.focusFilterEditor()
 
     confirmed = false
 
-    new Promise (resolve) =>
+    new Promise (resolve, reject) =>
+
+      if xs.constructor == Promise
+        @selector.setLoading "Loading..."
+        xs.then (xs) => @selector.setItems xs
+          .catch (e) =>
+            reject e
+            @selector.cancel()
+      else
+        @selector.setItems xs
+
       @selector.confirmed = (item) =>
         confirmed = true
         @selector.cancel()
         resolve item
       @selector.cancelled = =>
         panel.destroy()
+        @selector.restoreFocus()
         resolve() unless confirmed

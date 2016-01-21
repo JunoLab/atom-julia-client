@@ -12,26 +12,29 @@ module.exports =
     path.join process.env[key], p...
 
   juliaHome: (p...) ->
-    path.join((process.env.JULIA_HOME or @home '.julia'), p...)
+    path.join (process.env.JULIA_HOME or @home '.julia'), p...
 
-  pkgDir: (f) ->
-    fs.readdir @juliaHome(), (err, data) =>
-      dir = data?.filter((path)=>path.startsWith('v')).sort().pop()
-      dir? and f @juliaHome dir
+  pkgDir: ->
+    new Promise (resolve, reject) =>
+      fs.readdir @juliaHome(), (err, data) =>
+        if err? then return reject err
+        dir = data?.filter((path)=>path.startsWith('v')).sort().pop()
+        if dir? then resolve @juliaHome dir else reject()
 
-  packages: (f) ->
-    @pkgDir (dir) =>
-      fs.readdir dir, (err, data) =>
-        ps = data?.filter((path)=>!path.startsWith('.') and
-                                  ["METADATA","REQUIRE","META_BRANCH"].indexOf(path) < 0)
-        ps? and f(ps, dir)
+  packages: ->
+    @pkgDir().then (dir) =>
+      new Promise (resolve, reject) =>
+        fs.readdir dir, (err, data) =>
+          if err? then return reject err
+          ps = data.filter((path)=>!path.startsWith('.') and
+                                    ["METADATA","REQUIRE","META_BRANCH"].indexOf(path) < 0)
+          if ps? then resolve ps else reject()
 
   openPackage: ->
-    dir = ''
-    ps = new Promise (resolve) =>
-      @packages (ps, d) =>
-        dir = d
-        resolve ps
-    selector.show(ps).then (pkg) =>
-      return unless pkg?
-      atom.open pathsToOpen: [path.join dir, pkg]
+    selector.show(@packages())
+      .then (pkg) =>
+        return unless pkg?
+        @pkgDir().then (dir) ->
+          atom.open pathsToOpen: [path.join dir, pkg]
+      .catch =>
+        atom.notifications.addError "Couldn't find your Julia packages."
