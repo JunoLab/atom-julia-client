@@ -46,13 +46,11 @@ module.exports =
       'julia-client:set-working-module': -> modules.chooseModule()
       'julia-client:reset-working-module': -> modules.resetModule()
 
-
     @subs.add atom.commands.add 'atom-workspace',
       'julia:open-startup-file': -> atom.workspace.open paths.home '.juliarc.jl'
       'julia:open-julia-home': -> shell.openItem paths.juliaHome()
       'julia:open-package-in-new-window': -> paths.openPackage()
 
-    @subs.add atom.commands.add '.item-views > atom-text-editor',
       'julia-client:work-in-file-folder': ->
         client.require -> evaluation.cdHere()
       'julia-client:work-in-project-folder': ->
