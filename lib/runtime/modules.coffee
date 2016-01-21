@@ -119,10 +119,7 @@ module.exports =
   # TODO: auto detect option, remove reset command
   chooseModule: ->
     client.require =>
-      mods = new Promise (resolve) =>
-        client.rpc('allmodules').then (mods) =>
-          resolve mods
-      selector.show(mods).then (mod) =>
+      selector.show(client.rpc('allmodules')).then (mod) =>
         return unless mod?
         atom.workspace.getActiveTextEditor().juliaModule = mod
         @update()

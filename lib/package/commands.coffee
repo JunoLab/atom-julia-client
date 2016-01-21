@@ -2,7 +2,7 @@ shell =                 require 'shell'
 {CompositeDisposable} = require 'atom'
 
 {client, process, tcp, terminal} = require '../connection'
-{evaluation, misc} =               require '../runtime'
+{evaluation, misc, modules} =      require '../runtime'
 {console} =                        require '../ui'
 
 module.exports =
