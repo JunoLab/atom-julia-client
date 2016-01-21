@@ -25,6 +25,5 @@ module.exports =
 
   getSuggestions: ({editor, bufferPosition}) ->
     return [] unless client.isConnected()
-    new Promise (resolve) =>
-      @getCompletions(editor, bufferPosition).then (completions) =>
-        resolve completions?.map(@toCompletion) or []
+    @getCompletions(editor, bufferPosition).then (completions) =>
+      completions?.map(@toCompletion) or []
