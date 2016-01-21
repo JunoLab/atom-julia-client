@@ -33,6 +33,7 @@ module.exports =
             content: views.render view
             error: error
             fade: fade
+          r.view.classList.add 'julia'
           if error and result.highlights?
             @showError r, result.highlights
           notifications.show "Evaluation Finished"
