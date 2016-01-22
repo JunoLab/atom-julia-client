@@ -24,10 +24,10 @@ module.exports =
         else
           readingMeta = false
           entry = entries[entries.length-1]
-          if entry.hasOwnProperty 'code'
-            entry.code += '\n' + line.slice(1)
+          if entry.hasOwnProperty 'input'
+            entry.input += '\n' + line.slice(1)
           else
-            entry.code = line.slice(1)
+            entry.input = line.slice(1)
 
       lineReader.on 'close', ->
         resolve entries
@@ -36,8 +36,8 @@ module.exports =
     out = fs.createWriteStream @path, flags: 'w'
     for entry in entries
       for k, v of entry
-        if k isnt 'code'
+        if k isnt 'input'
           out.write "# #{k}: #{v}\n"
-      for line in entry.code.split '\n'
+      for line in entry.input.split '\n'
         out.write "\t#{line}\n"
     return

@@ -1,6 +1,7 @@
 # TODO: modules, history
 
 {client} =      require '../connection'
+{history} =     require '../misc'
 notifications = require './notifications'
 views =         require './views'
 
@@ -36,6 +37,8 @@ module.exports =
     @c.onEval (ed) => @eval ed
     client.loading.onWorking => @c.view.loading true
     client.loading.onDone => @c.view.loading false
+    history.read().then (entries) =>
+      @c.setHistory entries
 
   toggle: -> @c.toggle()
 

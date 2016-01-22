@@ -4,7 +4,8 @@
 * Windows firewall no longer complains on first run
 * Shiny new Juno bundles
 * Console UI improvements
-* HTML support in inline results
+* Improvments to copyability everywhere
+* Graphics support
 
 ## 0.2.0
 * Improved scrolling for inline results
