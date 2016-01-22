@@ -6,6 +6,7 @@
 * Console UI improvements
 * Improvments to copyability everywhere
 * Graphics support
+* REPL history integration
 
 ## 0.2.0
 * Improved scrolling for inline results

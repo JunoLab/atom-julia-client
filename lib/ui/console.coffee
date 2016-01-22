@@ -1,4 +1,4 @@
-# TODO: modules, history
+# TODO: modules
 
 {client} =      require '../connection'
 {history} =     require '../misc'
@@ -24,6 +24,7 @@ module.exports =
   deactivate: ->
     @cmd.dispose()
     history.write @c.history
+    @c.destroy()
 
   create: ->
     @c = new @ink.Console
