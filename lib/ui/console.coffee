@@ -23,6 +23,7 @@ module.exports =
 
   deactivate: ->
     @cmd.dispose()
+    history.write @c.history
 
   create: ->
     @c = new @ink.Console
