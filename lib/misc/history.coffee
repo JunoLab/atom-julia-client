@@ -17,7 +17,7 @@ module.exports =
       lineReader.on 'line', (line) =>
         if line.startsWith '#'
           if !readingMeta
-            entries.push {}
+            entries.push {loaded: true}
             readingMeta = true
           [_, key, val] = line.match /# (.+?): (.*)/
           entries[entries.length-1][key] = val
@@ -33,11 +33,12 @@ module.exports =
         resolve entries
 
   write: (entries) ->
-    out = fs.createWriteStream @path, flags: 'w'
+    out = fs.createWriteStream @path, flags: 'a'
     for entry in entries
-      for k, v of entry
-        if k isnt 'input'
-          out.write "# #{k}: #{v}\n"
-      for line in entry.input.split '\n'
-        out.write "\t#{line}\n"
+      writeKey =  (k, v) -> out.write "# #{k}: #{v}\n"
+      if not entry.loaded
+        if entry.time? then writeKey 'time', entry.time
+        writeKey 'mode', entry.mode or 'julia'
+        for line in entry.input.split '\n'
+          out.write "\t#{line}\n"
     return
