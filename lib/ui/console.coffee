@@ -18,8 +18,10 @@ module.exports =
 
     client.handle 'result', (result) =>
       view = if result.type == 'error' then result.view else result
-      @c.result views.render(view),
+      view = views.render(view)
+      @c.result view,
         error: result.type == 'error'
+      views.ink.tree.toggle view
 
   deactivate: ->
     @cmd.dispose()
