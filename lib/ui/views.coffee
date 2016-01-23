@@ -15,8 +15,10 @@ module.exports = views =
     view.innerHTML = content
     view
 
-  tree: ({head, children}) ->
-    @ink.tree.treeView(@render(head), children.map((x)=>@render @tags.div [x]))[0]
+  tree: ({head, children, expand}) ->
+    @ink.tree.treeView(@render(head),
+                       children.map((x)=>@render @tags.div [x]),
+                       expand: expand)
 
   subtree: ({label, child}) ->
     @render if child.type == "tree"
