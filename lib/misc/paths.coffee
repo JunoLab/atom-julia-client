@@ -3,7 +3,7 @@
 path =  require 'path'
 fs =    require 'fs'
 
-{selector} = require '../ui'
+selector = require '../ui/selector'
 
 module.exports =
 
