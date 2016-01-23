@@ -45,7 +45,7 @@ module.exports =
   toggle: -> @c.toggle()
 
   eval: (ed) ->
-    if ed.getText()
+    if ed.getText().trim()
       client.start()
       @c.done()
       client.rpc('evalrepl', code: ed.getText(), mode: ed.inkConsoleMode?.name).then (result) =>
