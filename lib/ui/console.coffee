@@ -21,7 +21,8 @@ module.exports =
       view = views.render(view)
       @c.result view,
         error: result.type == 'error'
-      views.ink.tree.toggle view
+      if result.type isnt 'error'
+        views.ink.tree.toggle view
 
   deactivate: ->
     @cmd.dispose()
