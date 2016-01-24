@@ -9,9 +9,9 @@ module.exports =
   queue: []
   id: 0
 
-  unwrapPromise: (x, f) ->
+  unPromise: (x, f) ->
     if x?.constructor is Promise
-      x.then (x) => @unwrapPromise x, f
+      x.then f
     else
       f x
 
@@ -21,7 +21,7 @@ module.exports =
     if @handlers.hasOwnProperty type
       result = @handlers[type] args...
       if callback
-        @unwrapPromise result, (result) =>
+        @unPromise result, (result) =>
           @msg 'cb', callback, result
     else
       console.log "julia-client: unrecognised message #{type}"
