@@ -30,15 +30,6 @@ module.exports = jlprocess =
 
   script: (s...) -> @packageDir 'script', s...
 
-  initialiseClient: (f) ->
-    atom.config.unset('julia-client.initialiseClient')
-    if (jlpath = @bundledExe())
-      proc = child_process.spawn jlpath, [@script 'caches.jl']
-      proc.on 'exit', ->
-        f()
-    else
-      f()
-
   workingDir: ->
     paths = atom.workspace.project.getDirectories()
     if paths.length == 1
@@ -67,9 +58,9 @@ module.exports = jlprocess =
       """
       dismissable: true
 
-  start: (port, cons, boot = true) ->
+  start: (port, cons) ->
     return if @proc?
-    boot && client.booting()
+    client.booting()
 
     @checkExe @jlpath(), (exists) =>
       if not exists
@@ -77,8 +68,6 @@ module.exports = jlprocess =
         client.cancelBoot()
         return
 
-      if atom.config.get 'julia-client.initialiseClient'
-        return @initialiseClient => @start port, cons, false
       @spawnJulia(port, cons)
       @proc.on 'exit', (code, signal) =>
         cons.c.err "Julia has stopped"

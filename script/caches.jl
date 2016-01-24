@@ -1,10 +1,4 @@
-pkgdir = joinpath(JULIA_HOME, "..", "pkg") |> normpath
-
-isdir(pkgdir) || exit()
-
-vers = "v$(VERSION.major).$(VERSION.minor)"
-
-newpath(path) = replace(path, r"^.*pkg", pkgdir)
+newpath(path, pkgdir) = replace(path, r"^.*pkg", pkgdir)
 
 fileentry(path) = (path, mtime(path))
 
@@ -34,12 +28,12 @@ function writelength(f, io)
   return io
 end
 
-function process!(cache)
+function process!(cache, pkgdir)
   open(cache) do io
     Base.isvalid_cache_header(io) || return
     header = cache_header(io)
     modules, files = Base.cache_dependencies(io)
-    files = map(ft -> fileentry(newpath(ft[1])), files)
+    files = map(ft -> fileentry(newpath(ft[1], pkgdir)), files)
     open("$cache.1", "w") do out
       write(out, header)
       map(t->write(out, t...), modules)
@@ -55,8 +49,13 @@ function process!(cache)
   mv("$cache.1", cache)
 end
 
-cd(joinpath(pkgdir, "lib", vers)) do
-  for cachefile in readdir()
-    process!(cachefile)
+let
+  pkgdir = joinpath(JULIA_HOME, "..", "pkg") |> normpath
+  vers = "v$(VERSION.major).$(VERSION.minor)"
+
+  cd(joinpath(pkgdir, "lib", vers)) do
+    for cachefile in readdir()
+      process!(cachefile, pkgdir)
+    end
   end
 end
