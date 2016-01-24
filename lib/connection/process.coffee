@@ -37,7 +37,10 @@ module.exports = jlprocess =
     else
       process.env.HOME || process.env.USERPROFILE
 
-  jlpath: -> atom.config.get("julia-client.juliaPath")
+  jlpath: ->
+    p = atom.config.get("julia-client.juliaPath")
+    if p == '[bundle]' then p = @bundledExe()
+    p
 
   checkExe: (path, cb) ->
     if fs.existsSync(path)

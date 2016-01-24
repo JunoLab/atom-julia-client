@@ -8,7 +8,7 @@ config =
     order: 1
   juliaPath:
     type: 'string'
-    default: proc.bundledExe() || 'julia'
+    default: if proc.bundledExe() then '[bundle]' else 'julia'
     description: 'The location of the Julia binary.'
     order: 2
   notifications:
