@@ -36,7 +36,7 @@ module.exports =
         @loading.done()
 
     @handle 'cancelCallback', (id) =>
-      delete @callbacks[id]
+      @callbacks[id].reject()
       @loading.done()
 
   # Will be replaced by the connection logic
