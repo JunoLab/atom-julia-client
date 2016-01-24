@@ -30,7 +30,7 @@ module.exports =
   activate: ->
     @handle 'cb', (id, result) =>
       try
-        @callbacks[id] result
+        @callbacks[id].resolve result
       finally
         delete @callbacks[id]
         @loading.done()
@@ -49,9 +49,9 @@ module.exports =
       @queue.push [type, args...]
 
   rpc: (type, args...) ->
-    new Promise (resolve) =>
+    new Promise (resolve, reject) =>
       @id = @id+1
-      @callbacks[@id] = resolve
+      @callbacks[@id] = {resolve, reject}
       @msg {type: type, callback: @id}, args...
       @loading.working()
 
@@ -80,6 +80,8 @@ module.exports =
 
   isConnected: -> false
 
+  isActive: -> @isConnected() || @isBooting
+
   connected: ->
     @emitter.emit 'connected'
     if @isBooting
@@ -105,12 +107,13 @@ module.exports =
     @cancelBoot()
     @loading.reset()
     @queue = []
+    cb.reject() for id, cb of @callbacks
     @callbacks = {}
 
   # Management & UI
 
   connectedError: ->
-    if @isConnected()
+    if @isActive()
       atom.notifications.addError "Can't create a new client.",
         detail: "There is already a Julia client running."
       true
@@ -118,7 +121,7 @@ module.exports =
       false
 
   notConnectedError: ->
-    if not @isConnected()
+    if not @isActive()
       atom.notifications.addError "Can't do that without a Julia client.",
         detail: "Try connecting a client by evaluating something."
       true
@@ -129,6 +132,6 @@ module.exports =
   disrequire: (f) -> @connectedError() or f()
 
   start: ->
-    if not @isConnected() and not @isBooting
+    if not @isActive()
       atom.commands.dispatch atom.views.getView(atom.workspace),
                              'julia-client:start-julia'

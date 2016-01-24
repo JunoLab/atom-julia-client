@@ -51,9 +51,11 @@ module.exports =
     if ed.getText().trim()
       client.start()
       @c.done()
-      client.rpc('evalrepl', code: ed.getText(), mode: ed.inkConsoleMode?.name).then (result) =>
-        @c.input()
-        notifications.show "Evaluation Finished"
+      client.rpc('evalrepl', code: ed.getText(), mode: ed.inkConsoleMode?.name)
+        .then (result) =>
+          @c.input()
+          notifications.show "Evaluation Finished"
+        .catch => @c.input()
 
   replModes:
     ';':
