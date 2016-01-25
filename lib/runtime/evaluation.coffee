@@ -3,6 +3,7 @@ path = require 'path'
 {client} =  require '../connection'
 {notifications, views, selector} = require '../ui'
 {paths} = require '../misc'
+modules = require './modules'
 
 module.exports =
   client: client.import
@@ -45,17 +46,22 @@ module.exports =
 
   # get documentation or methods for the current word
   toggleMeta: (type) ->
+    mod = modules.currentModule()
+    mod = if mod then mod else 'Main'
     editor = atom.workspace.getActiveTextEditor()
     [word, range] = @getWord editor
     # if we only find numbers or nothing, return prematurely
     if word.length == 0 || !isNaN(word) then return
-    client.rpc(type, word).then ({result}) =>
-      view = if result.type then result.view else result
-      view = @ink.tree.fromJson(view)[0]
-      @ink.links.linkify view
-      r = @ink.results.toggleUnderline editor, range,
-        content: view
-        clas: 'julia'
+    client.rpc(type, {word: word, mod: mod}).then ({result}) =>
+      if result?
+        error = result.type == 'error'
+        view = if error then result.view else result
+        fade = not @ink.Result.removeLines editor, range.start.row, range.end.row
+        r = new @ink.Result editor, [range.start.row, range.end.row],
+          content: views.render view
+          error: error
+          fade: fade
+        # type: 'block'
 
   # gets the word and its range in the `editor` which the last cursor is on
   getWord: (editor) ->
