@@ -7,10 +7,8 @@ vers = "v$(VERSION.major).$(VERSION.minor)"
 
 if isdir(pkgdir)
   push!(LOAD_PATH, joinpath(pkgdir, vers))
-  if !isdir(Pkg.dir())
-    push!(Base.LOAD_CACHE_PATH, joinpath(pkgdir, "lib", vers))
-    include("caches.jl")
-  end
+  push!(Base.LOAD_CACHE_PATH, joinpath(pkgdir, "lib", vers))
+  include("caches.jl")
 end
 
 using Atom

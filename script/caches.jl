@@ -33,6 +33,7 @@ function process!(cache, pkgdir)
     Base.isvalid_cache_header(io) || return
     header = cache_header(io)
     modules, files = Base.cache_dependencies(io)
+    startswith(files[1][1], pkgdir) && return
     files = map(ft -> fileentry(newpath(ft[1], pkgdir)), files)
     open("$cache.1", "w") do out
       write(out, header)
@@ -45,8 +46,10 @@ function process!(cache, pkgdir)
       write(out, readbytes(io))
     end
   end
-  rm(cache)
-  mv("$cache.1", cache)
+  if isfile("$cache.1")
+    rm(cache)
+    mv("$cache.1", cache)
+  end
 end
 
 let
