@@ -1,6 +1,16 @@
-newpath(path, pkgdir) = replace(path, r"^.*pkg", pkgdir)
+let
+
+pkgdir = joinpath(JULIA_HOME, "..", "pkg") |> normpath
+vers = "v$(VERSION.major).$(VERSION.minor)"
+dummy = "i sure hope this isn't in any packages"
+
+newpath(path) = replace(path, r"^.*pkg", pkgdir)
 
 fileentry(path) = (path, mtime(path))
+
+@unix_only filepad(s::ASCIIString, n) = lpad(s, n, "/")
+@windows_only filepad(s::ASCIIString, n) = replace(s, r"\\", "\\"^(n-length(s)+1), 1)
+filepad(s::UTF8String, n) = filepad(ASCIIString(s), n)
 
 function cache_header(io)
   n = position(io)
@@ -28,37 +38,63 @@ function writelength(f, io)
   return io
 end
 
-function process!(cache, pkgdir)
-  open(cache) do io
-    Base.isvalid_cache_header(io) || return
-    header = cache_header(io)
-    modules, files = Base.cache_dependencies(io)
-    startswith(files[1][1], pkgdir) && return
-    files = map(ft -> fileentry(newpath(ft[1], pkgdir)), files)
-    open("$cache.1", "w") do out
-      write(out, header)
-      map(t->write(out, t...), modules)
-      write(out, Int32(0))
-      writelength(out) do out
-        map(t->write(out, t...), files)
-        write(out, Int32(0))
-      end
-      write(out, readbytes(io))
+function startswith!(io::IO, s::ASCIIString)
+  pos = position(io)
+  for c in s
+    if eof(io) || c ≠ read(io, UInt8)
+      seek(io, pos)
+      return false
     end
   end
-  if isfile("$cache.1")
-    rm(cache)
-    mv("$cache.1", cache)
-  end
+  return true
 end
 
-let
-  pkgdir = joinpath(JULIA_HOME, "..", "pkg") |> normpath
-  vers = "v$(VERSION.major).$(VERSION.minor)"
+function process!(cache)
+  f = open(cache)
+  Base.isvalid_cache_header(f) || return
+  header = cache_header(f)
+  modules, files = Base.cache_dependencies(f)
+  startswith(files[1][1], pkgdir) && return
+  files = map(ft -> fileentry(newpath(ft[1])), files)
 
+  io = IOBuffer(readbytes(f))
+  out = IOBuffer()
+  close(f)
+  # Header
+  write(out, header)
+  map(t->write(out, t...), modules)
+  write(out, Int32(0))
+  writelength(out) do out
+    map(t->write(out, t...), files)
+    write(out, Int32(0))
+  end
+  # Body
+  while !eof(io)
+    pos = position(io)
+    if startswith!(io, dummy)
+      while Base.peek(io) == ' '
+        read(io, Char)
+      end
+      path = joinpath(pkgdir, vers)
+      len = position(io)-pos
+      length(path) > len && error("Internal error: $path is longer than $len")
+      write(out, filepad(path, len).data)
+    end
+    write(out, read(io, UInt8))
+  end
+  open(io -> write(io, takebuf_array(out)), "$cache", "w")
+end
+
+try
   cd(joinpath(pkgdir, "lib", vers)) do
     for cachefile in readdir()
-      process!(cachefile, pkgdir)
+      endswith(cachefile, ".ji") || continue
+      process!(cachefile)
     end
   end
+catch e
+  println(STDERR, "Error processing bundle packages:")
+  showerror(STDERR, e, catch_backtrace())
+end
+
 end
