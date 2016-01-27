@@ -32,7 +32,7 @@ module.exports = jlprocess =
 
   workingDir: ->
     paths = atom.workspace.project.getDirectories()
-    if paths.length == 1
+    if paths.length == 1 and fs.statSync(paths[0].path).isDirectory()
       paths[0].path
     else
       process.env.HOME || process.env.USERPROFILE
