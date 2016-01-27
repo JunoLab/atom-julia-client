@@ -34,8 +34,8 @@ module.exports =
         if result?
           error = result.type == 'error'
           view = if error then result.view else result
-          fade = not @ink.Result.removeLines editor, start-1, end-1
-          r = new @ink.Result editor, [start-1, end-1],
+          fade = not @ink.results.removeLines editor, start-1, end-1, 'inline'
+          r = new @ink.inlineResult editor, [start-1, end-1],
             content: views.render view
             error: error
             fade: fade
@@ -56,12 +56,11 @@ module.exports =
       if result?
         error = result.type == 'error'
         view = if error then result.view else result
-        fade = not @ink.Result.removeLines editor, range.start.row, range.end.row
-        r = new @ink.Result editor, [range.start.row, range.end.row],
+        fade = not @ink.results.removeLines editor, range.start.row, range.end.row, 'block'
+        r = new @ink.blockResult editor, [range.start.row, range.end.row],
           content: views.render view
           error: error
           fade: fade
-        # type: 'block'
 
   # gets the word and its range in the `editor` which the last cursor is on
   getWord: (editor) ->
