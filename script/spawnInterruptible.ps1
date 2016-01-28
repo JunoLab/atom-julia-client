@@ -52,7 +52,7 @@ function Receive-TCPMessage {
         echo "$exception"
     }
 }
-echo $wrapPort
+
 # the port should probably be determined dynamically (by nodejs):
 while ($true){
 	$msg = Receive-TCPMessage -Port $wrapPort # wait for interrupts
