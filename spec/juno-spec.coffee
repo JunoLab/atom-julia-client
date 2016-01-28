@@ -14,11 +14,12 @@ describe "the package", ->
 describe "managing the Julia process", ->
   client = juno.connection.client
   clientStatus = -> [client.isConnected(), client.isActive(), client.isWorking()]
+  {echo, evalsimple} = juno.connection.client.import ['echo', 'evalsimple']
+  bootPromise = null
 
   it "recognises the client's state before boot", ->
     expect(clientStatus()).toEqual [false, false, false]
 
-  bootPromise = null
   it "initiates the boot", ->
     bootPromise = juno.connection.boot()
 
@@ -32,8 +33,6 @@ describe "managing the Julia process", ->
 
   it "recognises the client's state after boot", ->
     expect(clientStatus()).toEqual [true, true, false]
-
-  {echo, evalsimple} = juno.connection.client.import ['echo', 'evalsimple']
 
   it "responds to rpc messages", ->
     msg = {x: 1, y: 2}
