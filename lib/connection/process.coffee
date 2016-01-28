@@ -82,9 +82,11 @@ module.exports = jlprocess =
       @proc.stdout.on 'data', (data) =>
         text = data.toString()
         if text then cons.c.out text
+        if text and @pipeConsole then console.log text
       @proc.stderr.on 'data', (data) =>
         text = data.toString()
         if text then cons.c.err text
+        if text and @pipeConsole then console.info text
 
   spawnJulia: (port, cons) ->
     if process.platform is 'win32' and atom.config.get("julia-client.enablePowershellWrapper")
