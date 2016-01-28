@@ -79,6 +79,8 @@ module.exports =
   onConnected: (cb) -> @emitter.on('connected', cb)
   onDisconnected: (cb) -> @emitter.on('disconnected', cb)
 
+  isBooting: false
+
   isConnected: -> false
 
   isActive: -> @isConnected() || @isBooting
@@ -110,6 +112,10 @@ module.exports =
     @queue = []
     cb.reject() for id, cb of @callbacks
     @callbacks = {}
+
+  isWorking: -> @loading.isWorking()
+  onWorking: (f) -> @loading.onWorking f
+  onDone: (f) -> @loading.onDone f
 
   # Management & UI
 

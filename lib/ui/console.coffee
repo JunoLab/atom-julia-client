@@ -39,8 +39,8 @@ module.exports =
     @c.view.getTitle = -> "Julia"
     @c.modes = => @replModes
     @c.onEval (ed) => @eval ed
-    @client.loading.onWorking => @c.view.loading true
-    @client.loading.onDone => @c.view.loading false
+    @client.onWorking => @c.view.loading true
+    @client.onDone => @c.view.loading false
     history.read().then (entries) =>
       @c.setHistory entries
 
