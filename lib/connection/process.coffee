@@ -90,12 +90,19 @@ module.exports = jlprocess =
 
   spawnJulia: (port, cons) ->
     if process.platform is 'win32' and atom.config.get("julia-client.enablePowershellWrapper")
-      @useWrapper = parseInt(child_process.spawnSync("powershell", ["-NoProfile", "$PSVersionTable.PSVersion.Major"]).output[1].toString()) > 2
+      @useWrapper = parseInt(child_process.spawnSync("powershell",
+                                                    ["-NoProfile", "$PSVersionTable.PSVersion.Major"])
+                                          .output[1].toString()) > 2
       if @useWrapper
+        # get a random port between 1000 and 20_000; this may not be free, of course,
+        # but hopefully not very often
+        @wrapPort = Math.round(Math.random()*(20000-1000)+1000)
         @proc = child_process.spawn("powershell",
                                     ["-NoProfile", "-ExecutionPolicy", "bypass",
                                      "& \"#{@script "spawnInterruptible.ps1"}\"
-                                      -cwd #{@workingDir()} -port #{port}
+                                      -cwd #{@workingDir()}
+                                      -port #{port}
+                                      -wrapPort #{@wrapPort}
                                       -jlpath \"#{@jlpath()}\"
                                       -boot \"#{@script 'boot.jl'}\""])
         return
@@ -127,7 +134,7 @@ module.exports = jlprocess =
         @proc.kill()
 
   sendSignalToWrapper: (signal) ->
-    wrapper = net.connect(port: 26992)
+    wrapper = net.connect(port: @wrapPort)
     wrapper.setNoDelay()
     wrapper.write(signal)
     wrapper.end()
