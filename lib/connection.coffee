@@ -25,7 +25,3 @@ module.exports =
   boot: ->
     if not @client.isActive()
       @tcp.listen (port) => @process.start port
-
-  repl: ->
-    if not @client.isActive()
-      @tcp.listen (port) => @terminal.client port

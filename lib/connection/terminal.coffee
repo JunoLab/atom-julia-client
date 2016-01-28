@@ -32,7 +32,3 @@ module.exports =
       'x-terminal-emulator -e'
 
   repl: -> @term "#{@escpath proc.jlpath()}"
-
-  client: (port) ->
-    client.booting()
-    @term "#{@escpath proc.jlpath()} -q -P \"import Atom; Atom.connect(#{port})\""
