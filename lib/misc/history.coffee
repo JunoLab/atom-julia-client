@@ -33,9 +33,10 @@ module.exports =
         resolve entries
 
   write: (entries) ->
+    return unless entries?
     out = fs.createWriteStream @path, flags: 'a'
     for entry in entries
-      writeKey =  (k, v) -> out.write "# #{k}: #{v}\n"
+      writeKey = (k, v) -> out.write "# #{k}: #{v}\n"
       if not entry.loaded
         if entry.time? then writeKey 'time', entry.time
         writeKey 'mode', entry.mode or 'julia'
