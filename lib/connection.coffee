@@ -25,3 +25,4 @@ module.exports =
   boot: ->
     if not @client.isActive()
       @tcp.listen (port) => @process.start port
+    @client.rpc 'ping'
