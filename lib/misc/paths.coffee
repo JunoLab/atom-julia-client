@@ -3,8 +3,6 @@
 path =  require 'path'
 fs =    require 'fs'
 
-selector = require '../ui/selector'
-
 module.exports =
 
   home: (p...) ->
@@ -31,7 +29,7 @@ module.exports =
           if ps? then resolve ps else reject()
 
   openPackage: ->
-    selector.show(@packages())
+    require('../ui').selector.show(@packages())
       .then (pkg) =>
         return unless pkg?
         @pkgDir().then (dir) ->

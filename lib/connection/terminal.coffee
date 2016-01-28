@@ -35,4 +35,4 @@ module.exports =
 
   client: (port) ->
     client.booting()
-    @term "#{@escpath @jlpath()} -q -P \"import Atom; Atom.connect(#{port})\""
+    @term "#{@escpath proc.jlpath()} -q -P \"import Atom; Atom.connect(#{port})\""

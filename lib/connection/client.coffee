@@ -130,8 +130,3 @@ module.exports =
 
   require: (f) -> @notConnectedError() or f()
   disrequire: (f) -> @connectedError() or f()
-
-  start: ->
-    if not @isActive()
-      atom.commands.dispatch atom.views.getView(atom.workspace),
-                             'julia-client:start-julia'

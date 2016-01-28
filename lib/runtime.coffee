@@ -1,7 +1,7 @@
 module.exports =
+  modules:    require './runtime/modules'
   evaluation: require './runtime/evaluation'
   frontend:   require './runtime/frontend'
-  modules:    require './runtime/modules'
 
   activate: ->
     @modules.activate()

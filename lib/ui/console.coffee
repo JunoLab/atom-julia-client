@@ -1,22 +1,21 @@
 # TODO: modules
 
-{client} =      require '../connection'
 {history} =     require '../misc'
 notifications = require './notifications'
 views =         require './views'
 
 module.exports =
-  activate: ->
+  activate: (@client) ->
     @create()
 
     @cmd = atom.commands.add 'atom-workspace',
       "julia-client:clear-console": =>
         @c.reset()
 
-    client.handle 'info', (msg) =>
+    @client.handle 'info', (msg) =>
       @c.info msg
 
-    client.handle 'result', (result) =>
+    @client.handle 'result', (result) =>
       view = if result.type == 'error' then result.view else result
       view = views.render(view)
       @c.result view,
@@ -40,8 +39,8 @@ module.exports =
     @c.view.getTitle = -> "Julia"
     @c.modes = => @replModes
     @c.onEval (ed) => @eval ed
-    client.loading.onWorking => @c.view.loading true
-    client.loading.onDone => @c.view.loading false
+    @client.loading.onWorking => @c.view.loading true
+    @client.loading.onDone => @c.view.loading false
     history.read().then (entries) =>
       @c.setHistory entries
 
@@ -49,9 +48,9 @@ module.exports =
 
   eval: (ed) ->
     if ed.getText().trim()
-      client.start()
+      @client.boot()
       @c.done()
-      client.rpc('evalrepl', code: ed.getText(), mode: ed.inkConsoleMode?.name)
+      @client.rpc('evalrepl', code: ed.getText(), mode: ed.inkConsoleMode?.name)
         .then (result) =>
           @c.input()
           notifications.show "Evaluation Finished"

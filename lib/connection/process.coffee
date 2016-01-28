@@ -4,6 +4,7 @@ path =          require 'path'
 fs =            require 'fs'
 
 client = require './client'
+{console: cons} = require '../ui'
 
 module.exports = jlprocess =
 
@@ -61,7 +62,7 @@ module.exports = jlprocess =
       """
       dismissable: true
 
-  start: (port, cons) ->
+  start: (port) ->
     return if @proc?
     client.booting()
 

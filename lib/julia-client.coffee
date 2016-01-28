@@ -2,15 +2,15 @@ http = require 'http'
 commands = require './package/commands'
 
 module.exports = JuliaClient =
+  misc:       require './misc'
+  ui:         require './ui'
   connection: require './connection'
   runtime:    require './runtime'
-  ui:         require './ui'
-  misc:       require './misc'
-
-  config: require './package/config'
 
   activate: (state) ->
-    x.activate() for x in [commands, @connection, @runtime, @ui]
+    commands.activate @
+    x.activate() for x in [@connection, @runtime]
+    @ui.activate @connection.client
 
     try
       if id = localStorage.getItem 'metrics.userId'
@@ -26,4 +26,5 @@ module.exports = JuliaClient =
   consumeStatusBar: (bar) ->
     @runtime.consumeStatusBar bar
 
+  config: require './package/config'
   completions: -> require './runtime/completions'

@@ -1,62 +1,58 @@
 shell =                 require 'shell'
 {CompositeDisposable} = require 'atom'
 
-{client, process, tcp, terminal} = require '../connection'
-{evaluation, modules} =            require '../runtime'
-{console} =                        require '../ui'
-{paths} =                          require '../misc'
-
 module.exports =
-  activate: ->
+  activate: (juno) ->
+    requireClient    = (f) -> juno.connection.client.require f
+    disrequireClient = (f) -> juno.connection.client.disrequire f
+    boot = -> juno.connection.boot()
+
     @subs = new CompositeDisposable
 
     @subs.add atom.commands.add '.item-views > atom-text-editor',
       'julia-client:evaluate': (event) =>
         @withInk ->
-          client.start()
-          evaluation.eval()
+          boot()
+          juno.runtime.evaluation.eval()
       'julia-client:evaluate-all': (event) =>
         @withInk ->
-          client.start()
-          evaluation.evalAll()
+          boot()
+          juno.runtime.evaluation.evalAll()
       'julia-client:toggle-documentation': =>
         @withInk ->
-          client.start()
-          evaluation.toggleMeta 'docs'
+          boot()
+          juno.runtime.evaluation.toggleMeta 'docs'
       'julia-client:toggle-methods': =>
         @withInk ->
-          client.start()
-          evaluation.toggleMeta 'methods'
-
-    @subs.add atom.commands.add 'atom-workspace',
-      'julia-client:open-a-repl': -> terminal.repl()
-      'julia-client:start-repl-client': ->
-        client.disrequire ->
-          tcp.listen (port) -> terminal.client port
-      'julia-client:start-julia': ->
-        client.disrequire ->
-          tcp.listen (port) -> process.start port, console
-      'julia-client:toggle-console': => @withInk -> console.toggle()
-      'julia-client:reset-loading-indicator': -> client.reset()
-      'julia-client:settings': ->
-        atom.workspace.open('atom://config/packages/julia-client')
+          boot()
+          juno.runtime.evaluation.toggleMeta 'methods'
 
     @subs.add atom.commands.add '.item-views >
                                 atom-text-editor[data-grammar="source julia"]',
-      'julia-client:set-working-module': -> modules.chooseModule()
-      'julia-client:reset-working-module': -> modules.resetModule()
+      'julia-client:set-working-module': -> juno.runtime.modules.chooseModule()
+      'julia-client:reset-working-module': -> juno.runtime.modules.resetModule()
 
     @subs.add atom.commands.add 'atom-workspace',
-      'julia:open-startup-file': -> atom.workspace.open paths.home '.juliarc.jl'
-      'julia:open-julia-home': -> shell.openItem paths.juliaHome()
-      'julia:open-package-in-new-window': -> paths.openPackage()
+      'julia-client:open-a-repl': -> juno.connection.terminal.repl()
+      'julia-client:start-repl-client': ->
+        disrequireClient -> juno.connection.repl()
+      'julia-client:start-julia': ->
+        disrequireClient -> boot()
+      'julia-client:toggle-console': => @withInk -> juno.ui.console.toggle()
+      'julia-client:reset-loading-indicator': -> juno.connection.client.reset()
+      'julia-client:settings': ->
+        atom.workspace.open('atom://config/packages/julia-client')
+
+      'julia:open-startup-file': -> atom.workspace.open juno.misc.paths.home '.juliarc.jl'
+      'julia:open-julia-home': -> shell.openItem juno.misc.paths.juliaHome()
+      'julia:open-package-in-new-window': -> juno.misc.paths.openPackage()
 
       'julia-client:work-in-file-folder': ->
-        client.require -> evaluation.cdHere()
+        requireClient -> juno.runtime.evaluation.cdHere()
       'julia-client:work-in-project-folder': ->
-        client.require -> evaluation.cdProject()
+        requireClient -> juno.runtime.evaluation.cdProject()
       'julia-client:work-in-home-folder': ->
-        client.require -> evaluation.cdHome()
+        requireClient -> juno.runtime.evaluation.cdHome()
 
   deactivate: ->
     @subs.dispose()

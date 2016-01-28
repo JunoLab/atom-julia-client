@@ -6,7 +6,11 @@ module.exports =
 
   activate: ->
     @client.activate()
+    @client.boot = => @boot()
     @process.activate()
+
+    @client.handle 'error', (options) =>
+      atom.notifications.addError options.msg, options
 
     if atom.config.get("julia-client.launchOnStartup")
       atom.commands.dispatch atom.views.getView(atom.workspace),
@@ -17,3 +21,11 @@ module.exports =
 
   consumeInk: (ink) ->
     @client.loading = new ink.Loading
+
+  boot: ->
+    if not @client.isActive()
+      @tcp.listen (port) => @process.start port
+
+  repl: ->
+    if not @client.isActive()
+      @tcp.listen (port) => @terminal.client port
