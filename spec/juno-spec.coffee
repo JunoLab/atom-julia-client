@@ -11,18 +11,18 @@ describe "package activation", ->
     waitsForPromise ->
       atom.packages.activatePackage 'julia-client'
 
-describe "basic client interaction", ->
+describe "managing the Julia process", ->
+  client = juno.connection.client
+  clientStatus = -> [client.isConnected(), client.isActive(), client.isWorking()]
   it "recognises the client's state before boot", ->
-    expect(juno.connection.client.isConnected()).toBeFalsy()
-    expect(juno.connection.client.isActive()).toBeFalsy()
+    expect(clientStatus()).toEqual [false, false, false]
 
   bootPromise = null
   it "initiates the boot", ->
     bootPromise = juno.connection.boot()
 
   it "recognises the client's state during boot", ->
-    expect(juno.connection.client.isConnected()).toBe(false)
-    expect(juno.connection.client.isActive()).toBe(true)
+    expect(clientStatus()).toEqual [false, true, true]
 
   it "waits for the boot to complete", ->
     waitsForPromise ->
@@ -30,8 +30,7 @@ describe "basic client interaction", ->
         expect(pong).toBe('pong')
 
   it "recognises the client's state after boot", ->
-    expect(juno.connection.client.isConnected()).toBe(true)
-    expect(juno.connection.client.isActive()).toBe(true)
+    expect(clientStatus()).toEqual [true, true, false]
 
   {echo, evalsimple} = juno.connection.client.import ['echo', 'evalsimple']
 
@@ -39,7 +38,7 @@ describe "basic client interaction", ->
     msg = {x: 1, y: 2}
     waitsForPromise ->
       echo(msg).then (response) ->
-        expect(msg).toBe(msg)
+        expect(response).toEqual(msg)
 
     waitsForPromise ->
       evalsimple("2+2").then (result) ->
