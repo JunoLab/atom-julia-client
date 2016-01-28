@@ -4,7 +4,7 @@ juno = require '../lib/julia-client'
 juno.connection.process.jlpath = -> "julia"
 juno.connection.process.workingDir = -> process.env.HOME || process.env.USERPROFILE
 
-describe "package activation", ->
+describe "the package", ->
   it "activates without errors", ->
     waitsForPromise ->
       atom.packages.activatePackage 'ink'
