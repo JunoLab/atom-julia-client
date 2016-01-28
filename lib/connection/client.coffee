@@ -58,8 +58,9 @@ module.exports =
   handle: (type, f) ->
     @handlers[type] = f
 
-  import: (fs, rpc = false, mod = {}) ->
+  import: (fs, rpc = true, mod = {}) ->
     return unless fs?
+    if fs.constructor == String then return @import [fs], rpc, mod
     if fs.rpc? or fs.msg?
       mod = {}
       @import fs.rpc, true,  mod

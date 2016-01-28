@@ -6,7 +6,7 @@ module.exports =
   filterSuggestions: true
   excludeLowerPriority: false
 
-  client: client.import ['completions'], true
+  client: client.import 'completions'
 
   completionsData: (ed, pos) ->
     module: ed.juliaModule
