@@ -14,6 +14,7 @@ describe "the package", ->
 describe "managing the Julia process", ->
   client = juno.connection.client
   clientStatus = -> [client.isConnected(), client.isActive(), client.isWorking()]
+
   it "recognises the client's state before boot", ->
     expect(clientStatus()).toEqual [false, false, false]
 
@@ -44,7 +45,12 @@ describe "managing the Julia process", ->
       evalsimple("2+2").then (result) ->
         expect(result).toBe(4)
 
-  it "recognises the client's state after exit"
+  it "exits the process", ->
+    waitsForPromise ->
+      evalsimple('exit()').catch ->
+
+  it "recognises the client's state after exit", ->
+    expect(clientStatus()).toEqual [false, false, false]
 
 describe "rpc", ->
 
