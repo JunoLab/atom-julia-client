@@ -16,9 +16,28 @@ describe "managing the client", ->
   client = juno.connection.client
   clientStatus = -> [client.isConnected(), client.isActive(), client.isWorking()]
   {echo, evalsimple} = client.import ['echo', 'evalsimple']
-  bootPromise = null
+
+  describe "before booting", ->
+
+    it "can validate the existence of a julia binary", ->
+      path = require 'path'
+      checkPath = (p) -> juno.connection.process.checkPath p
+      waitsForPromise ->
+        checkPath(path.join(__dirname, "juno-spec.coffee")).then (exists) ->
+          expect(exists).toBe(true)
+      waitsForPromise ->
+        checkPath(path.join(__dirname, "doesn't-exist.coffee")).then (exists) ->
+          expect(exists).toBe(false)
+
+    it "can validate the existence of a julia command", ->
+      checkPath = (p) -> juno.connection.process.checkPath p
+      waitsForPromise ->
+        checkPath("julia").then (exists) -> expect(exists).toBe(true)
+      waitsForPromise ->
+        checkPath("nojulia").then (exists) -> expect(exists).toBe(false)
 
   describe "when booting the client", ->
+    bootPromise = null
 
     it "recognises the client's state before boot", ->
       expect(clientStatus()).toEqual [false, false, false]
@@ -69,18 +88,27 @@ describe "managing the client", ->
         evalsimple("@rpc test(2)").then (x) ->
           expect(x).toBe(2)
 
-    cbs = null
-    it "enters loading state while callbacks are pending", ->
-      cbs = (evalsimple("peakflops()") for i in [1..5])
-      expect(client.isWorking()).toBe(true)
+    describe "when callbacks are pending", ->
+      cbs = null
+      it "enters loading state", ->
+        cbs = (evalsimple("peakflops(1000)") for i in [1..5])
+        expect(client.isWorking()).toBe(true)
 
-    it "stops loading when callbacks are done", ->
-      for cb in cbs
-        do (cb) ->
+      it "stops loading after they are done", ->
+        for cb in cbs
+          do (cb) ->
+            waitsForPromise ->
+              cb
+        runs ->
+          expect(client.isWorking()).toBe(false)
+
+    it "can handle a large number of callbacks", ->
+      n = 1000
+      cbs = (evalsimple("sleep(rand()); #{i}^2") for i in [0...n])
+      for i in [0...n]
+        do (i) ->
           waitsForPromise ->
-            cb
-      runs ->
-        expect(client.isWorking()).toBe(false)
+            cbs[i].then (result) -> expect(result).toBe(Math.pow(i, 2))
 
   describe "when the process is shut down", ->
 
