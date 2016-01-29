@@ -43,14 +43,16 @@ module.exports = jlprocess =
     if p == '[bundle]' then p = @bundledExe()
     p
 
-  checkExe: (path, cb) ->
-    if fs.existsSync(path)
-      cb true
-      return
-    which = if process.platform is 'win32' then 'where' else 'which'
-    proc = child_process.spawn which, [path]
-    proc.on 'exit', (status) ->
-      cb status == 0
+  checkPath: (path) ->
+    new Promise (resolve) ->
+      fs.exists path, (exists) ->
+        if exists
+          resolve true
+        else
+          which = if process.platform is 'win32' then 'where' else 'which'
+          proc = child_process.spawn which, [path]
+          proc.on 'exit', (status) ->
+            resolve status == 0
 
   jlNotFound: (path) ->
     atom.notifications.addError "Julia could not be found.",
@@ -66,7 +68,7 @@ module.exports = jlprocess =
     return if @proc?
     client.booting()
 
-    @checkExe @jlpath(), (exists) =>
+    @checkPath(@jlpath()).then (exists) =>
       if not exists
         @jlNotFound @jlpath()
         client.cancelBoot()
