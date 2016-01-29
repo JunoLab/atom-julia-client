@@ -16,6 +16,8 @@ describe "managing the client", ->
   client = juno.connection.client
   clientStatus = -> [client.isConnected(), client.isActive(), client.isWorking()]
   {echo, evalsimple} = client.import ['echo', 'evalsimple']
+  client.onConnected (connectSpy = jasmine.createSpy 'connect')
+  client.onDisconnected (disconnectSpy = jasmine.createSpy 'disconnect')
 
   describe "before booting", ->
 
@@ -57,6 +59,9 @@ describe "managing the client", ->
     it "recognises the client's state after boot", ->
       expect(clientStatus()).toEqual [true, true, false]
 
+    it "emits a connection event", ->
+      expect(connectSpy.calls.length).toBe(1)
+
   describe "while the client is active", ->
 
     it "can send and receive nested objects, strings and arrays", ->
@@ -89,10 +94,18 @@ describe "managing the client", ->
           expect(x).toBe(2)
 
     describe "when callbacks are pending", ->
-      cbs = null
+      {cbs, workingSpy, doneSpy} = {}
+
+      it "registers loading listeners", ->
+        client.onWorking (workingSpy = jasmine.createSpy 'working')
+        client.onDone (doneSpy = jasmine.createSpy 'done')
+
       it "enters loading state", ->
         cbs = (evalsimple("peakflops(1000)") for i in [1..5])
         expect(client.isWorking()).toBe(true)
+
+      it "emits a working event", ->
+        expect(workingSpy.calls.length).toBe(1)
 
       it "stops loading after they are done", ->
         for cb in cbs
@@ -102,19 +115,31 @@ describe "managing the client", ->
         runs ->
           expect(client.isWorking()).toBe(false)
 
-    it "can handle a large number of callbacks", ->
+      it "emits a done event", ->
+        expect(doneSpy.calls.length).toBe(1)
+
+    it "can handle a large number of concurrent callbacks", ->
       n = 1000
       cbs = (evalsimple("sleep(rand()); #{i}^2") for i in [0...n])
+      t = new Date().getTime()
       for i in [0...n]
         do (i) ->
           waitsForPromise ->
             cbs[i].then (result) -> expect(result).toBe(Math.pow(i, 2))
+      runs ->
+        expect(new Date().getTime() - t).toBeLessThan(1500)
 
   describe "when the process is shut down", ->
 
     it "rejects pending callbacks", ->
       waitsFor (done) ->
         evalsimple('exit()').catch -> done()
+
+    it "resets the working state", ->
+      expect(client.isWorking()).toBe(false)
+
+    it "emits a disconnection event", ->
+      expect(disconnectSpy.calls.length).toBe(1)
 
     it "recognises the client's state after exit", ->
       expect(clientStatus()).toEqual [false, false, false]
