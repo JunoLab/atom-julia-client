@@ -1,5 +1,6 @@
 param(
 	[Int32] $port,
+	[Int32] $wrapPort,
 	[string] $jlpath,
 	[string] $boot,
 	[string] $cwd
@@ -52,9 +53,8 @@ function Receive-TCPMessage {
     }
 }
 
-# the port should probably be determined dynamically (by nodejs):
 while ($true){
-	$msg = Receive-TCPMessage -Port 26992 # wait for interrupts
+	$msg = Receive-TCPMessage -Port $wrapPort # wait for interrupts
 	if ($msg -match "SIGINT"){
 		$status = $Kernel32::GenerateConsoleCtrlEvent(0, $proc.Id)
 		# this is necessary for GenerateConsoleCtrlEvent to actually do something:
