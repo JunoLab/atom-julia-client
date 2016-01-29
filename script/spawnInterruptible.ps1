@@ -53,7 +53,6 @@ function Receive-TCPMessage {
     }
 }
 
-# the port should probably be determined dynamically (by nodejs):
 while ($true){
 	$msg = Receive-TCPMessage -Port $wrapPort # wait for interrupts
 	if ($msg -match "SIGINT"){
