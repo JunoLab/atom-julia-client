@@ -25,7 +25,7 @@ module.exports =
 
   deactivate: ->
     @cmd.dispose()
-    history.write @c.history
+    history.write @c.history.items
     @c.destroy()
 
   create: ->
@@ -42,7 +42,7 @@ module.exports =
     @client.onWorking => @c.view.loading true
     @client.onDone => @c.view.loading false
     history.read().then (entries) =>
-      @c.setHistory entries
+      @c.history.set entries
 
   toggle: -> @c.toggle()
 
