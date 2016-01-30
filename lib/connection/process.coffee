@@ -102,7 +102,7 @@ module.exports = jlprocess =
           @proc = child_process.spawn("powershell",
                                       ["-NoProfile", "-ExecutionPolicy", "bypass",
                                        "& \"#{@script "spawnInterruptible.ps1"}\"
-                                        -cwd #{@workingDir()}
+                                        -cwd \"#{@workingDir()}\"
                                         -port #{port}
                                         -wrapPort #{@wrapPort}
                                         -jlpath \"#{@jlpath()}\"
