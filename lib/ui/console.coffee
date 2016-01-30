@@ -57,6 +57,8 @@ module.exports =
         .catch => @c.input()
 
   replModes:
+    'default':
+      name: 'julia'
     ';':
       name: 'shell'
       icon: 'terminal'
