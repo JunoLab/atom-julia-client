@@ -49,6 +49,7 @@ module.exports =
   eval: (ed) ->
     if ed.getText().trim()
       @client.boot()
+      @c.logInput()
       @c.done()
       @client.rpc('evalrepl', code: ed.getText(), mode: ed.inkConsoleMode?.name)
         .then (result) =>
