@@ -1,4 +1,5 @@
 # TODO: modules
+{CompositeDisposable} = require 'atom'
 
 {history} =     require '../misc'
 notifications = require './notifications'
@@ -8,9 +9,11 @@ module.exports =
   activate: (@client) ->
     @create()
 
-    @cmd = atom.commands.add 'atom-workspace',
-      "julia-client:clear-console": =>
-        @c.reset()
+    @subs = new CompositeDisposable
+
+    @subs.add atom.workspace.addOpener (uri) =>
+      if uri is 'atom://julia-client/console'
+        @c
 
     @client.handle 'info', (msg) =>
       @c.info msg
@@ -24,15 +27,15 @@ module.exports =
         error: result.type == 'error'
 
   deactivate: ->
-    @cmd.dispose()
+    @subs.dispose()
     history.write @c.history.items
 
   create: ->
     @c = new @ink.Console
     @c.setModes @modes
     @c.onEval (ed) => @eval ed
-    @client.onWorking => @c.view.loading true
-    @client.onDone => @c.view.loading false
+    # @client.onWorking => @c.view.loading true
+    # @client.onDone => @c.view.loading false
     history.read().then (entries) =>
       @c.history.set entries
 
