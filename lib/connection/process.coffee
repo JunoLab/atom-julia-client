@@ -76,18 +76,18 @@ module.exports = jlprocess =
 
       @spawnJulia port, cons, =>
         @proc.on 'exit', (code, signal) =>
-          cons.c.err "Julia has stopped"
-          if not @useWrapper then cons.c.err ": #{code}, #{signal}"
-          cons.c.input() unless cons.c.isInput
+          cons.c.stderr "Julia has stopped"
+          if not @useWrapper then cons.c.stderr ": #{code}, #{signal}"
+          cons.c.input()
           @proc = null
           client.cancelBoot()
         @proc.stdout.on 'data', (data) =>
           text = data.toString()
-          if text then cons.c.out text
+          if text then cons.c.stdout text
           if text and @pipeConsole then console.log text
         @proc.stderr.on 'data', (data) =>
           text = data.toString()
-          if text then cons.c.err text
+          if text then cons.c.stderr text
           if text and @pipeConsole then console.info text
 
   spawnJulia: (port, cons, fn) ->

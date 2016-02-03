@@ -7,7 +7,7 @@
   'ctrl-c': 'julia-client:interrupt-julia'
   'cmd-j cmd-d': 'julia-client:toggle-documentation'
 
-'.platform-darwin .ink-console':
+'.platform-darwin ink-console':
   'ctrl-c': 'julia-client:interrupt-julia'
   'ctrl-`': 'julia-client:toggle-console'
 
@@ -30,10 +30,10 @@
   'ctrl-shift-c': 'julia-client:interrupt-julia'
   'ctrl-j ctrl-d': 'julia-client:toggle-documentation'
 
-'.platform-win32 .ink-console,
- .platform-win32 .ink-console atom-text-editor,
- .platform-linux .ink-console,
- .platform-linux .ink-console atom-text-editor':
+'.platform-win32 ink-console,
+ .platform-win32 ink-console atom-text-editor,
+ .platform-linux ink-console,
+ .platform-linux ink-console atom-text-editor':
   'ctrl-shift-c': 'julia-client:interrupt-julia'
   'ctrl-`': 'julia-client:toggle-console'
 

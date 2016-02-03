@@ -1,3 +1,7 @@
+## 0.4.0
+* Better Console buffering
+* History prefix support, like the repl
+
 ## 0.3.0
 * New Packages->Julia menu
 * Option to launch Julia on startup
