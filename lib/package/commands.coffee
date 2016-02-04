@@ -37,7 +37,7 @@ module.exports =
       'julia-client:start-julia': ->
         disrequireClient -> boot()
       'julia-client:toggle-console': =>
-        @withInk -> atom.workspace.open("atom://julia-client/console")
+        @withInk -> atom.workspace.open("atom://julia-client/console", split: 'down')
       "julia-client:clear-console": => juno.ui.console.c.reset()
       'julia-client:reset-loading-indicator': -> juno.connection.client.reset()
       'julia-client:settings': ->
