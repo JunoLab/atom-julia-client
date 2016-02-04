@@ -6,13 +6,16 @@ notifications = require './notifications'
 views =         require './views'
 
 module.exports =
+
+  uri: 'atom://julia-client/console'
+
   activate: (@client) ->
     @create()
 
     @subs = new CompositeDisposable
 
     @subs.add atom.workspace.addOpener (uri) =>
-      if uri is 'atom://julia-client/console'
+      if uri is @uri
         @c
 
     @client.handle 'info', (msg) =>
@@ -36,7 +39,10 @@ module.exports =
     @c.onEval (ed) => @eval ed
     @client.onWorking => @c.loading true
     @client.onDone => @c.loading false
+    @c.getURI = => @uri
     atom.views.getView(@c).classList.add 'julia'
+    @c.serialize = ->
+      deserializer: 'JuliaConsole'
     history.read().then (entries) =>
       @c.history.set entries
 
