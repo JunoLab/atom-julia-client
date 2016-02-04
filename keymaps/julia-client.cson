@@ -3,19 +3,17 @@
   'cmd-shift-enter': 'julia-client:evaluate-all'
   'cmd-j cmd-m': 'julia-client:set-working-module'
   'cmd-shift-j cmd-shift-m': 'julia-client:reset-working-module'
-  'ctrl-`': 'julia-client:toggle-console'
   'ctrl-c': 'julia-client:interrupt-julia'
   'cmd-j cmd-d': 'julia-client:toggle-documentation'
 
 '.platform-darwin ink-console':
   'ctrl-c': 'julia-client:interrupt-julia'
-  'ctrl-`': 'julia-client:toggle-console'
 
 '.platform-darwin atom-workspace':
   'cmd-j cmd-r': 'julia-client:open-a-repl'
   'cmd-shift-j cmd-shift-r': 'julia-client:start-repl-client'
   'cmd-j cmd-s': 'julia-client:start-julia'
-  'cmd-j cmd-y': 'julia-client:toggle-console'
+  'cmd-j cmd-o': 'julia-client:open-console'
   'cmd-j cmd-c': 'julia-client:clear-console'
   'cmd-j cmd-l': 'julia-client:reset-loading-indicator'
   'cmd-j cmd-k': 'julia-client:kill-julia'
@@ -26,7 +24,6 @@
   'ctrl-shift-enter': 'julia-client:evaluate-all'
   'ctrl-j ctrl-m': 'julia-client:set-working-module'
   'ctrl-alt-j ctrl-alt-m': 'julia-client:reset-working-module'
-  'ctrl-`': 'julia-client:toggle-console'
   'ctrl-shift-c': 'julia-client:interrupt-julia'
   'ctrl-j ctrl-d': 'julia-client:toggle-documentation'
 
@@ -35,7 +32,6 @@
  .platform-linux ink-console,
  .platform-linux ink-console atom-text-editor':
   'ctrl-shift-c': 'julia-client:interrupt-julia'
-  'ctrl-`': 'julia-client:toggle-console'
 
 '.platform-win32 atom-workspace,
  .platform-linux atom-workspace':

@@ -40,6 +40,14 @@ module.exports =
     history.read().then (entries) =>
       @c.history.set entries
 
+  open: ->
+    # Seems like atom should be doing this check for us,
+    # but it looks like it's broken.
+    @c.activate() or
+      atom.workspace.open "atom://julia-client/console",
+        split: 'down'
+        searchAllPanes: true
+
   toggle: -> @c.toggle()
 
   eval: ({editor, mode}) ->

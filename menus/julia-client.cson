@@ -21,7 +21,7 @@ menu: [
 
         {label: 'Evaluate', command: 'julia-client:evaluate'}
         {label: 'Evaluate All', command: 'julia-client:evaluate-all'}
-        {label: 'Toggle Console', command: 'julia-client:toggle-console'}
+        {label: 'Open Console', command: 'julia-client:open-console'}
         {label: 'Clear Console', command: 'julia-client:clear-console'}
 
         {type: 'separator'}
