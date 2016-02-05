@@ -11,5 +11,5 @@ alpha stage so expect to get your hands a little dirty.
 
 We are testing bundled versions of Juno which include Atom, Julia, and the various required packages. Get them here:
 
-* [Windows x64](https://junolab.s3.amazonaws.com/juno-atom/0.3.0/JunoSetup.exe)
-* [OS X](https://junolab.s3.amazonaws.com/juno-atom/0.3.0/Juno.zip)
+* [Windows x64](https://github.com/JunoLab/atom/releases/download/0.3.0/JunoSetup.exe)
+* [OS X](https://github.com/JunoLab/atom/releases/download/0.3.0/Juno.zip)
