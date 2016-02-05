@@ -23,14 +23,18 @@ module.exports =
     @subs.dispose()
 
   _current: null
+  lastEditorModule: null
 
-  setCurrent: (@_current) -> @emitter.emit 'did-change', @_current
+  setCurrent: (@_current, editor) ->
+    if editor then @lastEditorModule = @_current
+    @emitter.emit 'did-change', @_current
 
   onDidChange: (f) -> @emitter.on 'did-change', f
 
-  currentModule: ->
-    return unless @_current?
-    {main, inactive, sub, subInactive} = @_current
+  currentModule: (m = @_current) ->
+    return unless m?
+    {main, inactive, sub, subInactive} = m
+    if main is @follow then return @currentModule @lastEditorModule
     if not main or inactive
       "Main"
     else if not sub or subInactive
@@ -55,6 +59,7 @@ module.exports =
       if (item = atom.workspace.getActivePaneItem())
         modules = allmodules().then (modules) =>
           modules.unshift @autodetect if ised
+          modules.unshift @follow if not ised
           modules
         selector.show(modules).then (mod) =>
           return unless mod?
@@ -77,7 +82,7 @@ module.exports =
       @setCurrent main: item.juliaModule or 'Main'
 
   updateForEditor: (editor) ->
-    @setCurrent main: editor.juliaModule or 'Main'
+    @setCurrent main: editor.juliaModule or 'Main', true
     @getEditorModule editor
     @itemSubs.add editor.onDidChangeCursorPosition =>
       @getEditorModuleLazy editor
@@ -93,7 +98,7 @@ module.exports =
 
     getmodule(data).then (mod) =>
       if atom.workspace.getActivePaneItem() is ed
-        @setCurrent mod
+        @setCurrent mod, true
 
   getEditorModuleLazy: debounce ((ed) -> @getEditorModule(ed)), 100
 
@@ -124,6 +129,8 @@ module.exports =
       delete @tile
     else
       {main, sub, inactive, subInactive} = m
+      if main is @follow
+        return @updateView @lastEditorModule
       @tile ?= @statusBar?.addRightTile item: @dom, priority: 10
       @mainView.innerText = main or 'Main'
       if sub
