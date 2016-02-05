@@ -34,11 +34,9 @@ module.exports =
         if result?
           error = result.type == 'error'
           view = if error then result.view else result
-          fade = not @ink.Result.removeLines editor, start-1, end-1
           r = new @ink.Result editor, [start-1, end-1],
             content: views.render view
             error: error
-            fade: fade
           r.view.classList.add 'julia'
           if error and result.highlights?
             @showError r, result.highlights
