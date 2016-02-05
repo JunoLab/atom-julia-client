@@ -31,7 +31,7 @@ module.exports =
     history.write @c.history.items
 
   create: ->
-    @c = new @ink.Console
+    @c = @ink.Console.fromId 'julia'
     @c.setModes @modes
     @c.onEval (ed) => @eval ed
     @client.onWorking => @c.loading true
