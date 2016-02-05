@@ -17,9 +17,7 @@ module.exports =
     @subs.add client.onConnected => @updateForItem()
     @subs.add client.onDisconnected => @updateForItem()
 
-    @onDidChange (c) -> console.log c
-
-    # @createStatusUI()
+    @activateView()
 
   deactivate: ->
     @subs.dispose()
@@ -85,6 +83,7 @@ module.exports =
       @getEditorModuleLazy editor
 
   getEditorModule: (ed) ->
+    return unless client.isConnected()
     {row, column} = ed.getCursors()[0].getBufferPosition()
     data =
       path: ed.getPath()
@@ -100,28 +99,48 @@ module.exports =
 
   # The View
 
-  # createStatusUI: ->
-  #   @dom = document.createElement 'span'
-  #   @dom.classList.add 'julia', 'inline-block'
-  #
-  #   main = document.createElement 'a'
-  #   main.classList.add 'main'
-  #
-  #   divider = document.createElement 'span'
-  #   divider.classList.add 'divider'
-  #
-  #   sub = document.createElement 'span'
-  #   sub.classList.add 'sub'
-  #
-  #   @dom.appendChild x for x in [main, divider, sub]
-  #
-  #   main.onclick = =>
-  #     atom.commands.dispatch atom.views.getView(atom.workspace.getActivePaneItem()),
-  #                            'julia-client:set-working-module'
-  #
-  #   atom.tooltips.add @dom,
-  #     title: => "Currently working in module #{@currentModule()}"
+  activateView: ->
+    @onDidChange (c) => @updateView c
+
+    @dom = document.createElement 'span'
+    @dom.classList.add 'julia', 'inline-block'
+
+    @mainView = document.createElement 'a'
+    @dividerView = document.createElement 'span'
+    @subView = document.createElement 'span'
+
+    @dom.appendChild x for x in [@mainView, @dividerView, @subView]
+
+    @mainView.onclick = =>
+      atom.commands.dispatch atom.views.getView(atom.workspace.getActivePaneItem()),
+                             'julia-client:set-working-module'
+
+    atom.tooltips.add @dom,
+      title: => "Currently working in module #{@currentModule()}"
+
+  updateView: (m) ->
+    if not m?
+      @tile?.destroy()
+      delete @tile
+    else
+      {main, sub, inactive, subInactive} = m
+      @tile ?= @statusBar?.addRightTile item: @dom, priority: 10
+      @mainView.innerText = main or 'Main'
+      if sub
+        @subView.innerText = sub
+        @dividerView.innerText = '/'
+      else
+        view.innerText = '' for view in [@subView, @dividerView]
+      if inactive
+        @dom.classList.add 'fade'
+      else
+        @dom.classList.remove 'fade'
+        for view in [@subView, @dividerView]
+          if subInactive
+            view.classList.add 'fade'
+          else
+            view.classList.remove 'fade'
 
   consumeStatusBar: (bar) ->
-    # @statusBar = bar
-    # @updateView()
+    @statusBar = bar
+    @updateView @_current
