@@ -12,8 +12,6 @@ module.exports =
   activate: ->
     @create()
 
-    {evalrepl} = client.import 'evalrepl'
-
     @subs = new CompositeDisposable
 
     @subs.add atom.workspace.addOpener (uri) =>
