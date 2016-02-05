@@ -38,6 +38,7 @@
   'ctrl-j ctrl-r': 'julia-client:open-a-repl'
   'ctrl-alt-j ctrl-alt-r': 'julia-client:start-repl-client'
   'ctrl-j ctrl-s': 'julia-client:start-julia'
+  'ctrl-j ctrl-o': 'julia-client:open-console'
   'ctrl-j ctrl-c': 'julia-client:clear-console'
   'ctrl-j ctrl-l': 'julia-client:reset-loading-indicator'
   'ctrl-j ctrl-k': 'julia-client:kill-julia'
