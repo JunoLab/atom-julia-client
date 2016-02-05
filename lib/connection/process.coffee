@@ -96,18 +96,18 @@ module.exports = jlprocess =
                                                     ["-NoProfile", "$PSVersionTable.PSVersion.Major"])
                                           .output[1].toString()) > 2
       if @useWrapper
-        # get a random port between 1000 and 20_000; this may not be free, of course,
-        # but hopefully not very often
+        # get a random and hopefully free port:
         @getFreePort =>
           @proc = child_process.spawn("powershell",
                                       ["-NoProfile", "-ExecutionPolicy", "bypass",
                                        "& \"#{@script "spawnInterruptible.ps1"}\"
-                                        -cwd \"#{@workingDir()}\"
-                                        -port #{port}
-                                        -wrapPort #{@wrapPort}
-                                        -jlpath \"#{@jlpath()}\"
-                                        -boot \"#{@script 'boot.jl'}\""])
+                                       -cwd \"#{@workingDir()}\"
+                                       -port #{port}
+                                       -wrapPort #{@wrapPort}
+                                       -jlpath \"#{@jlpath()}\"
+                                       -boot \"#{@script 'boot.jl'}\""])
           fn()
+        return
       else
         cons.c.out "PowerShell version < 3 encountered. Running without wrapper (interrupts won't work)."
     @proc = child_process.spawn(@jlpath(), [@script("boot.jl"), port], cwd: @workingDir())
