@@ -5,9 +5,13 @@
 notifications = require './notifications'
 views =         require './views'
 
+{evalrepl} = {}
+
 module.exports =
   activate: (@client) ->
     @create()
+
+    {evalrepl} = client.import 'evalrepl'
 
     @subs = new CompositeDisposable
 
@@ -55,7 +59,7 @@ module.exports =
       @client.boot()
       @c.logInput()
       @c.done()
-      @client.rpc('evalrepl', code: editor.getText(), mode: mode?.name)
+      evalrepl(code: editor.getText(), mode: mode?.name, mod: @c.juliaModule)
         .then (result) =>
           @c.input()
           notifications.show "Evaluation Finished"
