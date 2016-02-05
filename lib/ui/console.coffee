@@ -4,6 +4,7 @@
 {history} =     require '../misc'
 notifications = require './notifications'
 views =         require './views'
+modules =       require '../runtime/modules'
 
 module.exports =
   activate: (@client) ->
@@ -55,7 +56,8 @@ module.exports =
       @client.boot()
       @c.logInput()
       @c.done()
-      @client.rpc('evalrepl', code: editor.getText(), mode: mode?.name)
+      mod = modules.currentModule()
+      @client.rpc('evalrepl', code: editor.getText(), mode: mode?.name, module: mod)
         .then (result) =>
           @c.input()
           notifications.show "Evaluation Finished"
