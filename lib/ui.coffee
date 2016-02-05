@@ -2,7 +2,6 @@ module.exports =
   notifications: require './ui/notifications'
   selector:      require './ui/selector'
   views:         require './ui/views'
-  console:       require './ui/console'
 
   activate: (@client) ->
     @notifications.activate()
@@ -10,13 +9,9 @@ module.exports =
       @notifications.show("Client Connected")
 
   deactivate: ->
-    @console.deactivate()
     @spinner.dispose()
 
   consumeInk: (ink) ->
-    @console.ink = ink
-    @console.activate @client
-
     @views.ink = ink
 
     @spinner = new ink.Spinner @client.loading
