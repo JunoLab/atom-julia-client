@@ -110,7 +110,7 @@ module.exports = jlprocess =
         return
       else
         @emitter.emit 'stdout', "PowerShell version < 3 encountered. Running without wrapper (interrupts won't work)."
-    @proc = child_process.spawn(@jlpath(), [@script("boot.jl"), port], cwd: @workingDir())
+    @proc = child_process.spawn(@jlpath(), ["-i", @script("boot.jl"), port], cwd: @workingDir())
     fn()
 
   getFreePort: (fn) ->
