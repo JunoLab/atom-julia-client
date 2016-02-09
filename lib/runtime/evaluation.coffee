@@ -2,7 +2,7 @@ path = require 'path'
 
 {client} =  require '../connection'
 {notifications, views, selector} = require '../ui'
-{paths} = require '../misc'
+{paths, blocks} = require '../misc'
 modules = require './modules'
 
 {eval: evaluate, evalall, cd} = client.import rpc: ['eval', 'evalall'], msg: ['cd']
@@ -28,6 +28,7 @@ module.exports =
   # TODO: implement block finding in Atom
   eval: ->
     editor = atom.workspace.getActiveTextEditor()
+    blocks.get editor
     for sel in editor.getSelections()
       evaluate(@evalData(editor, sel)).then ({start, end, result, plainresult}) =>
         if result?
@@ -58,7 +59,6 @@ module.exports =
           content: views.render view
           error: error
           fade: fade
-        # type: 'block'
 
   # gets the word and its range in the `editor` which the last cursor is on
   getWord: (editor) ->
