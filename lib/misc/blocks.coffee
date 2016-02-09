@@ -60,7 +60,7 @@ module.exports =
 
   # TODO: trim blank lines
   getSelection: (ed, sel) ->
-    [start, end] = sel.getBufferRange()
+    {start, end} = sel.getBufferRange()
     [[start.row, start.column], [end.row, end.column]]
 
   getRanges: (ed) ->
@@ -70,3 +70,8 @@ module.exports =
       else
         @getSelection ed, sel
     ranges.filter((range)->range? and ed.getTextInBufferRange(range).trim())
+
+  get: (ed) ->
+    for range in @getRanges ed
+      line: range[0][0]
+      text: ed.getTextInBufferRange range

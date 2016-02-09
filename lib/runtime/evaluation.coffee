@@ -28,7 +28,6 @@ module.exports =
   # TODO: implement block finding in Atom
   eval: ->
     editor = atom.workspace.getActiveTextEditor()
-    blocks.get editor
     for sel in editor.getSelections()
       evaluate(@evalData(editor, sel)).then ({start, end, result, plainresult}) =>
         if result?
