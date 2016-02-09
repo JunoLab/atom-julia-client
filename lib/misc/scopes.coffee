@@ -22,4 +22,4 @@ module.exports =
     scopes
 
   forLines: (ed, start, end) ->
-    @scopesForRange ed, [[start, 0], [end, Infinity]]
+    @forRange ed, [[start, 0], [end, Infinity]]
