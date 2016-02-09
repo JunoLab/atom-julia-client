@@ -5,10 +5,9 @@ path = require 'path'
 {paths} = require '../misc'
 modules = require './modules'
 
+{eval: evaluate, evalall, cd} = client.import rpc: ['eval', 'evallall'], msg: ['cd']
+
 module.exports =
-  client: client.import
-    rpc: ['eval', 'evalall']
-    msg: ['cd']
 
   cursor: ({row, column}) ->
     row: row+1
@@ -30,7 +29,7 @@ module.exports =
   eval: ->
     editor = atom.workspace.getActiveTextEditor()
     for sel in editor.getSelections()
-      @client.eval(@evalData(editor, sel)).then ({start, end, result, plainresult}) =>
+      evaluate(@evalData(editor, sel)).then ({start, end, result, plainresult}) =>
         if result?
           error = result.type == 'error'
           view = if error then result.view else result
@@ -75,11 +74,11 @@ module.exports =
   evalAll: ->
     editor = atom.workspace.getActiveTextEditor()
     atom.commands.dispatch atom.views.getView(editor), 'inline-results:clear-all'
-    @client.evalall({
-                      path: editor.getPath()
-                      module: editor.juliaModule
-                      code: editor.getText()
-                    }).then (result) ->
+    evalall({
+              path: editor.getPath()
+              module: editor.juliaModule
+              code: editor.getText()
+            }).then (result) ->
         notifications.show "Evaluation Finished"
 
   showError: (r, lines) ->
@@ -98,18 +97,18 @@ module.exports =
   cdHere: ->
     file = atom.workspace.getActiveTextEditor()?.getPath()
     file? or atom.notifications.addError 'This file has no path.'
-    @client.cd path.dirname(file)
+    cd path.dirname(file)
 
   cdProject: ->
     dirs = atom.project.getPaths()
     if dirs.length < 1
       atom.notifications.addError 'This project has no folders.'
     else if dirs.length == 1
-      @client.cd dirs[0]
+      cd dirs[0]
     else
       selector.show(dirs).then (dir) =>
         return unless dir?
-        @client.cd dir
+        cd dir
 
   cdHome: ->
-    @client.cd paths.home()
+    cd paths.home()
