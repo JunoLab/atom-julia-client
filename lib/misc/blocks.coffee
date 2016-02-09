@@ -1,7 +1,30 @@
-# TODO: scan for scopes
 # TODO: docstrings
 
 module.exports =
+
+  openers: ['if','while','for','begin','function','macro','module','baremodule','type','immutable','try','let']
+  reopeners: ['else','elseif','catch','finally']
+
+  @isKeywordScope: (ss) ->
+    for scope in ss.slice(1) # skip 'source.julia'
+      if scope.indexOf('keyword') > -1
+        return true
+
+  scopesForRange: (ed, range) ->
+    scopes = []
+    for l in ed.getGrammar().tokenizeLines ed.getTextInBufferRange range
+      for t in l
+        continue unless @isKeywordScope t.scopes
+        {value} = t
+        reopen = value in @reopeners
+        if value is 'end' or reopen
+          scopes.pop()
+        if reopen or value in @openers
+          scopes.push value
+    scopes
+
+  scopesForLines: (ed, start, end) ->
+    @scopesForRange ed, [[start, 0], [end, Infinity]]
 
   getLine: (ed, l) ->
     ed.getTextInBufferRange [[l, 0], [l, Infinity]]
@@ -16,31 +39,34 @@ module.exports =
       row--
     row
 
-  walkForward: (ed, row) ->
-    mark = row
+  walkForward: (ed, start) ->
+    mark = end = start
     while mark < ed.getLineCount() - 1
       mark++
       l = @getLine ed, mark
       break if @isStart l
-      row = mark if not (@isStart(l) or @isBlank(l))
-    row
+      if @isEnd l
+        if not (@scopesForLines(ed, start, mark-1).length is 0)
+          end = mark
+      else if not (@isBlank(l) or @isStart(l))
+        end = mark
+    end
 
-  getOne: (ed, {row}) ->
+  getRange: (ed, row) ->
     start = @walkBack ed, row
     end = @walkForward ed, start
     if start <= row <= end
-      text: ed.getTextInRange [[start, 0], [end, Infinity]]
-      row: start
+      [[start, 0], [end, Infinity]]
 
   # TODO: trim blank lines
   getSelection: (ed, sel) ->
-    text: sel.getText()
-    row: sel.getBufferRange().start.row
+    [start, end] = sel.getBufferRange()
+    [[start.row, start.column], [end.row, end.column]]
 
-  get: (ed) ->
-    blocks = for sel in ed.getSelections()
-      if sel.getBufferRange().start.isEqual sel.getBufferRange().end
-        @getOne ed, sel.getHeadBufferPosition()
+  getRanges: (ed) ->
+    ranges = for sel in ed.getSelections()
+      if sel.getBufferRange().isEmpty()
+        @getRange ed, sel.getHeadBufferPosition().row
       else
         @getSelection ed, sel
-    console.log block for block in blocks.filter((x)->x?.text.trim())
+    ranges.filter((range)->range? and ed.getTextInBufferRange(range).trim())
