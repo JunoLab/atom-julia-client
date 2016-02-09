@@ -51,5 +51,6 @@ module.exports =
 
   get: (ed) ->
     for range in @getRanges ed
+      range: range
       line: range[0][0]
       text: ed.getTextInBufferRange range
