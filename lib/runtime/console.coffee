@@ -57,15 +57,15 @@ module.exports =
   reset: -> @c.reset()
 
   eval: ({editor, mode}) ->
-    if editor.getText().trim()
-      client.boot()
-      @c.logInput()
-      @c.done()
-      evalrepl(code: editor.getText(), mode: mode?.name, mod: modules.currentModule())
-        .then (result) =>
-          @c.input()
-          notifications.show "Evaluation Finished"
-        .catch => @c.input()
+    return unless editor.getText().trim()
+    client.boot()
+    @c.logInput()
+    @c.done()
+    evalrepl(code: editor.getText(), mode: mode?.name, mod: modules.currentModule())
+      .then (result) =>
+        @c.input()
+        notifications.show "Evaluation Finished"
+      .catch => @c.input()
 
   modes: [
     {name: 'julia', default: true, grammar: 'source.julia'}
