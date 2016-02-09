@@ -15,7 +15,3 @@ module.exports =
     @views.ink = ink
 
     @spinner = new ink.Spinner @client.loading
-
-    @client.handle 'show-block', ({start, end}) ->
-      if ed = atom.workspace.getActiveTextEditor()
-        ink.highlight ed, start-1, end-1

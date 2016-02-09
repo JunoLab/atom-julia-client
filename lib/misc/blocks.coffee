@@ -24,7 +24,7 @@ module.exports =
       l = @getLine ed, mark
       break if @isStart l
       if @isEnd l
-        if not (scopes.ForLines(ed, start, mark-1).length is 0)
+        if not (scopes.forLines(ed, start, mark-1).length is 0)
           end = mark
       else if not (@isBlank(l) or @isStart(l))
         end = mark
