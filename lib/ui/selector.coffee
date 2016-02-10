@@ -1,12 +1,16 @@
 {SelectListView} = require 'atom-space-pen-views'
 
 module.exports =
-  show: (xs) ->
+  show: (xs, {active} = {}) ->
     @selector ?= new SelectListView
+    @selector.list.addClass 'mark-active'
     @selector.setItems []
     @selector.storeFocusedElement()
     @selector.viewForItem = (item) =>
-      "<li>#{item}</li>"
+      view = document.createElement 'li'
+      view.innerText = item
+      view.classList.add 'active' if item is active
+      view
 
     panel = atom.workspace.addModalPanel(item: @selector)
     @selector.focusFilterEditor()

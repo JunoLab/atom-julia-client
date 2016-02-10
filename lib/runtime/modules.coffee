@@ -57,11 +57,12 @@ module.exports =
     return unless @isValidItem item
     client.require =>
       if (item = atom.workspace.getActivePaneItem())
+        reset = if ised then @autodetect else @follow
+        active = item.juliaModule or reset
         modules = allmodules().then (modules) =>
-          modules.unshift @autodetect if ised
-          modules.unshift @follow if not ised
+          modules.unshift reset
           modules
-        selector.show(modules).then (mod) =>
+        selector.show(modules, active: active).then (mod) =>
           return unless mod?
           if mod is @autodetect
             delete item.juliaModule
