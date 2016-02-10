@@ -31,7 +31,7 @@ module.exports =
 
   onDidChange: (f) -> @emitter.on 'did-change', f
 
-  currentModule: (m = @_current) ->
+  current: (m = @_current) ->
     return unless m?
     {main, inactive, sub, subInactive} = m
     if main is @follow then return @currentModule @lastEditorModule

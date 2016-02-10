@@ -43,7 +43,7 @@ module.exports =
 
   # get documentation or methods for the current word
   toggleMeta: (type) ->
-    mod = modules.currentModule()
+    mod = modules.current()
     mod = if mod then mod else 'Main'
     editor = atom.workspace.getActiveTextEditor()
     [word, range] = @getWord editor
