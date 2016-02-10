@@ -1,12 +1,15 @@
-# TODO: modules
 {CompositeDisposable} = require 'atom'
 
-{history} =     require '../misc'
-notifications = require './notifications'
-views =         require './views'
+{history} = require '../misc'
+{notifications, views} = require '../ui'
+{client, process} = require '../connection'
+
+modules = require './modules'
+
+{evalrepl} = client.import 'evalrepl'
 
 module.exports =
-  activate: (@client) ->
+  activate: ->
     @create()
 
     @subs = new CompositeDisposable
@@ -15,16 +18,19 @@ module.exports =
       if uri is 'atom://julia-client/console'
         @c
 
-    @client.handle 'info', (msg) =>
+    client.handle 'info', (msg) =>
       @c.info msg
 
-    @client.handle 'result', (result) =>
+    client.handle 'result', (result) =>
       view = if result.type == 'error' then result.view else result
       view = views.render(view)
       if result.type isnt 'error'
         views.ink.tree.toggle view
       @c.result view,
         error: result.type == 'error'
+
+    process.onStdout (s) => @c.stdout s
+    process.onStderr (s) => @c.stderr s
 
   deactivate: ->
     @subs.dispose()
@@ -34,8 +40,8 @@ module.exports =
     @c = @ink.Console.fromId 'julia'
     @c.setModes @modes
     @c.onEval (ed) => @eval ed
-    @client.onWorking => @c.loading true
-    @client.onDone => @c.loading false
+    client.onWorking => @c.loading true
+    client.onDone => @c.loading false
     atom.views.getView(@c).classList.add 'julia'
     history.read().then (entries) =>
       @c.history.set entries
@@ -48,18 +54,18 @@ module.exports =
         split: 'down'
         searchAllPanes: true
 
-  toggle: -> @c.toggle()
+  reset: -> @c.reset()
 
   eval: ({editor, mode}) ->
-    if editor.getText().trim()
-      @client.boot()
-      @c.logInput()
-      @c.done()
-      @client.rpc('evalrepl', code: editor.getText(), mode: mode?.name)
-        .then (result) =>
-          @c.input()
-          notifications.show "Evaluation Finished"
-        .catch => @c.input()
+    return unless editor.getText().trim()
+    client.boot()
+    @c.logInput()
+    @c.done()
+    evalrepl(code: editor.getText(), mode: mode?.name, mod: modules.currentModule())
+      .then (result) =>
+        @c.input()
+        notifications.show "Evaluation Finished"
+      .catch => @c.input()
 
   modes: [
     {name: 'julia', default: true, grammar: 'source.julia'}

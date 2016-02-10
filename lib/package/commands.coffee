@@ -27,17 +27,16 @@ module.exports =
           boot()
           juno.runtime.evaluation.toggleMeta 'methods'
 
-    @subs.add atom.commands.add '.item-views >
-                                atom-text-editor[data-grammar="source julia"]',
+    @subs.add atom.commands.add '.item-views > atom-text-editor[data-grammar="source julia"],
+                                 ink-console.julia',
       'julia-client:set-working-module': -> juno.runtime.modules.chooseModule()
-      'julia-client:reset-working-module': -> juno.runtime.modules.resetModule()
 
     @subs.add atom.commands.add 'atom-workspace',
       'julia-client:open-a-repl': -> juno.connection.terminal.repl()
       'julia-client:start-julia': ->
         disrequireClient -> boot()
-      'julia-client:open-console': => @withInk -> juno.ui.console.open()
-      "julia-client:clear-console": => juno.ui.console.c.reset()
+      'julia-client:open-console': => @withInk -> juno.runtime.console.open()
+      "julia-client:clear-console": => juno.runtime.console.reset()
       'julia-client:reset-loading-indicator': -> juno.connection.client.reset()
       'julia-client:settings': ->
         atom.workspace.open('atom://config/packages/julia-client')

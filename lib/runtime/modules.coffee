@@ -1,130 +1,153 @@
-{CompositeDisposable} = require 'atom'
+{CompositeDisposable, Emitter} = require 'atom'
+{debounce} = require 'underscore-plus'
 
 {client} = require '../connection'
 {selector} = require '../ui'
 
-module.exports =
-  activate: ->
-    @subscriptions = new CompositeDisposable
-    @createStatusUI()
+{module: getmodule, allmodules} = client.import ['module', 'allmodules']
 
-    # configure all the events that persist until we're deactivated
-    @subscriptions.add atom.workspace.onDidChangeActivePaneItem => @activePaneChanged()
-    @subscriptions.add client.onConnected => @editorStateChanged()
-    @subscriptions.add client.onDisconnected => @editorStateChanged()
-    @activePaneChanged()
+module.exports =
+
+  activate: ->
+    @subs = new CompositeDisposable
+    @itemSubs = new CompositeDisposable
+    @emitter = new Emitter
+
+    @subs.add atom.workspace.observeActivePaneItem (item) => @updateForItem item
+    @subs.add client.onConnected => @updateForItem()
+    @subs.add client.onDisconnected => @updateForItem()
+
+    @activateView()
 
   deactivate: ->
-    @tile?.destroy()
-    @tile = null
-    @subscriptions.dispose()
-    @grammarChangeSubscription?.dispose()
-    @moveSubscription?.dispose()
-    if @pendingUpdate then clearTimeout @pendingUpdate
+    @subs.dispose()
 
+  _current: null
+  lastEditorModule: null
 
-  activePaneChanged: ->
-    @grammarChangeSubscription?.dispose()
-    ed = atom.workspace.getActivePaneItem()
-    @grammarChangeSubscription = ed?.onDidChangeGrammar? => @editorStateChanged()
-    @editorStateChanged()
+  setCurrent: (@_current, editor) ->
+    if editor then @lastEditorModule = @_current
+    @emitter.emit 'did-change', @_current
 
-  # sets or clears the callback on cursor change based on the editor state
-  editorStateChanged: ->
-    # first clear the display and remove any old subscription
-    @clear()
-    @moveSubscription?.dispose()
+  onDidChange: (f) -> @emitter.on 'did-change', f
 
-    # now see if we need to resubscribe
-    ed = atom.workspace.getActivePaneItem()
-    if ed?.getGrammar?().scopeName == 'source.julia' && client.isConnected()
-      @moveSubscription = ed.onDidChangeCursorPosition =>
-        if @pendingUpdate then clearTimeout @pendingUpdate
-        @pendingUpdate = setTimeout (=> @update()), 300
-      @update()
+  currentModule: (m = @_current) ->
+    return unless m?
+    {main, inactive, sub, subInactive} = m
+    if main is @follow then return @currentModule @lastEditorModule
+    if not main or inactive
+      "Main"
+    else if not sub or subInactive
+      main
+    else
+      "#{main}.#{sub}"
 
-  # Status Bar
+  # Choosing Modules
 
-  createStatusUI: ->
-    @dom = document.createElement 'span'
-    @dom.classList.add 'julia-client', 'inline-block'
-    @main = document.createElement 'a'
-    @sub = document.createElement 'span'
-    @divider = document.createElement 'span'
-    @divider.innerText = '/'
+  itemSelector: 'atom-text-editor[data-grammar="source julia"], ink-console.julia'
 
-    @main.onclick = =>
-      atom.commands.dispatch atom.views.getView(atom.workspace.getActiveTextEditor()),
-                             'julia-client:set-working-module'
+  isValidItem: (item) -> atom.views.getView(item)?.matches @itemSelector
 
-    atom.tooltips.add @dom,
-      title: => "Currently working with module #{@currentModule()}"
+  autodetect: 'Auto Detect'
+  follow: 'Follow Editor'
 
-  currentModule: ->
-    if @isInactive then "Main"
-    else if @isSubInactive || @sub.innerText == "" then @main.innerText
-    else "#{@main.innerText}.#{@sub.innerText}"
+  chooseModule: ->
+    item = atom.workspace.getActivePaneItem()
+    ised = atom.workspace.isTextEditor item
+    return unless @isValidItem item
+    client.require =>
+      if (item = atom.workspace.getActivePaneItem())
+        modules = allmodules().then (modules) =>
+          modules.unshift @autodetect if ised
+          modules.unshift @follow if not ised
+          modules
+        selector.show(modules).then (mod) =>
+          return unless mod?
+          if mod is @autodetect
+            delete item.juliaModule
+          else
+            item.juliaModule = mod
+          @updateForItem item
 
-  consumeStatusBar: (bar) ->
-    @tile = bar.addRightTile {item: @dom}
+  updateForItem: (item = atom.workspace.getActivePaneItem()) ->
+    @itemSubs.dispose()
+    if not @isValidItem item
+      @itemSubs.add item?.onDidChangeGrammar? => @updateForItem()
+      @setCurrent()
+    else if not client.isConnected()
+      @setCurrent main: 'Main', inactive: true
+    else if atom.workspace.isTextEditor item
+      @updateForEditor item
+    else
+      @setCurrent main: item.juliaModule or 'Main'
 
-  clear: -> @dom.innerHTML = ""
+  updateForEditor: (editor) ->
+    @setCurrent main: editor.juliaModule or 'Main', true
+    @getEditorModule editor
+    @itemSubs.add editor.onDidChangeCursorPosition =>
+      @getEditorModuleLazy editor
 
-  reset: (main, sub) ->
-    @clear()
-    @main.innerText = main
-    @sub.innerText = sub
-    @dom.appendChild @main
-    if sub
-      @dom.appendChild @divider
-      @dom.appendChild @sub
-    @active()
-
-  isSubInactive: false
-  isInactive: false
-
-  active: ->
-    @isInactive = false
-    @isSubInactive = false
-    @main.classList.remove 'fade'
-    @divider.classList.remove 'fade'
-    @sub.classList.remove 'fade'
-  subInactive: ->
-    @active()
-    @isSubInactive = true
-    @sub.classList.add 'fade'
-  inactive: ->
-    @active()
-    @isInactive = true
-    @main.classList.add 'fade'
-    @divider.classList.add 'fade'
-    @sub.classList.add 'fade'
-
-  # gets the current module from the Julia process and updates the display.
-  # assumes that we're connected and in a julia file
-  update: ->
-    ed = atom.workspace.getActivePaneItem()
-    {row, column} = ed.getCursors()[0].getScreenPosition()
+  getEditorModule: (ed) ->
+    return unless client.isConnected()
+    {row, column} = ed.getCursors()[0].getBufferPosition()
     data =
       path: ed.getPath()
       code: ed.getText()
       row: row+1, column: column+1
       module: ed.juliaModule
 
-    client.rpc('module', data).then ({main, sub, inactive, subInactive}) =>
-      @reset main, sub
-      subInactive && @subInactive()
-      inactive && @inactive()
+    getmodule(data).then (mod) =>
+      if atom.workspace.getActivePaneItem() is ed
+        @setCurrent mod, true
 
-  # TODO: auto detect option, remove reset command
-  chooseModule: ->
-    client.require =>
-      selector.show(client.rpc('allmodules')).then (mod) =>
-        return unless mod?
-        atom.workspace.getActiveTextEditor().juliaModule = mod
-        @update()
+  getEditorModuleLazy: debounce ((ed) -> @getEditorModule(ed)), 100
 
-  resetModule: ->
-    client.require =>
-      delete atom.workspace.getActiveTextEditor().juliaModule
-      @update()
+  # The View
+
+  activateView: ->
+    @onDidChange (c) => @updateView c
+
+    @dom = document.createElement 'span'
+    @dom.classList.add 'julia', 'inline-block'
+
+    @mainView = document.createElement 'a'
+    @dividerView = document.createElement 'span'
+    @subView = document.createElement 'span'
+
+    @dom.appendChild x for x in [@mainView, @dividerView, @subView]
+
+    @mainView.onclick = =>
+      atom.commands.dispatch atom.views.getView(atom.workspace.getActivePaneItem()),
+                             'julia-client:set-working-module'
+
+    atom.tooltips.add @dom,
+      title: => "Currently working in module #{@currentModule()}"
+
+  updateView: (m) ->
+    if not m?
+      @tile?.destroy()
+      delete @tile
+    else
+      {main, sub, inactive, subInactive} = m
+      if main is @follow
+        return @updateView @lastEditorModule
+      @tile ?= @statusBar?.addRightTile item: @dom, priority: 10
+      @mainView.innerText = main or 'Main'
+      if sub
+        @subView.innerText = sub
+        @dividerView.innerText = '/'
+      else
+        view.innerText = '' for view in [@subView, @dividerView]
+      if inactive
+        @dom.classList.add 'fade'
+      else
+        @dom.classList.remove 'fade'
+        for view in [@subView, @dividerView]
+          if subInactive
+            view.classList.add 'fade'
+          else
+            view.classList.remove 'fade'
+
+  consumeStatusBar: (bar) ->
+    @statusBar = bar
+    @updateView @_current

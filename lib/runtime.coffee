@@ -1,6 +1,7 @@
 module.exports =
   modules:    require './runtime/modules'
   evaluation: require './runtime/evaluation'
+  console:    require './runtime/console'
   frontend:   require './runtime/frontend'
 
   activate: ->
@@ -9,9 +10,12 @@ module.exports =
 
   deactivate: ->
     @modules.deactivate()
+    @console.deactivate()
 
   consumeInk: (ink) ->
     @evaluation.ink = ink
+    @console.ink = ink
+    @console.activate()
 
   consumeStatusBar: (bar) ->
     @modules.consumeStatusBar bar
