@@ -15,7 +15,7 @@ module.exports =
 
   eval: ->
     editor = atom.workspace.getActiveTextEditor()
-    mod = modules.currentModule()
+    mod = modules.current()
     path = editor.getPath() || 'untitled-' + editor.getBuffer().inkId
     for {range, line, text} in blocks.get editor
       [[start], [end]] = range
