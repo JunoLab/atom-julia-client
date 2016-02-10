@@ -5,7 +5,7 @@ path = require 'path'
 {paths} = require '../misc'
 modules = require './modules'
 
-{eval: evaluate, evalall, cd} = client.import rpc: ['eval', 'evallall'], msg: ['cd']
+{eval: evaluate, evalall, cd} = client.import rpc: ['eval', 'evalall'], msg: ['cd']
 
 module.exports =
 
