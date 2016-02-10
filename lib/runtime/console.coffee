@@ -61,7 +61,7 @@ module.exports =
     client.boot()
     @c.logInput()
     @c.done()
-    evalrepl(code: editor.getText(), mode: mode?.name, mod: modules.currentModule())
+    evalrepl(code: editor.getText(), mode: mode?.name, mod: modules.current())
       .then (result) =>
         @c.input()
         notifications.show "Evaluation Finished"

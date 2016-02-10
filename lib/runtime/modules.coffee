@@ -34,7 +34,7 @@ module.exports =
   current: (m = @_current) ->
     return unless m?
     {main, inactive, sub, subInactive} = m
-    if main is @follow then return @currentModule @lastEditorModule
+    if main is @follow then return @current @lastEditorModule
     if not main or inactive
       "Main"
     else if not sub or subInactive
@@ -121,7 +121,7 @@ module.exports =
                              'julia-client:set-working-module'
 
     atom.tooltips.add @dom,
-      title: => "Currently working in module #{@currentModule()}"
+      title: => "Currently working in module #{@current()}"
 
   updateView: (m) ->
     if not m?
