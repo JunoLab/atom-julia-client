@@ -9,10 +9,6 @@ modules = require './modules'
 
 module.exports =
 
-  cursor: ({row, column}) ->
-    row: row+1
-    column: column+1
-
   eval: ->
     editor = atom.workspace.getActiveTextEditor()
     mod = modules.current()

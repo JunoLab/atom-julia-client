@@ -1,5 +1,6 @@
-evaluation = require './evaluation'
 {client} =   require '../connection'
+modules =    require './modules'
+evaluation = require './evaluation'
 
 {completions} = client.import 'completions'
 
@@ -8,22 +9,19 @@ module.exports =
   filterSuggestions: true
   excludeLowerPriority: false
 
-  completionsData: (ed, pos) ->
-    module: ed.juliaModule
-    cursor: evaluation.cursor pos
-    code: ed.getText()
-    path: ed.getPath()
-
-  getCompletions: (ed, pos) ->
-    completions @completionsData(ed, pos)
+  rawCompletions: ({editor, bufferPosition: {row, column}}) ->
+    completions
+      mod: modules.current()
+      line: editor.getTextInBufferRange [[row, 0], [row, Infinity]]
+      column: column+1
 
   toCompletion: (c) ->
-    if c.constructor == String
+    if c.constructor is String
       text: c
     else
       c
 
-  getSuggestions: ({editor, bufferPosition}) ->
+  getSuggestions: (data) ->
     return [] unless client.isConnected()
-    @getCompletions(editor, bufferPosition).then (completions) =>
+    @rawCompletions(data).then (completions) =>
       completions?.map(@toCompletion) or []
