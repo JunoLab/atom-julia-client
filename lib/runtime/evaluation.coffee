@@ -12,11 +12,11 @@ module.exports =
   eval: ->
     editor = atom.workspace.getActiveTextEditor()
     mod = modules.current()
-    path = editor.getPath() || 'untitled-' + editor.getBuffer().inkId
+    edpath = editor.getPath() || 'untitled-' + editor.getBuffer().inkId
     for {range, line, text} in blocks.get editor
       [[start], [end]] = range
       @ink.highlight editor, start, end
-      evaluate({text, line: line+1, mod, path}).then (result) =>
+      evaluate({text, line: line+1, mod, path: edpath}).then (result) =>
         error = result.type == 'error'
         view = if error then result.view else result
         r = new @ink.Result editor, [start, end],
