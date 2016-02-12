@@ -1,3 +1,6 @@
+# TODO: custom sorting?
+# TODO: complete quotes for strings
+
 {debounce} = require 'underscore-plus'
 
 {client} =   require '../connection'
@@ -13,6 +16,7 @@ module.exports =
 
   rawCompletions: ({editor, bufferPosition: {row, column}, activatedManually}) ->
     completions
+      path: editor.getPath()
       mod: modules.current()
       line: editor.getTextInBufferRange [[row, 0], [row, Infinity]]
       column: column+1
@@ -21,8 +25,7 @@ module.exports =
   toCompletion: (c, pre) ->
     if c.constructor is String
       c = text: c
-    if not c.prefix?
-      c.replacementPrefix = pre
+    c.replacementPrefix = c._prefix ? pre
     c
 
   processCompletions: (completions, prefix) ->
