@@ -11,11 +11,12 @@ module.exports =
   filterSuggestions: true
   excludeLowerPriority: false
 
-  rawCompletions: ({editor, bufferPosition: {row, column}}) ->
+  rawCompletions: ({editor, bufferPosition: {row, column}, activatedManually}) ->
     completions
       mod: modules.current()
       line: editor.getTextInBufferRange [[row, 0], [row, Infinity]]
       column: column+1
+      force: activatedManually || false
 
   toCompletion: (c, pre) ->
     if c.constructor is String
