@@ -4,6 +4,7 @@
   'cmd-j cmd-m': 'julia-client:set-working-module'
   'ctrl-c': 'julia-client:interrupt-julia'
   'cmd-j cmd-d': 'julia-client:toggle-documentation'
+  'cmd-shift-a': 'julia:select-block'
 
 '.platform-darwin ink-console.julia':
   'ctrl-c': 'julia-client:interrupt-julia'

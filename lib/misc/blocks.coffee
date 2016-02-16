@@ -54,3 +54,10 @@ module.exports =
       range: range
       line: range[0][0]
       text: ed.getTextInBufferRange range
+
+  select: (ed = atom.workspace.getActiveTextEditor()) ->
+    return unless ed?
+    ed.mutateSelectedText (selection) =>
+      {row} = selection.getHeadBufferPosition()
+      if (range = @getRange ed, row)
+        selection.setBufferRange range

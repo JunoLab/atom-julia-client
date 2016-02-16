@@ -26,6 +26,8 @@ module.exports =
         @withInk ->
           boot()
           juno.runtime.evaluation.toggleMeta 'methods'
+      'julia:select-block': =>
+        juno.misc.blocks.select()
 
     @subs.add atom.commands.add '.item-views > atom-text-editor[data-grammar="source julia"],
                                  ink-console.julia',
