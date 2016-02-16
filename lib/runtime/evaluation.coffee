@@ -13,7 +13,7 @@ module.exports =
     editor = atom.workspace.getActiveTextEditor()
     mod = modules.current()
     edpath = editor.getPath() || 'untitled-' + editor.getBuffer().inkId
-    blocks.get(editor).forEach ({range, line, text}) ->
+    blocks.get(editor).forEach ({range, line, text}) =>
       [[start], [end]] = range
       @ink.highlight editor, start, end
       evaluate({text, line: line+1, mod, path: edpath}).then (result) =>
