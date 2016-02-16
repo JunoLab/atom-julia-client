@@ -66,10 +66,9 @@ module.exports =
       @import fs.rpc, true,  mod
       @import fs.msg, false, mod
     else
-      for f in fs
-        do (f) =>
-          mod[f] = (args...) =>
-            if rpc then @rpc f, args... else @msg f, args...
+      fs.forEach (f) =>
+        mod[f] = (args...) =>
+          if rpc then @rpc f, args... else @msg f, args...
     mod
 
   # Connecting & Booting

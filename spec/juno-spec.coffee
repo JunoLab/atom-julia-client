@@ -71,19 +71,17 @@ describe "managing the client", ->
           expect(response).toEqual(msg)
 
     it "can evaluate code and return the result", ->
-      for x in [1..10]
-        do (x) ->
-          waitsForPromise ->
-            evalsimple("#{x}^2").then (result) ->
-              expect(result).toBe(Math.pow(x, 2))
+      [1..10].forEach (x) ->
+        waitsForPromise ->
+          evalsimple("#{x}^2").then (result) ->
+            expect(result).toBe(Math.pow(x, 2))
 
     it "can rpc into the frontend", ->
       client.handle 'test', (x) -> Math.pow(x, 2)
-      for x in [1..10]
-        do (x) ->
-          waitsForPromise ->
-            evalsimple("@rpc test(#{x})").then (result) ->
-              expect(result).toBe(Math.pow(x, 2))
+      [1..10].forEach (x) ->
+        waitsForPromise ->
+          evalsimple("@rpc test(#{x})").then (result) ->
+            expect(result).toBe(Math.pow(x, 2))
 
     it "can retrieve promise values from the frontend", ->
       client.handle 'test', (x) ->
@@ -108,10 +106,9 @@ describe "managing the client", ->
         expect(workingSpy.calls.length).toBe(1)
 
       it "stops loading after they are done", ->
-        for cb in cbs
-          do (cb) ->
-            waitsForPromise ->
-              cb
+        cbs.forEach (cb) ->
+          waitsForPromise ->
+            cb
         runs ->
           expect(client.isWorking()).toBe(false)
 
@@ -122,10 +119,9 @@ describe "managing the client", ->
       n = 1000
       cbs = (evalsimple("sleep(rand()); #{i}^2") for i in [0...n])
       t = new Date().getTime()
-      for i in [0...n]
-        do (i) ->
-          waitsForPromise ->
-            cbs[i].then (result) -> expect(result).toBe(Math.pow(i, 2))
+      [0...n].forEach (i) ->
+        waitsForPromise ->
+          cbs[i].then (result) -> expect(result).toBe(Math.pow(i, 2))
       runs ->
         expect(new Date().getTime() - t).toBeLessThan(1500)
 
