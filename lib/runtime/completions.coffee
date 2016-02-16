@@ -48,3 +48,12 @@ module.exports =
   fromCache: (mod, prefix) ->
     @updateCache mod
     @processCompletions(@cache[mod] or [], prefix)
+
+  onDidInsertSuggestion: ({editor, suggestion: {type}}) ->
+    if type is 'function'
+      editor.mutateSelectedText (selection) ->
+        return unless selection.isEmpty()
+        {row, column} = selection.getBufferRange().start
+        if editor.getTextInBufferRange([[row, column], [row, column+1]]) isnt '('
+          selection.insertText '()'
+        selection.setBufferRange [[row, column+1], [row, column+1]]
