@@ -14,7 +14,7 @@ module.exports =
     mod = modules.current()
     edpath = editor.getPath() || 'untitled-' + editor.getBuffer().inkId
     for {range, line, text} in blocks.get editor
-      do (range, line, text) ->
+      do (range, line, text) =>
         [[start], [end]] = range
         @ink.highlight editor, start, end
         evaluate({text, line: line+1, mod, path: edpath}).then (result) =>
