@@ -36,10 +36,16 @@ module.exports =
     if start <= row <= end
       [[start, 0], [end, Infinity]]
 
-  # TODO: trim blank lines
   getSelection: (ed, sel) ->
     {start, end} = sel.getBufferRange()
-    [[start.row, start.column], [end.row, end.column]]
+    range = [[start.row, start.column], [end.row, end.column]]
+    while @isBlank @getLine ed, range[0][0]
+      range[0][0]++
+      range[0][1] = 0
+    while @isBlank @getLine ed, range[1][0]
+      range[1][0]--
+      range[1][1] = Infinity
+    range
 
   getRanges: (ed) ->
     ranges = for sel in ed.getSelections()
