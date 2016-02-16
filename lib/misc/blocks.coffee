@@ -39,10 +39,10 @@ module.exports =
   getSelection: (ed, sel) ->
     {start, end} = sel.getBufferRange()
     range = [[start.row, start.column], [end.row, end.column]]
-    while @isBlank @getLine ed, range[0][0]
+    while @isBlank(@getLine(ed, range[0][0])) and range[0][0] <= range[1][0]
       range[0][0]++
       range[0][1] = 0
-    while @isBlank @getLine ed, range[1][0]
+    while @isBlank(@getLine(ed, range[1][0])) and range[1][0] >= range[0][0]
       range[1][0]--
       range[1][1] = Infinity
     range
