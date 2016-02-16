@@ -14,18 +14,19 @@ module.exports =
     mod = modules.current()
     edpath = editor.getPath() || 'untitled-' + editor.getBuffer().inkId
     for {range, line, text} in blocks.get editor
-      [[start], [end]] = range
-      @ink.highlight editor, start, end
-      evaluate({text, line: line+1, mod, path: edpath}).then (result) =>
-        error = result.type == 'error'
-        view = if error then result.view else result
-        r = new @ink.Result editor, [start, end],
-          content: views.render view
-          error: error
-        r.view.classList.add 'julia'
-        if error and result.highlights?
-          @showError r, result.highlights
-        notifications.show "Evaluation Finished"
+      do (range, line, text) ->
+        [[start], [end]] = range
+        @ink.highlight editor, start, end
+        evaluate({text, line: line+1, mod, path: edpath}).then (result) =>
+          error = result.type == 'error'
+          view = if error then result.view else result
+          r = new @ink.Result editor, [start, end],
+            content: views.render view
+            error: error
+          r.view.classList.add 'julia'
+          if error and result.highlights?
+            @showError r, result.highlights
+          notifications.show "Evaluation Finished"
 
   # get documentation or methods for the current word
   toggleMeta: (type) ->
