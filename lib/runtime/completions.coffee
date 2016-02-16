@@ -31,8 +31,13 @@ module.exports =
   processCompletions: (completions, prefix) ->
     completions.map((c) => @toCompletion c, prefix)
 
+  validScope: ({scopes}) ->
+    for scope in scopes.slice 1
+      return false if scope.startsWith 'comment'
+    return true
+
   getSuggestions: (data) ->
-    return [] unless client.isConnected()
+    return [] unless client.isConnected() and @validScope data.scopeDescriptor
     @rawCompletions(data).then ({completions, prefix, mod}) =>
       return @fromCache mod, prefix if not completions?
       @processCompletions completions, prefix
