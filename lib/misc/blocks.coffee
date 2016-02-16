@@ -66,4 +66,5 @@ module.exports =
     ed.mutateSelectedText (selection) =>
       {row} = selection.getHeadBufferPosition()
       if (range = @getRange ed, row)
-        selection.setBufferRange range
+        [start, [row]] = range
+        selection.setBufferRange [start, [row+1, 0]]
