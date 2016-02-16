@@ -36,3 +36,7 @@ module.exports =
       for id, win of @windows
         delete @windows[id]
         win.close()
+
+  deactivate: ->
+    for id, win of @windows
+      win.close()

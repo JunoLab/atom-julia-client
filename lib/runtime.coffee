@@ -11,6 +11,7 @@ module.exports =
   deactivate: ->
     @modules.deactivate()
     @console.deactivate()
+    @frontend.deactivate()
 
   consumeInk: (ink) ->
     @evaluation.ink = ink
