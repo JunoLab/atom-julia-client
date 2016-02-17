@@ -125,8 +125,6 @@ module.exports = jlprocess =
   onStdout: (f) -> @emitter.on 'stdout', f
   onStderr: (f) -> @emitter.on 'stderr', f
 
-  # TODO: make 'kill' try to exit gracefully first
-
   require: (f) ->
     if not @proc
       atom.notifications.addError "There's no Julia process running.",
