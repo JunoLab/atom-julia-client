@@ -19,7 +19,7 @@ module.exports =
 
   walkForward: (ed, start) ->
     mark = end = start
-    while mark < ed.getLineCount() - 1
+    while mark < ed.getLastBufferRow()
       mark++
       l = @getLine ed, mark
       break if @isStart l
@@ -47,17 +47,33 @@ module.exports =
       range[1][1] = Infinity
     range
 
+  moveNext: (ed, sel, [_, [row]]) ->
+    # Ensure enough room at the end of the buffer
+    while (last = ed.getLastBufferRow()) < row+2
+      break unless last is row or @isBlank @getLine ed, last
+      sel.setBufferRange [[last, Infinity], [last, Infinity]]
+      sel.insertText '\n'
+    # Move the cursor
+    to = row+1
+    {column} = sel.getHeadBufferPosition()
+    while to < ed.getLastBufferRow() and @isBlank @getLine ed, to
+      to++
+    sel.setBufferRange [[to, column], [to, column]]
+
   getRanges: (ed) ->
     ranges = for sel in ed.getSelections()
-      if sel.getBufferRange().isEmpty()
-        @getRange ed, sel.getHeadBufferPosition().row
-      else
-        @getSelection ed, sel
-    ranges.filter((range)->range? and ed.getTextInBufferRange(range).trim())
+      selection: sel
+      range:
+        if sel.isEmpty()
+          @getRange ed, sel.getHeadBufferPosition().row
+        else
+          @getSelection ed, sel
+    ranges.filter(({range})->range? and ed.getTextInBufferRange(range).trim())
 
   get: (ed) ->
-    for range in @getRanges ed
+    for {range, selection} in @getRanges ed
       range: range
+      selection: selection
       line: range[0][0]
       text: ed.getTextInBufferRange range
 

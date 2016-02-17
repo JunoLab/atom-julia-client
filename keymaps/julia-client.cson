@@ -1,5 +1,6 @@
 '.platform-darwin .item-views > atom-text-editor[data-grammar="source julia"]':
   'cmd-enter': 'julia-client:evaluate'
+  'shift-enter': 'julia-client:evaluate-and-move'
   'cmd-shift-enter': 'julia-client:evaluate-all'
   'cmd-j cmd-m': 'julia-client:set-working-module'
   'ctrl-c': 'julia-client:interrupt-julia'
@@ -21,6 +22,7 @@
 '.platform-win32 .item-views > atom-text-editor[data-grammar="source julia"],
  .platform-linux .item-views > atom-text-editor[data-grammar="source julia"]':
   'ctrl-enter': 'julia-client:evaluate'
+  'shift-enter': 'julia-client:evaluate-and-move'
   'ctrl-shift-enter': 'julia-client:evaluate-all'
   'ctrl-j ctrl-m': 'julia-client:set-working-module'
   'ctrl-shift-c': 'julia-client:interrupt-julia'

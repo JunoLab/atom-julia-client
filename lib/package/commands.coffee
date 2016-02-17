@@ -14,6 +14,10 @@ module.exports =
         @withInk ->
           boot()
           juno.runtime.evaluation.eval()
+      'julia-client:evaluate-and-move': (event) =>
+        @withInk ->
+          boot()
+          juno.runtime.evaluation.eval(move: true)
       'julia-client:evaluate-all': (event) =>
         @withInk ->
           boot()
