@@ -136,10 +136,11 @@ module.exports = jlprocess =
 
   interruptJulia: ->
     @require =>
-      if @useWrapper
-        @sendSignalToWrapper('SIGINT')
-      else
-        @proc.kill('SIGINT')
+      if client.isConnected() and client.isWorking()
+        if @useWrapper
+          @sendSignalToWrapper('SIGINT')
+        else
+          @proc.kill('SIGINT')
 
   killJulia: ->
     if client.isConnected() and not client.isWorking()
