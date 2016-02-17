@@ -6,6 +6,8 @@ fs =            require 'fs'
 
 client = require './client'
 
+{exit} = client.import 'exit'
+
 module.exports = jlprocess =
 
   activate: ->
@@ -140,11 +142,14 @@ module.exports = jlprocess =
         @proc.kill('SIGINT')
 
   killJulia: ->
-    @require =>
-      if @useWrapper
-        @sendSignalToWrapper('KILL')
-      else
-        @proc.kill()
+    if client.isConnected() and not client.isWorking()
+      exit()
+    else
+      @require =>
+        if @useWrapper
+          @sendSignalToWrapper('KILL')
+        else
+          @proc.kill()
 
   sendSignalToWrapper: (signal) ->
     wrapper = net.connect(port: @wrapPort)
