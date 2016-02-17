@@ -1,3 +1,9 @@
+# It's best not to override default Atom keybindings if possible, and then only
+# in julia-scoped places (e.g. Julia-syntax buffer, console)
+
+# Any global commands should either be non-default or, ideally, prefixed with
+# `C-J`.
+
 '.platform-darwin .item-views > atom-text-editor[data-grammar="source julia"]':
   'cmd-enter': 'julia-client:evaluate'
   'shift-enter': 'julia-client:evaluate-and-move'
