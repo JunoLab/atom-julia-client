@@ -30,6 +30,11 @@ module.exports =
         @withInk ->
           boot()
           juno.runtime.evaluation.toggleMeta 'methods'
+      'julia-client:reset-workspace': =>
+        if juno.connection.client.isActive()
+          juno.connection.client.rpc('clear-workspace')
+        else
+          boot()
       'julia:select-block': =>
         juno.misc.blocks.select()
 
