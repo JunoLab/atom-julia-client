@@ -32,7 +32,10 @@ module.exports =
           juno.runtime.evaluation.toggleMeta 'methods'
       'julia-client:reset-workspace': =>
         if juno.connection.client.isActive()
-          juno.connection.client.rpc('clear-workspace')
+          editor = atom.workspace.getActiveTextEditor()
+          atom.commands.dispatch atom.views.getView(editor), 'inline-results:clear-all'
+          juno.connection.client.rpc('clear-workspace').then ->
+            juno.runtime.console.reset()
         else
           boot()
       'julia:select-block': =>
