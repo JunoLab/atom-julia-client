@@ -3,12 +3,12 @@
 config =
   launchOnStartup:
     type: 'boolean'
-    default: false
+    default: proc.isBundled()
     description: 'Launch a Julia client when Atom starts.'
     order: 1
   juliaPath:
     type: 'string'
-    default: if proc.bundledExe() then '[bundle]' else 'julia'
+    default: if proc.isBundled() then '[bundle]' else 'julia'
     description: 'The location of the Julia binary.'
     order: 2
   notifications:

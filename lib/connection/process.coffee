@@ -25,6 +25,8 @@ module.exports = jlprocess =
     p = path.join res, 'julia', 'bin', exe
     if fs.existsSync p then p
 
+  isBundled: -> !!@bundledExe()
+
   packageDir: (s...) ->
     packageRoot = path.resolve __dirname, '..', '..'
     resourcePath = atom.config.resourcePath
