@@ -4,6 +4,7 @@
 module.exports =
   activate: ->
     client.handle 'plot', (x) => @show x
+    client.handle 'plotsize', => @plotSize()
     @create()
 
   create: ->
@@ -18,3 +19,7 @@ module.exports =
     if not @pane.currentPane()
       @open()
     @pane.show views.render view
+
+  plotSize: ->
+    view = atom.views.getView @pane
+    [view.clientWidth or 400, view.clientHeight or 300]
