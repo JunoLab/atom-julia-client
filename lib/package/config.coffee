@@ -16,13 +16,18 @@ config =
     default: true
     description: 'Enable notifications for evaluation.'
     order: 3
+  enableMenu:
+    type: 'boolean'
+    default: proc.isBundled()
+    description: 'Show a Julia menu in the menu bar (requires restart).'
+    order: 4
 
 if process.platform != 'darwin'
   config.terminal =
     type: 'string'
     default: terminal.defaultTerminal()
     description: 'Command used to open a terminal.'
-    order: 4
+    order: 5
 
 if process.platform == 'win32'
   config.enablePowershellWrapper =
@@ -30,6 +35,6 @@ if process.platform == 'win32'
     default: true
     description: 'Use a powershell wrapper to spawn Julia.
                   Necessary to enable interrupts.'
-    order: 3.5
+    order: 2.5
 
 module.exports = config
