@@ -19,6 +19,11 @@
         "^1.0.0": "consumeStatusBar"
       }
     },
+    "tool-bar": {
+      "versions": {
+        "^0.1.0": "consumeToolBar"
+      }
+    },
     "ink": {
       "versions": {
         "*": "consumeInk"
