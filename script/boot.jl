@@ -1,5 +1,10 @@
 let
 
+if Base.find_in_path("Atom") == nothing
+  println(STDERR, "Installing Atom.jl, hang tight...")
+  Pkg.add("Atom")
+end
+
 port = parse(Int, shift!(ARGS))
 
 pkgdir = joinpath(JULIA_HOME, "..", "pkg") |> normpath
