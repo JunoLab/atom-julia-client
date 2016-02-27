@@ -15,15 +15,15 @@ module.exports =
       iconset: 'ion'
 
     @bar.addButton
+      icon: 'floppy-o'
+      callback: 'core:save'
+      tooltip: 'Save'
+      iconset: 'fa'
+
+    @bar.addButton
       icon: 'folder'
       callback: 'application:open-file'
       tooltip: 'Open File...'
-      iconset: 'ion'
-
-    @bar.addButton
-      icon: 'archive'
-      callback: 'core:save'
-      tooltip: 'Save'
       iconset: 'ion'
 
     @bar.addSpacer()
