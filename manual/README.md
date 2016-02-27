@@ -1,4 +1,4 @@
-# Julia Client Manual
+# Juno Manual
 
 This is the user manual for the atom-julia-client plugin and its dependencies. It's a little sparse at the moment – reflecting the fact that the plugin isn't ready for all users – but
 basic setup is included. If you'd like to get involved you can check out the [dev
