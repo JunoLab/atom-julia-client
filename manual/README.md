@@ -15,7 +15,7 @@ setup](../docs) instead.
 
 You don't need to do this if you already downloaded a Juno bundle. You'll need these instructions if a bundle is not available for your platform above, or if you want to use the same copy of Atom for both Julia and non-Julia work.
 
-First, download and install Julia if you haven't already – v0.4 is required. From the repl, run:
+First, [download and install Julia](http://julialang.org/downloads) if you haven't already – v0.4 is required. From the repl, run:
 
 ```julia
 Pkg.update()
