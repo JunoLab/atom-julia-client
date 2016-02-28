@@ -100,7 +100,6 @@ module.exports = jlprocess =
                                                     ["-NoProfile", "$PSVersionTable.PSVersion.Major"])
                                           .output[1].toString()) > 2
       if @useWrapper
-        # get a random and hopefully free port:
         @getFreePort =>
           @proc = child_process.spawn("powershell",
                                       ["-NoProfile", "-ExecutionPolicy", "bypass",
