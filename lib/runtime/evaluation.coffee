@@ -5,64 +5,39 @@ BrowserWindow = remote.require 'browser-window'
 
 {client} =  require '../connection'
 {notifications, views, selector} = require '../ui'
-{paths, blocks} = require '../misc'
+{paths, blocks, words} = require '../misc'
 modules = require './modules'
 
 {eval: evaluate, evalall, cd} = client.import rpc: ['eval', 'evalall'], msg: ['cd']
 
 module.exports =
-
-  eval: ({move}={}) ->
+  # calls `fn` with the current editor, module and editorpath
+  withCurrentContext: (fn) ->
     editor = atom.workspace.getActiveTextEditor()
     mod = modules.current() # TODO: may not work in all cases
     edpath = editor.getPath() || 'untitled-' + editor.getBuffer().id
-    blocks.get(editor, move: true).forEach ({range, line, text, selection}) =>
-      blocks.moveNext editor, selection, range if move
-      [[start], [end]] = range
-      @ink.highlight editor, start, end
-      r = null
-      setTimeout (=> r ?= new @ink.Result editor, [start, end], loading: true), 0.1
-      evaluate({text, line: line+1, mod, path: edpath})
-        .then (result) =>
-          error = result.type == 'error'
-          view = if error then result.view else result
-          r ?= new @ink.Result editor, [start, end]
-          r.setContent views.render(view), {error}
-          r.view.classList.add 'julia'
-          if error and result.highlights?
-            @showError r, result.highlights
-          notifications.show "Evaluation Finished"
-          require('../runtime').workspace.update()
-        .catch -> r?.destroy()
+    fn {editor, mod, edpath}
 
-  # get documentation or methods for the current word
-  toggleMeta: (type) ->
-    mod = modules.current()
-    mod = if mod then mod else 'Main'
-    editor = atom.workspace.getActiveTextEditor()
-    [word, range] = @getWord editor
-    # if we only find numbers or nothing, return prematurely
-    if word.length == 0 || !isNaN(word) then return
-    client.rpc(type, {word: word, mod: mod}).then ({result}) =>
-      if result?
-        error = result.type == 'error'
-        view = if error then result.view else result
-        fade = not @ink.Result.removeLines editor, range.start.row, range.end.row
-        r = new @ink.Result editor, [range.start.row, range.end.row],
-          content: views.render view
-          error: error
-          fade: fade
-
-  # gets the word and its range in the `editor` which the last cursor is on
-  getWord: (editor) ->
-    cursor = editor.getLastCursor()
-    # The following line is kinda iffy: The regex may or may not be well chosen
-    # and it duplicates the efforts from atom-language-julia. It might be better
-    # to select the current word via finding the smallest <span> containing the
-    # cursor which also has `function` or `macro` as its class.
-    range = cursor.getCurrentWordBufferRange({wordRegex: /[\u00A0-\uFFFF\w_!´]*\.?@?[\u00A0-\uFFFF\w_!´]+/})
-    word = editor.getTextInBufferRange range
-    [word, range]
+  eval: ({move}={}) ->
+    @withCurrentContext ({editor, mod, edpath}) =>
+      blocks.get(editor, move: true).forEach ({range, line, text, selection}) =>
+        blocks.moveNext editor, selection, range if move
+        [[start], [end]] = range
+        @ink.highlight editor, start, end
+        r = null
+        setTimeout (=> r ?= new @ink.Result editor, [start, end], loading: true), 0.1
+        evaluate({text, line: line+1, mod, path: edpath})
+          .then (result) =>
+            error = result.type == 'error'
+            view = if error then result.view else result
+            r ?= new @ink.Result editor, [start, end]
+            r.setContent views.render(view), {error}
+            r.view.classList.add 'julia'
+            if error and result.highlights?
+              @showError r, result.highlights
+            notifications.show "Evaluation Finished"
+            require('../runtime').workspace.update()
+          .catch -> r?.destroy()
 
   evalAll: ->
     editor = atom.workspace.getActiveTextEditor()
@@ -73,6 +48,21 @@ module.exports =
               code: editor.getText()
             }).then (result) ->
         notifications.show "Evaluation Finished"
+
+  gotoSymbol: ->
+    @withCurrentContext ({editor, mod}) =>
+      words.withWord editor, (word, range) =>
+        client.rpc("methods", {word: word, mod: mod}).then (result) => # 149
+
+  toggleDocs: ->
+    @withCurrentContext ({editor, mod}) =>
+      words.withWord editor, (word, range) =>
+        client.rpc("docs", {word: word, mod: mod}).then (result) =>
+          if result.error then return
+          d = new @ink.InlineDoc editor, range,
+            content: views.render result
+            highlight: true
+          d.view.classList.add 'julia'
 
   showError: (r, lines) ->
     @errorLines?.lights.destroy()
