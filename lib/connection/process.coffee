@@ -21,9 +21,11 @@ module.exports = jlprocess =
 
   bundledExe: ->
     res = path.dirname atom.config.resourcePath
-    exe = if process.platform is 'win32' then 'julia.exe' else 'julia'
-    p = path.join res, 'julia', 'bin', exe
+    p = path.join res, 'julia', 'bin', @executable()
     if fs.existsSync p then p
+
+  executable: ->
+    if process.platform is 'win32' then 'julia.exe' else 'julia'
 
   isBundled: -> !!@bundledExe()
 
@@ -36,28 +38,49 @@ module.exports = jlprocess =
 
   script: (s...) -> @packageDir 'script', s...
 
+  # spawn Julia in the first open project folder (or its parent folder for files)
   workingDir: ->
     paths = atom.workspace.project.getDirectories()
-    if paths.length == 1 and fs.statSync(paths[0].path).isDirectory()
-      paths[0].path
+    if fs.statSync(paths[0].path).isFile()
+      path.dirname paths[0].path
     else
-      process.env.HOME || process.env.USERPROFILE
+      paths[0].path
 
   jlpath: ->
     p = atom.config.get("julia-client.juliaPath")
     if p == '[bundle]' then p = @bundledExe()
     p
 
-  checkPath: (path) ->
-    new Promise (resolve) ->
-      fs.exists path, (exists) ->
+  checkPath: (p) ->
+    new Promise (resolve, reject) =>
+      # check whether path exists
+      fs.exists p, (exists) =>
         if exists
-          resolve true
+          # check whether the path actually is a file
+          fs.stat p, (err, stats) =>
+            if stats.isFile()
+              resolve()
+            else
+              # if it isn't, look for a file called `julia(.exe)`
+              fs.readdir p, (err, files) =>
+                if files.indexOf(@executable()) > 0
+                  newpath = path.join p, @executable()
+                  # check whether that file is no directory
+                  fs.stat newpath, (err, stats) =>
+                    if stats.isFile()
+                      # change the `Julia Path` setting to that new path and carry on
+                      atom.config.set 'julia-client.juliaPath', newpath
+                      resolve()
+                    else
+                      reject()
+                else
+                  reject()
+        # fallback to calling `which` or `where` on the path
         else
           which = if process.platform is 'win32' then 'where' else 'which'
-          proc = child_process.spawn which, [path]
+          proc = child_process.spawn which, [p]
           proc.on 'exit', (status) ->
-            resolve status == 0
+            if status is 0 then resolve() else reject()
 
   jlNotFound: (path) ->
     atom.notifications.addError "Julia could not be found.",
@@ -73,12 +96,8 @@ module.exports = jlprocess =
     return if @proc?
     client.booting()
 
-    @checkPath(@jlpath()).then (exists) =>
-      if not exists
-        @jlNotFound @jlpath()
-        client.cancelBoot()
-        return
-
+    @checkPath(@jlpath())
+    .then =>
       @spawnJulia port, =>
         @proc.on 'exit', (code, signal) =>
           @emitter.emit 'stderr', "Julia has stopped"
@@ -93,6 +112,9 @@ module.exports = jlprocess =
           text = data.toString()
           if text then @emitter.emit 'stderr', text
           if text and @pipeConsole then console.info text
+    .catch =>
+      @jlNotFound @jlpath()
+      client.cancelBoot()
 
   spawnJulia: (port, fn) ->
     if process.platform is 'win32' and atom.config.get("julia-client.enablePowershellWrapper")
