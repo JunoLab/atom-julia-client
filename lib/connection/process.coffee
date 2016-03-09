@@ -60,6 +60,7 @@ module.exports = jlprocess =
       # check whether path exists
       fs.stat p, (err, stats) =>
         if not err
+          # and is a file
           if stats.isFile() then resolve(); return
           # if it isn't, look for a file called `julia(.exe)`
           fs.readdir p, (err, files) =>
