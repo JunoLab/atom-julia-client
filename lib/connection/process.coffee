@@ -59,26 +59,18 @@ module.exports = jlprocess =
     new Promise (resolve, reject) =>
       # check whether path exists
       fs.stat p, (err, stats) =>
-        console.log err
         if not err
-          if stats.isFile()
-            resolve()
-          else
-            # if it isn't, look for a file called `julia(.exe)`
-            fs.readdir p, (err, files) =>
-              if err then reject()
-              if files.indexOf(@executable()) > 0
-                newpath = path.join p, @executable()
-                # check whether that file is no directory
-                fs.stat newpath, (err, stats) =>
-                  if stats.isFile()
-                    # change the `Julia Path` setting to that new path and carry on
-                    atom.config.set 'julia-client.juliaPath', newpath
-                    resolve()
-                  else
-                    reject()
-              else
-                reject()
+          if stats.isFile() then resolve(); return
+          # if it isn't, look for a file called `julia(.exe)`
+          fs.readdir p, (err, files) =>
+            if err or files.indexOf(@executable()) < 0 then reject(); return
+            newpath = path.join p, @executable()
+            # check whether that file is no directory
+            fs.stat newpath, (err, fstats) =>
+              # change the `Julia Path` setting to that new path and carry on
+              if not fstats.isFile() then reject(); return
+              atom.config.set 'julia-client.juliaPath', newpath
+              resolve()
         # fallback to calling `which` or `where` on the path
         else
           which = if process.platform is 'win32' then 'where' else 'which'
