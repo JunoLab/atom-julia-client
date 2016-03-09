@@ -101,24 +101,24 @@ module.exports = jlprocess =
     client.booting()
 
     @checkPath(@jlpath())
-    .then =>
-      @spawnJulia port, =>
-        @proc.on 'exit', (code, signal) =>
-          @emitter.emit 'stderr', "Julia has stopped"
-          if not @useWrapper then @emitter.emit 'stderr', ": #{code}, #{signal}"
-          @proc = null
-          client.cancelBoot()
-        @proc.stdout.on 'data', (data) =>
-          text = data.toString()
-          if text then @emitter.emit 'stdout', text
-          if text and @pipeConsole then console.log text
-        @proc.stderr.on 'data', (data) =>
-          text = data.toString()
-          if text then @emitter.emit 'stderr', text
-          if text and @pipeConsole then console.info text
-    .catch =>
-      @jlNotFound @jlpath()
-      client.cancelBoot()
+      .then =>
+        @spawnJulia port, =>
+          @proc.on 'exit', (code, signal) =>
+            @emitter.emit 'stderr', "Julia has stopped"
+            if not @useWrapper then @emitter.emit 'stderr', ": #{code}, #{signal}"
+            @proc = null
+            client.cancelBoot()
+          @proc.stdout.on 'data', (data) =>
+            text = data.toString()
+            if text then @emitter.emit 'stdout', text
+            if text and @pipeConsole then console.log text
+          @proc.stderr.on 'data', (data) =>
+            text = data.toString()
+            if text then @emitter.emit 'stderr', text
+            if text and @pipeConsole then console.info text
+      .catch =>
+        @jlNotFound @jlpath()
+        client.cancelBoot()
 
   spawnJulia: (port, fn) ->
     if process.platform is 'win32' and atom.config.get("julia-client.enablePowershellWrapper")
