@@ -38,13 +38,17 @@ module.exports = jlprocess =
 
   script: (s...) -> @packageDir 'script', s...
 
-  # spawn Julia in the first open project folder (or its parent folder for files)
   workingDir: ->
     paths = atom.workspace.project.getDirectories()
-    if fs.statSync(paths[0].path).isFile()
-      path.dirname paths[0].path
+    if paths.length > 0
+      # spawn Julia in the first open project folder (or its parent folder for files)
+      if fs.statSync(paths[0].path).isFile()
+        path.dirname paths[0].path
+      else
+        paths[0].path
     else
-      paths[0].path
+      # or in HOME if there are no open project folders
+      process.env.HOME || process.env.USERPROFILE
 
   jlpath: ->
     p = atom.config.get("julia-client.juliaPath")
