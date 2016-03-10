@@ -2,7 +2,6 @@ juno = require '../lib/julia-client'
 
 # Testing-specific settings
 juno.connection.process.jlpath = -> "julia"
-juno.connection.process.workingDir = -> process.env.HOME || process.env.USERPROFILE
 juno.connection.process.pipeConsole = true
 
 describe "the package", ->
