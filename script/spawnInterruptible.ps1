@@ -12,7 +12,7 @@ if (Test-Path $cwd) {
 }
 
 # start Julia
-$proc = Start-Process "$jlpath" @("-i", "$boot", $port) -NoNewWindow -PassThru
+$proc = Start-Process "`"$jlpath`"" @("-i", "`"$boot`"", $port) -NoNewWindow -PassThru
 
 # import GenerateConsoleCtrlEvent:
 $MethodDefinition = @'
