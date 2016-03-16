@@ -36,6 +36,6 @@ module.exports =
       c.on 'data', @buffer (s) =>
         client.input JSON.parse s
 
-    @server.listen 0, 'localhost', =>
+    @server.listen 0, '127.0.0.1', =>
       @port = @server.address().port
       f?(@port)

@@ -141,7 +141,7 @@ module.exports = jlprocess =
 
   getFreePort: (fn) ->
     server = net.createServer()
-    server.listen 0, 'localhost', =>
+    server.listen 0, '127.0.0.1', =>
       @wrapPort = server.address().port
       server.close()
       fn()
