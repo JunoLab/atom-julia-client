@@ -60,7 +60,7 @@ while ($true){
   if ($msg -match "SIGINT"){
     $status = $Kernel32::GenerateConsoleCtrlEvent(0, $proc.Id)
     # this is necessary for GenerateConsoleCtrlEvent to actually do something:
-    echo "Interrupting Julia..."
+    Write-Host "" -NoNewLine
     if (!$status) {
       echo "julia-client: Internal Error: Interrupting Julia failed."
     }
