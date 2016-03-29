@@ -10,7 +10,10 @@ module.exports =
     @process.activate()
 
     @client.handle 'error', (options) =>
-      atom.notifications.addError options.msg, options
+      if atom.config.get("julia-client.errorsToConsole")
+        console.log('TODO: send this error to the console!!')
+      else
+        atom.notifications.addError options.msg, options
 
     if atom.config.get("julia-client.launchOnStartup")
       atom.commands.dispatch atom.views.getView(atom.workspace),
