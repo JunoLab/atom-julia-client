@@ -11,7 +11,7 @@ module.exports =
 
     @client.handle 'error', (options) =>
       if atom.config.get("julia-client.errorsToConsole")
-        console.log('TODO: send this error to the console!!')
+        process.emitter.emit 'stderr', options.msg
       else
         atom.notifications.addError options.msg, options
 
