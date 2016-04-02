@@ -16,23 +16,28 @@ config =
     default: true
     description: 'Enable notifications for evaluation.'
     order: 3
+  errorsToConsole:
+    type: 'boolean'
+    default: false
+    description: 'Show errors in console. If false use atom\'s nofitication UI'
+    order: 4
   enableMenu:
     type: 'boolean'
     default: proc.isBundled()
     description: 'Show a Julia menu in the menu bar (requires restart).'
-    order: 4
+    order: 5
   enableToolBar:
     type: 'boolean'
     default: proc.isBundled()
     description: 'Show Julia icons in the tool bar.'
-    order: 5
+    order: 6
 
 if process.platform != 'darwin'
   config.terminal =
     type: 'string'
     default: terminal.defaultTerminal()
     description: 'Command used to open a terminal.'
-    order: 6
+    order: 7
 
 if process.platform == 'win32'
   config.enablePowershellWrapper =

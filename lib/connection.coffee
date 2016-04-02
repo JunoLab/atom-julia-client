@@ -9,8 +9,12 @@ module.exports =
     @client.boot = => @boot()
     @process.activate()
 
-    @client.handle 'error', (options) =>
-      atom.notifications.addError options.msg, options
+    atom.config.observe 'julia-client.errorsToConsole', (val) =>
+      @client.handle 'error', (options) =>
+        if val
+          @process.emitter.emit 'stderr', options.msg + '\n' + options.detail
+        else
+          atom.notifications.addError options.msg, options
 
     if atom.config.get("julia-client.launchOnStartup")
       atom.commands.dispatch atom.views.getView(atom.workspace),
