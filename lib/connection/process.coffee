@@ -52,6 +52,8 @@ module.exports = jlprocess =
           else
             wd = paths[0].path
         fn wd
+    else
+      fn wd
 
   jlpath: ->
     p = atom.config.get("julia-client.juliaPath")
