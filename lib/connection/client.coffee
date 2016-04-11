@@ -120,7 +120,7 @@ module.exports =
 
   connectedError: ->
     if @isActive()
-      atom.notifications.addError "Can't create a new client.",
+      atom.notifications.addError "Can't start a Julia process.",
         detail: "There is already a Julia client running."
       true
     else
