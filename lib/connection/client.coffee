@@ -36,7 +36,7 @@ module.exports =
         @loading.done()
 
     @handle 'cancelCallback', (id) =>
-      @callbacks[id].reject()
+      @callbacks[id].reject "cancelled by julia"
       @loading.done()
 
   # Will be replaced by the connection logic
@@ -109,7 +109,7 @@ module.exports =
     @cancelBoot()
     @loading.reset()
     @queue = []
-    cb.reject() for id, cb of @callbacks
+    cb.reject 'client disconnected' for id, cb of @callbacks
     @callbacks = {}
 
   isWorking: -> @loading.isWorking()
