@@ -29,9 +29,9 @@ module.exports =
   metrics: ->
     try
       if id = localStorage.getItem 'metrics.userId'
-        http.get "http://data.junolab.org/hit?id=#{id}&app=atom-julia-boot"
+        require('http').get "http://data.junolab.org/hit?id=#{id}&app=atom-julia-boot"
 
   boot: ->
     if not @client.isActive()
       @tcp.listen (port) => @process.start port
-    @client.rpc('ping').then -> metrics()
+    @client.rpc('ping').then => @metrics()
