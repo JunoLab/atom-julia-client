@@ -26,7 +26,12 @@ module.exports =
   consumeInk: (ink) ->
     @client.loading = new ink.Loading
 
+  metrics: ->
+    try
+      if id = localStorage.getItem 'metrics.userId'
+        http.get "http://data.junolab.org/hit?id=#{id}&app=atom-julia-boot"
+
   boot: ->
     if not @client.isActive()
       @tcp.listen (port) => @process.start port
-    @client.rpc 'ping'
+    @client.rpc('ping').then -> metrics()
