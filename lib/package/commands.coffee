@@ -7,10 +7,14 @@ module.exports =
     disrequireClient = (f) -> juno.connection.client.disrequire f
     boot = -> juno.connection.boot()
 
+    cancelComplete = (e) ->
+      atom.commands.dispatch(e.currentTarget, 'autocomplete-plus:cancel')
+
     @subs = new CompositeDisposable
 
     @subs.add atom.commands.add '.item-views > atom-text-editor',
       'julia-client:evaluate': (event) =>
+        cancelComplete event
         @withInk ->
           boot()
           juno.runtime.evaluation.eval()
@@ -19,6 +23,7 @@ module.exports =
           boot()
           juno.runtime.evaluation.eval(move: true)
       'julia-client:evaluate-all': (event) =>
+        cancelComplete event
         @withInk ->
           boot()
           juno.runtime.evaluation.evalAll()
