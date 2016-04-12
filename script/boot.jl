@@ -2,7 +2,12 @@ let
 
 if Base.find_in_path("Atom") == nothing
   println(STDERR, "Installing Atom.jl, hang tight...")
-  Pkg.add("Atom")
+  try
+    Pkg.add("Atom")
+  catch
+    print(STDERR, "juno-err-install")
+    rethrow()
+  end
 end
 
 port = parse(Int, shift!(ARGS))
@@ -16,7 +21,12 @@ if isdir(pkgdir)
   include("caches.jl")
 end
 
-using Atom
-@sync Atom.connect(port)
+try
+  using Atom
+  @sync Atom.connect(port)
+catch
+  print(STDERR, "juno-err-load")
+  rethrow()
+end
 
 end

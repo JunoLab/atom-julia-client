@@ -94,6 +94,28 @@ module.exports = jlprocess =
       """
       dismissable: true
 
+  bootErr: (err) ->
+    switch err
+      when 'juno-err-install'
+        atom.notifications.addError "Error installing Atom.jl package",
+          detail: """
+          Go to the "Packages->Julia->Open Terminal" menu and
+          run `Pkg.add("Atom")` in Julia, then try again.
+          If you still see an issue, please report it to:
+              julia-users@googlegroups.com
+          """
+          dismissable: true
+      when 'juno-err-load'
+        atom.notifications.addError "Error loading Atom.jl package",
+          detail: """
+          Go to the "Packages->Julia->Open Terminal" menu and
+          run `Pkg.update()`in Julia, then try again.
+          If you still see an issue, please report it to:
+              http://discuss.junolab.org/
+          """
+          dismissable: true
+      else @emitter.emit 'stderr', err
+
   start: (port) ->
     return if @proc?
     client.booting()
@@ -112,6 +134,9 @@ module.exports = jlprocess =
             if text and @pipeConsole then console.log text
           @proc.stderr.on 'data', (data) =>
             text = data.toString()
+            if text.startsWith 'juno-err'
+              @bootErr text
+              return
             if text then @emitter.emit 'stderr', text
             if text and @pipeConsole then console.info text
       .catch =>
