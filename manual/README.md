@@ -32,7 +32,7 @@ if the `julia` command is not on your path, you need to go into the julia-client
 and set the path to the Julia binary, which is `[wherever you installed
 Julia]/bin/julia` (or `[same]\bin\julia.exe` on Windows).
 
-Finally, run the `Julia Client: Toggle Console` command from Atom. When the console opens,
+Finally, run the `Julia Client: Open Console` command from Atom. When the console opens,
 type a Julia expression (e.g. `2+2`) and press `Enter` to evaluate it.
 
 To get LaTeX-style tab completions, install the `latex-completions` package.
