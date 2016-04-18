@@ -29,6 +29,8 @@ module.exports =
       @c.result view,
         error: result.type == 'error'
 
+    client.handle 'input', => @input()
+
     process.onStdout (s) => @c.stdout s
     process.onStderr (s) => @c.stderr s
 
@@ -72,3 +74,9 @@ module.exports =
     {name: 'help', prefix: '?', icon: 'question', grammar: 'source.julia'}
     {name: 'shell', prefix: ';', icon: 'terminal', grammar: 'source.shell'}
   ]
+
+  input: ->
+    new Promise (resolve) =>
+      @c.output type: 'input', icon: 'file-text', eval: ->
+        resolve @editor.getText()
+      @c.emitter.emit 'focus-input'
