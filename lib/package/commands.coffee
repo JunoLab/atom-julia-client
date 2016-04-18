@@ -69,6 +69,8 @@ module.exports =
         requireClient -> juno.runtime.evaluation.cdProject()
       'julia-client:work-in-home-folder': ->
         requireClient -> juno.runtime.evaluation.cdHome()
+      'julia-client:select-working-folder': ->
+        requireClient -> juno.runtime.evaluation.cdSelect()
 
   deactivate: ->
     @subs.dispose()

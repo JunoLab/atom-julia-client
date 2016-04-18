@@ -1,4 +1,5 @@
 path = require 'path'
+{dialog, BrowserWindow} = require('electron').remote
 
 {client} =  require '../connection'
 {notifications, views, selector} = require '../ui'
@@ -99,3 +100,8 @@ module.exports =
 
   cdHome: ->
     cd paths.home()
+
+  cdSelect: ->
+    opts = properties: ['openDirectory']
+    dialog.showOpenDialog BrowserWindow.getFocusedWindow(), opts, (path) ->
+      if path? then cd path[0]

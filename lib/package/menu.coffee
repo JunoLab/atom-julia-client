@@ -32,6 +32,7 @@ module.exports =
           {label: 'Current File\'s Folder', command: 'julia-client:work-in-file-folder'}
           {label: 'Current Project\'s Folder', command: 'julia-client:work-in-project-folder'}
           {label: 'Home Folder', command: 'julia-client:work-in-home-folder'}
+          {label: 'Select...', command: 'julia-client:select-working-folder'}
         ]
       }
 
