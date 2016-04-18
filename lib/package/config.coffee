@@ -19,7 +19,8 @@ config =
   errorsToConsole:
     type: 'boolean'
     default: false
-    description: 'Show errors in console. If false use atom\'s nofitication UI'
+    description: 'When evaluating a script, show errors in the console instead
+                  of using a notification.'
     order: 4
   enableMenu:
     type: 'boolean'
