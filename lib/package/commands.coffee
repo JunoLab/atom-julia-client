@@ -49,8 +49,7 @@ module.exports =
 
     @subs.add atom.commands.add 'atom-workspace',
       'julia-client:open-a-repl': -> juno.connection.terminal.repl()
-      'julia-client:start-julia': ->
-        disrequireClient -> boot()
+      'julia-client:start-julia': -> disrequireClient -> boot()
       'julia-client:open-console': => @withInk -> juno.runtime.console.open()
       "julia-client:clear-console": => juno.runtime.console.reset()
       'julia-client:open-plot-pane': => @withInk -> juno.runtime.plots.open()
