@@ -1,3 +1,5 @@
+{time} = require './misc'
+
 module.exports =
   client:   require './connection/client'
   process:  require './connection/process'
@@ -34,4 +36,4 @@ module.exports =
   boot: ->
     if not @client.isActive()
       @tcp.listen (port) => @process.start port
-    @client.rpc('ping').then => @metrics()
+      time "Julia Boot", @client.rpc('ping').then => @metrics()
