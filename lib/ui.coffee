@@ -10,6 +10,9 @@ module.exports =
     @client.onDisconnected =>
       @ink?.Result.invalidateAll()
 
+    @client.handle 'progress', (p) =>
+      @progress?.progress = p
+
   consumeInk: (@ink) ->
     @views.ink = @ink
 
