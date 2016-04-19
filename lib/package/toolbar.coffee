@@ -11,7 +11,7 @@ module.exports =
       callback: ->
         atom.workspace.open().then (ed) ->
           ed.setGrammar(atom.grammars.grammarForScopeName('source.julia'))
-      tooltip: 'New Julia Script'
+      tooltip: 'New Julia File'
       iconset: 'ion'
 
     @bar.addButton
@@ -46,13 +46,13 @@ module.exports =
 
     @bar.addButton
       icon: 'zap'
-      callback: 'julia-client:evaluate-and-move'
-      tooltip: 'Evaluate Line'
+      callback: 'julia-client:run-and-move'
+      tooltip: 'Run Block'
 
     @bar.addButton
       icon: 'play'
-      callback: 'julia-client:evaluate-all'
-      tooltip: 'Run Script'
+      callback: 'julia-client:run-file'
+      tooltip: 'Run File'
       iconset: 'ion'
 
     @bar.addButton

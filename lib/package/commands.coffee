@@ -13,16 +13,16 @@ module.exports =
     @subs = new CompositeDisposable
 
     @subs.add atom.commands.add '.item-views > atom-text-editor',
-      'julia-client:evaluate': (event) =>
+      'julia-client:run-block': (event) =>
         cancelComplete event
         @withInk ->
           boot()
           juno.runtime.evaluation.eval()
-      'julia-client:evaluate-and-move': (event) =>
+      'julia-client:run-and-move': (event) =>
         @withInk ->
           boot()
           juno.runtime.evaluation.eval(move: true)
-      'julia-client:evaluate-all': (event) =>
+      'julia-client:run-file': (event) =>
         cancelComplete event
         @withInk ->
           boot()

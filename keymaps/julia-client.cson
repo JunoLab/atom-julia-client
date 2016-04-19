@@ -5,9 +5,9 @@
 # `C-J`.
 
 '.platform-darwin .item-views > atom-text-editor[data-grammar="source julia"]':
-  'cmd-enter': 'julia-client:evaluate'
-  'shift-enter': 'julia-client:evaluate-and-move'
-  'cmd-shift-enter': 'julia-client:evaluate-all'
+  'cmd-enter': 'julia-client:run-block'
+  'shift-enter': 'julia-client:run-and-move'
+  'cmd-shift-enter': 'julia-client:run-file'
   'cmd-j cmd-d': 'julia-client:toggle-documentation'
   'cmd-shift-a': 'julia:select-block'
 
@@ -28,9 +28,9 @@
 
 '.platform-win32 .item-views > atom-text-editor[data-grammar="source julia"],
  .platform-linux .item-views > atom-text-editor[data-grammar="source julia"]':
-  'ctrl-enter': 'julia-client:evaluate'
-  'shift-enter': 'julia-client:evaluate-and-move'
-  'ctrl-shift-enter': 'julia-client:evaluate-all'
+  'ctrl-enter': 'julia-client:run-block'
+  'shift-enter': 'julia-client:run-and-move'
+  'ctrl-shift-enter': 'julia-client:run-file'
   'ctrl-j ctrl-m': 'julia-client:set-working-module'
   'ctrl-shift-c': 'julia-client:interrupt-julia'
   'ctrl-j ctrl-d': 'julia-client:toggle-documentation'
