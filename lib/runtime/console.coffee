@@ -40,6 +40,8 @@ module.exports =
 
   create: ->
     @c = @ink.Console.fromId 'julia'
+    view = atom.views.getView @c
+    view.classList.add 'julia'
     @c.setModes @modes
     @c.onEval (ed) => @eval ed
     client.onWorking => @c.loading true

@@ -8,12 +8,12 @@
   'cmd-enter': 'julia-client:evaluate'
   'shift-enter': 'julia-client:evaluate-and-move'
   'cmd-shift-enter': 'julia-client:evaluate-all'
-  'cmd-j cmd-m': 'julia-client:set-working-module'
-  'ctrl-c': 'julia-client:interrupt-julia'
   'cmd-j cmd-d': 'julia-client:toggle-documentation'
   'cmd-shift-a': 'julia:select-block'
 
-'.platform-darwin ink-console.julia':
+'.platform-darwin .item-views > atom-text-editor[data-grammar="source julia"],
+ .platform-darwin ink-console.julia,
+ .platform-darwin ink-console.julia atom-text-editor':
   'ctrl-c': 'julia-client:interrupt-julia'
   'cmd-j cmd-m': 'julia-client:set-working-module'
 
