@@ -8,9 +8,12 @@ tcp = require './tcp'
 
 {exit} = client.import 'exit'
 
-module.exports = jlprocess =
+module.exports =
 
   activate: ->
+    client.onDisconnected ->
+      if @useWrapper and @proc
+        @proc.kill()
 
     client.handle 'welcome', ->
       atom.notifications.addSuccess "Welcome to Juno!",
@@ -210,7 +213,3 @@ module.exports = jlprocess =
     wrapper.setNoDelay()
     wrapper.write(signal)
     wrapper.end()
-
-client.onDisconnected ->
-  if jlprocess.useWrapper and jlprocess.proc
-    jlprocess.proc.kill()
