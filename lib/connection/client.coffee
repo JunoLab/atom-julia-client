@@ -118,6 +118,11 @@ module.exports =
 
   # Management & UI
 
+  onStdout: (f) -> @emitter.on 'stdout', f
+  onStderr: (f) -> @emitter.on 'stderr', f
+  stdout: (data) -> @emitter.emit 'stdout', data
+  stderr: (data) -> @emitter.emit 'stderr', data
+
   clientCall: (name, f, args...) ->
     if not @conn[f]?
       atom.notifications.addError "This client doesn't support #{name}."
@@ -128,21 +133,28 @@ module.exports =
   interrupt: -> @clientCall 'interrupts', 'interrupt'
   kill: -> @clientCall 'kill', 'kill'
 
-  connectedError: ->
-    if @isActive()
-      atom.notifications.addError "Can't start a Julia process.",
-        detail: "There is already a Julia client running."
+  connectedError: (action = 'do that') ->
+    if @isConnected()
+      atom.notifications.addError "Can't #{action} with a Julia client running.",
+        detail: "Stop the current client with Packages → Julia → Stop Julia."
       true
+    else if @isBooting()
+      atom.notifications.addError "Can't #{action} with a Julia client booting."
     else
       false
 
-  notConnectedError: ->
+  notConnectedError: (action = 'do that') ->
     if not @isConnected()
-      atom.notifications.addError "Can't do that without a Julia client.",
-        detail: "Try connecting a client by evaluating something."
+      atom.notifications.addError "Can't #{action} without a Julia client.",
+        detail: "Start Julia using Packages → Julia → Start Julia."
       true
     else
       false
 
-  require: (f) -> @notConnectedError() or f()
-  disrequire: (f) -> @connectedError() or f()
+  require: (a, f) ->
+    f ? [a, f] = [null, a]
+    @notConnectedError(a) or f()
+
+  disrequire: (a, f) ->
+    f ? [a, f] = [null, a]
+    @connectedError(a) or f()

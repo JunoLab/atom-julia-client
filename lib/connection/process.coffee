@@ -1,4 +1,3 @@
-{Emitter} =     require 'atom'
 child_process = require 'child_process'
 net =           require 'net'
 path =          require 'path'
@@ -10,8 +9,6 @@ tcp = require './tcp'
 {exit} = client.import 'exit'
 
 module.exports = jlprocess =
-
-  emitter: new Emitter
 
   activate: ->
 
@@ -104,7 +101,7 @@ module.exports = jlprocess =
       when 'juno-err-install'
         atom.notifications.addError "Error installing Atom.jl package",
           detail: """
-          Go to the "Packages->Julia->Open Terminal" menu and
+          Go to the Packages → Julia → Open Terminal menu and
           run `Pkg.add("Atom")` in Julia, then try again.
           If you still see an issue, please report it to:
               julia-users@googlegroups.com
@@ -113,7 +110,7 @@ module.exports = jlprocess =
       when 'juno-err-load'
         atom.notifications.addError "Error loading Atom.jl package",
           detail: """
-          Go to the "Packages->Julia->Open Terminal" menu and
+          Go to the Packages → Julia → Open Terminal menu and
           run `Pkg.update()`in Julia, then try again.
           If you still see an issue, please report it to:
               http://discuss.junolab.org/
@@ -131,25 +128,21 @@ module.exports = jlprocess =
           Julia's first run will take a couple of minutes.
           Go to Packages → Julia → Open Console to see progress.
           """
-      else @emitter.emit 'stderr', err
+      else client.stderr err
 
   init: (conn) ->
     conn.proc.on 'exit', (code, signal) =>
-      @emitter.emit 'stderr', "Julia has stopped"
-      if not @useWrapper then @emitter.emit 'stderr', ": #{code}, #{signal}"
+      client.stderr "Julia has stopped"
+      if not @useWrapper then client.stderr ": #{code}, #{signal}"
       delete @proc
       client.cancelBoot()
-    conn.proc.stdout.on 'data', (data) =>
-      text = data.toString()
-      if text then @emitter.emit 'stdout', text
-      if text and @pipeConsole then console.log text
+    conn.proc.stdout.on 'data', (data) => client.stdout data.toString()
     conn.proc.stderr.on 'data', (data) =>
       text = data.toString()
       if text.startsWith 'juno-err'
         @bootErr text
         return
-      if text then @emitter.emit 'stderr', text
-      if text and @pipeConsole then console.info text
+      client.stderr text
     conn.interrupt = => @interrupt conn.proc
     conn.kill = => @kill conn.proc
     client.connected conn
@@ -186,7 +179,7 @@ module.exports = jlprocess =
             fn @proc
           return
         else
-          @emitter.emit 'stdout', "PowerShell version < 3 encountered. Running without wrapper (interrupts won't work)."
+          client.stderr "PowerShell version < 3 encountered. Running without wrapper (interrupts won't work)."
       @proc = child_process.spawn(@jlpath(), ["-i", @script("boot.jl"), port], cwd: workingdir)
       fn @proc
 
@@ -196,9 +189,6 @@ module.exports = jlprocess =
       @wrapPort = server.address().port
       server.close()
       fn()
-
-  onStdout: (f) -> @emitter.on 'stdout', f
-  onStderr: (f) -> @emitter.on 'stderr', f
 
   interrupt: (proc) ->
     if client.isConnected() and client.isWorking()

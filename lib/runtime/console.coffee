@@ -2,7 +2,7 @@
 
 {history} = require '../misc'
 {notifications, views} = require '../ui'
-{client, process} = require '../connection'
+{client} = require '../connection'
 
 modules = require './modules'
 
@@ -31,8 +31,8 @@ module.exports =
 
     client.handle 'input', => @input()
 
-    process.onStdout (s) => @c.stdout s
-    process.onStderr (s) => @c.stderr s
+    client.onStdout (s) => @c.stdout s
+    client.onStderr (s) => @c.stderr s
 
   deactivate: ->
     @subs.dispose()

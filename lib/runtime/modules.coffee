@@ -55,7 +55,7 @@ module.exports =
     item = atom.workspace.getActivePaneItem()
     ised = atom.workspace.isTextEditor item
     return unless @isValidItem item
-    client.require =>
+    client.require 'change modules', =>
       if (item = atom.workspace.getActivePaneItem())
         active = item.juliaModule or (if ised then @autodetect else 'Main')
         modules = allmodules().then (modules) =>
