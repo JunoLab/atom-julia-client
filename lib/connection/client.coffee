@@ -72,16 +72,16 @@ module.exports =
   onConnected: (cb) -> @emitter.on('connected', cb)
   onDisconnected: (cb) -> @emitter.on('disconnected', cb)
 
-  isBooting: false
+  isBooting: -> false
 
   isConnected: -> false
 
-  isActive: -> @isConnected() || @isBooting
+  isActive: -> @isConnected() || @isBooting()
 
   connected: ->
     @emitter.emit 'connected'
-    if @isBooting
-      @isBooting = false
+    if @isBooting()
+      @isBooting = -> false
       @loading.done()
     @output msg for msg in @queue
     @queue = []
@@ -91,12 +91,12 @@ module.exports =
     @reset()
 
   booting: ->
-    @isBooting = true
+    @isBooting = -> true
     @loading.working()
 
   cancelBoot: ->
-    if @isBooting
-      @isBooting = false
+    if @isBooting()
+      @isBooting = -> false
       @reset()
 
   reset: ->
