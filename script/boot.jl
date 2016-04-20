@@ -19,8 +19,6 @@ vers = "v$(VERSION.major).$(VERSION.minor)"
 
 if isdir(pkgdir)
   push!(LOAD_PATH, joinpath(pkgdir, vers))
-  push!(Base.LOAD_CACHE_PATH, joinpath(pkgdir, "lib", vers))
-  include("caches.jl")
 end
 
 precompile = !install && isempty(Base.find_all_in_cache_path(:Atom))
