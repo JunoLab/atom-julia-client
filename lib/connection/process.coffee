@@ -132,17 +132,6 @@ module.exports =
       else client.stderr err
 
   init: (conn) ->
-    conn.proc.on 'exit', (code, signal) =>
-      client.stderr "Julia has stopped"
-      if not @useWrapper then client.stderr ": #{code}, #{signal}"
-      client.cancelBoot()
-    conn.proc.stdout.on 'data', (data) => client.stdout data.toString()
-    conn.proc.stderr.on 'data', (data) =>
-      text = data.toString()
-      if text.startsWith 'juno-err'
-        @bootErr text
-        return
-      client.stderr text
     conn.interrupt = => @interrupt conn.proc
     conn.kill = => @kill conn.proc
     conn.stdin = (data) -> conn.proc.stdin.write data
@@ -153,6 +142,18 @@ module.exports =
     @checkPath @jlpath()
       .then =>
         @spawnJulia port, (proc) =>
+          proc.on 'exit', (code, signal) =>
+            client.stderr "Julia has stopped"
+            if not @useWrapper then client.stderr ": #{code}, #{signal}"
+            client.cancelBoot()
+          proc.stdout.on 'data', (data) => client.stdout data.toString()
+          proc.stderr.on 'data', (data) =>
+            text = data.toString()
+            if text.startsWith 'juno-err'
+              @bootErr text
+              return
+            client.stderr text
+
           tcp.next().then (conn) =>
             conn.proc = proc
             @init conn
