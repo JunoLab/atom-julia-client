@@ -11,14 +11,9 @@ tcp = require './tcp'
 
 module.exports = jlprocess =
 
-  activate: ->
-    @cmds = atom.commands.add 'atom-workspace',
-      'julia-client:kill-julia': => @killJulia()
-      'julia-client:interrupt-julia': => @interruptJulia()
-    @emitter = new Emitter
+  emitter: new Emitter
 
-  deactivate: ->
-    @cmds.dispose()
+  activate: ->
 
     client.handle 'welcome', ->
       atom.notifications.addSuccess "Welcome to Juno!",
@@ -155,6 +150,8 @@ module.exports = jlprocess =
         return
       if text then @emitter.emit 'stderr', text
       if text and @pipeConsole then console.info text
+    conn.interrupt = => @interrupt conn.proc
+    conn.kill = => @kill conn.proc
     client.connected conn
 
   start: (port) ->
@@ -203,30 +200,21 @@ module.exports = jlprocess =
   onStdout: (f) -> @emitter.on 'stdout', f
   onStderr: (f) -> @emitter.on 'stderr', f
 
-  require: (f) ->
-    if not @proc
-      atom.notifications.addError "There's no Julia process running.",
-        detail: "Try starting one by evaluating something."
-    else
-      f()
+  interrupt: (proc) ->
+    if client.isConnected() and client.isWorking()
+      if @useWrapper
+        @sendSignalToWrapper('SIGINT')
+      else
+        proc.kill('SIGINT')
 
-  interruptJulia: ->
-    @require =>
-      if client.isConnected() and client.isWorking()
-        if @useWrapper
-          @sendSignalToWrapper('SIGINT')
-        else
-          @proc.kill('SIGINT')
-
-  killJulia: ->
+  kill: (proc) ->
     if client.isConnected() and not client.isWorking()
       exit()
     else
-      @require =>
-        if @useWrapper
-          @sendSignalToWrapper('KILL')
-        else
-          @proc.kill()
+      if @useWrapper
+        @sendSignalToWrapper('KILL')
+      else
+        proc.kill()
 
   sendSignalToWrapper: (signal) ->
     wrapper = net.connect(port: @wrapPort)

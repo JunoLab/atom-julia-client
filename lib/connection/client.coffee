@@ -118,6 +118,16 @@ module.exports =
 
   # Management & UI
 
+  clientCall: (name, f, args...) ->
+    if not @conn[f]?
+      atom.notifications.addError "This client doesn't support #{name}."
+    else
+      @conn[f].call @conn, args...
+
+  stdin: (data) -> @clientCall 'STDIN', 'stdin', data
+  interrupt: -> @clientCall 'interrupts', 'interrupt'
+  kill: -> @clientCall 'kill', 'kill'
+
   connectedError: ->
     if @isActive()
       atom.notifications.addError "Can't start a Julia process.",
@@ -127,7 +137,7 @@ module.exports =
       false
 
   notConnectedError: ->
-    if not @isActive()
+    if not @isConnected()
       atom.notifications.addError "Can't do that without a Julia client.",
         detail: "Try connecting a client by evaluating something."
       true

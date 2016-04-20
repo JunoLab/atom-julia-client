@@ -23,7 +23,6 @@ module.exports =
         'julia-client:start-julia'
 
   deactivate: ->
-    @process.deactivate()
 
   consumeInk: (ink) ->
     @client.loading = new ink.Loading
