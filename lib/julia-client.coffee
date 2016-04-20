@@ -29,5 +29,7 @@ module.exports = JuliaClient =
 
   consumeToolBar: (bar) -> toolbar.consumeToolBar bar
 
+  provideClient: -> @connection.client
+
   config: require './package/config'
   completions: -> require './runtime/completions'
