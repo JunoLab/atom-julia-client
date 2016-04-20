@@ -31,8 +31,8 @@ module.exports =
 
     client.handle 'input', => @input()
 
-    client.onStdout (s) => @c.stdout s
-    client.onStderr (s) => @c.stderr s
+    client.onStdout (s) => @stdout s
+    client.onStderr (s) => @stderr s
 
   deactivate: ->
     @subs.dispose()
@@ -49,6 +49,17 @@ module.exports =
     atom.views.getView(@c).classList.add 'julia'
     history.read().then (entries) =>
       @c.history.set entries
+
+  ignored: ['WARNING: Method definition require(Symbol)']
+  ignore: (s) ->
+    for i in @ignored
+      return true if s.startsWith(i)
+
+  stdout: (data) -> @c.stdout data
+
+  stderr: (data) ->
+    data = data.split('\n').filter((x)=>!@ignore x).join("\n")
+    if data then @c.stderr data
 
   open: ->
     # Seems like atom should be doing this check for us,
