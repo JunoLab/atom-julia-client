@@ -5,6 +5,7 @@ path =          require 'path'
 fs =            require 'fs'
 
 client = require './client'
+tcp = require './tcp'
 
 {exit} = client.import 'exit'
 
@@ -137,29 +138,34 @@ module.exports = jlprocess =
           """
       else @emitter.emit 'stderr', err
 
+  init: (conn) ->
+    conn.proc.on 'exit', (code, signal) =>
+      @emitter.emit 'stderr', "Julia has stopped"
+      if not @useWrapper then @emitter.emit 'stderr', ": #{code}, #{signal}"
+      delete @proc
+      client.cancelBoot()
+    conn.proc.stdout.on 'data', (data) =>
+      text = data.toString()
+      if text then @emitter.emit 'stdout', text
+      if text and @pipeConsole then console.log text
+    conn.proc.stderr.on 'data', (data) =>
+      text = data.toString()
+      if text.startsWith 'juno-err'
+        @bootErr text
+        return
+      if text then @emitter.emit 'stderr', text
+      if text and @pipeConsole then console.info text
+    client.connected conn
+
   start: (port) ->
     return if @proc?
     client.booting()
-
-    @checkPath(@jlpath())
+    @checkPath @jlpath()
       .then =>
-        @spawnJulia port, =>
-          @proc.on 'exit', (code, signal) =>
-            @emitter.emit 'stderr', "Julia has stopped"
-            if not @useWrapper then @emitter.emit 'stderr', ": #{code}, #{signal}"
-            @proc = null
-            client.cancelBoot()
-          @proc.stdout.on 'data', (data) =>
-            text = data.toString()
-            if text then @emitter.emit 'stdout', text
-            if text and @pipeConsole then console.log text
-          @proc.stderr.on 'data', (data) =>
-            text = data.toString()
-            if text.startsWith 'juno-err'
-              @bootErr text
-              return
-            if text then @emitter.emit 'stderr', text
-            if text and @pipeConsole then console.info text
+        @spawnJulia port, (proc) =>
+          tcp.next().then (conn) =>
+            conn.proc = proc
+            @init conn
       .catch =>
         @jlNotFound @jlpath()
         client.cancelBoot()
@@ -180,12 +186,12 @@ module.exports = jlprocess =
                                          -wrapPort #{@wrapPort}
                                          -jlpath \"#{@jlpath()}\"
                                          -boot \"#{@script 'boot.jl'}\""])
-            fn()
+            fn @proc
           return
         else
           @emitter.emit 'stdout', "PowerShell version < 3 encountered. Running without wrapper (interrupts won't work)."
       @proc = child_process.spawn(@jlpath(), ["-i", @script("boot.jl"), port], cwd: workingdir)
-      fn()
+      fn @proc
 
   getFreePort: (fn) ->
     server = net.createServer()

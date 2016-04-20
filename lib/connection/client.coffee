@@ -2,6 +2,14 @@
 
 module.exports =
 
+  # Connection logic injects a connection via `connected`.
+  ## Required interface:
+  # .message(json)
+  ## Optional interface:
+  # .stdin(data)
+  # .interrupt()
+  # .kill()
+
   # Messaging
 
   handlers: {}
@@ -33,12 +41,9 @@ module.exports =
       @callbacks[id].reject "cancelled by julia"
       @loading.done()
 
-  # Will be replaced by the connection logic
-  output: (data) ->
-
   msg: (type, args...) ->
     if @isConnected()
-      @output [type, args...]
+      @conn.message [type, args...]
     else
       @queue.push [type, args...]
 
@@ -74,20 +79,21 @@ module.exports =
 
   isBooting: -> false
 
-  isConnected: -> false
+  isConnected: -> @conn?
 
   isActive: -> @isConnected() || @isBooting()
 
-  connected: ->
+  connected: (@conn) ->
     @emitter.emit 'connected'
     if @isBooting()
       @isBooting = -> false
       @loading.done()
-    @output msg for msg in @queue
+    @conn.message msg for msg in @queue
     @queue = []
 
   disconnected: ->
     @emitter.emit 'disconnected'
+    delete @conn
     @reset()
 
   booting: ->
