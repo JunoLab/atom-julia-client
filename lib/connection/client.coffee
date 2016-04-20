@@ -152,7 +152,9 @@ module.exports =
       false
 
   notConnectedError: (action = 'do that') ->
-    if not @isConnected()
+    if @isBooting()
+      atom.notifications.addError "Can't #{action} until Julia finishes booting."
+    else if not @isConnected()
       atom.notifications.addError "Can't #{action} without a Julia client.",
         detail: "Start Julia using Packages → Julia → Start Julia."
       true
