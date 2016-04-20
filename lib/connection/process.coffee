@@ -134,7 +134,6 @@ module.exports = jlprocess =
     conn.proc.on 'exit', (code, signal) =>
       client.stderr "Julia has stopped"
       if not @useWrapper then client.stderr ": #{code}, #{signal}"
-      delete @proc
       client.cancelBoot()
     conn.proc.stdout.on 'data', (data) => client.stdout data.toString()
     conn.proc.stderr.on 'data', (data) =>
@@ -148,7 +147,6 @@ module.exports = jlprocess =
     client.connected conn
 
   start: (port) ->
-    return if @proc?
     client.booting()
     @checkPath @jlpath()
       .then =>
@@ -168,7 +166,7 @@ module.exports = jlprocess =
                                             .output[1].toString()) > 2
         if @useWrapper
           @getFreePort =>
-            @proc = child_process.spawn("powershell",
+            proc = child_process.spawn("powershell",
                                         ["-NoProfile", "-ExecutionPolicy", "bypass",
                                          "& \"#{@script "spawnInterruptible.ps1"}\"
                                          -cwd \"#{workingdir}\"
@@ -176,12 +174,12 @@ module.exports = jlprocess =
                                          -wrapPort #{@wrapPort}
                                          -jlpath \"#{@jlpath()}\"
                                          -boot \"#{@script 'boot.jl'}\""])
-            fn @proc
+            fn proc
           return
         else
           client.stderr "PowerShell version < 3 encountered. Running without wrapper (interrupts won't work)."
-      @proc = child_process.spawn(@jlpath(), ["-i", @script("boot.jl"), port], cwd: workingdir)
-      fn @proc
+      proc = child_process.spawn(@jlpath(), ["-i", @script("boot.jl"), port], cwd: workingdir)
+      fn proc
 
   getFreePort: (fn) ->
     server = net.createServer()
