@@ -1,7 +1,9 @@
 let
 
-if Base.find_in_path("Atom") == nothing
-  println(STDERR, "Installing Atom.jl, hang tight...")
+install = Base.find_in_path("Atom") == nothing
+
+if install
+  print(STDERR, "juno-err-installing")
   try
     Pkg.add("Atom")
   catch
@@ -21,9 +23,15 @@ if isdir(pkgdir)
   include("caches.jl")
 end
 
+precompile = !install && isempty(Base.find_all_in_cache_path(:Atom))
+
+if precompile
+  print(STDERR, "juno-err-precompiling")
+end
+
 try
   using Atom
-  @sync Atom.connect(port)
+  @sync Atom.connect(port, welcome = precompile || install)
 catch
   print(STDERR, "juno-err-load")
   rethrow()

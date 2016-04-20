@@ -19,6 +19,15 @@ module.exports = jlprocess =
   deactivate: ->
     @cmds.dispose()
 
+    client.handle 'welcome', ->
+      atom.notifications.addSuccess "Welcome to Juno!",
+        detail: """
+        Success! Juno is set up and ready to roll.
+        Try opening the console (Packages → Julia → Open Console)
+        and entering `2+2`.
+        """
+        dismissable: true
+
   bundledExe: ->
     res = path.dirname atom.config.resourcePath
     p = path.join res, 'julia', 'bin', @executable()
@@ -114,6 +123,18 @@ module.exports = jlprocess =
               http://discuss.junolab.org/
           """
           dismissable: true
+      when 'juno-err-installing'
+        atom.notifications.addInfo "Installing Julia packages...",
+          detail: """
+          Julia's first run will take a couple of minutes.
+          Go to Packages → Julia → Open Console to see progress.
+          """
+      when 'juno-err-precompiling'
+        atom.notifications.addInfo "Compiling Julia packages...",
+          detail: """
+          Julia's first run will take a couple of minutes.
+          Go to Packages → Julia → Open Console to see progress.
+          """
       else @emitter.emit 'stderr', err
 
   start: (port) ->
