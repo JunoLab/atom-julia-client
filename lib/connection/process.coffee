@@ -6,8 +6,6 @@ fs =            require 'fs'
 client = require './client'
 tcp = require './tcp'
 
-{exit} = client.import 'exit'
-
 module.exports =
 
   activate: ->
@@ -193,20 +191,16 @@ module.exports =
       fn()
 
   interrupt: (proc) ->
-    if client.isConnected() and client.isWorking()
-      if @useWrapper
-        @sendSignalToWrapper('SIGINT')
-      else
-        proc.kill('SIGINT')
+    if @useWrapper
+      @sendSignalToWrapper('SIGINT')
+    else
+      proc.kill('SIGINT')
 
   kill: (proc) ->
-    if client.isConnected() and not client.isWorking()
-      exit()
+    if @useWrapper
+      @sendSignalToWrapper('KILL')
     else
-      if @useWrapper
-        @sendSignalToWrapper('KILL')
-      else
-        proc.kill()
+      proc.kill()
 
   sendSignalToWrapper: (signal) ->
     wrapper = net.connect(port: @wrapPort)

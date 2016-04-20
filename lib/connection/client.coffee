@@ -130,8 +130,16 @@ module.exports =
       @conn[f].call @conn, args...
 
   stdin: (data) -> @clientCall 'STDIN', 'stdin', data
-  interrupt: -> @clientCall 'interrupts', 'interrupt'
-  kill: -> @clientCall 'kill', 'kill'
+
+  interrupt: ->
+    if @isConnected() and @isWorking()
+      @clientCall 'interrupts', 'interrupt'
+
+  kill: ->
+    if @isConnected() and not @isWorking()
+      @rpc('exit').catch ->
+    else
+      @clientCall 'kill', 'kill'
 
   connectedError: (action = 'do that') ->
     if @isConnected()
