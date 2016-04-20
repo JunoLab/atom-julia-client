@@ -24,7 +24,7 @@ module.exports =
   activate: ->
     @handle 'cb', (id, result) =>
       try
-        @callbacks[id].resolve result
+        @callbacks[id]?.resolve result
       finally
         delete @callbacks[id]
         @loading.done()

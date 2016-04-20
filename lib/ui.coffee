@@ -10,10 +10,11 @@ module.exports =
     @client.onDisconnected =>
       @ink?.Result.invalidateAll()
 
-  deactivate: ->
-    @spinner.dispose()
+    @client.handle 'progress', (p) =>
+      @progress?.progress = p
 
   consumeInk: (@ink) ->
     @views.ink = @ink
 
-    @spinner = new @ink.Spinner @client.loading
+    @client.onWorking => @progress = @ink.progress.push()
+    @client.onDone => @progress?.destroy()
