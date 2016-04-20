@@ -144,6 +144,7 @@ module.exports = jlprocess =
       client.stderr text
     conn.interrupt = => @interrupt conn.proc
     conn.kill = => @kill conn.proc
+    conn.stdin = (data) -> conn.proc.stdin.write data
     client.connected conn
 
   start: (port) ->

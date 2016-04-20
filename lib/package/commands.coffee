@@ -42,6 +42,16 @@ module.exports =
           juno.connection.client.rpc('clear-workspace')
       'julia:select-block': =>
         juno.misc.blocks.select()
+      'julia-client:send-to-stdin': (e) =>
+        requireClient ->
+          ed = e.currentTarget.getModel()
+          done = false
+          for s in ed.getSelections()
+            continue unless s.getText()
+            done = true
+            juno.connection.client.stdin s.getText()
+          juno.connection.client.stdin ed.getText() unless done
+
 
     @subs.add atom.commands.add '.item-views > atom-text-editor[data-grammar="source julia"],
                                  ink-console.julia',
