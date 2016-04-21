@@ -61,5 +61,24 @@ module.exports =
       tooltip: 'Stop Julia'
       iconset: 'ion'
 
+    @bar.addSpacer()
+
+    # Debugging
+
+    @bar.addButton
+      icon: 'arrow-down'
+      callback: 'julia-debug:step-to-next-line'
+      tooltip: 'Debug: Step to Next Line'
+
+    @bar.addButton
+      icon: 'link-external'
+      callback: 'julia-debug:finish-function'
+      tooltip: 'Debug: Finish Function'
+
+    @bar.addButton
+      icon: 'chevron-right'
+      callback: 'julia-debug:step-into-function'
+      tooltip: 'Debug: Step Into Function'
+
   deactivate: ->
     @bar?.removeItems()

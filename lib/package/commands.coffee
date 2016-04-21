@@ -57,6 +57,10 @@ module.exports =
       'julia-client:reset-loading-indicator': -> juno.connection.client.reset()
       'julia-client:settings': ->
         atom.workspace.open('atom://config/packages/julia-client')
+      'julia-debug:step-to-next-line': => juno.runtime.debugger.nextline()
+      'julia-debug:step-to-next-expression': => juno.runtime.debugger.stepexpr()
+      'julia-debug:step-into-function': => juno.runtime.debugger.stepin()
+      'julia-debug:finish-function': => juno.runtime.debugger.finish()
 
       'julia:open-startup-file': -> atom.workspace.open juno.misc.paths.home '.juliarc.jl'
       'julia:open-julia-home': -> shell.openItem juno.misc.paths.juliaHome()

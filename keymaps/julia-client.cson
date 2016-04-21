@@ -17,6 +17,14 @@
   'ctrl-c': 'julia-client:interrupt-julia'
   'cmd-j cmd-m': 'julia-client:set-working-module'
 
+'.platform-darwin .item-views > atom-text-editor[data-grammar="source julia"].debug,
+ .platform-darwin ink-console.julia.debug,
+ .platform-darwin ink-console.julia.debug atom-text-editor':
+  'ctrl-l': 'julia-debug:step-to-next-line'
+  'ctrl-m': 'julia-debug:step-to-next-expression'
+  'ctrl-f': 'julia-debug:finish-function'
+  'ctrl-s': 'julia-debug:step-into-function'
+
 '.platform-darwin atom-workspace':
   'cmd-j cmd-r': 'julia-client:open-a-repl'
   'cmd-j cmd-s': 'julia-client:start-julia'
