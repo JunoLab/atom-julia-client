@@ -1,5 +1,4 @@
 net = require 'net'
-{Emitter} = require 'atom'
 
 client = require './client'
 
