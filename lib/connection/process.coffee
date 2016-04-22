@@ -17,8 +17,7 @@ module.exports =
       atom.notifications.addSuccess "Welcome to Juno!",
         detail: """
         Success! Juno is set up and ready to roll.
-        Try opening the console (Packages → Julia → Open Console)
-        and entering `2+2`.
+        Try entering `2+2` in the console below.
         """
         dismissable: true
 
@@ -97,6 +96,10 @@ module.exports =
       """
       dismissable: true
 
+  openConsole: ->
+    atom.commands.dispatch atom.views.getView(atom.workspace),
+      'julia-client:open-console'
+
   bootErr: (err) ->
     switch err
       when 'juno-err-install'
@@ -121,14 +124,16 @@ module.exports =
         atom.notifications.addInfo "Installing Julia packages...",
           detail: """
           Julia's first run will take a couple of minutes.
-          Go to Packages → Julia → Open Console to see progress.
+          See the console below for progress.
           """
+        @openConsole()
       when 'juno-err-precompiling'
         atom.notifications.addInfo "Compiling Julia packages...",
           detail: """
           Julia's first run will take a couple of minutes.
-          Go to Packages → Julia → Open Console to see progress.
+          See the console below for progress.
           """
+        @openConsole()
       else client.stderr err
 
   init: (conn) ->
