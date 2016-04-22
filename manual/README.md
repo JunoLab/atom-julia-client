@@ -30,7 +30,7 @@ Julia-related commands are now available.
 The last step is to connect Atom and Julia together –
 if the `julia` command is not on your path, you need to go into the julia-client settings
 and set the path to the Julia binary, which is `[wherever you installed
-Julia]/bin/julia` (or `[same]\bin\julia.exe` on Windows).
+Julia]/bin/julia` (or `[same]\bin\julia.exe` on Windows). If you downloaded the OS X app and put it in `/Applications`, then the path will look like `/Applications/Julia-0.X.Y.app/Contents/Resources/julia/bin/julia` – just modify that for your Julia version.
 
 Finally, run the `Julia Client: Open Console` command from Atom. When the console opens,
 type a Julia expression (e.g. `2+2`) and press `Enter` to evaluate it.
