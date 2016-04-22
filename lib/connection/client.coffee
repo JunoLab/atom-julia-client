@@ -92,9 +92,9 @@ module.exports =
     @queue = []
 
   disconnected: ->
-    @emitter.emit 'disconnected'
     delete @conn
     @reset()
+    @emitter.emit 'disconnected'
 
   booting: ->
     @isBooting = -> true
