@@ -1,11 +1,11 @@
 net = require 'net'
+{Emitter} = require 'atom'
 
 client = require './client'
 
 module.exports =
   server: null
   port: null
-  sock: null
 
   buffer: (f) ->
     buffer = ['']
@@ -17,25 +17,29 @@ module.exports =
       while buffer.length > 1
         f buffer.shift()
 
+  listeners: []
+
+  next: ->
+    new Promise (resolve) =>
+      @listeners.push resolve
+
+  handle: (sock) ->
+    return sock.end() unless @listeners.length > 0
+
+    sock.on 'end', -> client.disconnected()
+    sock.on 'error', (e) =>
+      console.error 'Julia Client: TCP connection error:'
+      console.error e
+      client.disconnected()
+    sock.on 'data', @buffer (s) =>
+      client.input JSON.parse s
+
+    @listeners.shift()
+      message: (data) -> sock.write JSON.stringify data
+
   listen: (f) ->
     return f?(@port) if @port?
-    client.isConnected = => @sock?
-    client.output = (data) => @sock.write JSON.stringify data
-    @server = net.createServer (c) =>
-      if @sock then return c.end()
-      @sock = c
-      client.connected()
-      c.on 'end', =>
-        @sock = null
-        client.disconnected()
-      c.on 'error', (e) =>
-        console.error 'Julia Client: TCP connection error:'
-        console.error e
-        @sock = null
-        client.disconnected()
-      c.on 'data', @buffer (s) =>
-        client.input JSON.parse s
-
+    @server = net.createServer (c) => @handle c
     @server.listen 0, '127.0.0.1', =>
       @port = @server.address().port
       f?(@port)

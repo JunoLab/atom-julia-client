@@ -3,8 +3,8 @@ shell =                 require 'shell'
 
 module.exports =
   activate: (juno) ->
-    requireClient    = (f) -> juno.connection.client.require f
-    disrequireClient = (f) -> juno.connection.client.disrequire f
+    requireClient    = (a, f) -> juno.connection.client.require a, f
+    disrequireClient = (a, f) -> juno.connection.client.disrequire a, f
     boot = -> juno.connection.boot()
 
     cancelComplete = (e) ->
@@ -36,12 +36,22 @@ module.exports =
           boot()
           juno.runtime.evaluation.toggleMeta 'methods'
       'julia-client:reset-workspace': =>
-        requireClient ->
+        requireClient 'reset the workspace', ->
           editor = atom.workspace.getActiveTextEditor()
           atom.commands.dispatch atom.views.getView(editor), 'inline-results:clear-all'
           juno.connection.client.rpc('clear-workspace')
       'julia:select-block': =>
         juno.misc.blocks.select()
+      'julia-client:send-to-stdin': (e) =>
+        requireClient ->
+          ed = e.currentTarget.getModel()
+          done = false
+          for s in ed.getSelections()
+            continue unless s.getText()
+            done = true
+            juno.connection.client.stdin s.getText()
+          juno.connection.client.stdin ed.getText() unless done
+
 
     @subs.add atom.commands.add '.item-views > atom-text-editor[data-grammar="source julia"],
                                  ink-console.julia',
@@ -49,7 +59,9 @@ module.exports =
 
     @subs.add atom.commands.add 'atom-workspace',
       'julia-client:open-a-repl': -> juno.connection.terminal.repl()
-      'julia-client:start-julia': -> disrequireClient -> boot()
+      'julia-client:start-julia': -> disrequireClient 'boot Julia', -> boot()
+      'julia-client:kill-julia': => requireClient 'kill Julia', -> juno.connection.client.kill()
+      'julia-client:interrupt-julia': => requireClient 'interrupt Julia', -> juno.connection.client.interrupt()
       'julia-client:open-console': => @withInk -> juno.runtime.console.open()
       "julia-client:clear-console": => juno.runtime.console.reset()
       'julia-client:open-plot-pane': => @withInk -> juno.runtime.plots.open()
@@ -67,13 +79,17 @@ module.exports =
       'julia:open-package-in-new-window': -> juno.misc.paths.openPackage()
 
       'julia-client:work-in-file-folder': ->
-        requireClient -> juno.runtime.evaluation.cdHere()
+        requireClient 'change working folder', ->
+          juno.runtime.evaluation.cdHere()
       'julia-client:work-in-project-folder': ->
-        requireClient -> juno.runtime.evaluation.cdProject()
+        requireClient 'change working folder', ->
+          juno.runtime.evaluation.cdProject()
       'julia-client:work-in-home-folder': ->
-        requireClient -> juno.runtime.evaluation.cdHome()
+        requireClient 'change working folder', ->
+          juno.runtime.evaluation.cdHome()
       'julia-client:select-working-folder': ->
-        requireClient -> juno.runtime.evaluation.cdSelect()
+        requireClient 'change working folder', ->
+          juno.runtime.evaluation.cdSelect()
 
   deactivate: ->
     @subs.dispose()

@@ -2,6 +2,14 @@
 
 module.exports =
 
+  # Connection logic injects a connection via `connected`.
+  ## Required interface:
+  # .message(json)
+  ## Optional interface:
+  # .stdin(data)
+  # .interrupt()
+  # .kill()
+
   # Messaging
 
   handlers: {}
@@ -33,12 +41,9 @@ module.exports =
       @callbacks[id].reject "cancelled by julia"
       @loading.done()
 
-  # Will be replaced by the connection logic
-  output: (data) ->
-
   msg: (type, args...) ->
     if @isConnected()
-      @output [type, args...]
+      @conn.message [type, args...]
     else
       @queue.push [type, args...]
 
@@ -74,20 +79,21 @@ module.exports =
 
   isBooting: -> false
 
-  isConnected: -> false
+  isConnected: -> @conn?
 
   isActive: -> @isConnected() || @isBooting()
 
-  connected: ->
+  connected: (@conn) ->
     @emitter.emit 'connected'
     if @isBooting()
       @isBooting = -> false
       @loading.done()
-    @output msg for msg in @queue
+    @conn.message msg for msg in @queue
     @queue = []
 
   disconnected: ->
     @emitter.emit 'disconnected'
+    delete @conn
     @reset()
 
   booting: ->
@@ -112,21 +118,53 @@ module.exports =
 
   # Management & UI
 
-  connectedError: ->
-    if @isActive()
-      atom.notifications.addError "Can't start a Julia process.",
-        detail: "There is already a Julia client running."
+  onStdout: (f) -> @emitter.on 'stdout', f
+  onStderr: (f) -> @emitter.on 'stderr', f
+  stdout: (data) -> @emitter.emit 'stdout', data
+  stderr: (data) -> @emitter.emit 'stderr', data
+
+  clientCall: (name, f, args...) ->
+    if not @conn[f]?
+      atom.notifications.addError "This client doesn't support #{name}."
+    else
+      @conn[f].call @conn, args...
+
+  stdin: (data) -> @clientCall 'STDIN', 'stdin', data
+
+  interrupt: ->
+    if @isConnected() and @isWorking()
+      @clientCall 'interrupts', 'interrupt'
+
+  kill: ->
+    if @isConnected() and not @isWorking()
+      @rpc('exit').catch ->
+    else
+      @clientCall 'kill', 'kill'
+
+  connectedError: (action = 'do that') ->
+    if @isConnected()
+      atom.notifications.addError "Can't #{action} with a Julia client running.",
+        detail: "Stop the current client with Packages → Julia → Stop Julia."
+      true
+    else if @isBooting()
+      atom.notifications.addError "Can't #{action} with a Julia client booting."
+    else
+      false
+
+  notConnectedError: (action = 'do that') ->
+    if @isBooting()
+      atom.notifications.addError "Can't #{action} until Julia finishes booting."
+    else if not @isConnected()
+      atom.notifications.addError "Can't #{action} without a Julia client.",
+        detail: "Start Julia using Packages → Julia → Start Julia."
       true
     else
       false
 
-  notConnectedError: ->
-    if not @isActive()
-      atom.notifications.addError "Can't do that without a Julia client.",
-        detail: "Try connecting a client by evaluating something."
-      true
-    else
-      false
+  require: (a, f) ->
+    f ? [a, f] = [null, a]
+    @notConnectedError(a) or f()
 
-  require: (f) -> @notConnectedError() or f()
-  disrequire: (f) -> @connectedError() or f()
+  disrequire: (a, f) ->
+    f ? [a, f] = [null, a]
+    @connectedError(a) or f()

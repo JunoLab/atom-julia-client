@@ -35,6 +35,12 @@
       "versions": {
         "2.0.0": "completions"
       }
+    },
+    "julia-client": {
+      "description": "Run a Julia process",
+      "versions": {
+        "0.1.0": "provideClient"
+      }
     }
   }
 }
