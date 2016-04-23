@@ -54,11 +54,11 @@ module.exports =
       sel.setBufferRange [[last, Infinity], [last, Infinity]]
       sel.insertText '\n'
     # Move the cursor
-    to = row+1
-    {column} = sel.getHeadBufferPosition()
+    to = row + 1
     while to < ed.getLastBufferRow() and @isBlank @getLine ed, to
       to++
-    sel.setBufferRange [[to, column], [to, column]]
+    to = @walkForward ed, to
+    sel.setBufferRange [[to, Infinity], [to, Infinity]]
 
   getRanges: (ed) ->
     ranges = for sel in ed.getSelections()
