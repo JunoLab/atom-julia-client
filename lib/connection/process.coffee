@@ -13,7 +13,8 @@ module.exports =
       if @useWrapper and @proc
         @proc.kill()
 
-    client.handle 'welcome', ->
+    client.handle 'welcome', =>
+      @note?.dismiss()
       atom.notifications.addSuccess "Welcome to Juno!",
         detail: """
         Success! Juno is set up and ready to roll.
@@ -101,6 +102,7 @@ module.exports =
       'julia-client:open-console'
 
   bootErr: (err) ->
+    @note?.dismiss()
     switch err
       when 'juno-err-install'
         atom.notifications.addError "Error installing Atom.jl package",
@@ -121,18 +123,20 @@ module.exports =
           """
           dismissable: true
       when 'juno-err-installing'
-        atom.notifications.addInfo "Installing Julia packages...",
+        @note = atom.notifications.addInfo "Installing Julia packages...",
           detail: """
           Julia's first run will take a couple of minutes.
           See the console below for progress.
           """
+          dismissable: true
         @openConsole()
       when 'juno-err-precompiling'
-        atom.notifications.addInfo "Compiling Julia packages...",
+        @note = atom.notifications.addInfo "Compiling Julia packages...",
           detail: """
           Julia's first run will take a couple of minutes.
           See the console below for progress.
           """
+          dismissable: true
         @openConsole()
       else client.stderr err
 
