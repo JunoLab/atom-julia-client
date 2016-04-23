@@ -1,6 +1,6 @@
 # Juno Manual
 
-This is the user manual for Juno. It's a little sparse at the moment – reflecting the fact that the plugin isn't ready for all users – but basic setup is included. If you'd like to get involved you can check out the [dev setup](../docs) instead.
+This is the (work in progress) user manual for Juno.
 
 * Installation Instructions – this page
 * [Workflow](workflow.md) – tips and tricks on using Juno/Julia productively
