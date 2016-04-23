@@ -7,8 +7,6 @@ This is the user manual for Juno. It's a little sparse at the moment – reflect
 
 ## Manual Install
 
-You don't need to do this if you already downloaded a Juno bundle. You'll need these instructions if a bundle is not available for your platform above, or if you want to use the same copy of Atom for both Julia and non-Julia work.
-
 First, [download and install Julia](http://julialang.org/downloads) if you haven't already – v0.4 or above is required.
 
 Next, install [Atom](https://atom.io) if you don't have it already, then go to the settings pane and install the packages `language-julia`, `ink` and
