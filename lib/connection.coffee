@@ -18,10 +18,6 @@ module.exports =
         else
           atom.notifications.addError options.msg, options
 
-    if atom.config.get("julia-client.launchOnStartup")
-      atom.commands.dispatch atom.views.getView(atom.workspace),
-        'julia-client:start-julia'
-
   deactivate: ->
 
   consumeInk: (ink) ->

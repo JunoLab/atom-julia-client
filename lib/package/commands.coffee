@@ -91,6 +91,9 @@ module.exports =
         requireClient 'change working folder', ->
           juno.runtime.evaluation.cdSelect()
 
+      if atom.config.get("julia-client.launchOnStartup")
+        @withInk -> juno.connection.boot()
+
   deactivate: ->
     @subs.dispose()
 
