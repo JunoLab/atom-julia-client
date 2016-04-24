@@ -3,6 +3,10 @@ shell =                 require 'shell'
 
 module.exports =
   activate: (juno) ->
+
+    if atom.config.get("julia-client.launchOnStartup")
+      @withInk -> juno.connection.boot()
+
     requireClient    = (a, f) -> juno.connection.client.require a, f
     disrequireClient = (a, f) -> juno.connection.client.disrequire a, f
     boot = -> juno.connection.boot()
@@ -86,9 +90,6 @@ module.exports =
       'julia-client:select-working-folder': ->
         requireClient 'change working folder', ->
           juno.runtime.evaluation.cdSelect()
-
-      if atom.config.get("julia-client.launchOnStartup")
-        @withInk -> juno.connection.boot()
 
   deactivate: ->
     @subs.dispose()
