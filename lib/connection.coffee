@@ -11,13 +11,6 @@ module.exports =
     @client.boot = => @boot()
     @process.activate()
 
-    atom.config.observe 'julia-client.errorsToConsole', (val) =>
-      @client.handle 'error', (options) =>
-        if val
-          @process.emitter.emit 'stderr', options.msg + '\n' + options.detail
-        else
-          atom.notifications.addError options.msg, options
-
   deactivate: ->
 
   consumeInk: (ink) ->

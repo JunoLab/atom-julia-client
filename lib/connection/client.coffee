@@ -41,6 +41,13 @@ module.exports =
       @callbacks[id].reject "cancelled by julia"
       @loading.done()
 
+    atom.config.observe 'julia-client.errorsToConsole', (toConsole) =>
+      @handle 'error', (options) =>
+        if toConsole
+          @stderr options.msg + '\n' + options.detail
+        else
+          atom.notifications.addError options.msg, options
+
   msg: (type, args...) ->
     if @isConnected()
       @conn.message [type, args...]
@@ -49,7 +56,7 @@ module.exports =
 
   rpc: (type, args...) ->
     new Promise (resolve, reject) =>
-      @id = @id+1
+      @id += 1
       @callbacks[@id] = {resolve, reject}
       @msg {type: type, callback: @id}, args...
       @loading.working()
