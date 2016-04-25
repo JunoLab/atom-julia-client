@@ -1,4 +1,12 @@
+{throttle} = require 'underscore-plus'
 {Emitter} = require 'atom'
+
+metrics = ->
+  if id = localStorage.getItem 'metrics.userId'
+    r = require('http').get "http://data.junolab.org/hit?id=#{id}&app=atom-julia-boot"
+    r.on 'error', ->
+
+metrics = throttle metrics, 60*60*1000
 
 module.exports =
 
@@ -18,6 +26,7 @@ module.exports =
   id: 0
 
   input: ([type, args...]) ->
+    metrics()
     if type.constructor == Object
       {type, callback} = type
     if @handlers.hasOwnProperty type
