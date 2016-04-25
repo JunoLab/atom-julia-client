@@ -13,10 +13,6 @@ module.exports = JuliaClient =
     x.activate() for x in [menu, @connection, @runtime]
     @ui.activate @connection.client
 
-    try
-      if id = localStorage.getItem 'metrics.userId'
-        require('http').get "http://data.junolab.org/hit?id=#{id}&app=atom-julia"
-
   deactivate: ->
     x.deactivate() for x in [commands, menu, toolbar, @connection, @runtime, @ui]
 
