@@ -51,11 +51,9 @@ module.exports =
       @loading.done()
 
     atom.config.observe 'julia-client.errorNotifications', (notif) =>
-      if notif
-        @handle 'error', (options) =>
-          atom.notifications.addError options.msg, options
-      else
-        @handle 'error', (options) => # let's throw this away
+      @handle 'error', (options) =>
+        if notif
+            atom.notifications.addError options.msg, options
 
   msg: (type, args...) ->
     if @isConnected()
