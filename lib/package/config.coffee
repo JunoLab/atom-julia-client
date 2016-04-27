@@ -31,11 +31,11 @@ config =
     default: true
     description: 'Enable notifications for evaluation.'
     order: 4
-  errorsToConsole:
+  errorNotifications:
     type: 'boolean'
-    default: false
-    description: 'When evaluating a script, show errors in the console instead
-                  of using a notification.'
+    default: true
+    description: 'When evaluating a script, show errors in a notification as
+                  well as in the console.'
     order: 5
   enableMenu:
     type: 'boolean'
