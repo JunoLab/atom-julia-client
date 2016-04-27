@@ -157,6 +157,13 @@ module.exports =
     else
       @clientCall 'kill', 'kill'
 
+  clargs: ->
+    {precompiled, optimisationLevel} = atom.config.get 'julia-client.juliaOptions'
+    as = []
+    as.push "--precompiled=#{if precompiled then 'yes' else 'no'}"
+    as.push "-O#{optimisationLevel}"
+    as
+
   connectedError: (action = 'do that') ->
     if @isConnected()
       atom.notifications.addError "Can't #{action} with a Julia client running.",

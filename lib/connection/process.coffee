@@ -185,12 +185,14 @@ module.exports =
                                          -port #{port}
                                          -wrapPort #{@wrapPort}
                                          -jlpath \"#{@jlpath()}\"
-                                         -boot \"#{@script 'boot.jl'}\""])
+                                         -boot \"#{@script('boot.jl')}\""])
             fn proc
           return
         else
           client.stderr "PowerShell version < 3 encountered. Running without wrapper (interrupts won't work)."
-      proc = child_process.spawn(@jlpath(), ["-i", @script("boot.jl"), port], cwd: workingdir)
+      proc = child_process.spawn @jlpath(),
+        [client.clargs()..., "-i", @script("boot.jl"), port],
+        cwd: workingdir
       fn proc
 
   getFreePort: (fn) ->
