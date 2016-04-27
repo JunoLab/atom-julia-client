@@ -185,7 +185,8 @@ module.exports =
                                          -port #{port}
                                          -wrapPort #{@wrapPort}
                                          -jlpath \"#{@jlpath()}\"
-                                         -boot \"#{@script('boot.jl')}\""])
+                                         -boot \"#{@script('boot.jl')}\"
+                                         -jlargs #{client.clargs()}"])
             fn proc
           return
         else
