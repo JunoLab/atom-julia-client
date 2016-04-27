@@ -1,8 +1,6 @@
 param(
-  [Int32] $port,
   [Int32] $wrapPort,
   [string] $jlpath,
-  [string] $boot,
   [string] $cwd,
   [string[]] $jlargs
 )
@@ -11,8 +9,6 @@ param(
 if (Test-Path $cwd) {
   cd $cwd
 }
-
-$jlargs +=  "-i", "`"$boot`"", $port
 
 # start Julia
 $proc = Start-Process "`"$jlpath`"" $jlargs -NoNewWindow -PassThru
