@@ -50,12 +50,10 @@ module.exports =
       @callbacks[id].reject "cancelled by julia"
       @loading.done()
 
-    atom.config.observe 'julia-client.errorsToConsole', (toConsole) =>
+    atom.config.observe 'julia-client.errorNotifications', (notif) =>
       @handle 'error', (options) =>
-        if toConsole
-          @stderr options.msg + '\n' + options.detail
-        else
-          atom.notifications.addError options.msg, options
+        if notif
+            atom.notifications.addError options.msg, options
 
   msg: (type, args...) ->
     if @isConnected()
