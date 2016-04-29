@@ -1,5 +1,5 @@
 'context-menu':
   'atom-text-editor[data-grammar="source julia"]': [
-    {label: 'Evaluate', command: 'julia-client:evaluate'}
+    {label: 'Run block', command: 'julia-client:run-block'}
     {type: 'separator'}
   ]
