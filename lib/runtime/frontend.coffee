@@ -22,9 +22,10 @@ module.exports =
       if opts.url?
         w.loadUrl opts.url
       w.setMenu(null)
-      @windows[w.id] = w
-      w.on 'close', => delete @windows[w.id]
-      return w.id
+      wid = w.id
+      @windows[wid] = w
+      w.on 'close', => delete @windows[wid]
+      return wid
 
     client.handle 'withWin', (id, code) =>
       @evalwith @windows[id], code
