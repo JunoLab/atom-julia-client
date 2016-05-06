@@ -196,6 +196,25 @@ module.exports =
         cwd: workingdir
       fn proc
 
+  getVersion: (fn) ->
+    p = new Promise (resolve, reject) =>
+      # not sure if the return here is necessary, but I think the rest of the
+      # code will be unnecessarily executed otherwise
+      if @version? then resolve(@version); return
+      @checkPath(@jlpath())
+        .then =>
+          proc = child_process.spawn @jlpath(), ["--version"]
+          proc.on 'exit', () =>
+            str = proc.stdout.read().toString()
+            res = str.match /(\d+)\.(\d+)\.(\d+)/
+            if res?
+              [_, major, minor, patch] = res
+              @version = {major, minor, patch}
+              resolve @version
+            else
+              reject()
+        .catch => reject()
+
   getFreePort: (fn) ->
     server = net.createServer()
     server.listen 0, '127.0.0.1', =>

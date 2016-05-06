@@ -2,6 +2,7 @@
 
 path =  require 'path'
 fs =    require 'fs'
+proc = require '../connection/process'
 
 module.exports =
 
@@ -16,8 +17,12 @@ module.exports =
     new Promise (resolve, reject) =>
       fs.readdir @juliaHome(), (err, data) =>
         if err? then return reject err
-        dir = data?.filter((path)=>path.startsWith('v')).sort().pop()
-        if dir? then resolve @juliaHome dir else reject()
+        proc.getVersion()
+          .then (ver) =>
+            r = new RegExp("v#{ver.major}\\.#{ver.minor}")
+            dir = data?.filter((path) => path.search(r) > -1)[0]
+            if dir? then resolve @juliaHome dir else reject()
+          .catch => reject()
 
   packages: ->
     @pkgDir().then (dir) =>
