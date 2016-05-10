@@ -47,13 +47,18 @@ config =
     default: proc.isBundled()
     description: 'Show Julia icons in the tool bar (requires restart).'
     order: 7
+  maximumConsoleSize:
+    type: 'integer'
+    description: "Limits the Console history's size."
+    default: 10000
+    order: 8
 
 if process.platform != 'darwin'
   config.terminal =
     type: 'string'
     default: terminal.defaultTerminal()
     description: 'Command used to open a terminal.'
-    order: 8
+    order: 9
 
 if process.platform == 'win32'
   config.enablePowershellWrapper =

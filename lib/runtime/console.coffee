@@ -12,6 +12,9 @@ module.exports =
   activate: ->
     @create()
 
+    atom.config.observe 'julia-client.maximumConsoleSize', (size) =>
+      @c.maxSize = size
+
     @subs = new CompositeDisposable
 
     @subs.add atom.workspace.addOpener (uri) =>
