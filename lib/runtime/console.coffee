@@ -50,10 +50,10 @@ module.exports =
     history.read().then (entries) =>
       @c.history.set entries
 
-  ignored: ['WARNING: Method definition require(Symbol)']
+  ignored: [/^WARNING: Method definition .* overwritten/]
   ignore: (s) ->
     for i in @ignored
-      return true if s.startsWith(i)
+      return true if s.match(i)
 
   stdout: (data) -> @c.stdout data
 
