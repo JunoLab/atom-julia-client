@@ -50,12 +50,10 @@ module.exports =
       @callbacks[id].reject "cancelled by julia"
       @loading.done()
 
-    atom.config.observe 'julia-client.errorsToConsole', (toConsole) =>
+    atom.config.observe 'julia-client.errorNotifications', (notif) =>
       @handle 'error', (options) =>
-        if toConsole
-          @stderr options.msg + '\n' + options.detail
-        else
-          atom.notifications.addError options.msg, options
+        if notif
+            atom.notifications.addError options.msg, options
 
   msg: (type, args...) ->
     if @isConnected()
@@ -161,7 +159,7 @@ module.exports =
     {precompiled, optimisationLevel} = atom.config.get 'julia-client.juliaOptions'
     as = []
     as.push "--precompiled=#{if precompiled then 'yes' else 'no'}"
-    as.push "-O#{optimisationLevel}"
+    as.push "-O#{optimisationLevel}" unless optimisationLevel is 2
     as
 
   connectedError: (action = 'do that') ->

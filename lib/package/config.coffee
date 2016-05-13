@@ -31,11 +31,11 @@ config =
     default: true
     description: 'Enable notifications for evaluation.'
     order: 4
-  errorsToConsole:
+  errorNotifications:
     type: 'boolean'
-    default: false
-    description: 'When evaluating a script, show errors in the console instead
-                  of using a notification.'
+    default: true
+    description: 'When evaluating a script, show errors in a notification as
+                  well as in the console.'
     order: 5
   enableMenu:
     type: 'boolean'
@@ -47,13 +47,18 @@ config =
     default: proc.isBundled()
     description: 'Show Julia icons in the tool bar (requires restart).'
     order: 7
+  maximumConsoleSize:
+    type: 'integer'
+    description: "Limits the Console history's size."
+    default: 10000
+    order: 8
 
 if process.platform != 'darwin'
   config.terminal =
     type: 'string'
     default: terminal.defaultTerminal()
     description: 'Command used to open a terminal.'
-    order: 8
+    order: 9
 
 if process.platform == 'win32'
   config.enablePowershellWrapper =

@@ -1,9 +1,8 @@
 param(
-  [Int32] $port,
   [Int32] $wrapPort,
   [string] $jlpath,
-  [string] $boot,
-  [string] $cwd
+  [string] $cwd,
+  [string[]] $jlargs
 )
 
 # change to working dir:
@@ -12,7 +11,7 @@ if (Test-Path $cwd) {
 }
 
 # start Julia
-$proc = Start-Process "`"$jlpath`"" @("-i", "`"$boot`"", $port) -NoNewWindow -PassThru
+$proc = Start-Process "`"$jlpath`"" $jlargs -NoNewWindow -PassThru
 
 # import GenerateConsoleCtrlEvent:
 $MethodDefinition = @'

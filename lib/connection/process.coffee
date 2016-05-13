@@ -178,14 +178,15 @@ module.exports =
                                             .output[1].toString()) > 2
         if @useWrapper
           @getFreePort =>
+            # ordering of the last two arguments is important!
+            jlargs = [client.clargs()..., "-i", '`"' + @script('boot.jl') + '`"', port]
             proc = child_process.spawn("powershell",
                                         ["-NoProfile", "-ExecutionPolicy", "bypass",
                                          "& \"#{@script "spawnInterruptible.ps1"}\"
                                          -cwd \"#{workingdir}\"
-                                         -port #{port}
                                          -wrapPort #{@wrapPort}
                                          -jlpath \"#{@jlpath()}\"
-                                         -boot \"#{@script('boot.jl')}\""])
+                                         -jlargs #{jlargs}"])
             fn proc
           return
         else
