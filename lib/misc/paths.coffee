@@ -16,8 +16,12 @@ module.exports =
     new Promise (resolve, reject) =>
       fs.readdir @juliaHome(), (err, data) =>
         if err? then return reject err
-        dir = data?.filter((path)=>path.startsWith('v')).sort().pop()
-        if dir? then resolve @juliaHome dir else reject()
+        @getVersion()
+          .then (ver) =>
+            r = new RegExp("v#{ver.major}\\.#{ver.minor}")
+            dir = data?.filter((path) => path.search(r) > -1)[0]
+            if dir? then resolve @juliaHome dir else reject()
+          .catch => reject()
 
   packages: ->
     @pkgDir().then (dir) =>
@@ -36,3 +40,22 @@ module.exports =
           atom.open pathsToOpen: [path.join dir, pkg]
       .catch =>
         atom.notifications.addError "Couldn't find your Julia packages."
+
+  getVersion: (fn) ->
+    p = new Promise (resolve, reject) =>
+      # not sure if the return here is necessary, but I think the rest of the
+      # code will be unnecessarily executed otherwise
+      if @version? then resolve(@version); return
+      @checkPath(@jlpath())
+        .then =>
+          proc = child_process.spawn @jlpath(), ["--version"]
+          proc.on 'exit', () =>
+            str = proc.stdout.read().toString()
+            res = str.match /(\d+)\.(\d+)\.(\d+)/
+            if res?
+              [_, major, minor, patch] = res
+              @version = {major, minor, patch}
+              resolve @version
+            else
+              reject()
+        .catch => reject()
