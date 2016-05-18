@@ -1,3 +1,6 @@
+Highlights = require 'highlights'
+highlighter = null
+
 module.exports = views =
   dom: ({tag, attrs, contents}) ->
     view = document.createElement tag
@@ -54,6 +57,14 @@ module.exports = views =
       isfull = !isfull
     view
 
+  code: ({text, scope}) ->
+    scope ?= 'source.julia'
+    highlighter ?= new Highlights registry: atom.grammars
+    highlightedHtml = highlighter.highlightSync
+      fileContents: text
+      scopeName: scope
+    @render {type: 'html', content: highlightedHtml}
+
   views:
     dom:     (a...) -> views.dom  a...
     html:    (a...) -> views.html a...
@@ -62,6 +73,7 @@ module.exports = views =
     link:    (a...) -> views.link a...
     copy:    (a...) -> views.copy a...
     number:  (a...) -> views.number a...
+    code:    (a...) -> views.code a...
 
   render: (data) ->
     if @views.hasOwnProperty(data.type)
