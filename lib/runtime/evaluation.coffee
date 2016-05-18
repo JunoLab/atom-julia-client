@@ -15,7 +15,7 @@ module.exports =
   eval: ({move}={}) ->
     editor = atom.workspace.getActiveTextEditor()
     mod = modules.current() # TODO: may not work in all cases
-    edpath = editor.getPath() || 'untitled-' + editor.getBuffer().id
+    edpath = editor.getPath() || 'untitled-' + editor.getBuffer().id.slice(0,6)
     blocks.get(editor, move: true).forEach ({range, line, text, selection}) =>
       blocks.moveNext editor, selection, range if move
       [[start], [end]] = range
