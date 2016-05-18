@@ -46,6 +46,14 @@ module.exports = views =
         initialLine: if line >= 0 then line
     view
 
+  number: ({value, full}) ->
+    view = @render @tags.span 'constant number', value.toPrecision(3)
+    isfull = false
+    view.onclick = ->
+      view.innerText = if !isfull then full else value.toPrecision(3)
+      isfull = !isfull
+    view
+
   views:
     dom:     (a...) -> views.dom  a...
     html:    (a...) -> views.html a...
