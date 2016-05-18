@@ -158,6 +158,7 @@ module.exports =
   clargs: ->
     {precompiled, optimisationLevel} = atom.config.get 'julia-client.juliaOptions'
     as = []
+    as.push "--depwarn=no"
     as.push "--precompiled=#{if precompiled then 'yes' else 'no'}"
     as.push "-O#{optimisationLevel}" unless optimisationLevel is 2
     as

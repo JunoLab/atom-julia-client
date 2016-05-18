@@ -2,6 +2,7 @@ module.exports = views =
   dom: ({tag, attrs, contents}) ->
     view = document.createElement tag
     for k, v of attrs
+      if v instanceof Array then v = v.join ' '
       view.setAttribute k, v
     if contents?
       if contents.constructor isnt Array
@@ -52,6 +53,7 @@ module.exports = views =
     subtree: (a...) -> views.subtree a...
     link:    (a...) -> views.link a...
     copy:    (a...) -> views.copy a...
+    number:  (a...) -> views.number a...
 
   render: (data) ->
     if @views.hasOwnProperty(data.type)
