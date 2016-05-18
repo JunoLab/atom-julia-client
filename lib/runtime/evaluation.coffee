@@ -33,6 +33,7 @@ module.exports =
           if error and result.highlights?
             @showError r, result.highlights
           notifications.show "Evaluation Finished"
+        .catch -> r?.destroy()
 
   # get documentation or methods for the current word
   toggleMeta: (type) ->
