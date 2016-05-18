@@ -12,7 +12,6 @@ modules = require './modules'
 
 module.exports =
 
-  # TODO: make the mark first and attach the result later
   eval: ({move}={}) ->
     editor = atom.workspace.getActiveTextEditor()
     mod = modules.current() # TODO: may not work in all cases
