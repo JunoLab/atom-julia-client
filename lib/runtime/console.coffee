@@ -83,6 +83,7 @@ module.exports =
       .then (result) =>
         @c.input()
         notifications.show "Evaluation Finished"
+        require('./workspace').update()
       .catch => @c.input()
 
   modes: [
