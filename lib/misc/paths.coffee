@@ -2,6 +2,7 @@
 
 path =  require 'path'
 fs =    require 'fs'
+child_process = require 'child_process'
 
 module.exports =
 
@@ -41,21 +42,18 @@ module.exports =
       .catch =>
         atom.notifications.addError "Couldn't find your Julia packages."
 
-  getVersion: (fn) ->
-    p = new Promise (resolve, reject) =>
-      # not sure if the return here is necessary, but I think the rest of the
-      # code will be unnecessarily executed otherwise
-      if @version? then resolve(@version); return
-      @checkPath(@jlpath())
-        .then =>
-          proc = child_process.spawn @jlpath(), ["--version"]
-          proc.on 'exit', () =>
-            str = proc.stdout.read().toString()
-            res = str.match /(\d+)\.(\d+)\.(\d+)/
-            if res?
-              [_, major, minor, patch] = res
-              @version = {major, minor, patch}
-              resolve @version
-            else
-              reject()
-        .catch => reject()
+  jlpath: ->
+    p = atom.config.get("julia-client.juliaPath")
+    if p == '[bundle]' then p = @bundledExe()
+    p
+
+  getVersion: (path = @jlpath()) ->
+    return Promise.resolve @version if @version?
+    new Promise (resolve, reject) =>
+      proc = child_process.spawn @jlpath(), ["--version"]
+      proc.on 'exit', () =>
+        str = proc.stdout.read().toString()
+        res = str.match /(\d+)\.(\d+)\.(\d+)/
+        return reject() unless res?
+        [_, major, minor, patch] = res
+        resolve @version = {major, minor, patch}
