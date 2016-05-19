@@ -3,6 +3,7 @@ net =           require 'net'
 path =          require 'path'
 fs =            require 'fs'
 
+{paths} = require '../misc'
 client = require './client'
 tcp = require './tcp'
 
@@ -42,50 +43,21 @@ module.exports =
   script: (s...) -> @packageDir 'script', s...
 
   withWorkingDir: (fn) ->
-    paths = atom.workspace.project.getDirectories()
+    dirs = atom.workspace.project.getDirectories()
     # default to HOME as working dir for julia
     wd = process.env.HOME || process.env.USERPROFILE
-    if paths.length > 0
+    if dirs.length > 0
       # use the first open project folder (or its parent folder for files) if
       # it is valid
-      fs.stat paths[0].path, (err, stats) =>
+      fs.stat dirs[0].path, (err, stats) =>
         if not err?
           if stats.isFile()
-            wd = path.dirname paths[0].path
+            wd = path.dirname dirs[0].path
           else
-            wd = paths[0].path
+            wd = dirs[0].path
         fn wd
     else
       fn wd
-
-  jlpath: ->
-    p = atom.config.get("julia-client.juliaPath")
-    if p == '[bundle]' then p = @bundledExe()
-    p
-
-  checkPath: (p) ->
-    new Promise (resolve, reject) =>
-      # check whether path exists
-      fs.stat p, (err, stats) =>
-        if not err
-          # and is a file
-          if stats.isFile() then resolve(); return
-          # if it isn't, look for a file called `julia(.exe)`
-          fs.readdir p, (err, files) =>
-            if err or files.indexOf(@executable()) < 0 then reject(); return
-            newpath = path.join p, @executable()
-            # check whether that file is no directory
-            fs.stat newpath, (err, fstats) =>
-              # change the `Julia Path` setting to that new path and carry on
-              if not fstats.isFile() then reject(); return
-              atom.config.set 'julia-client.juliaPath', newpath
-              resolve()
-        # fallback to calling `which` or `where` on the path
-        else
-          which = if process.platform is 'win32' then 'where' else 'which'
-          proc = child_process.spawn which, [p]
-          proc.on 'exit', (status) ->
-            if status is 0 then resolve() else reject()
 
   jlNotFound: (path) ->
     atom.notifications.addError "Julia could not be found.",
@@ -148,7 +120,7 @@ module.exports =
 
   start: (port) ->
     client.booting()
-    @checkPath @jlpath()
+    paths.getVersion()
       .then =>
         @spawnJulia port, (proc) =>
           proc.on 'exit', (code, signal) =>
@@ -167,7 +139,7 @@ module.exports =
             conn.proc = proc
             @init conn
       .catch =>
-        @jlNotFound @jlpath()
+        @jlNotFound paths.jlpath()
         client.cancelBoot()
 
   spawnJulia: (port, fn) ->
@@ -185,13 +157,13 @@ module.exports =
                                          "& \"#{@script "spawnInterruptible.ps1"}\"
                                          -cwd \"#{workingdir}\"
                                          -wrapPort #{@wrapPort}
-                                         -jlpath \"#{@jlpath()}\"
+                                         -jlpath \"#{paths.jlpath()}\"
                                          -jlargs #{jlargs}"])
             fn proc
           return
         else
           client.stderr "PowerShell version < 3 encountered. Running without wrapper (interrupts won't work)."
-      proc = child_process.spawn @jlpath(),
+      proc = child_process.spawn paths.jlpath(),
         [client.clargs()..., "-i", @script("boot.jl"), port],
         cwd: workingdir
       fn proc
