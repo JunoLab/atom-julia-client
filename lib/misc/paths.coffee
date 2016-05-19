@@ -1,5 +1,3 @@
-# TODO: working directory dialog
-
 path =  require 'path'
 fs =    require 'fs'
 child_process = require 'child_process'
@@ -52,7 +50,7 @@ module.exports =
     new Promise (resolve, reject) =>
       proc = child_process.spawn @jlpath(), ["--version"]
       proc.on 'exit', () =>
-        str = proc.stdout.read().toString()
+        str = proc.stdout.read()?.toString()
         res = str.match /(\d+)\.(\d+)\.(\d+)/
         return reject() unless res?
         [_, major, minor, patch] = res
