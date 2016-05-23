@@ -1,7 +1,7 @@
 child_process = require 'child_process'
 
 client = require './client'
-proc = require './process'
+{paths} = require '../misc'
 
 module.exports =
 
@@ -31,4 +31,4 @@ module.exports =
     else
       'x-terminal-emulator -e'
 
-  repl: -> @term "#{@escpath proc.jlpath()}"
+  repl: -> @term "#{@escpath paths.jlpath()}"
