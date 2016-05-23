@@ -17,7 +17,7 @@ module.exports = views =
   html: ({content}) ->
     view = @render @tags.div()
     view.innerHTML = content
-    if view.children.length == 1 then view.firstChild else view
+    view = if view.children.length == 1 then view.children[0] else view
 
   tree: ({head, children, expand}) ->
     @ink.tree.treeView(@render(head),
