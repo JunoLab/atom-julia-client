@@ -12,6 +12,7 @@
   "dependencies": {
     "atom-space-pen-views": "^2.0.0",
     "underscore-plus": "*",
+    "atom-package-deps": "*",
     "highlights": "*"
   },
   "consumedServices": {
@@ -43,5 +44,6 @@
         "0.1.0": "provideClient"
       }
     }
-  }
+  },
+  "package-deps": ["ink"]
 }
