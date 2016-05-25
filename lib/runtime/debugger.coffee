@@ -1,5 +1,7 @@
 {client} = require '../connection'
 
+workspace = require './workspace'
+
 {nextline, stepin, finish, stepexpr} =
   client.import ['nextline', 'stepin', 'finish', 'stepexpr']
 
@@ -25,10 +27,12 @@ module.exports =
   debugmode: (@active) ->
     if !@active
       @stepper.destroy()
+      workspace.update()
 
   stepto: (file, line, text) ->
     @stepper.goto file, line-1
     @stepper.setText text
+    workspace.update()
 
   nextline: -> @require -> nextline()
   stepin: -> @require -> stepin()

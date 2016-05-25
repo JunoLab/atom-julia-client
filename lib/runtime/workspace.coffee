@@ -19,13 +19,11 @@ module.exports =
     @subs.dispose()
 
   update: ->
-    p = workspace('Main').then (items) =>
-      for item in items
-        item.value = views.render item.value
-      @ws.setItems [{
-        context: 'Main'
-        items: items
-      }]
+    p = workspace('Main').then (ws) =>
+      for {items} in ws
+        for item in items
+          item.value = views.render item.value
+      @ws.setItems ws
     p.catch (err) ->
       console.error 'Error refreshing workspace'
       console.error err
