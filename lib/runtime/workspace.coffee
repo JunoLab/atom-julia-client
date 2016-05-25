@@ -15,10 +15,14 @@ module.exports =
       if uri is 'atom://julia-client/workspace'
         @ws
 
+    client.onDisconnected =>
+      @ws.setItems []
+
   deactivate: ->
     @subs.dispose()
 
   update: ->
+    return @ws.setItems [] unless client.isConnected()
     p = workspace('Main').then (ws) =>
       for {items} in ws
         for item in items
