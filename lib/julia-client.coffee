@@ -9,9 +9,21 @@ module.exports = JuliaClient =
   runtime:    require './runtime'
 
   activate: (state) ->
-    commands.activate @
-    x.activate() for x in [menu, @connection, @runtime]
-    @ui.activate @connection.client
+    @requireInk =>
+      commands.activate @
+      x.activate() for x in [menu, @connection, @runtime]
+      @ui.activate @connection.client
+
+  requireInk: (fn) ->
+    if atom.packages.isPackageLoaded "ink" then fn()
+    else
+      require('atom-package-deps').install('julia-client')
+        .then  -> fn()
+        .catch ->
+          atom.notifications.addError 'Installing the Ink package failed.',
+            detail: 'Julia Client requires the Ink package to run.
+                     Please install it manually from the settings view.'
+            dismissable: true
 
   deactivate: ->
     x.deactivate() for x in [commands, menu, toolbar, @connection, @runtime, @ui]
