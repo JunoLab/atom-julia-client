@@ -48,10 +48,9 @@ module.exports =
   getVersion: (path = @jlpath()) ->
     return Promise.resolve @version if @version?
     new Promise (resolve, reject) =>
-      proc = child_process.spawn @jlpath(), ["--version"]
-      proc.on 'exit', () =>
-        str = proc.stdout.read()?.toString()
-        res = str.match /(\d+)\.(\d+)\.(\d+)/
+      proc = child_process.exec "#{@jlpath()} --version", (err, stdout, stderr) =>
+        return reject() if err?
+        res = stdout.match /(\d+)\.(\d+)\.(\d+)/
         return reject() unless res?
         [_, major, minor, patch] = res
         resolve @version = {major, minor, patch}
