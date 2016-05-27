@@ -1,7 +1,7 @@
 {CompositeDisposable} = require 'atom'
 
 {history} = require '../misc'
-{notifications, views} = require '../ui'
+{notifications, views, notificator} = require '../ui'
 {client} = require '../connection'
 
 modules = require './modules'
@@ -22,6 +22,9 @@ module.exports =
         @c
 
     client.handle 'info', (msg) =>
+      notificator.notificator.notify
+        text: 'info'
+        type: 'msg'
       @c.info msg
 
     client.handle 'result', (result) =>
@@ -29,6 +32,9 @@ module.exports =
       view = views.render(view)
       if result.type isnt 'error'
         views.ink.tree.toggle view
+      notificator.notificator.notify
+        text: 'result'
+        type: if result.type == 'error' then 'error' else 'msg'
       @c.result view,
         error: result.type == 'error'
 
@@ -58,9 +64,16 @@ module.exports =
     for i in @ignored
       return true if s.match(i)
 
-  stdout: (data) -> @c.stdout data
+  stdout: (data) ->
+    notificator.notificator.notify
+      text: 'stdout'
+      type: 'msg'
+    @c.stdout data
 
   stderr: (data) ->
+    notificator.notificator.notify
+      text: 'stderr'
+      type: 'error'
     data = data.split('\n').filter((x)=>!@ignore x).join("\n")
     if data then @c.stderr data
 
