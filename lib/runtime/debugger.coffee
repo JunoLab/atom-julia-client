@@ -1,3 +1,4 @@
+{views} = require '../ui'
 {client} = require '../connection'
 
 workspace = require './workspace'
@@ -31,7 +32,7 @@ module.exports =
 
   stepto: (file, line, text) ->
     @stepper.goto file, line-1
-    @stepper.setText text
+    @stepper.setText views.render text
     workspace.update()
 
   nextline: -> @require -> nextline()
