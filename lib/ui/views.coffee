@@ -47,6 +47,7 @@ module.exports = views =
     view.onclick = ->
       atom.workspace.open file,
         initialLine: if line >= 0 then line
+        searchAllPanes: true
     view
 
   number: ({value, full}) ->

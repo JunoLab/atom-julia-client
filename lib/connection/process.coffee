@@ -59,14 +59,20 @@ module.exports =
     else
       fn wd
 
-  jlNotFound: (path) ->
-    atom.notifications.addError "Julia could not be found.",
+  jlNotFound: (path, details = '') ->
+    atom.notifications.addError "Julia could not be started.",
       detail: """
       We tried to launch Julia from:
       #{path}
 
       This path can be changed in the settings.
-      """
+      """ + if details isnt ''
+        """
+        Details:
+          #{details}
+        """
+      else
+        ""
       dismissable: true
 
   openConsole: ->
@@ -138,8 +144,8 @@ module.exports =
           tcp.next().then (conn) =>
             conn.proc = proc
             @init conn
-      .catch =>
-        @jlNotFound paths.jlpath()
+      .catch (err) =>
+        @jlNotFound paths.jlpath(), err
         client.cancelBoot()
 
   spawnJulia: (port, fn) ->
