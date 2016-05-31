@@ -1,9 +1,10 @@
+# Highlights some `text` according to the specified `grammar`.
 
-# stolen from https://github.com/atom/highlights/blob/master/src/highlights.coffee
-# uses Atoms grammars
+# Implementation identical to https://github.com/atom/highlights/blob/master/src/highlights.coffee,
+# but uses an externally provided grammar.
 module.exports =
-  highlight: (line, @grammar) ->
-    _highlightCommon line
+  highlight: (text, @grammar) ->
+    _highlightCommon text
 
   _highlightCommon: (text) ->
     lineTokens = @grammar.tokenizeLines(text)
