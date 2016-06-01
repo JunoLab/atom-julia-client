@@ -1,5 +1,4 @@
-Highlights = require 'highlights'
-highlighter = null
+{highlight} = require './highlighter'
 
 module.exports = views =
   dom: ({tag, attrs, contents}) ->
@@ -59,12 +58,8 @@ module.exports = views =
     view
 
   code: ({text, scope}) ->
-    scope ?= 'source.julia'
-    highlighter ?= new Highlights registry: atom.grammars
-    highlightedHtml = highlighter.highlightSync
-      fileContents: text
-      scopeName: scope
-    @render {type: 'html', content: highlightedHtml}
+    grammar = atom.grammars.grammarForScopeName("source.julia")
+    @render {type: 'html', content: highlight text, grammar}
 
   views:
     dom:     (a...) -> views.dom  a...
