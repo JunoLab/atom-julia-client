@@ -1,13 +1,9 @@
-# Highlights some `text` according to the specified `grammar`.
-
 # Implementation identical to https://github.com/atom/highlights/blob/master/src/highlights.coffee,
 # but uses an externally provided grammar.
 module.exports =
-  highlight: (text, @grammar) ->
-    _highlightCommon text
-
-  _highlightCommon: (text) ->
-    lineTokens = @grammar.tokenizeLines(text)
+  # Highlights some `text` according to the specified `grammar`.
+  highlight: (text, grammar) ->
+    lineTokens = grammar.tokenizeLines(text)
 
     # Remove trailing newline
     if lineTokens.length > 0
