@@ -43,7 +43,7 @@ module.exports =
   consumeInk: (ink) ->
     @stepper = new ink.Stepper
       buttons: [
-        {icon: 'arrow-down', command: 'julia-debug:step-to-next-line'}
-        {icon: 'link-external', command: 'julia-debug:finish-function'}
-        {icon: 'chevron-right', command: 'julia-debug:step-into-function'}
+        {icon: 'arrow-down', command: 'julia-debug:step-to-next-line', tooltip: 'Step to the next line.'}
+        {icon: 'link-external', command: 'julia-debug:finish-function', tooltip: 'Finish function.'}
+        {icon: 'chevron-right', command: 'julia-debug:step-into-function', tooltip: 'Step into function.'}
       ]
