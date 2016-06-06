@@ -1,3 +1,5 @@
+_ = require 'underscore-plus'
+
 # Implementation identical to https://github.com/atom/highlights/blob/master/src/highlights.coffee,
 # but uses an externally provided grammar.
 module.exports =
