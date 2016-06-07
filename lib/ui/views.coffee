@@ -42,6 +42,8 @@ module.exports = views =
 
   link: ({file, line, contents}) ->
     view = @render @tags.a {href: '#'}, contents
+    # TODO: if file is untitled, we need to focus the TextEditor by its ID and set the
+    # tooltip to 'untitled'
     atom.tooltips.add view, title: -> file
     view.onclick = ->
       atom.workspace.open file,
