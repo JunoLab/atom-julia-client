@@ -10,6 +10,7 @@
   'cmd-shift-enter': 'julia-client:run-file'
   'cmd-j cmd-d': 'julia-client:toggle-documentation'
   'cmd-shift-a': 'julia:select-block'
+  'ctrl-x': 'julia-debug:toggle-breakpoint'
 
 '.platform-darwin .item-views > atom-text-editor[data-grammar="source julia"],
  .platform-darwin ink-console.julia,

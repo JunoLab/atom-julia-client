@@ -76,6 +76,7 @@ module.exports =
       'julia-debug:step-to-next-expression': => juno.runtime.debugger.stepexpr()
       'julia-debug:step-into-function': => juno.runtime.debugger.stepin()
       'julia-debug:finish-function': => juno.runtime.debugger.finish()
+      'julia-debug:toggle-breakpoint': => juno.runtime.debugger.togglebp()
 
       'julia:open-startup-file': -> atom.workspace.open juno.misc.paths.home '.juliarc.jl'
       'julia:open-julia-home': -> shell.openItem juno.misc.paths.juliaHome()

@@ -6,6 +6,8 @@ workspace = require './workspace'
 {nextline, stepin, finish, stepexpr} =
   client.import ['nextline', 'stepin', 'finish', 'stepexpr']
 
+breakpoints = null
+
 module.exports =
   activate: ->
     client.handle 'debugmode', (state) => @debugmode state
@@ -40,6 +42,19 @@ module.exports =
   finish: -> @require -> finish()
   stepexpr: -> @require -> stepexpr()
 
+  breakpoints: []
+
+  bp: (file, line) ->
+    if (existing = breakpoints.get(file, line, @breakpoints)[0])?
+      @breakpoints = @breakpoints.filter (x) -> x != existing
+      return existing.destroy()
+    @breakpoints.push breakpoints.add file, line
+
+  togglebp: (ed = atom.workspace.getActiveTextEditor()) ->
+    return unless ed
+    for cursor in ed.getCursors()
+      @bp ed.getPath(), cursor.getBufferPosition().row
+
   consumeInk: (ink) ->
     @stepper = new ink.Stepper
       buttons: [
@@ -47,3 +62,5 @@ module.exports =
         {icon: 'link-external', command: 'julia-debug:finish-function', tooltip: 'Finish function.'}
         {icon: 'chevron-right', command: 'julia-debug:step-into-function', tooltip: 'Step into function.'}
       ]
+    breakpoints = ink.breakpoints
+    breakpoints.addScope 'source.julia'
