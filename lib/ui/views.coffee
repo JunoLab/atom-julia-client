@@ -56,6 +56,8 @@ module.exports = views =
 
   link: ({file, line, contents}) ->
     view = @render @tags.a {href: '#'}, contents
+    # TODO: the tooltips here need to be disposed of when the result is destroyed,
+    # but I don't think there are any listeners for that... 
     if id = @getUntitledId file
       atom.tooltips.add view, title: -> 'untitled'
       view.onclick = =>
