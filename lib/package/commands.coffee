@@ -31,14 +31,14 @@ module.exports =
         @withInk ->
           boot()
           juno.runtime.evaluation.evalAll()
+      'julia-client:goto-symbol': =>
+        @withInk ->
+          boot()
+          juno.runtime.evaluation.gotoSymbol()
       'julia-client:toggle-documentation': =>
         @withInk ->
           boot()
-          juno.runtime.evaluation.toggleMeta 'docs'
-      'julia-client:toggle-methods': =>
-        @withInk ->
-          boot()
-          juno.runtime.evaluation.toggleMeta 'methods'
+          juno.runtime.evaluation.toggleDocs()
       'julia-client:reset-workspace': =>
         requireClient 'reset the workspace', ->
           editor = atom.workspace.getActiveTextEditor()

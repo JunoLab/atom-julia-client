@@ -1,3 +1,6 @@
+## 0.5.0
+* Inline Documentation
+
 ## 0.4.0
 * Better Console buffering
 * History prefix support, like the repl
