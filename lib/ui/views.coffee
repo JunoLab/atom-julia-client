@@ -40,13 +40,34 @@ module.exports = views =
         e.stopPropagation()
     view
 
+  openEditorById: (id, line) ->
+    for pane in atom.workspace.getPanes()
+      ind = 0
+      for item in pane.getItems()
+        if item.constructor.name is "TextEditor" and item.getBuffer().id is id
+          pane.activateItemAtIndex ind
+          item.setCursorBufferPosition [line, 0]
+          item.scrollToCursorPosition()
+          return true
+        ind += 1
+    false
+
+  getUntitledId: (file) -> file.match(/untitled-([\d\w]+)$/)?[1]
+
   link: ({file, line, contents}) ->
     view = @render @tags.a {href: '#'}, contents
-    atom.tooltips.add view, title: -> file
-    view.onclick = ->
-      atom.workspace.open file,
-        initialLine: if line >= 0 then line
-        searchAllPanes: true
+    # TODO: the tooltips here need to be disposed of when the result is destroyed,
+    # but I don't think there are any listeners for that... 
+    if id = @getUntitledId file
+      atom.tooltips.add view, title: -> 'untitled'
+      view.onclick = =>
+        @openEditorById id, line
+    else
+      atom.tooltips.add view, title: -> file
+      view.onclick = ->
+        atom.workspace.open file,
+          initialLine: if line >= 0 then line
+          searchAllPanes: true
     view
 
   number: ({value, full}) ->
