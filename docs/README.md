@@ -35,8 +35,8 @@ If you already have these packages change `clone` to `checkout` here.
 To install the latest atom packages, run the commands:
 
 ```shell
-apm install http://github.com/JunoLab/atom-ink
-apm install http://github.com/JunoLab/atom-julia-client
+apm install https://github.com/JunoLab/atom-ink
+apm install https://github.com/JunoLab/atom-julia-client
 ```
 
 It's a good idea to keep these up to date by running `Pkg.update()` in Julia and syncing the package repos every now and then, which will be in `~/.atom/packages/julia-client` and `~/.atom/packages/ink`.
