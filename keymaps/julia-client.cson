@@ -42,6 +42,7 @@
   'ctrl-j ctrl-m': 'julia-client:set-working-module'
   'ctrl-shift-c': 'julia-client:interrupt-julia'
   'ctrl-j ctrl-d': 'julia-client:toggle-documentation'
+  'alt-x': 'julia-debug:toggle-breakpoint'
 
 '.platform-win32 ink-console.julia,
  .platform-win32 ink-console.julia atom-text-editor,
