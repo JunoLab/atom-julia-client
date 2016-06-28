@@ -48,6 +48,7 @@ module.exports =
               code: editor.getText()
             }).then (result) ->
         notifications.show "Evaluation Finished"
+        require('../runtime').workspace.update()
 
   gotoSymbol: ->
     @withCurrentContext ({editor, mod}) =>
