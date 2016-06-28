@@ -2,9 +2,10 @@
 {client} = require '../connection'
 
 workspace = require './workspace'
+cons = require './console'
 
-{nextline, stepin, finish, stepexpr} =
-  client.import ['nextline', 'stepin', 'finish', 'stepexpr']
+{nextline, stepin, finish, stepexpr, bp} =
+  client.import ['nextline', 'stepin', 'finish', 'stepexpr', 'bp']
 
 breakpoints = null
 
@@ -31,6 +32,8 @@ module.exports =
     if !@active
       @stepper.destroy()
       workspace.update()
+    else
+      cons.c.input()
 
   stepto: (file, line, text) ->
     @stepper.goto file, line-1
@@ -48,7 +51,9 @@ module.exports =
     if (existing = breakpoints.get(file, line, @breakpoints)[0])?
       @breakpoints = @breakpoints.filter (x) -> x != existing
       return existing.destroy()
-    @breakpoints.push breakpoints.add file, line
+    thebp = breakpoints.add file, line
+    @breakpoints.push thebp
+    bp file, line+1
 
   togglebp: (ed = atom.workspace.getActiveTextEditor()) ->
     return unless ed
