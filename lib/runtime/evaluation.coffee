@@ -20,7 +20,7 @@ module.exports =
 
   eval: ({move}={}) ->
     @withCurrentContext ({editor, mod, edpath}) =>
-      blocks.get(editor, move: true).forEach ({range, line, text, selection}) =>
+      blocks.get(editor).forEach ({range, line, text, selection}) =>
         blocks.moveNext editor, selection, range if move
         [[start], [end]] = range
         @ink.highlight editor, start, end
