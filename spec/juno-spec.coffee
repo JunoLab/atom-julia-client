@@ -1,8 +1,11 @@
 juno = require '../lib/julia-client'
 
 # Testing-specific settings
-juno.connection.process.jlpath = -> "julia"
+juno.misc.paths.jlpath = -> "julia"
 juno.connection.process.pipeConsole = true
+
+if process.platform is 'darwin'
+  process.env.PATH += ':/usr/local/bin'
 
 describe "the package", ->
   it "activates without errors", ->
@@ -19,19 +22,22 @@ describe "managing the client", ->
   client.onDisconnected (disconnectSpy = jasmine.createSpy 'disconnect')
 
   describe "before booting", ->
+    path = require 'path'
+    checkPath = (p) -> juno.misc.paths.getVersion p
 
-    it "can validate the existence of a julia binary", ->
-      path = require 'path'
-      checkPath = (p) -> juno.misc.paths.getVersion p
-      # waitsFor (done) ->
-      #   checkPath(path.join path.homedir, '..', '..', 'julia', 'julia').then -> done()
-      # waitsFor (done) ->
-      #   checkPath(path.join(__dirname, "foobar")).catch -> done()
+    it "can validate an existing julia binary", ->
+      waitsFor (done) ->
+        checkPath(path.join __dirname, '..', '..', 'julia', 'julia').then -> done()
 
-    it "can validate the existence of a julia command", ->
-      checkPath = (p) -> juno.misc.paths.getVersion p
-      # waitsFor (done) ->
-      #   checkPath("julia").then -> done()
+    it "can invalidate a non-existant julia binary", ->
+      waitsFor (done) ->
+        checkPath(path.join(__dirname, "foobar")).catch -> done()
+
+    it "can validate a julia command", ->
+      waitsFor (done) ->
+        checkPath("julia").then -> done()
+
+    it "can invalidate a non-existant julia command", ->
       waitsFor (done) ->
         checkPath("nojulia").catch -> done()
 
