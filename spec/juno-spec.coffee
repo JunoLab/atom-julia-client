@@ -1,3 +1,4 @@
+path = require 'path'
 juno = require '../lib/julia-client'
 
 # Testing-specific settings
@@ -25,7 +26,6 @@ describe "managing the client", ->
   client.onDisconnected (disconnectSpy = jasmine.createSpy 'disconnect')
 
   describe "before booting", ->
-    path = require 'path'
     checkPath = (p) -> juno.misc.paths.getVersion p
 
     it "can validate an existing julia binary", ->
