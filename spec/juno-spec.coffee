@@ -96,6 +96,24 @@ describe "managing the client", ->
         evalsimple("@rpc test(2)").then (x) ->
           expect(x).toBe(2)
 
+    it "captures stdout", ->
+      data = ''
+      sub = client.onStdout (s) -> data += s
+      waitsForPromise ->
+        evalsimple('print("test")')
+      runs ->
+        expect(data).toBe('test')
+        sub.dispose()
+
+    it "captures stderr", ->
+      data = ''
+      sub = client.onStderr (s) -> data += s
+      waitsForPromise ->
+        evalsimple('print(STDERR, "test")')
+      runs ->
+        expect(data).toBe('test')
+        sub.dispose()
+
     describe "when callbacks are pending", ->
       {cbs, workingSpy, doneSpy} = {}
 
