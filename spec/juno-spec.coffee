@@ -91,8 +91,7 @@ describe "managing the client", ->
 
     it "can retrieve promise values from the frontend", ->
       client.handle 'test', (x) ->
-        new Promise (resolve) ->
-          resolve x
+        Promise.resolve x
       waitsForPromise ->
         evalsimple("@rpc test(2)").then (x) ->
           expect(x).toBe(2)
