@@ -2,10 +2,14 @@ juno = require '../lib/julia-client'
 
 # Testing-specific settings
 juno.misc.paths.jlpath = -> "julia"
-juno.connection.process.pipeConsole = true
 
 if process.platform is 'darwin'
   process.env.PATH += ':/usr/local/bin'
+
+client = juno.connection.client
+
+client.onStdout (s) -> console.log s
+client.onStderr (s) -> console.log s
 
 describe "the package", ->
   it "activates without errors", ->
@@ -15,7 +19,6 @@ describe "the package", ->
       atom.packages.activatePackage 'julia-client'
 
 describe "managing the client", ->
-  client = juno.connection.client
   clientStatus = -> [client.isConnected(), client.isActive(), client.isWorking()]
   {echo, evalsimple} = client.import ['echo', 'evalsimple']
   client.onConnected (connectSpy = jasmine.createSpy 'connect')
