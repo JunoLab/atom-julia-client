@@ -22,16 +22,16 @@ describe "managing the client", ->
 
     it "can validate the existence of a julia binary", ->
       path = require 'path'
-      checkPath = (p) -> juno.connection.process.checkPath p
-      waitsFor (done) ->
-        checkPath(path.join(__dirname, "juno-spec.coffee")).then -> done()
-      waitsFor (done) ->
-        checkPath(path.join(__dirname, "doesn't-exist.coffee")).catch -> done()
+      checkPath = (p) -> juno.misc.paths.getVersion p
+      # waitsFor (done) ->
+      #   checkPath(path.join(__dirname, "juno-spec.coffee")).then -> done()
+      # waitsFor (done) ->
+      #   checkPath(path.join(__dirname, "doesn't-exist.coffee")).catch -> done()
 
     it "can validate the existence of a julia command", ->
-      checkPath = (p) -> juno.connection.process.checkPath p
-      waitsFor (done) ->
-        checkPath("julia").then -> done()
+      checkPath = (p) -> juno.misc.paths.getVersion p
+      # waitsFor (done) ->
+      #   checkPath("julia").then -> done()
       waitsFor (done) ->
         checkPath("nojulia").catch -> done()
 
