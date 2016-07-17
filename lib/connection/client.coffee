@@ -156,7 +156,8 @@ module.exports =
       @clientCall 'kill', 'kill'
 
   clargs: ->
-    {precompiled, optimisationLevel} = atom.config.get 'julia-client.juliaOptions'
+    {precompiled, optimisationLevel} =
+      atom.config.get('julia-client.juliaOptions') ? {precompiled: true, optimisationLevel: 2}
     as = []
     as.push "--precompiled=#{if precompiled then 'yes' else 'no'}"
     as.push "-O#{optimisationLevel}" unless optimisationLevel is 2
