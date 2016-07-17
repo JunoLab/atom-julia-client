@@ -42,22 +42,20 @@ module.exports =
 
   script: (s...) -> @packageDir 'script', s...
 
-  withWorkingDir: (fn) ->
+  workingDir: ->
     dirs = atom.workspace.project.getDirectories()
-    # default to HOME as working dir for julia
-    wd = process.env.HOME || process.env.USERPROFILE
-    if dirs.length > 0
+    ws = process.env.HOME || process.env.USERPROFILE
+    if dirs.length is 0
+      return Promise.resolve ws
+    new Promise (resolve) ->
       # use the first open project folder (or its parent folder for files) if
       # it is valid
       fs.stat dirs[0].path, (err, stats) =>
-        if not err?
-          if stats.isFile()
-            wd = path.dirname dirs[0].path
-          else
-            wd = dirs[0].path
-        fn wd
-    else
-      fn wd
+        if err? then return resolve ws
+        if stats.isFile()
+          resolve path.dirname dirs[0].path
+        else
+          resolve dirs[0].path
 
   jlNotFound: (path, details = '') ->
     atom.notifications.addError "Julia could not be started.",
@@ -149,7 +147,7 @@ module.exports =
         client.cancelBoot()
 
   spawnJulia: (port, fn) ->
-    @withWorkingDir (workingdir) =>
+    @workingDir().then (workingdir) =>
       if process.platform is 'win32' and atom.config.get("julia-client.enablePowershellWrapper")
         @useWrapper = parseInt(child_process.spawnSync("powershell",
                                                       ["-NoProfile", "$PSVersionTable.PSVersion.Major"])
