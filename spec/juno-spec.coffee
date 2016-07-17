@@ -24,9 +24,9 @@ describe "managing the client", ->
       path = require 'path'
       checkPath = (p) -> juno.misc.paths.getVersion p
       # waitsFor (done) ->
-      #   checkPath(path.join(__dirname, "juno-spec.coffee")).then -> done()
+      #   checkPath(path.join path.homedir, '..', '..', 'julia', 'julia').then -> done()
       # waitsFor (done) ->
-      #   checkPath(path.join(__dirname, "doesn't-exist.coffee")).catch -> done()
+      #   checkPath(path.join(__dirname, "foobar")).catch -> done()
 
     it "can validate the existence of a julia command", ->
       checkPath = (p) -> juno.misc.paths.getVersion p
