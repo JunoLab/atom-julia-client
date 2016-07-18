@@ -107,7 +107,7 @@ describe "managing the client", ->
 
       it "enters loading state", ->
         cbs = (evalsimple("peakflops(1000)") for i in [1..5])
-        expect(client.isWorking()).toBe(true)
+        expect(client.isWorking())
 
       it "emits a working event", ->
         expect(workingSpy.calls.length).toBe(1)

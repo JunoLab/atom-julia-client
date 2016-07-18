@@ -17,3 +17,4 @@ describe "the package", ->
       atom.packages.activatePackage 'julia-client'
 
 require './client'
+require './eval'
