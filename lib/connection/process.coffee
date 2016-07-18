@@ -10,7 +10,11 @@ tcp = require './tcp'
 module.exports =
 
   activate: ->
-    client.onDisconnected ->
+
+    client.onConnected =>
+      client.conn.proc?.removeListener? 'exit', @bootFailListener
+
+    client.onDisconnected =>
       if @useWrapper and @proc
         @proc.kill()
 
@@ -45,7 +49,7 @@ module.exports =
   workingDir: ->
     dirs = atom.workspace.project.getDirectories()
     ws = process.env.HOME || process.env.USERPROFILE
-    if dirs.length is 0
+    if dirs.length is 0 or dirs[0].path.match 'app.asar'
       return Promise.resolve ws
     new Promise (resolve) ->
       # use the first open project folder (or its parent folder for files) if
@@ -116,6 +120,22 @@ module.exports =
         @openConsole()
       else client.stderr err
 
+  monitorBoot: (proc) ->
+    @bootFailListener ?= (code, signal) =>
+      client.stderr "Julia has stopped"
+      if not @useWrapper then client.stderr ": #{code}, #{signal}"
+      client.cancelBoot()
+    proc.on 'exit', @bootFailListener
+
+  monitorStreams: (proc) ->
+    proc.stdout.on 'data', (data) => client.stdout data.toString()
+    proc.stderr.on 'data', (data) =>
+      text = data.toString()
+      if text.startsWith 'juno-err'
+        @bootErr text
+        return
+      client.stderr text
+
   init: (conn) ->
     conn.interrupt = => @interrupt conn.proc
     conn.kill = => @kill conn.proc
@@ -127,17 +147,8 @@ module.exports =
     paths.getVersion()
       .then =>
         @spawnJulia port, (proc) =>
-          proc.on 'exit', (code, signal) =>
-            client.stderr "Julia has stopped"
-            if not @useWrapper then client.stderr ": #{code}, #{signal}"
-            client.cancelBoot()
-          proc.stdout.on 'data', (data) => client.stdout data.toString()
-          proc.stderr.on 'data', (data) =>
-            text = data.toString()
-            if text.startsWith 'juno-err'
-              @bootErr text
-              return
-            client.stderr text
+          @monitorBoot proc
+          @monitorStreams proc
 
           tcp.next().then (conn) =>
             conn.proc = proc
