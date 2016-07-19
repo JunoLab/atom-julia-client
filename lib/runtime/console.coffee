@@ -17,10 +17,6 @@ module.exports =
 
     @subs = new CompositeDisposable
 
-    @subs.add atom.workspace.addOpener (uri) =>
-      if uri is 'atom://julia-client/console'
-        @c
-
     client.handle 'info', (msg) =>
       @c.info msg
 
@@ -43,8 +39,6 @@ module.exports =
 
   create: ->
     @c = @ink.Console.fromId 'julia'
-    view = atom.views.getView @c
-    view.classList.add 'julia'
     @c.setModes @modes
     @c.onEval (ed) => @eval ed
     client.onWorking => @c.loading true
@@ -65,12 +59,9 @@ module.exports =
     if data then @c.stderr data
 
   open: ->
-    # Seems like atom should be doing this check for us,
-    # but it looks like it's broken.
-    @c.activate() or
-      atom.workspace.open "atom://julia-client/console",
-        split: 'down'
-        searchAllPanes: true
+    @c.open
+      split: 'down'
+      searchAllPanes: true
 
   reset: -> @c.reset()
 

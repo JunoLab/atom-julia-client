@@ -11,9 +11,7 @@ module.exports =
     @pane = @ink.PlotPane.fromId 'default'
 
   open: ->
-    @pane.activate() ||
-      atom.workspace.open 'atom://ink/plots',
-        split: 'right'
+    @pane.open split: 'right'
 
   show: (view) ->
     if not @pane.currentPane()

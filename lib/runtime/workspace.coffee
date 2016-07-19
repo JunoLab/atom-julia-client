@@ -9,17 +9,8 @@ module.exports =
   activate: ->
     @create()
 
-    @subs = new CompositeDisposable
-
-    @subs.add atom.workspace.addOpener (uri) =>
-      if uri is 'atom://julia-client/workspace'
-        @ws
-
     client.onDisconnected =>
       @ws.setItems []
-
-  deactivate: ->
-    @subs.dispose()
 
   update: ->
     return @ws.setItems [] unless client.isConnected()
@@ -35,6 +26,4 @@ module.exports =
   create: ->
     @ws = @ink.Workspace.fromId 'julia'
 
-  open: ->
-    @ws.activate() ||
-      atom.workspace.open 'atom://julia-client/workspace'
+  open: -> @ws.open split: 'right'

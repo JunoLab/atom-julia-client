@@ -16,5 +16,5 @@ describe "the package", ->
     waitsForPromise ->
       atom.packages.activatePackage 'julia-client'
 
-require './client'
+# require './client'
 require './eval'
