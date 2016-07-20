@@ -13,7 +13,7 @@ module.exports =
     @debugger.activate()
 
   deactivate: ->
-    mod.deactivate() for mod in [@modules, @console, @workspace, @frontend]
+    mod.deactivate() for mod in [@modules, @console, @frontend]
 
   consumeInk: (ink) ->
     @evaluation.ink = ink
