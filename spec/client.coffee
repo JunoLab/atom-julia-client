@@ -1,6 +1,13 @@
 path = require 'path'
 juno = require '../lib/julia-client'
 
+# The packages aren't actually active in Atom for these tests,
+# but that doesn't matter. In fact it would be a huge pain
+# to avoid sharing state in this case.
+
+client.onStdout (s) -> console.log s
+client.onStderr (s) -> console.log s
+
 {client} = juno.connection
 
 describe "managing the client", ->
