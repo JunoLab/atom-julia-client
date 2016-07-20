@@ -14,7 +14,7 @@ module.exports =
   # calls `fn` with the current editor, module and editorpath
   withCurrentContext: (fn) ->
     editor = atom.workspace.getActiveTextEditor()
-    mod = modules.current() # TODO: may not work in all cases
+    mod = modules.current() ? 'Main'
     edpath = editor.getPath() || 'untitled-' + editor.getBuffer().id
     fn {editor, mod, edpath}
 
