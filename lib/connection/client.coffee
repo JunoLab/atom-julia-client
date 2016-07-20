@@ -46,14 +46,14 @@ module.exports =
         delete @callbacks[id]
         @loading.done()
 
-    @handle 'cancelCallback', (id) =>
-      @callbacks[id].reject "cancelled by julia"
+    @handle 'cancelCallback', (id, e) =>
+      @callbacks[id].reject e
       @loading.done()
 
-    atom.config.observe 'julia-client.errorNotifications', (notif) =>
-      @handle 'error', (options) =>
-        if notif
-            atom.notifications.addError options.msg, options
+    @handle 'error', (options) =>
+      if atom.config.get 'julia-client.errorNotifications'
+        atom.notifications.addError options.msg, options
+      console.error options.detail
 
   msg: (type, args...) ->
     if @isConnected()
