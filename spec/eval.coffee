@@ -13,7 +13,12 @@ describe 'in an editor', ->
 
   editor = null
 
+  command = (ed, c) -> atom.commands.dispatch(atom.views.getView(ed), c)
+
+  waitsForClient = -> waitsFor (done) -> client.onceDone done
+
   beforeEach ->
+    jasmine.attachToDOM atom.views.getView atom.workspace
     waitsForPromise -> atom.packages.activatePackage 'language-julia'
     waitsForPromise -> atom.packages.activatePackage 'ink'
     waitsForPromise -> atom.packages.activatePackage 'julia-client'
@@ -21,15 +26,10 @@ describe 'in an editor', ->
     runs ->
       editor.setGrammar(atom.grammars.grammarForScopeName('source.julia'))
 
-  # it 'shows the current module', ->
-  #   expect(juno.runtime.modules.current()).toBe 'Main'
-
   it 'evaluates code in the editor', ->
-    data = ''
-    sub = client.onStdout (s) -> data += s
-    waitsForPromise ->
-      editor.insertText 'print("test")'
-      juno.runtime.evaluation.eval()
+    client.handle 'test', (spy = jasmine.createSpy())
+    editor.insertText 'Atom.@rpc test()'
+    command editor, 'julia-client:run-block'
+    waitsForClient()
     runs ->
-      expect(data).toBe('test')
-      sub.dispose()
+      expect(spy).toHaveBeenCalled()

@@ -1,14 +1,11 @@
 path = require 'path'
 juno = require '../lib/julia-client'
 
+{client} = juno.connection
+
 # The packages aren't actually active in Atom for these tests,
 # but that doesn't matter. In fact it would be a huge pain
 # to avoid sharing state in this case.
-
-client.onStdout (s) -> console.log s
-client.onStderr (s) -> console.log s
-
-{client} = juno.connection
 
 describe "managing the client", ->
   clientStatus = -> [client.isConnected(), client.isActive(), client.isWorking()]
@@ -114,7 +111,7 @@ describe "managing the client", ->
 
       it "enters loading state", ->
         cbs = (evalsimple("peakflops(1000)") for i in [1..5])
-        expect(client.isWorking())
+        expect(client.isWorking()).toBe true
 
       it "emits a working event", ->
         expect(workingSpy.calls.length).toBe(1)

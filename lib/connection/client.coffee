@@ -129,6 +129,7 @@ module.exports =
   isWorking: -> @loading.isWorking()
   onWorking: (f) -> @loading.onWorking f
   onDone: (f) -> @loading.onDone f
+  onceDone: (f) -> @loading.onceDone f
 
   # Management & UI
 
