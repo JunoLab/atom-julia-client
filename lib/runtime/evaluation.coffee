@@ -20,7 +20,7 @@ module.exports =
 
   eval: ({move}={}) ->
     @withCurrentContext ({editor, mod, edpath}) =>
-      blocks.get(editor).forEach ({range, line, text, selection}) =>
+      Promise.all blocks.get(editor).map ({range, line, text, selection}) =>
         blocks.moveNext editor, selection, range if move
         [[start], [end]] = range
         @ink.highlight editor, start, end
@@ -37,6 +37,7 @@ module.exports =
               @showError r, result.highlights
             notifications.show "Evaluation Finished"
             require('../runtime').workspace.update()
+            result
           .catch -> r?.destroy()
 
   evalAll: ->
