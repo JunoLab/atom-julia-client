@@ -13,11 +13,15 @@ module.exports =
   open: ->
     @pane.open split: 'right'
 
+  ensureVisible: ->
+    return Promise.resolve(@pane) if @pane.currentPane()
+    @open()
+
   show: (view) ->
-    if not @pane.currentPane()
-      @open()
+    @ensureVisible()
     @pane.show views.render view
 
   plotSize: ->
-    view = atom.views.getView @pane
-    [view.clientWidth or 400, view.clientHeight or 300]
+    @ensureVisible().then =>
+      view = atom.views.getView @pane
+      [view.clientWidth or 400, view.clientHeight or 300]
