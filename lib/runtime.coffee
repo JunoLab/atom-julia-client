@@ -1,11 +1,12 @@
 module.exports =
-  modules:    require './runtime/modules'
-  evaluation: require './runtime/evaluation'
-  console:    require './runtime/console'
-  workspace:  require './runtime/workspace'
-  plots:      require './runtime/plots'
-  frontend:   require './runtime/frontend'
-  debugger:   require './runtime/debugger'
+  completions: require './runtime/completions'
+  modules:     require './runtime/modules'
+  evaluation:  require './runtime/evaluation'
+  console:     require './runtime/console'
+  workspace:   require './runtime/workspace'
+  plots:       require './runtime/plots'
+  frontend:    require './runtime/frontend'
+  debugger:    require './runtime/debugger'
 
   activate: ->
     @modules.activate()

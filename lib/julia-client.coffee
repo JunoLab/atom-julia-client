@@ -40,4 +40,4 @@ module.exports = JuliaClient =
   provideClient: -> @connection.client
 
   config: require './package/config'
-  completions: -> require './runtime/completions'
+  completions: -> @runtime.completions
