@@ -78,7 +78,7 @@ module.exports =
       .catch => @c.input()
 
   modes: [
-    {name: 'julia', default: true, grammar: 'source.julia'}
+    {name: 'julia', grammar: 'source.julia'}
     {name: 'help', prefix: '?', icon: 'question', grammar: 'source.julia'}
     {name: 'shell', prefix: ';', icon: 'terminal', grammar: 'source.shell'}
   ]

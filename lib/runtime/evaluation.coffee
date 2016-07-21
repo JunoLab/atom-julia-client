@@ -25,7 +25,7 @@ module.exports =
         [[start], [end]] = range
         @ink.highlight editor, start, end
         r = null
-        setTimeout (=> r ?= new @ink.Result editor, [start, end], loading: true), 0.1
+        setTimeout (=> r ?= new @ink.Result editor, [start, end]), 0.1
         evaluate({text, line: line+1, mod, path: edpath})
           .then (result) =>
             error = result.type == 'error'
