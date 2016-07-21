@@ -60,7 +60,7 @@ a type other than `eval` to avoid clashes with actual evaluation.)
 Julia has a similar mechanism to talk to Atom via the function
 
 ```julia
-msg("type", args...)
+Atom.@msg type(args...)
 ```
 
 Handlers are defined on the Atom side as follows:
@@ -84,7 +84,7 @@ if you want to try this out.)
 Calling the following from the REPL:
 
 ```julia
-Atom.rpc("echo", Dict(:a=>1, :b=>2))
+Atom.@rpc echo(Dict(:a=>1, :b=>2))
 ```
 
 will return `Dict("a"=>1, "b"=>2)`. The data was passed to Atom and simply returned as-is.
