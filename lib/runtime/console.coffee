@@ -39,7 +39,9 @@ module.exports =
 
   create: ->
     @c = @ink.Console.fromId 'julia'
-    @c.setModes @modes
+    atom.packages.activatePackage('language-julia').then =>
+      @c.setModes @modes
+      @c.reset()
     @c.onEval (ed) => @eval ed
     client.onWorking => @c.loading true
     client.onDone => @c.loading false
