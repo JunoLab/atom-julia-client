@@ -29,7 +29,7 @@ end
 
 try
   using Atom
-  @sync Atom.connect(port, welcome = precompile || install)
+  @sync Atom.serve(port, welcome = precompile || install)
 catch
   print(STDERR, "juno-msg-load")
   rethrow()

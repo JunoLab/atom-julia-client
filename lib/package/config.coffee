@@ -1,4 +1,4 @@
-{process: proc, terminal} = require '../connection'
+{local: proc, terminal} = require '../connection'
 
 config =
   launchOnStartup:

@@ -51,7 +51,7 @@ module.exports =
         [_, major, minor, patch] = res
         resolve {major, minor, patch}
 
-  workingDir: ->
+  projectDir: ->
     dirs = atom.workspace.project.getDirectories()
     ws = process.env.HOME || process.env.USERPROFILE
     if dirs.length is 0 or dirs[0].path.match 'app.asar'
@@ -69,3 +69,5 @@ module.exports =
   packageDir: (s...) ->
     packageRoot = path.resolve __dirname, '..', '..'
     path.join packageRoot, s...
+
+  script: (s...) -> @packageDir 'script', s...

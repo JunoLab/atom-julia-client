@@ -173,6 +173,8 @@ module.exports =
     as = []
     as.push "--precompiled=#{if precompiled then 'yes' else 'no'}"
     as.push "-O#{optimisationLevel}" unless optimisationLevel is 2
+    as.push "-i"
+    as.push "--depwarn=no"
     as
 
   connectedError: (action = 'do that') ->

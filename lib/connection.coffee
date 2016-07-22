@@ -3,7 +3,7 @@
 module.exports =
   messages: require './connection/messages'
   client:   require './connection/client'
-  process:  require './connection/process'
+  local:  require './connection/local'
   tcp:      require './connection/tcp'
   terminal: require './connection/terminal'
 
@@ -11,7 +11,7 @@ module.exports =
     @messages.activate()
     @client.activate()
     @client.boot = => @boot()
-    @process.activate()
+    @local.activate()
 
   deactivate: ->
 
@@ -20,5 +20,5 @@ module.exports =
 
   boot: ->
     if not @client.isActive()
-      @tcp.listen (port) => @process.start port
+      @local.start()
       time "Julia Boot", @client.rpc 'ping'
