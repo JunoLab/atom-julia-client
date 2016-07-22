@@ -1,7 +1,6 @@
 {paths} = require '../misc'
 messages = require './messages'
 client = require './client'
-tcp = require './tcp'
 
 module.exports =
 

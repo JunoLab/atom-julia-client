@@ -4,7 +4,6 @@ module.exports =
   messages: require './connection/messages'
   client:   require './connection/client'
   local:  require './connection/local'
-  tcp:      require './connection/tcp'
   terminal: require './connection/terminal'
 
   activate: ->
