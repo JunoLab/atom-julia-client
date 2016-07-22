@@ -22,14 +22,7 @@ module.exports =
   executable: ->
     if process.platform is 'win32' then 'julia.exe' else 'julia'
 
-  packageDir: (s...) ->
-    packageRoot = path.resolve __dirname, '..', '..'
-    resourcePath = atom.config.resourcePath
-    if path.extname(resourcePath) is '.asar' and packageRoot.indexOf(resourcePath) is 0
-        packageRoot = path.join("#{resourcePath}.unpacked", 'node_modules', 'julia-client')
-    path.join packageRoot, s...
-
-  script: (s...) -> @packageDir 'script', s...
+  script: (s...) -> paths.packageDir 'script', s...
 
   monitorBoot: (proc) ->
     @bootFailListener ?= (code, signal) =>

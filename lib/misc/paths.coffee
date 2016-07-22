@@ -65,3 +65,7 @@ module.exports =
           resolve path.dirname dirs[0].path
         else
           resolve dirs[0].path
+
+  packageDir: (s...) ->
+    packageRoot = path.resolve __dirname, '..', '..'
+    path.join packageRoot, s...
