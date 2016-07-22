@@ -84,7 +84,7 @@ module.exports =
   bootErr: (err) ->
     @note?.dismiss()
     switch err
-      when 'juno-err-install'
+      when 'juno-msg-install'
         atom.notifications.addError "Error installing Atom.jl package",
           detail: """
           Go to the Packages → Julia → Open Terminal menu and
@@ -93,7 +93,7 @@ module.exports =
               julia-users@googlegroups.com
           """
           dismissable: true
-      when 'juno-err-load'
+      when 'juno-msg-load'
         atom.notifications.addError "Error loading Atom.jl package",
           detail: """
           Go to the Packages → Julia → Open Terminal menu and
@@ -102,7 +102,7 @@ module.exports =
               http://discuss.junolab.org/
           """
           dismissable: true
-      when 'juno-err-installing'
+      when 'juno-msg-installing'
         @note = atom.notifications.addInfo "Installing Julia packages...",
           detail: """
           Julia's first run will take a couple of minutes.
@@ -110,7 +110,7 @@ module.exports =
           """
           dismissable: true
         @openConsole()
-      when 'juno-err-precompiling'
+      when 'juno-msg-precompiling'
         @note = atom.notifications.addInfo "Compiling Julia packages...",
           detail: """
           Julia's first run will take a couple of minutes.
@@ -131,7 +131,7 @@ module.exports =
     proc.stdout.on 'data', (data) => client.stdout data.toString()
     proc.stderr.on 'data', (data) =>
       text = data.toString()
-      if text.startsWith 'juno-err'
+      if text.startsWith 'juno-msg'
         @bootErr text
         return
       client.stderr text
