@@ -58,3 +58,19 @@ module.exports =
   openConsole: ->
     atom.commands.dispatch atom.views.getView(atom.workspace),
       'julia-client:open-console'
+
+  jlNotFound: (path, details = '') ->
+    atom.notifications.addError "Julia could not be started.",
+      detail: """
+      We tried to launch Julia from:
+      #{path}
+
+      This path can be changed in the settings.
+      """ + if details isnt ''
+        """
+        Details:
+          #{details}
+        """
+      else
+        ""
+      dismissable: true

@@ -4,6 +4,7 @@ path =          require 'path'
 fs =            require 'fs'
 
 {paths} = require '../misc'
+messages = require './messages'
 client = require './client'
 tcp = require './tcp'
 
@@ -37,37 +38,6 @@ module.exports =
 
   script: (s...) -> @packageDir 'script', s...
 
-  workingDir: ->
-    dirs = atom.workspace.project.getDirectories()
-    ws = process.env.HOME || process.env.USERPROFILE
-    if dirs.length is 0 or dirs[0].path.match 'app.asar'
-      return Promise.resolve ws
-    new Promise (resolve) ->
-      # use the first open project folder (or its parent folder for files) if
-      # it is valid
-      fs.stat dirs[0].path, (err, stats) =>
-        if err? then return resolve ws
-        if stats.isFile()
-          resolve path.dirname dirs[0].path
-        else
-          resolve dirs[0].path
-
-  jlNotFound: (path, details = '') ->
-    atom.notifications.addError "Julia could not be started.",
-      detail: """
-      We tried to launch Julia from:
-      #{path}
-
-      This path can be changed in the settings.
-      """ + if details isnt ''
-        """
-        Details:
-          #{details}
-        """
-      else
-        ""
-      dismissable: true
-
   monitorBoot: (proc) ->
     @bootFailListener ?= (code, signal) =>
       client.stderr "Julia has stopped"
@@ -97,11 +67,11 @@ module.exports =
             conn.proc = proc
             @init conn
       .catch (err) =>
-        @jlNotFound paths.jlpath(), err
+        messages.jlNotFound paths.jlpath(), err
         client.cancelBoot()
 
   spawnJulia: (port, fn) ->
-    @workingDir().then (workingdir) =>
+    paths.workingDir().then (workingdir) =>
       if process.platform is 'win32' and atom.config.get("julia-client.enablePowershellWrapper")
         @useWrapper = parseInt(child_process.spawnSync("powershell",
                                                       ["-NoProfile", "$PSVersionTable.PSVersion.Major"])

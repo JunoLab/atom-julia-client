@@ -53,3 +53,18 @@ module.exports =
         return reject("Coudln't resolve version.") unless res?
         [_, major, minor, patch] = res
         resolve {major, minor, patch}
+
+  workingDir: ->
+    dirs = atom.workspace.project.getDirectories()
+    ws = process.env.HOME || process.env.USERPROFILE
+    if dirs.length is 0 or dirs[0].path.match 'app.asar'
+      return Promise.resolve ws
+    new Promise (resolve) ->
+      # use the first open project folder (or its parent folder for files) if
+      # it is valid
+      fs.stat dirs[0].path, (err, stats) =>
+        if err? then return resolve ws
+        if stats.isFile()
+          resolve path.dirname dirs[0].path
+        else
+          resolve dirs[0].path
