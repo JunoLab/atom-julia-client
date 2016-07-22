@@ -18,15 +18,6 @@ module.exports =
       if @useWrapper and @proc
         @proc.kill()
 
-    client.handle 'welcome', =>
-      @note?.dismiss()
-      atom.notifications.addSuccess "Welcome to Juno!",
-        detail: """
-        Success! Juno is set up and ready to roll.
-        Try entering `2+2` in the console below.
-        """
-        dismissable: true
-
   bundledExe: ->
     res = path.dirname atom.config.resourcePath
     p = path.join res, 'julia', 'bin', @executable()
@@ -77,49 +68,6 @@ module.exports =
         ""
       dismissable: true
 
-  openConsole: ->
-    atom.commands.dispatch atom.views.getView(atom.workspace),
-      'julia-client:open-console'
-
-  bootErr: (err) ->
-    @note?.dismiss()
-    switch err
-      when 'juno-msg-install'
-        atom.notifications.addError "Error installing Atom.jl package",
-          detail: """
-          Go to the Packages → Julia → Open Terminal menu and
-          run `Pkg.add("Atom")` in Julia, then try again.
-          If you still see an issue, please report it to:
-              julia-users@googlegroups.com
-          """
-          dismissable: true
-      when 'juno-msg-load'
-        atom.notifications.addError "Error loading Atom.jl package",
-          detail: """
-          Go to the Packages → Julia → Open Terminal menu and
-          run `Pkg.update()`in Julia, then try again.
-          If you still see an issue, please report it to:
-              http://discuss.junolab.org/
-          """
-          dismissable: true
-      when 'juno-msg-installing'
-        @note = atom.notifications.addInfo "Installing Julia packages...",
-          detail: """
-          Julia's first run will take a couple of minutes.
-          See the console below for progress.
-          """
-          dismissable: true
-        @openConsole()
-      when 'juno-msg-precompiling'
-        @note = atom.notifications.addInfo "Compiling Julia packages...",
-          detail: """
-          Julia's first run will take a couple of minutes.
-          See the console below for progress.
-          """
-          dismissable: true
-        @openConsole()
-      else client.stderr err
-
   monitorBoot: (proc) ->
     @bootFailListener ?= (code, signal) =>
       client.stderr "Julia has stopped"
@@ -128,13 +76,8 @@ module.exports =
     proc.on 'exit', @bootFailListener
 
   monitorStreams: (proc) ->
-    proc.stdout.on 'data', (data) => client.stdout data.toString()
-    proc.stderr.on 'data', (data) =>
-      text = data.toString()
-      if text.startsWith 'juno-msg'
-        @bootErr text
-        return
-      client.stderr text
+    proc.stdout.on 'data', (data) -> client.stdout data.toString()
+    proc.stderr.on 'data', (data) -> client.stderr data.toString()
 
   init: (conn) ->
     conn.interrupt = => @interrupt conn.proc

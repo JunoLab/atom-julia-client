@@ -84,6 +84,21 @@ module.exports =
           if rpc then @rpc f, args... else @msg f, args...
     mod
 
+  # Basic handlers (communication through stderr)
+
+  basicHandlers: {}
+
+  basicHandler: (s) ->
+    if (match = s.toString().match /juno-msg-(.*)/)
+      console.log match[1]
+      console.log @basicHandlers[match[1]]
+      @basicHandlers[match[1]]?()
+      true
+
+  handleBasic: (msg, f) ->
+    @basicHandlers[msg] = f
+    console.log @basicHandlers
+
   # Connecting & Booting
 
   emitter: new Emitter()
@@ -136,7 +151,7 @@ module.exports =
   onStdout: (f) -> @emitter.on 'stdout', f
   onStderr: (f) -> @emitter.on 'stderr', f
   stdout: (data) -> @emitter.emit 'stdout', data
-  stderr: (data) -> @emitter.emit 'stderr', data
+  stderr: (data) -> @emitter.emit 'stderr', data unless @basicHandler data
 
   clientCall: (name, f, args...) ->
     if not @conn[f]?

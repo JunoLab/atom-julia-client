@@ -1,12 +1,14 @@
 {time} = require './misc'
 
 module.exports =
+  messages: require './connection/messages'
   client:   require './connection/client'
   process:  require './connection/process'
   tcp:      require './connection/tcp'
   terminal: require './connection/terminal'
 
   activate: ->
+    @messages.activate()
     @client.activate()
     @client.boot = => @boot()
     @process.activate()
