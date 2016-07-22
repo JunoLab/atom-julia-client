@@ -90,14 +90,10 @@ module.exports =
 
   basicHandler: (s) ->
     if (match = s.toString().match /juno-msg-(.*)/)
-      console.log match[1]
-      console.log @basicHandlers[match[1]]
       @basicHandlers[match[1]]?()
       true
 
-  handleBasic: (msg, f) ->
-    @basicHandlers[msg] = f
-    console.log @basicHandlers
+  handleBasic: (msg, f) -> @basicHandlers[msg] = f
 
   # Connecting & Booting
 
