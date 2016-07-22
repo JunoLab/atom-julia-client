@@ -3,12 +3,12 @@
 config =
   launchOnStartup:
     type: 'boolean'
-    default: proc.isBundled()
+    default: false
     description: 'Launch a Julia client when Atom starts.'
     order: 1
   juliaPath:
     type: 'string'
-    default: if proc.isBundled() then '[bundle]' else 'julia'
+    default: 'julia'
     description: 'The location of the Julia binary.'
     order: 2
   juliaOptions:
@@ -39,12 +39,12 @@ config =
     order: 5
   enableMenu:
     type: 'boolean'
-    default: proc.isBundled()
+    default: false
     description: 'Show a Julia menu in the menu bar (requires restart).'
     order: 6
   enableToolBar:
     type: 'boolean'
-    default: proc.isBundled()
+    default: false
     description: 'Show Julia icons in the tool bar (requires restart).'
     order: 7
   maximumConsoleSize:

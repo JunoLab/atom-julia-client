@@ -19,15 +19,8 @@ module.exports =
       if @useWrapper and @proc
         @proc.kill()
 
-  bundledExe: ->
-    res = path.dirname atom.config.resourcePath
-    p = path.join res, 'julia', 'bin', @executable()
-    if fs.existsSync p then p
-
   executable: ->
     if process.platform is 'win32' then 'julia.exe' else 'julia'
-
-  isBundled: -> !!@bundledExe()
 
   packageDir: (s...) ->
     packageRoot = path.resolve __dirname, '..', '..'

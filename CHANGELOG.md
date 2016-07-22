@@ -9,7 +9,6 @@
 * New Packages->Julia menu
 * Option to launch Julia on startup
 * Windows firewall no longer complains on first run
-* Shiny new Juno bundles
 * Console UI improvements
 * Improvments to copyability everywhere
 * Graphics support
