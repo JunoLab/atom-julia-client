@@ -3,10 +3,15 @@ messages = require './messages'
 client = require './client'
 
 basic = require './process/basic'
+cycler = require './process/cycler'
 
 module.exports =
 
   activate: ->
+    paths.getVersion()
+      .then ->
+        cycler.start paths.jlpath(), client.clargs()
+      .catch ->
 
   buffer: (f) ->
     buffer = ['']
@@ -59,4 +64,4 @@ module.exports =
         throw e
 
   spawnJulia: (path, args) ->
-    basic.get path, args
+    cycler.get path, args
