@@ -5,7 +5,6 @@ client = require './client'
 module.exports =
 
   activate: ->
-    client.onConnected => @bootFailListener?.dispose()
 
   buffer: (f) ->
     buffer = ['']
@@ -17,13 +16,19 @@ module.exports =
       while buffer.length > 1
         f buffer.shift()
 
-  monitorBoot: (proc) ->
-    @bootFailListener = proc.onExit (code, signal) =>
-      client.stderr "Julia has stopped"
-      if not @useWrapper then client.stderr ": #{code}, #{signal}"
-      client.cancelBoot()
+  monitor: (proc) ->
+    proc.onExit (code, signal) ->
+      msg = "Julia has stopped"
+      if not proc.wrapper
+        msg += ": #{code}"
+        if signal then msg += ", #{signal}"
+      else
+        msg += "."
+      client.stderr msg
+    proc.stdout.on 'data', (data) -> client.stdout data.toString()
+    proc.stderr.on 'data', (data) -> client.stderr data.toString()
 
-  init: (proc, sock) ->
+  connect: (proc, sock) ->
     proc.message = (m) -> sock.write JSON.stringify m
     sock.on 'data', @buffer (m) -> client.input JSON.parse m
     sock.on 'end', -> client.disconnected()
@@ -39,10 +44,13 @@ module.exports =
       .then => @spawnJulia()
       .then (p) =>
         proc = p
-        @monitorBoot proc
+        @monitor proc
         Promise.all [proc, proc.socket]
       .then ([proc, sock]) =>
-        @init proc, sock
+        @connect proc, sock
+      .catch (e) ->
+        console.error e
+        client.cancelBoot()
 
   spawnJulia: ->
     paths.projectDir().then (dir) =>
