@@ -66,6 +66,7 @@ module.exports =
       #{path}
 
       This path can be changed in the settings.
+      
       """ + if details isnt ''
         """
         Details:

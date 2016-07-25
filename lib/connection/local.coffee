@@ -2,6 +2,8 @@
 messages = require './messages'
 client = require './client'
 
+basic = require './process/basic'
+
 module.exports =
 
   activate: ->
@@ -35,23 +37,26 @@ module.exports =
     client.connected proc
 
   start: ->
+    [path, args] = [paths.jlpath(), client.clargs()]
     client.booting()
     paths.projectDir().then (dir) -> client.msg 'cd', dir
-    paths.getVersion()
-      .catch (err) =>
-        messages.jlNotFound paths.jlpath(), err
-        client.cancelBoot()
-      .then => @spawnJulia()
-      .then (p) =>
-        proc = p
+    check = paths.getVersion()
+
+    check.catch (err) =>
+      messages.jlNotFound paths.jlpath(), err
+      client.cancelBoot()
+
+    check
+      .then =>
+        @spawnJulia path, args
+      .then (proc) =>
         @monitor proc
         Promise.all [proc, proc.socket]
       .then ([proc, sock]) =>
         @connect proc, sock
       .catch (e) ->
-        console.error e
         client.cancelBoot()
+        throw e
 
-  spawnJulia: ->
-    paths.projectDir().then (dir) =>
-      require('./process/basic').get paths.jlpath(), client.clargs()
+  spawnJulia: (path, args) ->
+    basic.get path, args
