@@ -2,6 +2,8 @@
 messages = require './messages'
 client = require './client'
 
+cd = client.import 'cd', false
+
 basic = require './process/basic'
 cycler = require './process/cycler'
 
@@ -47,7 +49,7 @@ module.exports =
   start: ->
     [path, args] = [paths.jlpath(), client.clargs()]
     client.booting()
-    paths.projectDir().then (dir) -> client.msg 'cd', dir
+    paths.projectDir().then (dir) -> cd dir
     check = paths.getVersion()
 
     check.catch (err) =>

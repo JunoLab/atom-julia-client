@@ -24,10 +24,8 @@ module.exports =
 
   ipc: new IPC
 
-  msg: (a...) -> @ipc.msg a...
-  rpc: (a...) -> @ipc.rpc a...
   handle: (a...) -> @ipc.handle a...
-  input: (a...) -> @ipc.input a...
+  input: (a...)  -> @ipc.input a...
   import: (a...) -> @ipc.import a...
 
   activate: ->
@@ -117,7 +115,7 @@ module.exports =
 
   kill: ->
     if @isConnected() and not @isWorking()
-      @rpc('exit').catch ->
+      @import('exit')().catch ->
     else
       @clientCall 'kill', 'kill'
 

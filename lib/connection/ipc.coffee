@@ -17,15 +17,19 @@ class IPC
     @queue = []
     @id = 0
 
-    @handle 'cb', (id, result) =>
-      @callbacks[id]?.resolve result
-      delete @callbacks[id]
+    @handle
+      cb: (id, result) =>
+        @callbacks[id]?.resolve result
+        delete @callbacks[id]
 
-    @handle 'cancelCallback', (id, e) =>
-      @callbacks[id].reject e
+      cancelCallback: (id, e) =>
+        @callbacks[id].reject e
 
   handle: (type, f) ->
-    @handlers[type] = f
+    if f?
+      @handlers[type] = f
+    else
+      @handle t, f for t, f of type
 
   writeMsg: -> throw new Error 'msg not implemented'
 
@@ -65,7 +69,7 @@ class IPC
 
   import: (fs, rpc = true, mod = {}) ->
     return unless fs?
-    if fs.constructor == String then return @import [fs], rpc, mod
+    if fs.constructor == String then return @import([fs], rpc, mod)[fs]
     if fs.rpc? or fs.msg?
       mod = {}
       @import fs.rpc, true,  mod

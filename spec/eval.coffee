@@ -27,7 +27,7 @@ describe 'in an editor', ->
       editor.setGrammar(atom.grammars.grammarForScopeName('source.julia'))
 
   it 'can evaluate code', ->
-    client.handle 'test', (spy = jasmine.createSpy())
+    client.handle test: (spy = jasmine.createSpy())
     editor.insertText 'Atom.@rpc test()'
     command editor, 'julia-client:run-block'
     waitsForClient()

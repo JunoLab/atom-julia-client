@@ -21,4 +21,4 @@ module.exports =
   boot: ->
     if not @client.isActive()
       @local.start()
-      time "Julia Boot", @client.rpc 'ping'
+      time "Julia Boot", @client.import('ping')()

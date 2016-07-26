@@ -71,14 +71,14 @@ describe "managing the client", ->
             expect(result).toBe(Math.pow(x, 2))
 
     it "can rpc into the frontend", ->
-      client.handle 'test', (x) -> Math.pow(x, 2)
+      client.handle test: (x) -> Math.pow(x, 2)
       [1..10].forEach (x) ->
         waitsForPromise ->
           evalsimple("@rpc test(#{x})").then (result) ->
             expect(result).toBe(Math.pow(x, 2))
 
     it "can retrieve promise values from the frontend", ->
-      client.handle 'test', (x) ->
+      client.handle test: (x) ->
         Promise.resolve x
       waitsForPromise ->
         evalsimple("@rpc test(2)").then (x) ->

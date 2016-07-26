@@ -54,12 +54,12 @@ module.exports =
   gotoSymbol: ->
     @withCurrentContext ({editor, mod}) =>
       words.withWord editor, (word, range) =>
-        client.rpc("methods", {word: word, mod: mod}).then (result) => # 149
+        client.import("methods")({word: word, mod: mod}).then (result) => # 149
 
   toggleDocs: ->
     @withCurrentContext ({editor, mod}) =>
       words.withWord editor, (word, range) =>
-        client.rpc("docs", {word: word, mod: mod}).then (result) =>
+        client.import("docs")({word: word, mod: mod}).then (result) =>
           if result.error then return
           d = new @ink.InlineDoc editor, range,
             content: views.render result

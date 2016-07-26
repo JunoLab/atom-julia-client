@@ -43,7 +43,7 @@ module.exports =
         requireClient 'reset the workspace', ->
           editor = atom.workspace.getActiveTextEditor()
           atom.commands.dispatch atom.views.getView(editor), 'inline-results:clear-all'
-          juno.connection.client.rpc('clear-workspace')
+          juno.connection.client.import('clear-workspace')()
       'julia:select-block': =>
         juno.misc.blocks.select()
       'julia-client:send-to-stdin': (e) =>
