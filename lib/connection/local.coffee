@@ -32,8 +32,11 @@ module.exports =
       else
         msg += "."
       client.stderr msg
-    proc.stdout.on 'data', (data) -> client.stdout data.toString()
-    proc.stderr.on 'data', (data) -> client.stderr data.toString()
+    out = (data) -> client.stdout data.toString()
+    err = (data) -> client.stderr data.toString()
+    proc.flush? out, err
+    proc.onStdout out
+    proc.onStderr err
 
   connect: (proc, sock) ->
     proc.message = (m) -> sock.write JSON.stringify m

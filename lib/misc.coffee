@@ -10,3 +10,7 @@ module.exports =
     p.then (result) ->
       console.log "#{desc}: #{(s()-t).toFixed(2)}s"
       result
+
+  hook: (obj, method, f) ->
+    souper = obj[method].bind obj
+    obj[method] = (a...) -> f souper, a...

@@ -1,4 +1,5 @@
 {isEqual} = require 'underscore-plus'
+{hook} = require '../../misc'
 basic = require './basic'
 
 module.exports =
@@ -35,6 +36,7 @@ module.exports =
     else if @cache(path, args).length < @cacheLength
       @booting = basic.get(path, args).then (proc) =>
         obj = {path, args, proc: proc}
+        @monitor obj
         @toCache path, args, obj
         proc.socket
           .then =>
@@ -46,6 +48,15 @@ module.exports =
             Promise.reject e
         obj
     return
+
+  monitor: (obj) ->
+    obj.events = []
+    obj.proc.onStdout (data) -> obj.events?.push {type: 'stdout', data}
+    obj.proc.onStderr (data) -> obj.events?.push {type: 'stderr', data}
+    obj.proc.flush = (out, err) ->
+      for {type, data} in obj.events
+        (if type == 'stdout' then out else err) data
+      delete obj.events
 
   get: (path, args) ->
     @start path, args

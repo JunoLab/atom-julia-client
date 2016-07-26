@@ -15,12 +15,13 @@ module.exports =
         resolve port
 
   createProc: (proc, obj = {}) ->
+    obj.proc ?= proc
     obj.onExit = (f) ->
       proc.on 'exit', f
       {dispose: -> proc.removeListener('exit', f)}
-    obj.stdin ?= proc.stdin
-    obj.stdout ?= proc.stdout
-    obj.stderr ?= proc.stderr
+    obj.stdin ?= (data) -> proc.stdin.write data
+    obj.onStdout ?= (f) -> proc.stdout.on 'data', f
+    obj.onStderr ?= (f) -> proc.stderr.on 'data', f
     obj
 
   socket: (proc, port) ->
