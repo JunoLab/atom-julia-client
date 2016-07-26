@@ -25,7 +25,8 @@ module.exports =
   ipc: new IPC
 
   handle: (a...) -> @ipc.handle a...
-  input: (a...)  -> @ipc.input a...
+  input: (m)  -> @ipc.input m
+  readStream: (s) -> @ipc.readStream s
   import: (a...) -> @ipc.import a...
 
   activate: ->

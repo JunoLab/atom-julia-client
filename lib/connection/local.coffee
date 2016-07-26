@@ -15,16 +15,6 @@ module.exports =
         cycler.start paths.jlpath(), client.clargs()
       .catch ->
 
-  buffer: (f) ->
-    buffer = ['']
-    (data) ->
-      str = data.toString()
-      lines = str.split '\n'
-      buffer[0] += lines.shift()
-      buffer.push lines...
-      while buffer.length > 1
-        f buffer.shift()
-
   monitor: (proc) ->
     proc.onExit (code, signal) ->
       msg = "Julia has stopped"
@@ -42,7 +32,7 @@ module.exports =
 
   connect: (proc, sock) ->
     proc.message = (m) -> sock.write JSON.stringify m
-    sock.on 'data', @buffer (m) -> client.input JSON.parse m
+    client.readStream sock
     sock.on 'end', -> client.disconnected()
     client.connected proc
 

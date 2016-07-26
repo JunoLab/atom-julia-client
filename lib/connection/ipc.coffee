@@ -9,13 +9,15 @@ class IPC
     Loading = ink.Loading
     f() for f in lwaits
 
-  constructor: ->
+  constructor: (stream) ->
     withLoading =>
       @loading = new Loading
     @handlers = {}
     @callbacks = {}
     @queue = []
     @id = 0
+
+    if stream? then @setStream stream
 
     @handle
       cb: (id, result) =>
@@ -84,3 +86,25 @@ class IPC
   onWorking: (f) -> @loading.onWorking f
   onDone: (f) -> @loading.onDone f
   onceDone: (f) -> @loading.onceDone f
+
+  buffer: (f) ->
+    buffer = ['']
+    (data) ->
+      str = data.toString()
+      lines = str.split '\n'
+      buffer[0] += lines.shift()
+      buffer.push lines...
+      while buffer.length > 1
+        f buffer.shift()
+
+  readStream: (s) ->
+    s.on 'data', @buffer (m) => @input JSON.parse m
+
+  writeStream: (s) ->
+    @writeMsg = (m) ->
+      s.write JSON.stringify m
+      s.write '\n'
+
+  setStream: (s) ->
+    @readStream s
+    @writeStream s
