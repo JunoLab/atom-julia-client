@@ -1,6 +1,8 @@
 {throttle} = require 'underscore-plus'
 {Emitter} = require 'atom'
 
+IPC = require './ipc'
+
 metrics = ->
   if id = localStorage.getItem 'metrics.userId'
     r = require('http').get "http://data.junolab.org/hit?id=#{id}&app=atom-julia-boot"
@@ -20,69 +22,26 @@ module.exports =
 
   # Messaging
 
-  handlers: {}
-  callbacks: {}
-  queue: []
-  id: 0
+  ipc: new IPC
 
-  input: ([type, args...]) ->
-    metrics()
-    if type.constructor == Object
-      {type, callback} = type
-    if @handlers.hasOwnProperty type
-      result = @handlers[type] args...
-      if callback
-        Promise.resolve(result).then (result) =>
-          @msg 'cb', callback, result
-    else
-      console.log "julia-client: unrecognised message #{type}"
-      console.log args
+  msg: (a...) -> @ipc.msg a...
+  rpc: (a...) -> @ipc.rpc a...
+  handle: (a...) -> @ipc.handle a...
+  input: (a...) -> @ipc.input a...
+  import: (a...) -> @ipc.import a...
 
   activate: ->
-    @handle 'cb', (id, result) =>
-      try
-        @callbacks[id]?.resolve result
-      finally
-        delete @callbacks[id]
-        @loading.done()
 
-    @handle 'cancelCallback', (id, e) =>
-      @callbacks[id].reject e
-      @loading.done()
+    @ipc.writeMsg = (msg) =>
+      if @isConnected()
+        @conn.message msg
+      else
+        @ipc.queue.push msg
 
     @handle 'error', (options) =>
       if atom.config.get 'julia-client.errorNotifications'
         atom.notifications.addError options.msg, options
       console.error options.detail
-
-  msg: (type, args...) ->
-    if @isConnected()
-      @conn.message [type, args...]
-    else
-      @queue.push [type, args...]
-
-  rpc: (type, args...) ->
-    new Promise (resolve, reject) =>
-      @id += 1
-      @callbacks[@id] = {resolve, reject}
-      @msg {type: type, callback: @id}, args...
-      @loading.working()
-
-  handle: (type, f) ->
-    @handlers[type] = f
-
-  import: (fs, rpc = true, mod = {}) ->
-    return unless fs?
-    if fs.constructor == String then return @import [fs], rpc, mod
-    if fs.rpc? or fs.msg?
-      mod = {}
-      @import fs.rpc, true,  mod
-      @import fs.msg, false, mod
-    else
-      fs.forEach (f) =>
-        mod[f] = (args...) =>
-          if rpc then @rpc f, args... else @msg f, args...
-    mod
 
   # Basic handlers (communication through stderr)
 
@@ -97,10 +56,10 @@ module.exports =
 
   # Connecting & Booting
 
-  emitter: new Emitter()
+  emitter: new Emitter
 
-  onConnected: (cb) -> @emitter.on('connected', cb)
-  onDisconnected: (cb) -> @emitter.on('disconnected', cb)
+  onConnected: (cb) -> @emitter.on 'connected', cb
+  onDisconnected: (cb) -> @emitter.on 'disconnected', cb
 
   isBooting: -> false
 
@@ -109,12 +68,11 @@ module.exports =
   isActive: -> @isConnected() || @isBooting()
 
   connected: (@conn) ->
+    metrics()
     @emitter.emit 'connected'
     if @isBooting()
       @isBooting = -> false
-      @loading.done()
-    @conn.message msg for msg in @queue
-    @queue = []
+    @ipc.flush()
 
   disconnected: ->
     delete @conn
@@ -123,7 +81,6 @@ module.exports =
 
   booting: ->
     @isBooting = -> true
-    @loading.working()
 
   cancelBoot: ->
     if @isBooting()
@@ -132,15 +89,12 @@ module.exports =
 
   reset: ->
     @cancelBoot()
-    @loading.reset()
-    @queue = []
-    cb.reject 'client disconnected' for id, cb of @callbacks
-    @callbacks = {}
+    @ipc.reset()
 
-  isWorking: -> @loading.isWorking()
-  onWorking: (f) -> @loading.onWorking f
-  onDone: (f) -> @loading.onDone f
-  onceDone: (f) -> @loading.onceDone f
+  isWorking: -> @ipc.isWorking()
+  onWorking: (f) -> @ipc.onWorking f
+  onDone: (f) -> @ipc.onDone f
+  onceDone: (f) -> @ipc.onceDone f
 
   # Management & UI
 

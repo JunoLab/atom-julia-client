@@ -1,9 +1,10 @@
 {time} = require './misc'
 
 module.exports =
+  IPC:      require './connection/ipc'
   messages: require './connection/messages'
   client:   require './connection/client'
-  local:  require './connection/local'
+  local:    require './connection/local'
   terminal: require './connection/terminal'
 
   activate: ->
@@ -15,7 +16,7 @@ module.exports =
   deactivate: ->
 
   consumeInk: (ink) ->
-    @client.loading = new ink.Loading
+    @IPC.consumeInk ink
 
   boot: ->
     if not @client.isActive()
