@@ -1,14 +1,8 @@
 param(
   [Int32] $wrapPort,
   [string] $jlpath,
-  [string] $cwd,
   [string[]] $jlargs
 )
-
-# change to working dir:
-if (Test-Path $cwd) {
-  cd $cwd
-}
 
 # start Julia
 $proc = Start-Process "`"$jlpath`"" $jlargs -NoNewWindow -PassThru
