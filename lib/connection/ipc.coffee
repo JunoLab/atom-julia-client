@@ -52,7 +52,7 @@ class IPC
     @queue = []
 
   reset: ->
-    @loading.reset()
+    @loading?.reset()
     @queue = []
     cb.reject 'disconnected' for id, cb of @callbacks
     @callbacks = {}
@@ -61,13 +61,13 @@ class IPC
     if type.constructor == Object
       {type, callback} = type
     if @handlers.hasOwnProperty type
-      result = @handlers[type] args...
+      result = Promise.resolve().then => @handlers[type] args...
       if callback
-        Promise.resolve(result).then (result) =>
-          @msg 'cb', callback, result
+        result
+          .then (result) => @msg 'cb', callback, result
+          .catch (err) => @msg 'cancelCallback', callback, @errJson err
     else
-      console.log "julia-client: unrecognised message #{type}"
-      console.log args
+      console.log "julia-client: unrecognised message #{type}", args
 
   import: (fs, rpc = true, mod = {}) ->
     return unless fs?
@@ -87,6 +87,10 @@ class IPC
   onDone: (f) -> @loading.onDone f
   onceDone: (f) -> @loading.onceDone f
 
+  errJson: (obj) ->
+    return unless obj instanceof Error
+    {type: 'error', message: obj.message, stack: obj.stack}
+
   buffer: (f) ->
     buffer = ['']
     (data) ->
@@ -98,13 +102,15 @@ class IPC
         f buffer.shift()
 
   readStream: (s) ->
-    s.on 'data', @buffer (m) => @input JSON.parse m
+    s.on 'data', cb = @buffer (m) => @input JSON.parse m
+    @unreadStream = -> s.removeListener 'data', cb
 
   writeStream: (s) ->
     @writeMsg = (m) ->
       s.write JSON.stringify m
       s.write '\n'
 
-  setStream: (s) ->
-    @readStream s
-    @writeStream s
+  setStream: (@stream) ->
+    @readStream @stream
+    @writeStream @stream
+    @stream.on 'end', => @reset()

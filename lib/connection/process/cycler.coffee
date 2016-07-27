@@ -42,7 +42,7 @@ module.exports =
     else if @cache(path, args).length < @cacheLength
       @booting = basic.get(path, args).then (proc) =>
         obj = {path, args, proc: proc}
-        @monitor obj
+        @monitor proc
         @warmup obj
         @toCache path, args, obj
         proc.socket
@@ -55,14 +55,17 @@ module.exports =
         obj
     return
 
-  monitor: (obj) ->
-    obj.events = []
-    obj.proc.onStdout (data) -> obj.events?.push {type: 'stdout', data}
-    obj.proc.onStderr (data) -> obj.events?.push {type: 'stderr', data}
-    obj.proc.flush = (out, err) ->
-      for {type, data} in obj.events
-        (if type == 'stdout' then out else err) data
-      delete obj.events
+  flush: (events, out, err) ->
+    for {type, data} in events
+      (if type == 'stdout' then out else err) data
+
+  monitor: (proc) ->
+    proc.events = []
+    proc.onStdout (data) -> proc.events?.push {type: 'stdout', data}
+    proc.onStderr (data) -> proc.events?.push {type: 'stderr', data}
+    proc.flush = (out, err) =>
+      @flush proc.events, out, err
+      delete proc.events
 
   boot: (ipc) -> ipc.rpc 'ping'
   console: (ipc) -> ipc.rpc 'evalrepl', {code: 'Void()'}
@@ -88,3 +91,8 @@ module.exports =
     @start path, args
     if (proc = @fromCache path, args) then proc
     else basic.get path, args
+
+  reset: ->
+    for key, ps of @procs
+      for p in ps
+        p.proc.kill()

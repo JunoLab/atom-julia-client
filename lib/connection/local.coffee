@@ -4,15 +4,16 @@ client = require './client'
 
 cd = client.import 'cd', false
 
-basic = require './process/basic'
+basic  = require './process/basic'
 cycler = require './process/cycler'
+server = require './process/server'
 
 module.exports =
 
   activate: ->
     paths.getVersion()
       .then ->
-        cycler.start paths.jlpath(), client.clargs()
+        server.start paths.jlpath(), client.clargs()
       .catch ->
 
   monitor: (proc) ->
@@ -59,4 +60,4 @@ module.exports =
         throw e
 
   spawnJulia: (path, args) ->
-    cycler.get path, args
+    server.get path, args
