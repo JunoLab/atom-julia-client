@@ -9,6 +9,7 @@ cycler = require './process/cycler'
 server = require './process/server'
 
 module.exports =
+  server: server
 
   activate: ->
     paths.getVersion()

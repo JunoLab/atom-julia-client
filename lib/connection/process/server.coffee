@@ -92,6 +92,11 @@ module.exports =
     @activate()
       .then => @server.start path, args
 
+  reset: ->
+    @connect()
+      .catch -> atom.notifications.addInfo 'No server running.'
+      .then (server) -> server.exit()
+
   # Server
 
   initIPC: (sock) ->
