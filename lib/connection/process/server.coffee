@@ -68,10 +68,8 @@ module.exports =
 
   getSocket: (id) ->
     @server.onBoot(id).then =>
-      @getStream id, 'socket'
-        .then (sock) ->
-          window.sock = sock
-          sock
+      @getStream(id, 'socket').then (sock) =>
+        @server.onAttach(id).then -> sock
 
   get: (path, args) ->
     @activate()
@@ -132,6 +130,7 @@ module.exports =
 
     onBoot: (id) => @ps[id].socket.then -> true
     onExit: (id) => new Promise (resolve) => @ps[id].onExit resolve
+    onAttach: (id) => @ps[id].attached.then ->
 
     events: (id) =>
       proc = @ps[id]
@@ -166,7 +165,7 @@ module.exports =
         sock = ipc.stream
         ipc.unreadStream()
         source = if stream == 'socket' then proc.socket else proc.proc[stream]
-        Promise.resolve(source).then (source) =>
+        proc.attached = Promise.resolve(source).then (source) =>
           @crossStreams source, sock
           if stream == 'socket' then @mutualClose source, sock
           else sock.on 'end', -> proc.kill()
