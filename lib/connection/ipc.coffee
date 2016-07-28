@@ -42,8 +42,8 @@ class IPC
       @id += 1
       @callbacks[@id] = {resolve, reject}
       @msg {type, callback: @id}, args...
-    @loading.working()
-    done = => @loading.done()
+    @loading?.working()
+    done = => @loading?.done()
     x.then done, done
     x
 
