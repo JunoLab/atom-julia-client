@@ -7,9 +7,9 @@ module.exports =
   time: (desc, p) ->
     s = -> new Date().getTime()/1000
     t = s()
-    p.then (result) ->
-      console.log "#{desc}: #{(s()-t).toFixed(2)}s"
-      result
+    p.then -> console.log "#{desc}: #{(s()-t).toFixed(2)}s"
+      .catch ->
+    p
 
   hook: (obj, method, f) ->
     souper = obj[method].bind obj
