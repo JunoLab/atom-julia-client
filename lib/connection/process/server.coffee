@@ -29,7 +29,7 @@ module.exports =
   boot: ->
     @removeSocket('juno-server').then =>
       new Promise (resolve, reject) =>
-        console.log 'booting julia server'
+        console.info 'booting julia server'
         proc = child_process.fork path.join(__dirname, 'boot.js')
         proc.on 'message', (x) ->
           if x == 'ready' then resolve()
@@ -94,8 +94,8 @@ module.exports =
 
   reset: ->
     @connect()
+      .then (server) -> server.exit().catch ->
       .catch -> atom.notifications.addInfo 'No server running.'
-      .then (server) -> server.exit()
 
   # Server
 

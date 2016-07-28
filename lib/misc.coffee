@@ -14,3 +14,11 @@ module.exports =
   hook: (obj, method, f) ->
     souper = obj[method].bind obj
     obj[method] = (a...) -> f souper, a...
+
+  mutex: ->
+    wait = Promise.resolve()
+    lock = (f) ->
+      current = wait
+      release = null
+      wait = new Promise((resolve) -> release = resolve).catch ->
+      current.then -> f release

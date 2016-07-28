@@ -1,5 +1,4 @@
 {isEqual} = require 'underscore-plus'
-{hook} = require '../../misc'
 basic = require './basic'
 
 IPC = require '../ipc'
@@ -28,31 +27,23 @@ module.exports =
     return unless p?
     p.cached = false
     p.init.then =>
-      if p == @booting then delete @booting
       @start path, args
       p.proc
 
   start: (path, args) ->
-    if @booting
-      @booting.then (obj) =>
-        return if isEqual([obj.path, obj.args], [path, args])
-        obj.proc.kill()
-        obj.proc.socket.catch (e) =>
-          @start path, args
-    else if @cache(path, args).length < @cacheLength
-      @booting = basic.get(path, args).then (proc) =>
-        obj = {path, args, proc: proc}
-        @monitor proc
-        @warmup obj
-        @toCache path, args, obj
-        proc.socket
-          .then =>
-            delete @booting
-            @start path, args
-          .catch (e) =>
-            delete @booting
-            @removeFromCache path, args, obj
-        obj
+    basic.lock (release) =>
+      if @cache(path, args).length < @cacheLength
+        basic.get_(path, args).then (proc) =>
+          obj = {path, args, proc: proc}
+          @monitor proc
+          @warmup obj
+          @toCache path, args, obj
+          proc.socket
+            .then => @start path, args
+            .catch (e) => @removeFromCache path, args, obj
+          release proc.socket
+      else
+        release()
     return
 
   flush: (events, out, err) ->
@@ -88,9 +79,10 @@ module.exports =
       .catch ->
 
   get: (path, args) ->
+    if (proc = @fromCache path, args) then p = proc
+    else p = basic.get path, args
     @start path, args
-    if (proc = @fromCache path, args) then proc
-    else basic.get path, args
+    p
 
   reset: ->
     for key, ps of @procs

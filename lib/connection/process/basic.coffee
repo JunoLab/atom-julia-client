@@ -1,10 +1,12 @@
 net = require 'net'
 child_process = require 'child_process'
 
-{paths} = require '../../misc'
+{paths, mutex} = require '../../misc'
 client = require '../client'
 
 module.exports =
+
+  lock: mutex()
 
   freePort: ->
     new Promise (resolve) ->
@@ -85,8 +87,14 @@ module.exports =
             interrupt: => @sendSignalToWrapper 'SIGINT', wrapPort
             socket: @socket proc, port
 
-  get: (a...) ->
+  get_: (a...) ->
     if process.platform is 'win32'
       @getWindows a...
     else
       @getUnix a...
+
+  get: (a...) ->
+    @lock (release) =>
+      p = @get_ a...
+      release p.then ({socket}) -> socket
+      p
