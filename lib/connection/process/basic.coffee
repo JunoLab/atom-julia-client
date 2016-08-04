@@ -26,7 +26,7 @@ module.exports =
   socket: (proc, port) ->
     new Promise (resolve, reject) ->
       proc.stderr.on 'data', f = (data) ->
-        if data.toString() == 'juno-msg-ready'
+        if data.toString().indexOf('juno-msg-ready') != -1
           proc.stderr.removeListener 'data', f
           resolve net.connect port
       proc.on 'exit', (code, status) ->
