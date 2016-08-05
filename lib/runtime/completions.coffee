@@ -10,9 +10,12 @@ evaluation = require './evaluation'
 {completions, cacheCompletions} = client.import ['completions', 'cacheCompletions']
 
 module.exports =
-  selector: '.source.julia'
+  scopeSelector: '.source.julia'
+  textEditorSelectors: 'atom-text-editor'
   filterSuggestions: true
   excludeLowerPriority: false
+
+  getTextEditorSelector: -> 'atom-text-editor'
 
   rawCompletions: ({editor, bufferPosition: {row, column}, activatedManually}) ->
     completions

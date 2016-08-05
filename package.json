@@ -12,7 +12,8 @@
   "dependencies": {
     "atom-space-pen-views": "^2.0.0",
     "underscore-plus": "*",
-    "atom-package-deps": "*"
+    "atom-package-deps": "*",
+    "autocomplete-plus": "^2.30.0"
   },
   "consumedServices": {
     "status-bar": {
@@ -34,7 +35,7 @@
   "providedServices": {
     "autocomplete.provider": {
       "versions": {
-        "2.0.0": "completions"
+        "3.0.0": "completions"
       }
     },
     "julia-client": {
