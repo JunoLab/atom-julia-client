@@ -52,11 +52,14 @@ module.exports =
     wrapper.end()
 
   checkPowershellVersion: ->
-    new Promise (resolve) ->
-      p = child_process.spawn("powershell", ["-NoProfile", "$PSVersionTable.PSVersion.Major"])
-      p.stdout.on 'data', (data) -> resolve parseInt(data.toString()) >= 3
-      p.on 'error', -> resolve false
-      p.on 'exit', -> resolve false
+    return Promise.resolve(@powershellCheck) if @powershellCheck?
+    p = new Promise (resolve) =>
+      proc = child_process.spawn("powershell", ["-NoProfile", "$PSVersionTable.PSVersion.Major"])
+      proc.stdout.on 'data', (data) -> resolve parseInt(data.toString()) >= 3
+      proc.on 'error', -> resolve false
+      proc.on 'exit', -> resolve false
+    p.then (@powershellCheck) =>
+    p
 
   getWindows: (path, args) ->
     return @getUnix(path, args) unless @wrapperEnabled()
