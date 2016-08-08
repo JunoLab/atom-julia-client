@@ -30,7 +30,7 @@ module.exports =
     @removeSocket('juno-server').then =>
       new Promise (resolve, reject) =>
         console.info 'booting julia server'
-        proc = child_process.fork path.join(__dirname, 'boot.js')
+        proc = child_process.fork path.join(__dirname, 'boot.js'), detached: true
         proc.on 'message', (x) ->
           if x == 'ready' then resolve()
           else console.log 'julia server:', x
@@ -55,6 +55,7 @@ module.exports =
         else Promise.reject err
       .then (@server) =>
         @server.ipc.stream.on 'end', => delete @server
+        @server.setPS basic.wrapperEnabled()
         @server
 
   getStream: (id, s) ->
@@ -106,6 +107,7 @@ module.exports =
 
   serve: ->
     cycler.cacheLength = 3
+    basic.wrapperEnabled = -> true
     @server = net.createServer (sock) =>
       @initIPC sock
     @server.listen @socketPath('juno-server'), ->
@@ -118,6 +120,8 @@ module.exports =
   ps: {}
 
   serverAPI: ->
+
+    setPS: (enabled) -> basic.wrapperEnabled = -> enabled
 
     get: (path, args) =>
       cycler.get(path, args)
