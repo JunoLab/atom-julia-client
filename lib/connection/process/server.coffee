@@ -81,6 +81,8 @@ module.exports =
         onStdout: (f) -> stdout.on 'data', f
         onStderr: (f) -> stderr.on 'data', f
         flush: (out, err) -> cycler.flush events, out, err
+        interrupt: => @server.interrupt id
+        kill:      => @server.kill id
         socket: @getSocket id
         onExit: (f) =>
           Promise.race [@server.onExit(id),
@@ -135,6 +137,8 @@ module.exports =
     onBoot: (id) => @ps[id].socket.then -> true
     onExit: (id) => new Promise (resolve) => @ps[id].onExit resolve
     onAttach: (id) => @ps[id].attached.then ->
+    interrupt: (id) => @ps[id].interrupt()
+    kill: (id) => @ps[id].kill()
 
     events: (id) =>
       proc = @ps[id]
@@ -161,6 +165,7 @@ module.exports =
   mutualClose: (a, b) ->
     [[a, b], [b, a]].forEach ([from, to]) ->
       from.on 'end', -> to.end()
+      from.on 'error', -> to.end()
 
   streamHandlers: (ipc) ->
     ['socket', 'stdout', 'stderr', 'stdin'].forEach (stream) =>
