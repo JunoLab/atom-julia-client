@@ -3,10 +3,6 @@ shell =                 require 'shell'
 
 module.exports =
   activate: (juno) ->
-
-    if atom.config.get("julia-client.launchOnStartup")
-      @withInk -> juno.connection.boot()
-
     requireClient    = (a, f) -> juno.connection.client.require a, f
     disrequireClient = (a, f) -> juno.connection.client.disrequire a, f
     boot = -> juno.connection.boot()
