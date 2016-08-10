@@ -17,8 +17,13 @@ module.exports =
 
   mutex: ->
     wait = Promise.resolve()
-    lock = (f) ->
+    (f) ->
       current = wait
       release = null
       wait = new Promise((resolve) -> release = resolve).catch ->
-      current.then -> f release
+      current.then => f.call @, release
+
+  exclusive: (f) ->
+    lock = module.exports.mutex()
+    (args...) ->
+      lock (release) => release f.call @, args...

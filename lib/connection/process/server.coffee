@@ -4,6 +4,8 @@ path = require 'path'
 fs = require 'fs'
 child_process = require 'child_process'
 
+{exclusive} = require '../../misc'
+
 IPC = require '../ipc'
 basic = require './basic'
 cycler = require './cycler'
@@ -46,8 +48,8 @@ module.exports =
       client.on 'error', (err) ->
         reject err
 
-  activate: ->
-    return Promise.resolve(@server) if @server?
+  activate: exclusive ->
+    return @server if @server?
     @connect()
       .catch (err) =>
         if err.code in ['ECONNREFUSED', 'ENOENT']
