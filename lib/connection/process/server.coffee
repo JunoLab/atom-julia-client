@@ -32,7 +32,9 @@ module.exports =
     @removeSocket('juno-server').then =>
       new Promise (resolve, reject) =>
         console.info 'booting julia server'
-        proc = child_process.fork path.join(__dirname, 'boot.js'), detached: true
+        proc = child_process.fork path.join(__dirname, 'boot.js'),
+          detached: true
+          env: process.env
         proc.on 'message', (x) ->
           if x == 'ready' then resolve()
           else console.log 'julia server:', x
