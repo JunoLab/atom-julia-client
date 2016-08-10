@@ -1,4 +1,4 @@
-{local: proc, terminal} = require '../connection'
+{terminal} = require '../connection'
 
 config =
   juliaPath:
