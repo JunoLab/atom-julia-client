@@ -3,8 +3,9 @@
 
 module.exports =
   activate: ->
-    client.handle 'plot', (x) => @show x
-    client.handle 'plotsize', => @plotSize()
+    client.handle
+      plot: (x) => @show x
+      plotsize: => @plotSize()
     @create()
 
   create: ->

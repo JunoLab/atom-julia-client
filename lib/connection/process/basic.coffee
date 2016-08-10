@@ -1,10 +1,12 @@
 net = require 'net'
 child_process = require 'child_process'
 
-{paths} = require '../../misc'
+{paths, mutex} = require '../../misc'
 client = require '../client'
 
 module.exports =
+
+  lock: mutex()
 
   freePort: ->
     new Promise (resolve) ->
@@ -15,12 +17,13 @@ module.exports =
         resolve port
 
   createProc: (proc, obj = {}) ->
+    obj.proc ?= proc
     obj.onExit = (f) ->
       proc.on 'exit', f
       {dispose: -> proc.removeListener('exit', f)}
-    obj.stdin ?= proc.stdin
-    obj.stdout ?= proc.stdout
-    obj.stderr ?= proc.stderr
+    obj.stdin ?= (data) -> proc.stdin.write data
+    obj.onStdout ?= (f) -> proc.stdout.on 'data', f
+    obj.onStderr ?= (f) -> proc.stderr.on 'data', f
     obj
 
   socket: (proc, port) ->
@@ -84,8 +87,14 @@ module.exports =
             interrupt: => @sendSignalToWrapper 'SIGINT', wrapPort
             socket: @socket proc, port
 
-  get: (a...) ->
+  get_: (a...) ->
     if process.platform is 'win32'
       @getWindows a...
     else
       @getUnix a...
+
+  get: (a...) ->
+    @lock (release) =>
+      p = @get_ a...
+      release p.then ({socket}) -> socket
+      p

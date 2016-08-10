@@ -7,6 +7,18 @@ module.exports =
   time: (desc, p) ->
     s = -> new Date().getTime()/1000
     t = s()
-    p.then (result) ->
-      console.log "#{desc}: #{(s()-t).toFixed(2)}s"
-      result
+    p.then -> console.log "#{desc}: #{(s()-t).toFixed(2)}s"
+      .catch ->
+    p
+
+  hook: (obj, method, f) ->
+    souper = obj[method].bind obj
+    obj[method] = (a...) -> f souper, a...
+
+  mutex: ->
+    wait = Promise.resolve()
+    lock = (f) ->
+      current = wait
+      release = null
+      wait = new Promise((resolve) -> release = resolve).catch ->
+      current.then -> f release

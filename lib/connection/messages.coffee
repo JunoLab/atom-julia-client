@@ -45,7 +45,7 @@ module.exports =
         dismissable: true
       @openConsole()
 
-    client.handle 'welcome', =>
+    client.handle welcome: =>
       @note?.dismiss()
       atom.notifications.addSuccess "Welcome to Juno!",
         detail: """
@@ -66,7 +66,7 @@ module.exports =
       #{path}
 
       This path can be changed in the settings.
-      
+
       """ + if details isnt ''
         """
         Details:

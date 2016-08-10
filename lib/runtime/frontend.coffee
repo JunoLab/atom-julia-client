@@ -13,25 +13,26 @@ module.exports =
   windows: {}
 
   activate: ->
-    client.handle 'select', (items) -> selector.show items
+    client.handle select: (items) -> selector.show items
 
     # Blink APIs
 
-    client.handle 'createWindow', (opts) =>
-      w = new BrowserWindow opts
-      if opts.url?
-        w.loadUrl opts.url
-      w.setMenu(null)
-      wid = w.id
-      @windows[wid] = w
-      w.on 'close', => delete @windows[wid]
-      return wid
+    client.handle
+      createWindow: (opts) =>
+        w = new BrowserWindow opts
+        if opts.url?
+          w.loadUrl opts.url
+        w.setMenu(null)
+        wid = w.id
+        @windows[wid] = w
+        w.on 'close', => delete @windows[wid]
+        return wid
 
-    client.handle 'withWin', (id, code) =>
-      @evalwith @windows[id], code
+      withWin: (id, code) =>
+        @evalwith @windows[id], code
 
-    client.handle 'winActive', (id) =>
-      @windows.hasOwnProperty id
+      winActive: (id) =>
+        @windows.hasOwnProperty id
 
     client.onDisconnected =>
       for id, win of @windows

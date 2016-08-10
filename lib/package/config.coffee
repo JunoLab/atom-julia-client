@@ -1,11 +1,6 @@
 {local: proc, terminal} = require '../connection'
 
 config =
-  launchOnStartup:
-    type: 'boolean'
-    default: false
-    description: 'Launch a Julia client when Atom starts.'
-    order: 1
   juliaPath:
     type: 'string'
     default: 'julia'

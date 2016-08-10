@@ -3,7 +3,7 @@
 {views} = require '../ui'
 {client} = require '../connection'
 
-{workspace} = client.import 'workspace'
+workspace = client.import 'workspace'
 
 module.exports =
   activate: ->

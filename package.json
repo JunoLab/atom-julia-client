@@ -12,7 +12,8 @@
   "dependencies": {
     "atom-space-pen-views": "^2.0.0",
     "underscore-plus": "*",
-    "atom-package-deps": "*"
+    "atom-package-deps": "*",
+    "coffee-script": "*"
   },
   "consumedServices": {
     "status-bar": {

@@ -6,7 +6,7 @@
 
 modules = require './modules'
 
-{evalrepl} = client.import 'evalrepl'
+evalrepl = client.import 'evalrepl'
 
 module.exports =
   activate: ->
@@ -17,18 +17,19 @@ module.exports =
 
     @subs = new CompositeDisposable
 
-    client.handle 'info', (msg) =>
-      @c.info msg
+    client.handle
+      info: (msg) =>
+        @c.info msg
 
-    client.handle 'result', (result) =>
-      view = if result.type == 'error' then result.view else result
-      view = views.render(view)
-      if result.type isnt 'error'
-        views.ink.tree.toggle view
-      @c.result view,
-        error: result.type == 'error'
+      result: (result) =>
+        view = if result.type == 'error' then result.view else result
+        view = views.render(view)
+        if result.type isnt 'error'
+          views.ink.tree.toggle view
+        @c.result view,
+          error: result.type == 'error'
 
-    client.handle 'input', => @input()
+      input: => @input()
 
     client.onStdout (s) => @stdout s
     client.onStderr (s) => @stderr s

@@ -11,8 +11,9 @@ breakpoints = null
 
 module.exports =
   activate: ->
-    client.handle 'debugmode', (state) => @debugmode state
-    client.handle 'stepto', (file, line, text) => @stepto file, line, text
+    client.handle
+      debugmode: (state) => @debugmode state
+      stepto: (file, line, text) => @stepto file, line, text
 
     client.onDisconnected => @debugmode false
 

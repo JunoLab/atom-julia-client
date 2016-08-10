@@ -2,21 +2,20 @@
 messages = require './messages'
 client = require './client'
 
-basic = require './process/basic'
+cd = client.import 'cd', false
+
+basic  = require './process/basic'
+cycler = require './process/cycler'
+server = require './process/server'
 
 module.exports =
+  server: server
 
   activate: ->
-
-  buffer: (f) ->
-    buffer = ['']
-    (data) ->
-      str = data.toString()
-      lines = str.split '\n'
-      buffer[0] += lines.shift()
-      buffer.push lines...
-      while buffer.length > 1
-        f buffer.shift()
+    paths.getVersion()
+      .then ->
+        server.start paths.jlpath(), client.clargs()
+      .catch ->
 
   monitor: (proc) ->
     proc.onExit (code, signal) ->
@@ -27,19 +26,22 @@ module.exports =
       else
         msg += "."
       client.stderr msg
-    proc.stdout.on 'data', (data) -> client.stdout data.toString()
-    proc.stderr.on 'data', (data) -> client.stderr data.toString()
+    out = (data) -> client.stdout data.toString()
+    err = (data) -> client.stderr data.toString()
+    proc.flush? out, err
+    proc.onStdout out
+    proc.onStderr err
 
   connect: (proc, sock) ->
     proc.message = (m) -> sock.write JSON.stringify m
-    sock.on 'data', @buffer (m) -> client.input JSON.parse m
+    client.readStream sock
     sock.on 'end', -> client.disconnected()
     client.connected proc
 
   start: ->
     [path, args] = [paths.jlpath(), client.clargs()]
     client.booting()
-    paths.projectDir().then (dir) -> client.msg 'cd', dir
+    paths.projectDir().then (dir) -> cd dir
     check = paths.getVersion()
 
     check.catch (err) =>
@@ -59,4 +61,4 @@ module.exports =
         throw e
 
   spawnJulia: (path, args) ->
-    basic.get path, args
+    server.get path, args

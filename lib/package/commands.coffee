@@ -3,10 +3,6 @@ shell =                 require 'shell'
 
 module.exports =
   activate: (juno) ->
-
-    if atom.config.get("julia-client.launchOnStartup")
-      @withInk -> juno.connection.boot()
-
     requireClient    = (a, f) -> juno.connection.client.require a, f
     disrequireClient = (a, f) -> juno.connection.client.disrequire a, f
     boot = -> juno.connection.boot()
@@ -43,7 +39,7 @@ module.exports =
         requireClient 'reset the workspace', ->
           editor = atom.workspace.getActiveTextEditor()
           atom.commands.dispatch atom.views.getView(editor), 'inline-results:clear-all'
-          juno.connection.client.rpc('clear-workspace')
+          juno.connection.client.import('clear-workspace')()
       'julia:select-block': =>
         juno.misc.blocks.select()
       'julia-client:send-to-stdin': (e) =>
@@ -66,6 +62,7 @@ module.exports =
       'julia-client:start-julia': -> disrequireClient 'boot Julia', -> boot()
       'julia-client:kill-julia': => requireClient 'kill Julia', -> juno.connection.client.kill()
       'julia-client:interrupt-julia': => requireClient 'interrupt Julia', -> juno.connection.client.interrupt()
+      'julia-client:reset-julia-server': -> juno.connection.local.server.reset()
       'julia-client:open-console': => @withInk -> juno.runtime.console.open()
       "julia-client:clear-console": => juno.runtime.console.reset()
       'julia-client:open-plot-pane': => @withInk -> juno.runtime.plots.open()
