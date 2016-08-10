@@ -34,6 +34,7 @@ module.exports =
           resolve net.connect port
       proc.on 'exit', (code, status) ->
         reject [code, status]
+      proc.on 'error', (err) -> reject err
 
   getUnix: (path, args) ->
     @freePort().then (port) =>
