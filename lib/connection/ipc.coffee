@@ -38,14 +38,11 @@ class IPC
   msg: (type, args...) -> @writeMsg [type, args...]
 
   rpc: (type, args...) ->
-    x = new Promise (resolve, reject) =>
+    p = new Promise (resolve, reject) =>
       @id += 1
       @callbacks[@id] = {resolve, reject}
       @msg {type, callback: @id}, args...
-    @loading?.working()
-    done = => @loading?.done()
-    x.then done, done
-    x
+    @loading?.monitor p
 
   flush: ->
     @writeMsg msg for msg in @queue
