@@ -1,3 +1,4 @@
+{CompositeDisposable} = require 'atom'
 {views} = require '../ui'
 {client} = require '../connection'
 
@@ -11,11 +12,16 @@ breakpoints = null
 
 module.exports =
   activate: ->
+    @subs = new CompositeDisposable
+
     client.handle
       debugmode: (state) => @debugmode state
       stepto: (file, line, text) => @stepto file, line, text
 
-    client.onDisconnected => @debugmode false
+    @subs.add client.onDisconnected => @debugmode false
+
+  deactivate: ->
+    @subs.dispose()
 
   activeError: ->
     if not @active
@@ -68,4 +74,4 @@ module.exports =
         {icon: 'chevron-right', command: 'julia-debug:step-into-function'}
       ]
     breakpoints = ink.breakpoints
-    breakpoints.addScope 'source.julia'
+    @subs.add breakpoints.addScope 'source.julia'
