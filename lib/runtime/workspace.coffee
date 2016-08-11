@@ -9,11 +9,11 @@ module.exports =
   activate: ->
     @create()
 
-    client.onDisconnected =>
+    client.onDetached =>
       @ws.setItems []
 
   update: ->
-    return @ws.setItems [] unless client.isConnected()
+    return @ws.setItems [] unless client.isActive()
     p = workspace('Main').then (ws) =>
       for {items} in ws
         for item in items

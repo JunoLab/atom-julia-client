@@ -51,7 +51,7 @@ class IPC
   reset: ->
     @loading?.reset()
     @queue = []
-    cb.reject 'disconnected' for id, cb of @callbacks
+    cb.reject 'disActive' for id, cb of @callbacks
     @callbacks = {}
 
   input: ([type, args...]) ->

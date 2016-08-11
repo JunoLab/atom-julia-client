@@ -10,9 +10,9 @@ module.exports =
 
     @notifications.activate()
 
-    @subs.add @client.onConnected =>
+    @subs.add @client.onAttached =>
       @notifications.show("Client Connected")
-    @subs.add @client.onDisconnected =>
+    @subs.add @client.onDetached =>
       @ink?.Result.invalidateAll()
 
     @client.handle progress: (p) =>

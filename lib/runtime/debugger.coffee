@@ -18,7 +18,7 @@ module.exports =
       debugmode: (state) => @debugmode state
       stepto: (file, line, text) => @stepto file, line, text
 
-    @subs.add client.onDisconnected => @debugmode false
+    @subs.add client.onDetached => @debugmode false
 
   deactivate: ->
     @subs.dispose()

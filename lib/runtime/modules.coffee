@@ -14,8 +14,8 @@ module.exports =
     @emitter = new Emitter
 
     @subs.add atom.workspace.observeActivePaneItem (item) => @updateForItem item
-    @subs.add client.onConnected => @updateForItem()
-    @subs.add client.onDisconnected => @updateForItem()
+    @subs.add client.onAttached => @updateForItem()
+    @subs.add client.onDetached => @updateForItem()
 
     @activateView()
 
@@ -74,7 +74,7 @@ module.exports =
     if not @isValidItem item
       @itemSubs.add item?.onDidChangeGrammar? => @updateForItem()
       @setCurrent()
-    else if not client.isConnected()
+    else if not client.isActive()
       @setCurrent main: 'Main', inactive: true
     else if atom.workspace.isTextEditor item
       @updateForEditor item
@@ -88,7 +88,7 @@ module.exports =
       @getEditorModuleLazy editor
 
   getEditorModule: (ed) ->
-    return unless client.isConnected()
+    return unless client.isActive()
     {row, column} = ed.getCursors()[0].getBufferPosition()
     data =
       path: ed.getPath()

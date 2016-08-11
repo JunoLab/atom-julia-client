@@ -40,7 +40,7 @@ module.exports =
     return true
 
   getSuggestions: (data) ->
-    return [] unless client.isConnected() and @validScope data.scopeDescriptor
+    return [] unless client.isActive() and @validScope data.scopeDescriptor
     @rawCompletions(data).then ({completions, prefix, mod}) =>
       return @fromCache mod, prefix if not completions?
       @processCompletions completions, prefix

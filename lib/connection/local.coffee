@@ -31,22 +31,21 @@ module.exports =
     proc.flush? out, err
     proc.onStdout out
     proc.onStderr err
+    client.attach proc
 
   connect: (proc, sock) ->
     proc.message = (m) -> sock.write JSON.stringify m
     client.readStream sock
-    sock.on 'end', -> client.disconnected()
-    client.connected proc
+    sock.on 'end', -> client.detach()
+    client.connect()
 
   start: ->
     [path, args] = [paths.jlpath(), client.clargs()]
-    client.booting()
     paths.projectDir().then (dir) -> cd dir
     check = paths.getVersion()
 
     check.catch (err) =>
       messages.jlNotFound paths.jlpath(), err
-      client.cancelBoot()
 
     check
       .then =>
@@ -57,7 +56,7 @@ module.exports =
       .then ([proc, sock]) =>
         @connect proc, sock
       .catch (e) ->
-        client.cancelBoot()
+        client.detach()
         throw e
 
   spawnJulia: (path, args) ->

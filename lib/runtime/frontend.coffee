@@ -34,7 +34,7 @@ module.exports =
       winActive: (id) =>
         @windows.hasOwnProperty id
 
-    client.onDisconnected =>
+    client.onDetached =>
       for id, win of @windows
         delete @windows[id]
         win.close()

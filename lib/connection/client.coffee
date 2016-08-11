@@ -12,7 +12,7 @@ metrics = throttle metrics, 60*60*1000
 
 module.exports =
 
-  # Connection logic injects a connection via `connected`.
+  # Connection logic injects a connection via `attach`.
   ## Required interface:
   # .message(json)
   ## Optional interface:
@@ -32,7 +32,7 @@ module.exports =
   activate: ->
 
     @ipc.writeMsg = (msg) =>
-      if @isConnected()
+      if @connected
         @conn.message msg
       else
         @ipc.queue.push msg
@@ -57,38 +57,25 @@ module.exports =
 
   emitter: new Emitter
 
-  onConnected: (cb) -> @emitter.on 'connected', cb
-  onDisconnected: (cb) -> @emitter.on 'disconnected', cb
+  onAttached: (cb) -> @emitter.on 'attached', cb
+  onDetached: (cb) -> @emitter.on 'detached', cb
 
-  isBooting: -> false
+  isActive: -> @conn?
 
-  isConnected: -> @conn?
+  attach: (@conn) ->
+    @emitter.emit 'attached'
 
-  isActive: -> @isConnected() || @isBooting()
-
-  connected: (@conn) ->
+  # TODO: remove this
+  connect: ->
+    @connected = true
     metrics()
-    @emitter.emit 'connected'
-    if @isBooting()
-      @isBooting = -> false
     @ipc.flush()
 
-  disconnected: ->
+  detach: ->
+    @connected = false
     delete @conn
-    @reset()
-    @emitter.emit 'disconnected'
-
-  booting: ->
-    @isBooting = -> true
-
-  cancelBoot: ->
-    if @isBooting()
-      @isBooting = -> false
-      @reset()
-
-  reset: ->
-    @cancelBoot()
     @ipc.reset()
+    @emitter.emit 'detached'
 
   isWorking: -> @ipc.isWorking()
   onWorking: (f) -> @ipc.onWorking f
@@ -113,11 +100,11 @@ module.exports =
   stdin: (data) -> @clientCall 'STDIN', 'stdin', data
 
   interrupt: ->
-    if @isConnected() and @isWorking()
+    if @isActive() and @isWorking()
       @clientCall 'interrupts', 'interrupt'
 
   kill: ->
-    if @isConnected() and not @isWorking()
+    if @isActive() and not @isWorking()
       @import('exit')().catch ->
     else
       @clientCall 'kill', 'kill'
@@ -133,20 +120,16 @@ module.exports =
     as
 
   connectedError: (action = 'do that') ->
-    if @isConnected()
+    if @isActive()
       atom.notifications.addError "Can't #{action} with a Julia client running.",
         detail: "Stop the current client with Packages → Julia → Stop Julia."
       true
-    else if @isBooting()
-      atom.notifications.addError "Can't #{action} with a Julia client booting."
     else
       false
 
   notConnectedError: (action = 'do that') ->
-    if @isBooting()
-      atom.notifications.addError "Can't #{action} until Julia finishes booting."
-    else if not @isConnected()
-      atom.notifications.addError "Can't #{action} without a Julia client.",
+    if not @isActive()
+      atom.notifications.addError "Can't #{action} without a Julia client running.",
         detail: "Start Julia using Packages → Julia → Start Julia."
       true
     else
