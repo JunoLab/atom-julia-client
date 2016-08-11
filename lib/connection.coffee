@@ -1,5 +1,10 @@
 {time} = require './misc'
 
+metrics = ->
+  if id = localStorage.getItem 'metrics.userId'
+    r = require('http').get "http://data.junolab.org/hit?id=#{id}&app=atom-julia-boot"
+    r.on 'error', ->
+
 module.exports =
   IPC:      require './connection/ipc'
   messages: require './connection/messages'
@@ -21,4 +26,5 @@ module.exports =
   boot: ->
     if not @client.isActive()
       @local.start()
-      time "Julia Boot", @client.import('ping')()
+      time "Julia Boot", @client.import('ping')().then ->
+        metrics()

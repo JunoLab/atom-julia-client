@@ -3,11 +3,6 @@
 
 IPC = require './ipc'
 
-metrics = ->
-  if id = localStorage.getItem 'metrics.userId'
-    r = require('http').get "http://data.junolab.org/hit?id=#{id}&app=atom-julia-boot"
-    r.on 'error', ->
-
 metrics = throttle metrics, 60*60*1000
 
 module.exports =
@@ -32,7 +27,7 @@ module.exports =
   activate: ->
 
     @ipc.writeMsg = (msg) =>
-      if @connected
+      if @isActive() and @conn.ready?() isnt false
         @conn.message msg
       else
         @ipc.queue.push msg
@@ -63,19 +58,15 @@ module.exports =
   isActive: -> @conn?
 
   attach: (@conn) ->
+    @flush() unless @conn.ready?() is false
     @emitter.emit 'attached'
 
-  # TODO: remove this
-  connect: ->
-    @connected = true
-    metrics()
-    @ipc.flush()
-
   detach: ->
-    @connected = false
     delete @conn
     @ipc.reset()
     @emitter.emit 'detached'
+
+  flush: -> @ipc.flush()
 
   isWorking: -> @ipc.isWorking()
   onWorking: (f) -> @ipc.onWorking f

@@ -17,7 +17,7 @@ module.exports =
         server.start paths.jlpath(), client.clargs()
       .catch ->
 
-  monitor: (proc) ->
+  monitorExit: (proc) ->
     proc.onExit (code, signal) ->
       msg = "Julia has stopped"
       if not proc.wrapper and code isnt 0
@@ -26,6 +26,9 @@ module.exports =
       else
         msg += "."
       client.info msg
+
+  monitor: (proc) ->
+    proc.ready = -> false
     out = (data) -> client.stdout data.toString()
     err = (data) -> client.stderr data.toString()
     proc.flush? out, err
@@ -37,7 +40,8 @@ module.exports =
     proc.message = (m) -> sock.write JSON.stringify m
     client.readStream sock
     sock.on 'end', -> client.detach()
-    client.connect()
+    proc.ready = -> true
+    client.flush()
 
   start: ->
     [path, args] = [paths.jlpath(), client.clargs()]
