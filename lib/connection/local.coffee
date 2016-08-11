@@ -61,4 +61,8 @@ module.exports =
         throw e
 
   spawnJulia: (path, args) ->
-    server.get path, args
+    provider = switch atom.config.get('julia-client.juliaOptions').bootMode
+      when 'Server' then server
+      when 'Cycler' then cycler
+      when 'Basic' then basic
+    provider.get path, args

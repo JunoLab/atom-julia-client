@@ -112,7 +112,7 @@ module.exports =
     ipc
 
   serve: ->
-    cycler.cacheLength = 3
+    cycler.cacheLength = 2
     basic.wrapperEnabled = -> true
     @server = net.createServer (sock) =>
       @initIPC sock

@@ -18,8 +18,17 @@ config =
         title: 'Optimisation Level'
         description: 'Higher levels take longer to compile, but produce faster code.'
         type: 'integer'
-        default: 2
         enum: [0, 1, 2, 3]
+        default: 2
+      deprecationWarnings:
+        title: 'Deprecation Warnings'
+        type: 'boolean'
+        default: true
+      bootMode:
+        title: 'Boot Mode'
+        type: 'string'
+        enum: ['Basic', 'Cycler', 'Server']
+        default: 'Server'
     order: 3
   notifications:
     type: 'boolean'
