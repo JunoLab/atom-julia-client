@@ -33,6 +33,7 @@ module.exports =
 
     client.onStdout (s) => @stdout s
     client.onStderr (s) => @stderr s
+    client.onInfo   (s) => @info s
 
   deactivate: ->
     @subs.dispose()
@@ -50,7 +51,7 @@ module.exports =
     history.read().then (entries) =>
       @c.history.set entries
 
-  ignored: [/^WARNING: Method definition .* overwritten/]
+  ignored: [/^WARNING: Method definition .* overwritten in module/]
   ignore: (s) ->
     for i in @ignored
       return true if s.match(i)
@@ -60,6 +61,8 @@ module.exports =
   stderr: (data) ->
     data = data.split('\n').filter((x)=>!@ignore x).join("\n")
     if data then @c.stderr data
+
+  info: (data) -> @c.info data
 
   open: ->
     @c.open

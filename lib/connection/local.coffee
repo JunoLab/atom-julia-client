@@ -20,12 +20,12 @@ module.exports =
   monitor: (proc) ->
     proc.onExit (code, signal) ->
       msg = "Julia has stopped"
-      if not proc.wrapper
+      if not proc.wrapper and code isnt 0
         msg += ": #{code}"
         if signal then msg += ", #{signal}"
       else
         msg += "."
-      client.stderr msg
+      client.info msg
     out = (data) -> client.stdout data.toString()
     err = (data) -> client.stderr data.toString()
     proc.flush? out, err
