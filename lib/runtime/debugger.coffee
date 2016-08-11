@@ -54,7 +54,6 @@ module.exports =
       return existing.destroy()
     thebp = breakpoints.add file, line
     @breakpoints.push thebp
-    bp file, line+1
 
   togglebp: (ed = atom.workspace.getActiveTextEditor()) ->
     return unless ed
