@@ -26,4 +26,7 @@ module.exports =
   exclusive: (f) ->
     lock = module.exports.mutex()
     (args...) ->
-      lock (release) => release f.call @, args...
+      lock (release) =>
+        result = f.call @, args...
+        release result
+        result
