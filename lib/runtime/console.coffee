@@ -10,12 +10,12 @@ evalrepl = client.import 'evalrepl'
 
 module.exports =
   activate: ->
+    @subs = new CompositeDisposable
+
     @create()
 
-    atom.config.observe 'julia-client.maximumConsoleSize', (size) =>
+    @subs.add atom.config.observe 'julia-client.maximumConsoleSize', (size) =>
       @c.maxSize = size
-
-    @subs = new CompositeDisposable
 
     client.handle
       info: (msg) =>
@@ -31,11 +31,12 @@ module.exports =
 
       input: => @input()
 
-    client.onStdout (s) => @stdout s
-    client.onStderr (s) => @stderr s
-    client.onInfo   (s) => @info s
+    @subs.add client.onStdout (s) => @stdout s
+    @subs.add client.onStderr (s) => @stderr s
+    @subs.add client.onInfo   (s) => @info s
 
   deactivate: ->
+    @c.close()
     @subs.dispose()
     history.write @c.history.items
 
@@ -44,9 +45,9 @@ module.exports =
     atom.packages.activatePackage('language-julia').catch(->).then =>
       @c.setModes @modes
       @c.reset()
-    @c.onEval (ed) => @eval ed
-    client.onWorking => @c.loading true
-    client.onDone => @c.loading false
+    @subs.add @c.onEval (ed) => @eval ed
+    @subs.add client.onWorking => @c.loading true
+    @subs.add client.onDone => @c.loading false
     atom.views.getView(@c).classList.add 'julia'
     history.read().then (entries) =>
       @c.history.set entries
