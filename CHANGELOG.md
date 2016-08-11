@@ -1,9 +1,19 @@
 ## 0.5.0
 * Inline Documentation
+* Debugger
+* Workspace view
+* Autocomplete in the console
+* More helpful error messages when boot fails
+* `@progress` macro to show progress in the status bar
+* External packages can interact with the Julia client, including to provide custom boot mechanisms (e.g. over SSH)
+* Julia boot is now near-instant in many cases
 
 ## 0.4.0
 * Better Console buffering
 * History prefix support, like the repl
+* The console can work in any module
+* Plotting pane
+* Julia menu and toolbar
 
 ## 0.3.0
 * New Packages->Julia menu
