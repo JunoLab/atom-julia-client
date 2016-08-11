@@ -1,20 +1,28 @@
+{CompositeDisposable} = require 'atom'
+
 module.exports =
   notifications: require './ui/notifications'
   selector:      require './ui/selector'
   views:         require './ui/views'
 
   activate: (@client) ->
+    @subs = new CompositeDisposable
+
     @notifications.activate()
-    @client.onConnected =>
+
+    @subs.add @client.onConnected =>
       @notifications.show("Client Connected")
-    @client.onDisconnected =>
+    @subs.add @client.onDisconnected =>
       @ink?.Result.invalidateAll()
 
     @client.handle progress: (p) =>
       @progress?.progress = p
 
+  deactivate: ->
+    @subs.dispose()
+
   consumeInk: (@ink) ->
     @views.ink = @ink
 
-    @client.onWorking => @progress = @ink.progress.push()
-    @client.onDone => @progress?.destroy()
+    @subs.add @client.onWorking => @progress = @ink.progress.push()
+    @subs.add @client.onDone => @progress?.destroy()

@@ -26,7 +26,7 @@ module.exports = JuliaClient =
             dismissable: true
 
   deactivate: ->
-    x.deactivate() for x in [commands, menu, toolbar, @connection, @runtime]
+    x.deactivate() for x in [commands, menu, toolbar, @connection, @runtime, @ui]
 
   consumeInk: (ink) ->
     commands.ink = ink
