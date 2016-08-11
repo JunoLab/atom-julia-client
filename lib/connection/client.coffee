@@ -124,8 +124,7 @@ module.exports =
 
   clargs: ->
     {precompiled, optimisationLevel, deprecationWarnings} =
-      atom.config.get('julia-client.juliaOptions') ?
-      {precompiled: true, optimisationLevel: 2, deprecationWarnings: true}
+      atom.config.get 'julia-client.juliaOptions'
     as = []
     as.push "--precompiled=#{if precompiled then 'yes' else 'no'}"
     as.push "--depwarn=#{if deprecationWarnings then 'yes' else 'no'}"
