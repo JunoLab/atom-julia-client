@@ -20,5 +20,5 @@ describe 'juno', ->
         deprecationWarnings: false
         precompiled: true
 
-  # require './client'
+  require './client'
   require './eval'
