@@ -20,8 +20,9 @@ module.exports =
           item.value = views.render item.value
       @ws.setItems ws
     p.catch (err) ->
-      console.error 'Error refreshing workspace'
-      console.error err
+      if err isnt 'disconnected'
+        console.error 'Error refreshing workspace'
+        console.error err
 
   create: ->
     @ws = @ink.Workspace.fromId 'julia'

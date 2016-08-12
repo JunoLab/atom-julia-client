@@ -3,15 +3,9 @@ juno = require '../lib/julia-client'
 
 {client} = juno.connection
 
-# The packages aren't actually active in Atom for these tests,
-# but that doesn't matter. In fact it would be a huge pain
-# to avoid sharing state in this case.
-
 describe "managing the client", ->
-  clientStatus = -> [client.isConnected(), client.isActive(), client.isWorking()]
+  clientStatus = -> [client.isActive(), client.isWorking()]
   {echo, evalsimple} = client.import ['echo', 'evalsimple']
-  client.onConnected (connectSpy = jasmine.createSpy 'connect')
-  client.onDisconnected (disconnectSpy = jasmine.createSpy 'disconnect')
 
   describe "before booting", ->
     checkPath = (p) -> juno.misc.paths.getVersion p
@@ -32,29 +26,31 @@ describe "managing the client", ->
       waitsFor (done) ->
         checkPath("nojulia").catch -> done()
 
+  conn = null
+  beforeEach ->
+    if conn?
+      client.attach conn
+
   describe "when booting the client", ->
-    bootPromise = null
 
     it "recognises the client's state before boot", ->
-      expect(clientStatus()).toEqual [false, false, false]
+      expect(clientStatus()).toEqual [false, false]
 
     it "initiates the boot", ->
-      bootPromise = juno.connection.boot()
-
-    it "recognises the client's state during boot", ->
-      expect(clientStatus()).toEqual [false, true, true]
+      waitsForPromise -> juno.connection.local.start()
+      runs ->
+        conn = client.conn
 
     it "waits for the boot to complete", ->
-      waitsFor 'client to boot', 60*1000, (done) ->
-        bootPromise.then (pong) ->
+      pong = client.import('ping')()
+      expect(clientStatus()).toEqual [true, true]
+      waitsFor 'the client to boot', 60*1000, (done) ->
+        pong.then (pong) ->
           expect(pong).toBe('pong')
           done()
 
     it "recognises the client's state after boot", ->
-      expect(clientStatus()).toEqual [true, true, false]
-
-    it "emits a connection event", ->
-      expect(connectSpy.calls.length).toBe(1)
+      expect(clientStatus()).toEqual [true, false]
 
   describe "while the client is active", ->
 
@@ -102,29 +98,36 @@ describe "managing the client", ->
         expect(data).toBe('test')
         sub.dispose()
 
-    describe "when callbacks are pending", ->
+    describe "when using callbacks", ->
       {cbs, workingSpy, doneSpy} = {}
 
-      it "registers loading listeners", ->
+      beforeEach ->
         client.onWorking (workingSpy = jasmine.createSpy 'working')
         client.onDone (doneSpy = jasmine.createSpy 'done')
+        cbs = (evalsimple("peakflops(1000)") for i in [1..5])
 
       it "enters loading state", ->
-        cbs = (evalsimple("peakflops(1000)") for i in [1..5])
         expect(client.isWorking()).toBe true
 
       it "emits a working event", ->
         expect(workingSpy.calls.length).toBe(1)
 
-      it "stops loading after they are done", ->
-        cbs.forEach (cb) ->
-          waitsForPromise ->
-            cb
-        runs ->
-          expect(client.isWorking()).toBe(false)
+      it "isn't done yet", ->
+        expect(doneSpy).not.toHaveBeenCalled()
 
-      it "emits a done event", ->
-        expect(doneSpy.calls.length).toBe(1)
+      describe "when they finish", ->
+
+        beforeEach ->
+          cbs.forEach (cb) ->
+            waitsForPromise ->
+              cb
+
+        it "stops loading after they are done", ->
+          runs ->
+            expect(client.isWorking()).toBe(false)
+
+        it "emits a done event", ->
+          expect(doneSpy.calls.length).toBe(1)
 
     it "can handle a large number of concurrent callbacks", ->
       n = 1000
@@ -136,17 +139,9 @@ describe "managing the client", ->
       runs ->
         expect(new Date().getTime() - t).toBeLessThan(1500)
 
-  describe "when the process is shut down", ->
-
-    it "rejects pending callbacks", ->
-      waitsFor (done) ->
-        evalsimple('exit()').catch -> done()
-
-    it "resets the working state", ->
+  it "handles shutdown correctly", ->
+    waitsFor (done) ->
+      evalsimple('exit()').catch -> done()
+    runs ->
       expect(client.isWorking()).toBe(false)
-
-    it "emits a disconnection event", ->
-      expect(disconnectSpy.calls.length).toBe(1)
-
-    it "recognises the client's state after exit", ->
-      expect(clientStatus()).toEqual [false, false, false]
+      expect(clientStatus()).toEqual [false, false]

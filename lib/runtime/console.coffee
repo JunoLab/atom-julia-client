@@ -42,9 +42,8 @@ module.exports =
 
   create: ->
     @c = @ink.Console.fromId 'julia'
-    atom.packages.activatePackage('language-julia').catch(->).then =>
-      @c.setModes @modes
-      @c.reset()
+    # TODO: have a way to update the current input
+    @c.setModes @modes
     @subs.add @c.onEval (ed) => @eval ed
     @subs.add client.onWorking => @c.loading true
     @subs.add client.onDone => @c.loading false

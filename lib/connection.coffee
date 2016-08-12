@@ -19,6 +19,7 @@ module.exports =
     @local.activate()
 
   deactivate: ->
+    @client.deactivate()
 
   consumeInk: (ink) ->
     @IPC.consumeInk ink

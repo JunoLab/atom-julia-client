@@ -11,7 +11,7 @@ module.exports =
   activate: ->
     @subs = new CompositeDisposable
     @itemSubs = new CompositeDisposable
-    @emitter = new Emitter
+    @subs.add @emitter = new Emitter
 
     @subs.add atom.workspace.observeActivePaneItem (item) => @updateForItem item
     @subs.add client.onAttached => @updateForItem()

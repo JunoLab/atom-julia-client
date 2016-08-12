@@ -27,14 +27,19 @@ module.exports =
         msg += "."
       client.info msg
 
-  monitor: (proc) ->
-    proc.ready = -> false
+  pipeStreams: (proc) ->
     out = (data) -> client.stdout data.toString()
     err = (data) -> client.stderr data.toString()
     proc.flush? out, err
     proc.onStdout out
     proc.onStderr err
+
+  monitor: (proc) ->
+    proc.ready = -> false
+    @pipeStreams proc
+    @monitorExit proc
     client.attach proc
+    proc
 
   connect: (proc, sock) ->
     proc.message = (m) -> sock.write JSON.stringify m
@@ -42,6 +47,7 @@ module.exports =
     sock.on 'end', -> client.detach()
     proc.ready = -> true
     client.flush()
+    proc
 
   start: ->
     [path, args] = [paths.jlpath(), client.clargs()]
@@ -51,20 +57,21 @@ module.exports =
     check.catch (err) =>
       messages.jlNotFound paths.jlpath(), err
 
-    check
-      .then =>
-        @spawnJulia path, args
+    proc = check
+      .then => @spawnJulia(path, args)
+      .then (proc) => @monitor proc
+    proc
       .then (proc) =>
-        @monitor proc
         Promise.all [proc, proc.socket]
       .then ([proc, sock]) =>
         @connect proc, sock
       .catch (e) ->
         client.detach()
         throw e
+    proc
 
   spawnJulia: (path, args) ->
-    provider = switch atom.config.get('julia-client.juliaOptions').bootMode
+    provider = switch atom.config.get 'julia-client.juliaOptions.bootMode'
       when 'Server' then server
       when 'Cycler' then cycler
       when 'Basic' then basic

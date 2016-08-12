@@ -26,6 +26,8 @@ module.exports =
 
   activate: ->
 
+    @emitter = new Emitter
+
     @ipc.writeMsg = (msg) =>
       if @isActive() and @conn.ready?() isnt false
         @conn.message msg
@@ -36,6 +38,10 @@ module.exports =
       if atom.config.get 'julia-client.errorNotifications'
         atom.notifications.addError options.msg, options
       console.error options.detail
+
+  deactivate: ->
+    @emitter.dispose()
+    if @isActive() then @detach()
 
   # Basic handlers (communication through stderr)
 

@@ -1,15 +1,19 @@
 juno = require '../lib/julia-client'
 {client} = juno.connection
 
-# TODO: handle deactivation properly, create a persistent client and inject it
-# each test
+conn = null
 
 describe 'before evaluation', ->
   it 'boots the client', ->
     waitsFor 60*1000, (done) ->
       juno.connection.boot().then -> done()
+    runs ->
+      conn = client.conn
 
 describe 'in an editor', ->
+
+  beforeEach ->
+    client.attach conn
 
   editor = null
 
@@ -18,10 +22,6 @@ describe 'in an editor', ->
   waitsForClient = -> waitsFor (done) -> client.onceDone done
 
   beforeEach ->
-    jasmine.attachToDOM atom.views.getView atom.workspace
-    waitsForPromise -> atom.packages.activatePackage 'language-julia'
-    waitsForPromise -> atom.packages.activatePackage 'ink'
-    waitsForPromise -> atom.packages.activatePackage 'julia-client'
     waitsForPromise -> atom.workspace.open().then (ed) -> editor = ed
     runs ->
       editor.setGrammar(atom.grammars.grammarForScopeName('source.julia'))
