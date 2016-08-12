@@ -1,19 +1,7 @@
 juno = require '../lib/julia-client'
 {client} = juno.connection
 
-conn = null
-
-describe 'before evaluation', ->
-  it 'boots the client', ->
-    waitsFor 60*1000, (done) ->
-      juno.connection.boot().then -> done()
-    runs ->
-      conn = client.conn
-
-describe 'in an editor', ->
-
-  beforeEach ->
-    client.attach conn
+module.exports = ->
 
   editor = null
 

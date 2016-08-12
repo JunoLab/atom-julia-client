@@ -3,7 +3,8 @@ juno = require '../lib/julia-client'
 
 {client} = juno.connection
 
-describe "managing the client", ->
+module.exports = ->
+
   clientStatus = -> [client.isActive(), client.isWorking()]
   {echo, evalsimple} = client.import ['echo', 'evalsimple']
 
@@ -104,7 +105,7 @@ describe "managing the client", ->
       beforeEach ->
         client.onWorking (workingSpy = jasmine.createSpy 'working')
         client.onDone (doneSpy = jasmine.createSpy 'done')
-        cbs = (evalsimple("peakflops(1000)") for i in [1..5])
+        cbs = (evalsimple("peakflops(100)") for i in [1..5])
 
       it "enters loading state", ->
         expect(client.isWorking()).toBe true
