@@ -28,7 +28,7 @@ config =
         title: 'Boot Mode'
         type: 'string'
         enum: ['Basic', 'Cycler', 'Server']
-        default: 'Server'
+        default: 'Basic'
     order: 3
   notifications:
     type: 'boolean'
