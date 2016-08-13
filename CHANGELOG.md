@@ -7,6 +7,7 @@
 * `@progress` macro to show progress in the status bar
 * External packages can interact with the Julia client, including to provide custom boot mechanisms (e.g. over SSH)
 * Julia boot is now near-instant in many cases
+* Stack traces no longer show Atom.jl-internal code
 
 ## 0.4.0
 * Better Console buffering
