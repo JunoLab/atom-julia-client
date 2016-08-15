@@ -119,13 +119,11 @@ module.exports = ->
       describe "when they finish", ->
 
         beforeEach ->
-          cbs.forEach (cb) ->
-            waitsForPromise ->
-              cb
+          waitsFor 10*1000, (done) ->
+            Promise.all(cbs).then done
 
         it "stops loading after they are done", ->
-          runs ->
-            expect(client.isWorking()).toBe(false)
+          expect(client.isWorking()).toBe(false)
 
         it "emits a done event", ->
           expect(doneSpy.calls.length).toBe(1)
@@ -138,7 +136,7 @@ module.exports = ->
         waitsForPromise ->
           cbs[i].then (result) -> expect(result).toBe(Math.pow(i, 2))
       runs ->
-        expect(new Date().getTime() - t).toBeLessThan(1500)
+        expect(new Date().getTime() - t).toBeLessThan(2000)
 
   it "handles shutdown correctly", ->
     waitsFor (done) ->
