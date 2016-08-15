@@ -62,24 +62,23 @@ module.exports = ->
           expect(response).toEqual(msg)
 
     it "can evaluate code and return the result", ->
-      [1..10].forEach (x) ->
-        waitsForPromise ->
-          evalsimple("#{x}^2").then (result) ->
-            expect(result).toBe(Math.pow(x, 2))
+      remote = [1..10].map (x) -> evalsimple("#{x}^2")
+      waitsForPromise ->
+        Promise.all(remote).then (remote) ->
+          expect(remote).toEqual (Math.pow(x, 2) for x in [1..10])
 
     it "can rpc into the frontend", ->
       client.handle test: (x) -> Math.pow(x, 2)
-      [1..10].forEach (x) ->
-        waitsForPromise ->
-          evalsimple("@rpc test(#{x})").then (result) ->
-            expect(result).toBe(Math.pow(x, 2))
+      remote = (evalsimple("@rpc test(#{x})") for x in [1..10])
+      waitsForPromise ->
+        Promise.all(remote).then (remote) ->
+          expect(remote).toEqual (Math.pow(x, 2) for x in [1..10])
 
     it "can retrieve promise values from the frontend", ->
-      client.handle test: (x) ->
-        Promise.resolve x
+      client.handle test: (x) -> Promise.resolve x
       waitsForPromise ->
         evalsimple("@rpc test(2)").then (x) ->
-          expect(x).toBe(2)
+          expect(x).toBe 2
 
     it "captures stdout", ->
       data = ''
@@ -129,14 +128,11 @@ module.exports = ->
           expect(doneSpy.calls.length).toBe(1)
 
     it "can handle a large number of concurrent callbacks", ->
-      n = 1000
+      n = 100
       cbs = (evalsimple("sleep(rand()); #{i}^2") for i in [0...n])
-      t = new Date().getTime()
-      [0...n].forEach (i) ->
-        waitsForPromise ->
-          cbs[i].then (result) -> expect(result).toBe(Math.pow(i, 2))
-      runs ->
-        expect(new Date().getTime() - t).toBeLessThan(2000)
+      waitsForPromise ->
+        Promise.all(cbs).then (xs) ->
+          expect(xs).toEqual (Math.pow(x, 2) for x in [0...n])
 
   it "handles shutdown correctly", ->
     waitsFor (done) ->
