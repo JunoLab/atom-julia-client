@@ -1,5 +1,5 @@
 path = require 'path'
-remote = require 'remote'
+remote = require('electron').remote
 dialog = remote.require 'dialog'
 BrowserWindow = remote.require 'browser-window'
 
