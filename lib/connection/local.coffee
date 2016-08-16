@@ -11,10 +11,16 @@ server = require './process/server'
 module.exports =
   server: server
 
+  provider: ->
+    switch atom.config.get 'julia-client.juliaOptions.bootMode'
+      when 'Server' then server
+      when 'Cycler' then cycler
+      when 'Basic' then basic
+
   activate: ->
     paths.getVersion()
       .then ->
-        server.start paths.jlpath(), client.clargs()
+        @provider().start? paths.jlpath(), client.clargs()
       .catch ->
 
   monitorExit: (proc) ->
@@ -71,8 +77,4 @@ module.exports =
     proc
 
   spawnJulia: (path, args) ->
-    provider = switch atom.config.get 'julia-client.juliaOptions.bootMode'
-      when 'Server' then server
-      when 'Cycler' then cycler
-      when 'Basic' then basic
-    provider.get path, args
+    @provider().get path, args
