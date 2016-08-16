@@ -1,7 +1,5 @@
 path = require 'path'
-remote = require('electron').remote
-dialog = remote.require 'dialog'
-BrowserWindow = remote.require 'browser-window'
+{dialog, BrowserWindow} = require('electron').remote
 
 {client} =  require '../connection'
 {notifications, views, selector} = require '../ui'

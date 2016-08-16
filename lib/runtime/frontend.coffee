@@ -1,5 +1,4 @@
-remote = require 'remote'
-BrowserWindow = remote.require 'browser-window'
+{BrowserWindow} = require('electron').remote
 vm = require 'vm'
 
 {client} = require '../connection'
