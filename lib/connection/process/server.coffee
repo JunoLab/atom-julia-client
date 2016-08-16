@@ -136,7 +136,7 @@ module.exports =
           @ps[p.id] = p
           p.id
 
-    start: (path, args) -> cycler.start path, args, false
+    start: (path, args) -> cycler.start path, args
 
     onBoot: (id) => @ps[id].socket.then -> true
     onExit: (id) => new Promise (resolve) => @ps[id].onExit resolve
