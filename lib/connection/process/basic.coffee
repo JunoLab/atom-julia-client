@@ -74,7 +74,7 @@ module.exports =
       else
         @freePort().then (port) =>
           wrapPort = port+1
-          jlargs = [args..., '`"' + paths.script('boot.jl') + '`"', port]
+          jlargs = [args..., '"`"' + paths.script('boot.jl') + '`""', port]
           proc = child_process.spawn("powershell",
                                      ["-NoProfile", "-ExecutionPolicy", "bypass",
                                       "& \"#{paths.script "spawnInterruptible.ps1"}\"
