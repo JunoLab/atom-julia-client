@@ -2,6 +2,8 @@ Loading = null
 lwaits = []
 withLoading = (f) -> if Loading? then f() else lwaits.push f
 
+{bufferLines} = require '../misc'
+
 module.exports =
 class IPC
 
@@ -88,18 +90,8 @@ class IPC
     return unless obj instanceof Error
     {type: 'error', message: obj.message, stack: obj.stack}
 
-  buffer: (f) ->
-    buffer = ['']
-    (data) ->
-      str = data.toString()
-      lines = str.split '\n'
-      buffer[0] += lines.shift()
-      buffer.push lines...
-      while buffer.length > 1
-        f buffer.shift()
-
   readStream: (s) ->
-    s.on 'data', cb = @buffer (m) => @input JSON.parse m
+    s.on 'data', cb = bufferLines (m) => @input JSON.parse m
     @unreadStream = -> s.removeListener 'data', cb
 
   writeStream: (s) ->

@@ -4,6 +4,16 @@ module.exports =
   blocks:  require './misc/blocks'
   words:   require './misc/words'
 
+  bufferLines: (f) ->
+    buffer = ['']
+    (data) ->
+      str = data.toString()
+      lines = str.split '\n'
+      buffer[0] += lines.shift()
+      buffer.push lines...
+      while buffer.length > 1
+        f buffer.shift()
+
   time: (desc, p) ->
     s = -> new Date().getTime()/1000
     t = s()
