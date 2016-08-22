@@ -56,18 +56,20 @@ module.exports = views =
 
   link: ({file, line, contents}) ->
     view = @render @tags.a {href: '#'}, contents
-    # TODO: the tooltips here need to be disposed of when the result is destroyed,
-    # but I don't think there are any listeners for that... 
+    # TODO: maybe need to dispose of the tooltip onclick and readd them, but
+    # that doesn't seem to be necessary
     if id = @getUntitledId file
-      atom.tooltips.add view, title: -> 'untitled'
+      tt = atom.tooltips.add view, title: -> 'untitled'
       view.onclick = =>
         @openEditorById id, line
     else
-      atom.tooltips.add view, title: -> file
+      tt = atom.tooltips.add view, title: -> file
       view.onclick = ->
         atom.workspace.open file,
           initialLine: if line >= 0 then line
           searchAllPanes: true
+    view.addEventListener 'DOMNodeRemovedFromDocument', =>
+      tt.dispose()
     view
 
   number: ({value, full}) ->
