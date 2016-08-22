@@ -1,18 +1,25 @@
+{debounce} = require 'underscore-plus'
+
 module.exports =
   paths:   require './misc/paths'
   history: require './misc/history'
   blocks:  require './misc/blocks'
   words:   require './misc/words'
 
-  bufferLines: (f) ->
+  bufferLines: (t, f) ->
+    if not f? then [t, f] = [null, t]
     buffer = ['']
+    flush = if not t? then -> else debounce (->
+      if buffer[0] isnt ''
+        buffer.forEach f
+        buffer = ['']), t
     (data) ->
-      str = data.toString()
-      lines = str.split '\n'
+      lines = data.toString().split '\n'
       buffer[0] += lines.shift()
       buffer.push lines...
       while buffer.length > 1
         f buffer.shift()
+      flush()
 
   time: (desc, p) ->
     s = -> new Date().getTime()/1000

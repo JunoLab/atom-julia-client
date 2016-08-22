@@ -1,6 +1,6 @@
 {CompositeDisposable} = require 'atom'
 
-{history} = require '../misc'
+{history, bufferLines} = require '../misc'
 {notifications, views} = require '../ui'
 {client} = require '../connection'
 
@@ -32,7 +32,7 @@ module.exports =
       input: => @input()
 
     @subs.add client.onStdout (s) => @stdout s
-    @subs.add client.onStderr (s) => @stderr s
+    @subs.add client.onStderr bufferLines 50, (s) => @stderr s
     @subs.add client.onInfo   (s) => @info s
 
   deactivate: ->
@@ -51,7 +51,7 @@ module.exports =
     history.read().then (entries) =>
       @c.history.set entries
 
-  ignored: [/^WARNING: Method definition .* overwritten in module/]
+  ignored: [/^WARNING: Method definition .* overwritten/]
   ignore: (s) ->
     for i in @ignored
       return true if s.match(i)
@@ -59,8 +59,7 @@ module.exports =
   stdout: (data) -> @c.stdout data
 
   stderr: (data) ->
-    data = data.split('\n').filter((x)=>!@ignore x).join("\n")
-    if data then @c.stderr data
+    if not @ignore(data) then @c.stderr data
 
   info: (data) -> @c.info data
 
