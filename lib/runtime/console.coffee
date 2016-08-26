@@ -32,7 +32,7 @@ module.exports =
       input: => @input()
 
     @subs.add client.onStdout (s) => @stdout s
-    @subs.add client.onStderr bufferLines 50, (s) => @stderr s
+    @subs.add client.onStderr bufferLines 50, (s, isLine) => @stderr s, isLine
     @subs.add client.onInfo   (s) => @info s
 
   deactivate: ->
@@ -58,8 +58,10 @@ module.exports =
 
   stdout: (data) -> @c.stdout data
 
-  stderr: (data) ->
-    if not @ignore(data) then @c.stderr data
+  stderr: (data, isLine) ->
+    if not @ignore(data)
+      @c.stderr data
+      if isLine then @c.stderr '\n'
 
   info: (data) -> @c.info data
 

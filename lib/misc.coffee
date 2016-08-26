@@ -11,14 +11,14 @@ module.exports =
     buffer = ['']
     flush = if not t? then -> else debounce (->
       if buffer[0] isnt ''
-        buffer.forEach f
-        buffer = ['']), t
+        f buffer[0], false
+        buffer[0] = ''), t
     (data) ->
       lines = data.toString().split '\n'
       buffer[0] += lines.shift()
       buffer.push lines...
       while buffer.length > 1
-        f buffer.shift()
+        f buffer.shift(), true
       flush()
 
   time: (desc, p) ->
