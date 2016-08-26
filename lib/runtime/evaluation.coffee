@@ -71,12 +71,8 @@ module.exports =
     @errorLines?.lights.destroy()
     lights = @ink.highlights.errorLines (file: file, line: line-1 for {file, line} in lines)
     @errorLines = {r, lights}
-
-    destroyResult = r.destroy.bind r
-    r.destroy = =>
-      if @errorLines?.r == r
-        @errorLines.lights.destroy()
-      destroyResult()
+    r.onDidDestroy =>
+      if @errorLines?.r == r then @errorLines.lights.destroy()
 
   # Working Directory
 
