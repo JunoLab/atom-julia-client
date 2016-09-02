@@ -1,11 +1,14 @@
 {client} = require '../connection'
 {views} = require '../ui'
 
+{webview} = views.tags
+
 module.exports =
   activate: ->
     client.handle
       plot: (x) => @show x
       plotsize: => @plotSize()
+      ploturl: (url) => @ploturl url
     @create()
 
   create: ->
@@ -26,3 +29,9 @@ module.exports =
     @ensureVisible().then =>
       view = atom.views.getView @pane
       [view.clientWidth or 400, view.clientHeight or 300]
+
+  ploturl: (url) ->
+    @show webview
+      class: 'blinkjl',
+      src: url,
+      style: 'width: 100%; height: 100%'

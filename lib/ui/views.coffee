@@ -114,6 +114,6 @@ module.exports = views =
 
   tags: {}
 
-['div', 'span', 'a', 'strong', 'table', 'tr', 'td'].forEach (tag) ->
+['div', 'span', 'a', 'strong', 'table', 'tr', 'td', 'webview'].forEach (tag) ->
   views.tags[tag] = (attrs, contents) ->
     views.tag tag, attrs, contents
