@@ -28,7 +28,8 @@ if precompile
 end
 
 try
-  using Atom
+  using Juno
+  import Atom
   @sync Atom.serve(port, welcome = precompile || install)
 catch
   print(STDERR, "juno-msg-load")
