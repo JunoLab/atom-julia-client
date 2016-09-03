@@ -32,6 +32,13 @@ module.exports =
     souper = obj[method].bind obj
     obj[method] = (a...) -> f souper, a...
 
+  once: (f) ->
+    done = false
+    (args...) ->
+      return if done
+      done = true
+      f.call @, args...
+
   mutex: ->
     wait = Promise.resolve()
     (f) ->

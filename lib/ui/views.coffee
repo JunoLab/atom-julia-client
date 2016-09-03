@@ -1,5 +1,10 @@
 Highlighter = require './highlighter'
 
+{client} = require '../connection'
+{once} = require '../misc'
+
+getlazy = client.import 'getlazy'
+
 module.exports = views =
   dom: ({tag, attrs, contents}) ->
     view = document.createElement tag
@@ -24,7 +29,14 @@ module.exports = views =
                        expand: expand)
 
   lazy: ({head, id}) ->
-    @ink.tree.treeView(@render(head),[])
+    conn = client.conn
+    view = @ink.tree.treeView @render(head), [],
+      onToggle: once =>
+        return unless client.conn == conn
+        getlazy(id).then (children) =>
+          body = view.querySelector ':scope > .body'
+          children.map((x) => @render x).forEach (x) ->
+            body.appendChild x
 
   subtree: ({label, child}) ->
     @render if child.type == "tree"
