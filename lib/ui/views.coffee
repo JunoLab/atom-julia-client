@@ -39,7 +39,7 @@ module.exports = views =
           children.map((x) => @render(x, opts)).forEach (x) ->
             body.appendChild x
 
-  subtree: ({label, child}) ->
+  subtree: ({label, child}, opts) ->
     @render (if child.type == "tree"
       type: "tree"
       head: @tags.span [label, child.head]
