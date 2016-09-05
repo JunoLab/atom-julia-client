@@ -6,7 +6,7 @@ path = require 'path'
 {paths, blocks, words} = require '../misc'
 modules = require './modules'
 
-{eval: evaluate, evalall, cd} = client.import rpc: ['eval', 'evalall'], msg: ['cd']
+{eval: evaluate, evalall, cd, clearLazy} = client.import rpc: ['eval', 'evalall'], msg: ['cd', 'clearLazy']
 
 module.exports =
   # calls `fn` with the current editor, module and editorpath
@@ -29,7 +29,8 @@ module.exports =
             error = result.type == 'error'
             view = if error then result.view else result
             r ?= new @ink.Result editor, [start, end]
-            r.setContent views.render(view), {error}
+            registerLazy = (id) -> r.onDidDestroy -> clearLazy id
+            r.setContent views.render(view, {registerLazy}), {error}
             r.view.classList.add 'julia'
             if error and result.highlights?
               @showError r, result.highlights

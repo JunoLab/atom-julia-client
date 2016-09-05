@@ -30,6 +30,7 @@ module.exports = views =
 
   lazy: ({head, id}, opts) ->
     conn = client.conn
+    opts.registerLazy id
     view = @ink.tree.treeView @render(head, opts), [],
       onToggle: once =>
         return unless client.conn == conn
