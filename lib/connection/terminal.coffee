@@ -1,4 +1,5 @@
 child_process = require 'child_process'
+net = require 'net'
 
 client = require './client'
 {paths} = require '../misc'
@@ -32,3 +33,20 @@ module.exports =
       'x-terminal-emulator -e'
 
   repl: -> @term "#{@escpath paths.jlpath()}"
+
+  connectPort: (port) ->
+    sock = net.connect port
+    client.readStream sock
+    client.attach message: (m) -> sock.write JSON.stringify m
+    sock.on 'end', -> client.detach()
+    sock.on 'error', -> client.detach()
+
+  connectPortUI: ->
+    {console: cons} = require '../runtime'
+    cons.info 'Please enter a port:'
+    cons.input().then (input) =>
+      port = parseInt input
+      @connectPort port
+      client.import('ping')()
+        .then -> atom.notifications.addSuccess "Connected to Julia on #{port}"
+        .catch -> atom.notifications.addError "Couldn't connect to Julia on #{port}"
