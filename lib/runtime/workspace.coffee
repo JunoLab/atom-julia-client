@@ -11,6 +11,7 @@ module.exports =
 
     client.onDetached =>
       @ws.setItems []
+      @lazyTrees = []
 
   lazyTrees: []
 

@@ -139,3 +139,9 @@ module.exports =
   disrequire: (a, f) ->
     f ? [a, f] = [null, a]
     @connectedError(a) or f()
+
+  withCurrent: (f) ->
+    current = @conn
+    (a...) =>
+      return unless current is @conn
+      f(a...)

@@ -23,7 +23,7 @@ module.exports =
 
       result: (result) =>
         view = if result.type == 'error' then result.view else result
-        registerLazy = (id) => @c.onceDidClear -> clearLazy [id]
+        registerLazy = (id) => @c.onceDidClear client.withCurrent -> clearLazy [id]
         view = views.render view, {registerLazy}
         if result.type isnt 'error'
           views.ink.tree.toggle view
