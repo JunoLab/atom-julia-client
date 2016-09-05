@@ -36,7 +36,7 @@ module.exports = views =
         return unless client.conn == conn
         getlazy(id).then (children) =>
           body = view.querySelector ':scope > .body'
-          children.map((x) => @render(x, opts)).forEach (x) ->
+          children.map((x) => @render(@tags.div([x]), opts)).forEach (x) ->
             body.appendChild x
 
   subtree: ({label, child}, opts) ->
