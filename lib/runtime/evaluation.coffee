@@ -29,7 +29,9 @@ module.exports =
             error = result.type == 'error'
             view = if error then result.view else result
             r ?= new @ink.Result editor, [start, end]
-            registerLazy = (id) -> r.onDidDestroy -> clearLazy id
+            registerLazy = (id) ->
+              r.onDidDestroy -> clearLazy [id]
+              editor.onDidDestroy -> clearLazy id
             r.setContent views.render(view, {registerLazy}), {error}
             r.view.classList.add 'julia'
             if error and result.highlights?

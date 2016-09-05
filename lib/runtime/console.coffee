@@ -6,7 +6,7 @@
 
 modules = require './modules'
 
-evalrepl = client.import 'evalrepl'
+{evalrepl, clearLazy} = client.import rpc: ['evalrepl'], msg: ['clearLazy']
 
 module.exports =
   activate: ->
@@ -23,9 +23,11 @@ module.exports =
 
       result: (result) =>
         view = if result.type == 'error' then result.view else result
-        view = views.render(view)
+        registerLazy = (id) => @c.onceDidClear -> clearLazy [id]
+        view = views.render view, {registerLazy}
         if result.type isnt 'error'
           views.ink.tree.toggle view
+          view.onToggle?()
         @c.result view,
           error: result.type == 'error'
 
