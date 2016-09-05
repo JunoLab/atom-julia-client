@@ -6,7 +6,7 @@ Highlighter = require './highlighter'
 getlazy = client.import 'getlazy'
 
 module.exports = views =
-  dom: ({tag, attrs, contents}) ->
+  dom: ({tag, attrs, contents}, opts) ->
     view = document.createElement tag
     for k, v of attrs
       if v instanceof Array then v = v.join ' '
@@ -15,7 +15,7 @@ module.exports = views =
       if contents.constructor isnt Array
         contents = [contents]
       for child in contents
-        view.appendChild @render child
+        view.appendChild @render child, opts
     view
 
   html: ({content}) ->
@@ -23,32 +23,32 @@ module.exports = views =
     view.innerHTML = content
     view = if view.children.length == 1 then view.children[0] else view
 
-  tree: ({head, children, expand}) ->
-    @ink.tree.treeView(@render(head),
-                       children.map((x)=>@render @tags.div [x]),
+  tree: ({head, children, expand}, opts) ->
+    @ink.tree.treeView(@render(head, opts),
+                       children.map((x)=>@render(@tags.div([x]), opts)),
                        expand: expand)
 
-  lazy: ({head, id}) ->
+  lazy: ({head, id}, opts) ->
     conn = client.conn
-    view = @ink.tree.treeView @render(head), [],
+    view = @ink.tree.treeView @render(head, opts), [],
       onToggle: once =>
         return unless client.conn == conn
         getlazy(id).then (children) =>
           body = view.querySelector ':scope > .body'
-          children.map((x) => @render x).forEach (x) ->
+          children.map((x) => @render(x, opts)).forEach (x) ->
             body.appendChild x
 
   subtree: ({label, child}) ->
-    @render if child.type == "tree"
+    @render (if child.type == "tree"
       type: "tree"
       head: @tags.span [label, child.head]
       children: child.children
       # children: child.children.map((x) => @tags.span "gutted", x)
     else
-      @tags.span "gutted", [label, child]
+      @tags.span "gutted", [label, child]), opts
 
-  copy: ({view, text}) ->
-    view = @render view
+  copy: ({view, text}, opts) ->
+    view = @render view, opts
     atom.commands.add view,
       'core:copy': (e) ->
         atom.clipboard.write text
@@ -110,9 +110,9 @@ module.exports = views =
     number:  (a...) -> views.number a...
     code:    (a...) -> views.code a...
 
-  render: (data) ->
+  render: (data, opts = {}) ->
     if @views.hasOwnProperty(data.type)
-      @views[data.type](data)
+      @views[data.type](data, opts)
     else if data?.constructor is String
       new Text data
     else
