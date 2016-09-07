@@ -28,7 +28,7 @@ module.exports =
           .then (result) =>
             error = result.type == 'error'
             view = if error then result.view else result
-            r ?= new @ink.Result editor, [start, end]
+            if not r? or r.isDestroyed then r = new @ink.Result editor, [start, end]
             registerLazy = (id) ->
               r.onDidDestroy client.withCurrent -> clearLazy [id]
               editor.onDidDestroy client.withCurrent -> clearLazy id
