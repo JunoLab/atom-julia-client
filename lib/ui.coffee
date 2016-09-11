@@ -15,14 +15,18 @@ module.exports =
     @subs.add @client.onDetached =>
       @ink?.Result.invalidateAll()
 
-    @client.handle progress: (p) =>
-      @progress?.progress = p
+    @client.handle progress: (p, t, f, l) => @progress?.update p, t, f, l
 
   deactivate: ->
+    @progress.destroy()
     @subs.dispose()
 
   consumeInk: (@ink) ->
     @views.ink = @ink
 
-    @subs.add @client.onWorking => @progress = @ink.progress.push()
-    @subs.add @client.onDone => @progress?.destroy()
+    @subs.add @client.onWorking =>
+      if @progress?
+        @progress.update 'indeterminate', ''
+      else
+        @progress = @ink.progress.create()
+    @subs.add @client.onDone => @progress?.update 0, ''
