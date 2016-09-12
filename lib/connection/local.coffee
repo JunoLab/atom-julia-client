@@ -19,7 +19,7 @@ module.exports =
 
   activate: ->
     paths.getVersion()
-      .then ->
+      .then =>
         @provider().start? paths.jlpath(), client.clargs()
       .catch ->
 
