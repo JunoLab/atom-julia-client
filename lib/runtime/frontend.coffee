@@ -20,7 +20,7 @@ module.exports =
       createWindow: (opts) =>
         w = new BrowserWindow opts
         if opts.url?
-          w.loadUrl opts.url
+          w.loadURL opts.url
         w.setMenu(null)
         wid = w.id
         @windows[wid] = w
