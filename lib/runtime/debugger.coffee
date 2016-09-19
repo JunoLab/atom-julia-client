@@ -71,7 +71,8 @@ module.exports =
       buttons: [
         {icon: 'arrow-down', command: 'julia-debug:step-to-next-line'}
         {icon: 'link-external', command: 'julia-debug:finish-function'}
-        {icon: 'chevron-right', command: 'julia-debug:step-into-function'}
+        {icon: 'move-right', command: 'julia-debug:step-into-function'}
+        {icon: 'chevron-right', command: 'julia-debug:step-to-next-expression'}
       ]
     breakpoints = ink.breakpoints
     @subs.add breakpoints.addScope 'source.julia'

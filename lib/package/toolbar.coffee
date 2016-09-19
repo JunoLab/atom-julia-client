@@ -76,9 +76,14 @@ module.exports =
       tooltip: 'Debug: Finish Function'
 
     @bar.addButton
-      icon: 'chevron-right'
+      icon: 'move-right'
       callback: 'julia-debug:step-into-function'
-      tooltip: 'Debug: Step Into Function'
+      tooltip: 'Debug: Step into Function'
+
+    @bar.addButton
+      icon: 'chevron-right'
+      callback: 'julia-debug:step-to-next-expression'
+      tooltip: 'Debug: Step to Next Expression'
 
   deactivate: ->
     @bar?.removeItems()
