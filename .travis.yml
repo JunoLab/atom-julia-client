@@ -3,7 +3,7 @@ language: generic
 
 env:
   global:
-    - APM_TEST_PACKAGES="ink"
+    - APM_TEST_PACKAGES="ink language-julia"
     - ATOM_LINT_WITH_BUNDLED_NODE="true"
 
   matrix:
