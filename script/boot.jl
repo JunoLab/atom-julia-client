@@ -28,7 +28,9 @@ if precompile
 end
 
 try
-  using Juno
+  if VERSION.minor >= 5
+    @eval using Juno
+  end
   import Atom
   @sync Atom.serve(port, welcome = precompile || install)
 catch
