@@ -34,7 +34,7 @@ module.exports =
       input: => @input()
 
     @subs.add client.onStdout (s) => @stdout s
-    @subs.add client.onStderr bufferLines 50, (s, isLine) => @stderr s, isLine
+    @subs.add client.onStderr (s) => @stderr s
     @subs.add client.onInfo   (s) => @info s
 
   deactivate: ->
