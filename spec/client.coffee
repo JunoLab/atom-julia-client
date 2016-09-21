@@ -45,7 +45,7 @@ module.exports = ->
     it "waits for the boot to complete", ->
       pong = client.import('ping')()
       expect(clientStatus()).toEqual [true, true]
-      waitsFor 'the client to boot', 60*1000, (done) ->
+      waitsFor 'the client to boot', 5*60*1000, (done) ->
         pong.then (pong) ->
           expect(pong).toBe('pong')
           done()
