@@ -1,10 +1,5 @@
 # Julia Client
 
-[![Chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/JunoLab/Juno)
+[![Developer Chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/JunoLab/Juno)
 
-Julia client provides interactive IDE-like features for the Atom editor. You can spin up
-a Julia process to run in the background, evaluate code inline, get live autocompletion
-results, work with the inline console, and more.
-
-For set up instructions, please see [the manual](manual/). This software is very much in
-alpha stage so expect to get your hands a little dirty.
+This is the main repo for [Juno](http://junolab.org), the Julia IDE. Please see [here](https://github.com/JunoLab/uber-juno/blob/master/setup.md) for installation instructions and report problems at [the discussion board](http://discuss.junolab.org/).
