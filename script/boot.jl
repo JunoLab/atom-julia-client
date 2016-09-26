@@ -23,6 +23,8 @@ end
 try
   if VERSION.minor >= 5
     @eval using Juno
+  else
+    @eval using Atom
   end
   import Atom
   @sync Atom.serve(port, welcome = precompile || install)
