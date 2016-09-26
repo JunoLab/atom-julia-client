@@ -113,6 +113,7 @@ module.exports =
     as.push "--precompiled=#{if precompiled then 'yes' else 'no'}"
     as.push "--depwarn=#{if deprecationWarnings then 'yes' else 'no'}"
     as.push "-O#{optimisationLevel}" unless optimisationLevel is 2
+    as.push "--startup-file=no"
     as.push "-i"
     as
 

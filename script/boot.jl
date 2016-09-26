@@ -13,6 +13,7 @@ if install
 end
 
 port = parse(Int, shift!(ARGS))
+cwd = shift!(ARGS)
 
 pkgdir = joinpath(JULIA_HOME, "..", "pkg") |> normpath
 vers = "v$(VERSION.major).$(VERSION.minor)"
@@ -32,6 +33,9 @@ try
     @eval using Juno
   end
   import Atom
+  cd(cwd)
+  juliarc = joinpath(homedir(), ".juliarc.jl")
+  isfile(juliarc) && include(juliarc)
   @sync Atom.serve(port, welcome = precompile || install)
 catch
   print(STDERR, "juno-msg-load")
