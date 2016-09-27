@@ -21,12 +21,8 @@ if precompile
 end
 
 try
-  if VERSION.minor >= 5
-    @eval using Juno
-  else
-    @eval using Atom
-  end
   import Atom
+  @eval using $(VERSION < v"0.5-" ? :Atom : :Juno)
   @sync Atom.serve(port, welcome = precompile || install)
 catch
   print(STDERR, "juno-msg-load")
