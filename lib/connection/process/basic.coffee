@@ -36,9 +36,9 @@ module.exports =
         reject [code, status]
       proc.on 'error', (err) -> reject err
 
-  getUnix: (path, args) ->
+  getUnix: (path, args, cwd) ->
     @freePort().then (port) =>
-      proc = child_process.spawn path, [args..., paths.script('boot.jl'), port]
+      proc = child_process.spawn path, [args..., paths.script('boot.jl'), port, cwd], {cwd: cwd}
 
       @createProc proc,
         kill: -> proc.kill()
@@ -65,22 +65,22 @@ module.exports =
     p.then (@powershellCheck) =>
     p
 
-  getWindows: (path, args) ->
-    return @getUnix(path, args) unless @wrapperEnabled()
+  getWindows: (path, args, cwd) ->
+    return @getUnix(path, args, cwd) unless @wrapperEnabled()
     @checkPowershellVersion().then (powershell) =>
       if not powershell
         client.stderr "PowerShell version < 3 encountered. Running without wrapper (interrupts won't work)."
-        @getUnix path, args
+        @getUnix path, args, cwd
       else
         @freePort().then (port) =>
           wrapPort = port+1
-          jlargs = [args..., '"`"' + paths.script('boot.jl') + '`""', port]
+          jlargs = [args..., '"`"' + paths.script('boot.jl') + '`""', port, cwd]
           proc = child_process.spawn("powershell",
                                      ["-NoProfile", "-ExecutionPolicy", "bypass",
                                       "& \"#{paths.script "spawnInterruptible.ps1"}\"
                                       -wrapPort #{wrapPort}
                                       -jlpath \"#{path}\"
-                                      -jlargs #{jlargs}"])
+                                      -jlargs #{jlargs}"], {cwd: cwd})
 
           @createProc proc,
             wrapper: true

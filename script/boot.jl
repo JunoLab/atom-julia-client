@@ -13,11 +13,22 @@ if install
 end
 
 port = parse(Int, shift!(ARGS))
+cwd = shift!(ARGS)
 
 precompile = !install && isempty(Base.find_all_in_cache_path(:Atom))
 
 if precompile
   print(STDERR, "juno-msg-precompiling")
+end
+
+cd(cwd) # windows might no have this set correctly
+
+try
+  junorc = joinpath(homedir(), ".junorc.jl")
+  isfile(junorc) && include(junorc)
+catch
+  print(STDERR, "juno-msg-junorc")
+  rethrow()
 end
 
 try

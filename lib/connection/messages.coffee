@@ -25,6 +25,14 @@ module.exports =
         """
         dismissable: true
 
+    client.handleBasic 'junorc', =>
+      @note?.dismiss()
+      atom.notifications.addError "Error loading ~/.junorc.jl",
+        detail: """
+        Check `julia ~/.junorc.jl` runs correctly then again
+        """
+        dismissable: true
+
     client.handleBasic 'installing', =>
       @note?.dismiss()
       @note = atom.notifications.addInfo "Installing Julia packages...",

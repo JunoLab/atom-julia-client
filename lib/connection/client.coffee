@@ -107,12 +107,13 @@ module.exports =
       @clientCall 'kill', 'kill'
 
   clargs: ->
-    {precompiled, optimisationLevel, deprecationWarnings} =
+    {precompiled, optimisationLevel, deprecationWarnings, startupFile} =
       atom.config.get 'julia-client.juliaOptions'
     as = []
     as.push "--precompiled=#{if precompiled then 'yes' else 'no'}"
     as.push "--depwarn=#{if deprecationWarnings then 'yes' else 'no'}"
     as.push "-O#{optimisationLevel}" unless optimisationLevel is 2
+    as.push "--startup-file=#{if startupFile then 'yes' else 'no'}"
     as.push "-i"
     as
 

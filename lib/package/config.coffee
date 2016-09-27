@@ -24,6 +24,11 @@ config =
         title: 'Deprecation Warnings'
         type: 'boolean'
         default: true
+      startupFile:
+        title: 'Startup File'
+        description: 'Load ~/.juliarc.jl. ~/.junorc.jl will still be loaded if it exists'
+        type: 'boolean'
+        default: true
       bootMode:
         title: 'Boot Mode'
         type: 'string'

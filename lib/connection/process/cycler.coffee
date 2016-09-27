@@ -9,37 +9,37 @@ module.exports =
 
   procs: {}
 
-  key: (path, args) -> [path, args...].join ' '
+  key: (path, args, cwd) -> [path, args..., cwd].join ' '
 
-  cache: (path, args) -> @procs[@key(path, args)] ?= []
+  cache: (path, args, cwd) -> @procs[@key(path, args, cwd)] ?= []
 
-  removeFromCache: (path, args, obj) ->
-    key = @key path, args
+  removeFromCache: (path, args, obj, cwd) ->
+    key = @key path, args, cwd
     @procs[key] = @procs[key].filter (x) -> x != obj
 
-  toCache: (path, args, proc) ->
+  toCache: (path, args, proc, cwd) ->
     proc.cached = true
-    @cache(path, args).push proc
+    @cache(path, args, cwd).push proc
 
-  fromCache: (path, args) ->
-    ps = @cache path, args
+  fromCache: (path, args, cwd) ->
+    ps = @cache path, args, cwd
     p = ps.shift()
     return unless p?
     p.cached = false
     p.init.then =>
-      @start path, args
+      @start path, args, cwd
       p.proc
 
-  start: (path, args) ->
+  start: (path, args, cwd) ->
     basic.lock (release) =>
       if @cache(path, args).length < @cacheLength
-        basic.get_(path, args).then (proc) =>
+        basic.get_(path, args, cwd).then (proc) =>
           obj = {path, args, proc: proc}
           @monitor proc
           @warmup obj
           @toCache path, args, obj
           proc.socket
-            .then => @start path, args
+            .then => @start path, args, cwd
             .catch (e) => @removeFromCache path, args, obj
           release proc.socket
       else
@@ -78,10 +78,10 @@ module.exports =
         return
       .catch ->
 
-  get: (path, args) ->
-    if (proc = @fromCache path, args) then p = proc
-    else p = basic.get path, args
-    @start path, args
+  get: (path, args, cwd) ->
+    if (proc = @fromCache path, args, cwd) then p = proc
+    else p = basic.get path, args, cwd
+    @start path, args, cwd
     p
 
   reset: ->

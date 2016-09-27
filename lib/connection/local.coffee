@@ -57,14 +57,13 @@ module.exports =
 
   start: ->
     [path, args] = [paths.jlpath(), client.clargs()]
-    paths.projectDir().then (dir) -> cd dir
     check = paths.getVersion()
 
     check.catch (err) =>
       messages.jlNotFound paths.jlpath(), err
 
-    proc = check
-      .then => @spawnJulia(path, args)
+    proc = Promise.all [paths.projectDir(), check]
+      .then ([dir]) => @spawnJulia path, args, dir
       .then (proc) => @monitor proc
     proc
       .then (proc) =>
@@ -76,5 +75,5 @@ module.exports =
         throw e
     proc
 
-  spawnJulia: (path, args) ->
-    @provider().get path, args
+  spawnJulia: (path, args, cwd) ->
+    @provider().get path, args, cwd
