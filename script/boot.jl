@@ -28,14 +28,21 @@ if precompile
   print(STDERR, "juno-msg-precompiling")
 end
 
+cd(cwd) # windows might no have this set correctly
+
+try
+  junorc = joinpath(homedir(), ".junorc.jl")
+  isfile(junorc) && include(junorc)
+catch
+  print(STDERR, "juno-msg-junorc")
+  rethrow()
+end
+
 try
   if VERSION.minor >= 5
     @eval using Juno
   end
   import Atom
-  cd(cwd) # windows might no have this set correctly
-  junorc = joinpath(homedir(), ".junorc.jl")
-  isfile(junorc) && include(junorc)
   @sync Atom.serve(port, welcome = precompile || install)
 catch
   print(STDERR, "juno-msg-load")
