@@ -38,7 +38,7 @@ module.exports =
 
   getUnix: (path, args, cwd) ->
     @freePort().then (port) =>
-      proc = child_process.spawn path, [args..., paths.script('boot.jl'), port, cwd]
+      proc = child_process.spawn path, [args..., paths.script('boot.jl'), port, cwd], {cwd: cwd}
 
       @createProc proc,
         kill: -> proc.kill()
@@ -80,7 +80,7 @@ module.exports =
                                       "& \"#{paths.script "spawnInterruptible.ps1"}\"
                                       -wrapPort #{wrapPort}
                                       -jlpath \"#{path}\"
-                                      -jlargs #{jlargs}"])
+                                      -jlargs #{jlargs}"], {cwd: cwd})
 
           @createProc proc,
             wrapper: true

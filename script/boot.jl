@@ -33,9 +33,9 @@ try
     @eval using Juno
   end
   import Atom
-  cd(cwd)
-  juliarc = joinpath(homedir(), ".juliarc.jl")
-  isfile(juliarc) && include(juliarc)
+  cd(cwd) # windows might no have this set correctly
+  junorc = joinpath(homedir(), ".junorc.jl")
+  isfile(junorc) && include(junorc)
   @sync Atom.serve(port, welcome = precompile || install)
 catch
   print(STDERR, "juno-msg-load")
