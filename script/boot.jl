@@ -23,7 +23,7 @@ end
 try
   import Atom
   @eval using $(VERSION < v"0.5-" ? :Atom : :Juno)
-  @sync Atom.serve(port, welcome = precompile || install)
+  @sync Atom.connect(port, welcome = precompile || install)
 catch
   print(STDERR, "juno-msg-load")
   rethrow()

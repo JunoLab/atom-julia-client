@@ -3,6 +3,7 @@ child_process = require 'child_process'
 
 {paths, mutex} = require '../../misc'
 client = require '../client'
+tcp = require './tcp'
 
 module.exports =
 
@@ -26,6 +27,7 @@ module.exports =
     obj.onStderr ?= (f) -> proc.stderr.on 'data', f
     obj
 
+  # Used only when Julia is a server, which it's not for now
   socket: (proc, port) ->
     new Promise (resolve, reject) ->
       proc.stderr.on 'data', f = (data) ->
@@ -37,13 +39,13 @@ module.exports =
       proc.on 'error', (err) -> reject err
 
   getUnix: (path, args) ->
-    @freePort().then (port) =>
+    tcp.listen().then (port) =>
       proc = child_process.spawn path, [args..., paths.script('boot.jl'), port]
 
       @createProc proc,
         kill: -> proc.kill()
         interrupt: -> proc.kill 'SIGINT'
-        socket: @socket proc, port
+        socket: tcp.next()
 
   # Windows Stuff
 
@@ -72,8 +74,7 @@ module.exports =
         client.stderr "PowerShell version < 3 encountered. Running without wrapper (interrupts won't work)."
         @getUnix path, args
       else
-        @freePort().then (port) =>
-          wrapPort = port+1
+        @freePort().then (wrapPort) =>
           jlargs = [args..., '"`"' + paths.script('boot.jl') + '`""', port]
           proc = child_process.spawn("powershell",
                                      ["-NoProfile", "-ExecutionPolicy", "bypass",
@@ -86,7 +87,7 @@ module.exports =
             wrapper: true
             kill: => @sendSignalToWrapper 'KILL', wrapPort
             interrupt: => @sendSignalToWrapper 'SIGINT', wrapPort
-            socket: @socket proc, port
+            socket: tcp.next()
 
   get_: (a...) ->
     if process.platform is 'win32'
