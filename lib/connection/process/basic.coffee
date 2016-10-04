@@ -27,16 +27,24 @@ module.exports =
     obj.onStderr ?= (f) -> proc.stderr.on 'data', f
     obj
 
+  watchProcExit: (proc, reject) ->
+    proc.on 'exit', (code, status) ->
+      reject [code, status]
+    proc.on 'error', (err) -> reject err
+
   # Used only when Julia is a server, which it's not for now
   socket: (proc, port) ->
-    new Promise (resolve, reject) ->
+    new Promise (resolve, reject) =>
       proc.stderr.on 'data', f = (data) ->
         if data.toString().indexOf('juno-msg-ready') != -1
           proc.stderr.removeListener 'data', f
           resolve net.connect port
-      proc.on 'exit', (code, status) ->
-        reject [code, status]
-      proc.on 'error', (err) -> reject err
+      @watchProcExit proc, reject
+
+  clientSocket: (proc) ->
+    failure = new Promise (resolve, reject) =>
+      @watchProcExit proc, reject
+    Promise.race [failure, tcp.next()]
 
   getUnix: (path, args) ->
     tcp.listen().then (port) =>
@@ -45,7 +53,7 @@ module.exports =
       @createProc proc,
         kill: -> proc.kill()
         interrupt: -> proc.kill 'SIGINT'
-        socket: tcp.next()
+        socket: @clientSocket proc
 
   # Windows Stuff
 
@@ -87,7 +95,7 @@ module.exports =
             wrapper: true
             kill: => @sendSignalToWrapper 'KILL', wrapPort
             interrupt: => @sendSignalToWrapper 'SIGINT', wrapPort
-            socket: tcp.next()
+            socket: @clientSocket proc
 
   get_: (a...) ->
     if process.platform is 'win32'

@@ -45,7 +45,6 @@ module.exports =
     @pipeStreams proc
     @monitorExit proc
     client.attach proc
-    proc.onExit -> client.detach()
     proc
 
   connect: (proc, sock) ->
