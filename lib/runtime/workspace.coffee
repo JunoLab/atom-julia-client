@@ -16,7 +16,7 @@ module.exports =
   lazyTrees: []
 
   update: ->
-    return @ws.setItems [] unless client.isActive()
+    return @ws.setItems [] unless client.isActive() and @ws.currentPane()
     clearLazy @lazyTrees
     registerLazy = (id) => @lazyTrees.push id
     p = workspace('Main').then (ws) =>
