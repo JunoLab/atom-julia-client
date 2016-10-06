@@ -10,8 +10,11 @@ module.exports =
   listeners: []
 
   next: ->
-    new Promise (resolve) =>
+    conn = new Promise (resolve) =>
       @listeners.push resolve
+    conn.dispose = =>
+      @listeners = @listeners.filter (x) -> x is conn
+    conn
 
   handle: (sock) ->
     return sock.end() unless @listeners.length > 0

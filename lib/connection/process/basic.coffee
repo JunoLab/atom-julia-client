@@ -42,9 +42,12 @@ module.exports =
       @watchProcExit proc, reject
 
   clientSocket: (proc) ->
+    conn = tcp.next()
     failure = new Promise (resolve, reject) =>
-      @watchProcExit proc, reject
-    Promise.race [failure, tcp.next()]
+      @watchProcExit proc, (err) ->
+        conn.dispose()
+        reject err
+    Promise.race [conn, failure]
 
   getUnix: (path, args) ->
     tcp.listen().then (port) =>
