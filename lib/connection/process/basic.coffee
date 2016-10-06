@@ -49,7 +49,7 @@ module.exports =
         reject err
     Promise.race [conn, failure]
 
-  getUnix: (path, args) ->
+  get_: (path, args) ->
     tcp.listen().then (port) =>
       proc = child_process.spawn path, [args..., paths.script('boot.jl'), port]
 
@@ -57,55 +57,6 @@ module.exports =
         kill: -> proc.kill()
         interrupt: -> proc.kill 'SIGINT'
         socket: @clientSocket proc
-
-  # Windows Stuff
-
-  wrapperEnabled: -> atom.config.get "julia-client.enablePowershellWrapper"
-
-  sendSignalToWrapper: (signal, port) ->
-    wrapper = net.connect({port})
-    wrapper.setNoDelay()
-    wrapper.write(signal)
-    wrapper.end()
-
-  checkPowershellVersion: ->
-    return Promise.resolve(@powershellCheck) if @powershellCheck?
-    p = new Promise (resolve) =>
-      proc = child_process.spawn("powershell", ["-NoProfile", "$PSVersionTable.PSVersion.Major"])
-      proc.stdout.on 'data', (data) -> resolve parseInt(data.toString()) >= 3
-      proc.on 'error', -> resolve false
-      proc.on 'exit', -> resolve false
-    p.then (@powershellCheck) =>
-    p
-
-  getWindows: (path, args) ->
-    return @getUnix(path, args) unless @wrapperEnabled()
-    @checkPowershellVersion().then (powershell) =>
-      if not powershell
-        client.stderr "PowerShell version < 3 encountered. Running without wrapper (interrupts won't work)."
-        @getUnix path, args
-      else
-        tcp.listen().then (port) =>
-          @freePort().then (wrapPort) =>
-            jlargs = [args..., '"`"' + paths.script('boot.jl') + '`""', port]
-            proc = child_process.spawn("powershell",
-                                       ["-NoProfile", "-ExecutionPolicy", "bypass",
-                                        "& \"#{paths.script "spawnInterruptible.ps1"}\"
-                                        -wrapPort #{wrapPort}
-                                        -jlpath \"#{path}\"
-                                        -jlargs #{jlargs}"])
-
-            @createProc proc,
-              wrapper: true
-              kill: => @sendSignalToWrapper 'KILL', wrapPort
-              interrupt: => @sendSignalToWrapper 'SIGINT', wrapPort
-              socket: @clientSocket proc
-
-  get_: (a...) ->
-    if process.platform is 'win32'
-      @getWindows a...
-    else
-      @getUnix a...
 
   get: (a...) ->
     @lock (release) =>
