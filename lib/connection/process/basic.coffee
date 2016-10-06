@@ -85,20 +85,21 @@ module.exports =
         client.stderr "PowerShell version < 3 encountered. Running without wrapper (interrupts won't work)."
         @getUnix path, args
       else
-        @freePort().then (wrapPort) =>
-          jlargs = [args..., '"`"' + paths.script('boot.jl') + '`""', port]
-          proc = child_process.spawn("powershell",
-                                     ["-NoProfile", "-ExecutionPolicy", "bypass",
-                                      "& \"#{paths.script "spawnInterruptible.ps1"}\"
-                                      -wrapPort #{wrapPort}
-                                      -jlpath \"#{path}\"
-                                      -jlargs #{jlargs}"])
+        tcp.listen().then (port) =>
+          @freePort().then (wrapPort) =>
+            jlargs = [args..., '"`"' + paths.script('boot.jl') + '`""', port]
+            proc = child_process.spawn("powershell",
+                                       ["-NoProfile", "-ExecutionPolicy", "bypass",
+                                        "& \"#{paths.script "spawnInterruptible.ps1"}\"
+                                        -wrapPort #{wrapPort}
+                                        -jlpath \"#{path}\"
+                                        -jlargs #{jlargs}"])
 
-          @createProc proc,
-            wrapper: true
-            kill: => @sendSignalToWrapper 'KILL', wrapPort
-            interrupt: => @sendSignalToWrapper 'SIGINT', wrapPort
-            socket: @clientSocket proc
+            @createProc proc,
+              wrapper: true
+              kill: => @sendSignalToWrapper 'KILL', wrapPort
+              interrupt: => @sendSignalToWrapper 'SIGINT', wrapPort
+              socket: @clientSocket proc
 
   get_: (a...) ->
     if process.platform is 'win32'
