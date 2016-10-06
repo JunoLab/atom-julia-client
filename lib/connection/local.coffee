@@ -51,6 +51,7 @@ module.exports =
     proc.message = (m) -> sock.write JSON.stringify m
     client.readStream sock
     sock.on 'end', -> client.detach()
+    sock.on 'error', -> client.detach()
     proc.ready = -> true
     client.flush()
     proc
