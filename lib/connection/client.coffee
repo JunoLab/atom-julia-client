@@ -101,10 +101,13 @@ module.exports =
       @clientCall 'interrupts', 'interrupt'
 
   kill: ->
-    if @isActive() and not @isWorking()
-      @import('exit')().catch ->
+    if @isActive()
+      if not @isWorking()
+        @import('exit')().catch ->
+      else
+        @clientCall 'kill', 'kill'
     else
-      @clientCall 'kill', 'kill'
+      @ipc.reset()
 
   clargs: ->
     {precompiled, optimisationLevel, deprecationWarnings} =

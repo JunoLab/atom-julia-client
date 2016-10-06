@@ -60,7 +60,7 @@ module.exports =
     @subs.add atom.commands.add 'atom-workspace',
       'julia-client:open-a-repl': -> juno.connection.terminal.repl()
       'julia-client:start-julia': -> disrequireClient 'boot Julia', -> boot()
-      'julia-client:kill-julia': => requireClient 'kill Julia', -> juno.connection.client.kill()
+      'julia-client:kill-julia': -> juno.connection.client.kill()
       'julia-client:interrupt-julia': => requireClient 'interrupt Julia', -> juno.connection.client.interrupt()
       'julia-client:reset-julia-server': -> juno.connection.local.server.reset()
       'julia-client:connect-to-local-port': -> disrequireClient -> juno.connection.terminal.connectPortUI()
