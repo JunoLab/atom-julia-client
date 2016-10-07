@@ -55,7 +55,8 @@ module.exports =
   gotoSymbol: ->
     @withCurrentContext ({editor, mod}) =>
       words.withWord editor, (word, range) =>
-        client.import("methods")({word: word, mod: mod}).then (result) => # 149
+        client.import("methods")({word: word, mod: mod}).then (symbols) =>
+          @ink.goto.goto symbols unless symbols.error
 
   toggleDocs: ->
     @withCurrentContext ({editor, mod}) =>
