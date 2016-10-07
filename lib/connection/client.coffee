@@ -113,7 +113,6 @@ module.exports =
     {precompiled, optimisationLevel, deprecationWarnings} =
       atom.config.get 'julia-client.juliaOptions'
     as = []
-    as.push "--precompiled=#{if precompiled then 'yes' else 'no'}"
     as.push "--depwarn=#{if deprecationWarnings then 'yes' else 'no'}"
     as.push "-O#{optimisationLevel}" unless optimisationLevel is 2
     as.push "-i"

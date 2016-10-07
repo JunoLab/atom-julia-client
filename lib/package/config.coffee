@@ -9,11 +9,6 @@ config =
   juliaOptions:
     type: 'object'
     properties:
-      precompiled:
-        title: 'Precompiled'
-        description: 'Use precompiled code from system image if available.'
-        type: 'boolean'
-        default: process.platform isnt 'win32'
       optimisationLevel:
         title: 'Optimisation Level'
         description: 'Higher levels take longer to compile, but produce faster code.'
