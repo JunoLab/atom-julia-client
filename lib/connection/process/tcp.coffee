@@ -16,9 +16,20 @@ module.exports =
       @listeners = @listeners.filter (x) -> x is conn
     conn
 
+  connect: (sock) ->
+    message = (m) -> sock.write JSON.stringify m
+    client.readStream sock
+    sock.on 'end', -> client.detach()
+    sock.on 'error', -> client.detach()
+    client.attach {message}
+
   handle: (sock) ->
-    return sock.end() unless @listeners.length > 0
-    @listeners.shift()(sock)
+    if @listeners.length > 0
+      @listeners.shift()(sock)
+    else if not client.isActive()
+      @connect sock
+    else
+      sock.end()
 
   listen: ->
     return Promise.resolve(@port) if @port?

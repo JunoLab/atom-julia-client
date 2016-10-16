@@ -61,6 +61,11 @@ module.exports =
   onAttached: (cb) -> @emitter.on 'attached', cb
   onDetached: (cb) -> @emitter.on 'detached', cb
 
+  onceAttached: (cb) ->
+    f = @onAttached (args...) ->
+      f.dispose()
+      cb.call this, args...
+
   isActive: -> @conn?
 
   attach: (@conn) ->

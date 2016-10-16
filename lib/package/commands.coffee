@@ -63,7 +63,7 @@ module.exports =
       'julia-client:kill-julia': -> juno.connection.client.kill()
       'julia-client:interrupt-julia': => requireClient 'interrupt Julia', -> juno.connection.client.interrupt()
       'julia-client:reset-julia-server': -> juno.connection.local.server.reset()
-      'julia-client:connect-to-local-port': -> disrequireClient -> juno.connection.terminal.connectPortUI()
+      'julia-client:connnect-external-process': -> disrequireClient -> juno.connection.messages.connectExternal()
       'julia-client:open-console': => @withInk -> juno.runtime.console.open()
       "julia-client:clear-console": => juno.runtime.console.reset()
       'julia-client:open-plot-pane': => @withInk -> juno.runtime.plots.open()

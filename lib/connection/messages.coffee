@@ -1,4 +1,5 @@
 client = require './client'
+tcp = require './process/tcp'
 
 module.exports =
   activate: ->
@@ -75,3 +76,20 @@ module.exports =
       else
         ""
       dismissable: true
+
+  connectExternal: ->
+    tcp.listen().then (port) ->
+      code = "using Juno; Juno.connect(#{port})"
+      msg = atom.notifications.addInfo "Connect an external process",
+        detail: """
+        To connect a Julia process running in the terminal,
+        run the command:
+        -
+            #{code}
+        """
+        dismissable: true
+        buttons: [{text: 'Copy', onDidClick: -> atom.clipboard.write code}]
+      client.onceAttached ->
+        if not msg.isDismissed()
+          msg.dismiss()
+          atom.notifications.addSuccess "Julia is connected."
