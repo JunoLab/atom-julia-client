@@ -76,14 +76,16 @@ module.exports = views =
     # that doesn't seem to be necessary
     if id = @getUntitledId file
       tt = atom.tooltips.add view, title: -> 'untitled'
-      view.onclick = =>
+      view.onclick = (e) =>
         @openEditorById id, line
+        e.stopPropagation()
     else
       tt = atom.tooltips.add view, title: -> file
-      view.onclick = ->
+      view.onclick = (e) ->
         atom.workspace.open file,
           initialLine: if line >= 0 then line
           searchAllPanes: true
+        e.stopPropagation()
     view.addEventListener 'DOMNodeRemovedFromDocument', =>
       tt.dispose()
     view
@@ -91,9 +93,10 @@ module.exports = views =
   number: ({value, full}) ->
     view = @render @tags.span 'constant number', value.toPrecision(3)
     isfull = false
-    view.onclick = ->
+    view.onclick = (e) ->
       view.innerText = if !isfull then full else value.toPrecision(3)
       isfull = !isfull
+      e.stopPropagation()
     view
 
   code: ({text, scope}) ->
