@@ -15,8 +15,12 @@ module.exports =
     @subs.add @client.onDetached =>
       @ink?.Result.invalidateAll()
 
-    @client.handle progress: (p) =>
-      @progress?.progress = p
+    @client.handle 'progress!': (t, p) =>
+      @ink.progress.activate()
+      @ink.progress[t] p
+
+    # @client.handle progress: (p) =>
+    #   @progress?.progress = p
 
   deactivate: ->
     @subs.dispose()
@@ -24,5 +28,5 @@ module.exports =
   consumeInk: (@ink) ->
     @views.ink = @ink
 
-    @subs.add @client.onWorking => @progress = @ink.progress.push()
-    @subs.add @client.onDone => @progress?.destroy()
+    # @subs.add @client.onWorking => @progress = @ink.progress.push()
+    # @subs.add @client.onDone => @progress?.destroy()
