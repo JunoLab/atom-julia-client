@@ -1,4 +1,5 @@
 {CompositeDisposable} = require 'atom'
+{formatTimePeriod} = require './misc'
 
 module.exports =
   notifications: require './ui/notifications'
@@ -15,18 +16,25 @@ module.exports =
     @subs.add @client.onDetached =>
       @ink?.Result.invalidateAll()
 
+    t_0 = {}
+
     @client.handle 'progress!': (t, p) =>
-      @ink.progress.activate()
+      if t is 'add'
+        t_0[p.id] = Date.now()
+      else if t is 'update' and not p.rightText?.length
+        p.rightText = formatTimePeriod (Date.now() - t_0[p.id])*(1/p.progress - 1)/1000
+      else if t is 'delete'
+        delete t_0[p.id]
       @ink.progress[t] p
 
-    # @client.handle progress: (p) =>
-    #   @progress?.progress = p
 
   deactivate: ->
     @subs.dispose()
+    @ink.progress.emptyStack()
 
   consumeInk: (@ink) ->
     @views.ink = @ink
 
-    # @subs.add @client.onWorking => @progress = @ink.progress.push()
-    # @subs.add @client.onDone => @progress?.destroy()
+    indetProg = @ink.progress.indeterminateProgress 'indetJuno'
+    @subs.add @client.onWorking => @ink.progress.add indetProg
+    @subs.add @client.onDone    => @ink.progress.emptyStack()
