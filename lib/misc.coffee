@@ -60,7 +60,7 @@ module.exports =
     return unless dt > 1
     h = Math.floor dt/(60*60)
     m = Math.floor (dt -= h*60*60)/60
-    s = Math.floor (dt - m*60)
+    s = Math.round (dt - m*60)
     parts = [h, m, s]
     for i, dt of parts
       parts[i] = if dt < 10 then "0#{dt}" else "#{dt}"
