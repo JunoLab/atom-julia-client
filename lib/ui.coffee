@@ -17,7 +17,7 @@ module.exports =
     @subs.add @client.onDetached =>
       @ink?.Result.invalidateAll()
 
-    @client.handle 'progress!': (t, p) => @progress[t] p
+    @client.handle 'progress': (t, p) => @progress[t] p
 
   deactivate: ->
     @subs.dispose()
@@ -27,5 +27,5 @@ module.exports =
     @views.ink = @ink
     @progress.ink = @ink
 
-    @subs.add @client.onWorking => @progress.add progress: -1, id: 'indet'
-    @subs.add @client.onDone => @progress.clear()
+    @subs.add @client.onWorking => @progress.add progress: null
+    @subs.add @client.onDone    => @progress.clear()

@@ -11,7 +11,7 @@ module.exports =
 
   update: (p) ->
     pr = @progs.find (pr) => pr.id is p.id
-    pr.setProgress p.progress
+    pr.setProgress if p.progress >= 0 then p.progress else null
     pr.setLeftText p.leftText
     if p.rightText?.length
       pr.setRightText p.rightText
@@ -21,6 +21,7 @@ module.exports =
 
   delete: (p) ->
     i = @progs.findIndex (pr) => pr.id is p.id
+    return if i < 0
     @progs[i].destroy()
     @progs.splice i, 1
 
