@@ -29,6 +29,6 @@ module.exports =
 
     [status] = []
 
-    @subs.add @client.onWorking  => status = @progress.add progress: null
+    @subs.add @client.onWorking  => status = @progress.add progress: null, leftText: 'Julia'
     @subs.add @client.onDone     => status?.destroy()
     @subs.add @client.onDetached => @progress.clear()
