@@ -54,3 +54,14 @@ module.exports =
         result = f.call @, args...
         release result
         result
+
+  # takes a time period in seconds and formats it as hh:mm:ss
+  formatTimePeriod: (dt) ->
+    return unless dt > 1
+    h = Math.floor dt/(60*60)
+    m = Math.floor (dt -= h*60*60)/60
+    s = Math.round (dt - m*60)
+    parts = [h, m, s]
+    for i, dt of parts
+      parts[i] = if dt < 10 then "0#{dt}" else "#{dt}"
+    parts.join ':'

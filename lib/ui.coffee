@@ -4,6 +4,8 @@ module.exports =
   notifications: require './ui/notifications'
   selector:      require './ui/selector'
   views:         require './ui/views'
+  progress:      require './ui/progress'
+
 
   activate: (@client) ->
     @subs = new CompositeDisposable
@@ -15,14 +17,18 @@ module.exports =
     @subs.add @client.onDetached =>
       @ink?.Result.invalidateAll()
 
-    @client.handle progress: (p) =>
-      @progress?.progress = p
+    @client.handle 'progress': (t, p, m) => @progress[t] p, m
 
   deactivate: ->
     @subs.dispose()
+    @progress.clear()
 
   consumeInk: (@ink) ->
     @views.ink = @ink
+    @progress.ink = @ink
 
-    @subs.add @client.onWorking => @progress = @ink.progress.push()
-    @subs.add @client.onDone => @progress?.destroy()
+    [status] = []
+
+    @subs.add @client.onWorking  => status = @progress.add progress: null, leftText: 'Julia'
+    @subs.add @client.onDone     => status?.destroy()
+    @subs.add @client.onDetached => @progress.clear()
