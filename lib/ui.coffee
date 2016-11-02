@@ -27,5 +27,8 @@ module.exports =
     @views.ink = @ink
     @progress.ink = @ink
 
-    @subs.add @client.onWorking => @progress.add progress: null
-    @subs.add @client.onDone    => @progress.clear()
+    [status] = []
+
+    @subs.add @client.onWorking  => status = @progress.add progress: null
+    @subs.add @client.onDone     => status?.destroy()
+    @subs.add @client.onDetached => @progress.clear()
