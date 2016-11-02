@@ -17,7 +17,7 @@ module.exports =
     @subs.add @client.onDetached =>
       @ink?.Result.invalidateAll()
 
-    @client.handle 'progress': (t, p) => @progress[t] p
+    @client.handle 'progress': (t, p, m) => @progress[t] p, m
 
   deactivate: ->
     @subs.dispose()

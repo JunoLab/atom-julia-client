@@ -7,18 +7,29 @@ module.exports =
     pr = @ink.progress.create p
     pr.register()
     pr.t0 = Date.now()
+    pr.showTime = true
     @progs[pr.id] = pr
 
-  update: (p) ->
+  progress: (p, prog) ->
     pr = @progs[p.id]
     return unless pr?
-    pr.setProgress if p.progress >= 0 then p.progress else null
-    pr.setLeftText p.leftText
-    if p.rightText?.length
-      pr.setRightText p.rightText
+    pr.setProgress prog
+    if pr.showTime then @rightText pr
+
+  message:  (p, m) -> @progs[p.id]?.setMessage  m
+
+  leftText: (p, m) -> @progs[p.id]?.setLeftText m
+
+  rightText: (p, m) ->
+    pr = @progs[p.id]
+    return unless pr?
+    if m?.length
+      pr.setRightText m
+      pr.showTime = false
     else
-      pr.setRightText formatTimePeriod (Date.now() - pr.t0)*(1/p.progress - 1)/1000
-    pr.setMessage p.msg
+      dt = (Date.now() - pr.t0)*(1/pr.progress - 1)/1000
+      pr.showTime = true
+      pr.setRightText formatTimePeriod dt
 
   delete: (p) ->
     pr = @progs[p.id]
