@@ -73,9 +73,9 @@ module.exports =
       searchAllPanes: true
 
   reset: ->
-    oldText = @c.getInput().editor.getText()
+    oldText = @c.getInput()?.editor.getText()
     @c.reset()
-    @c.getInput().editor.setText oldText
+    if oldText? then @c.getInput()?.editor.setText oldText
 
   eval: ({editor, mode}) ->
     return unless editor.getText().trim()
