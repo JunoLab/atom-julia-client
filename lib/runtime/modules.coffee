@@ -59,7 +59,10 @@ module.exports =
       if (item = atom.workspace.getActivePaneItem())
         active = item.juliaModule or (if ised then @autodetect else 'Main')
         modules = allmodules().then (modules) =>
-          modules.unshift if ised then @autodetect else @follow
+          if ised
+            modules.unshift @autodetect
+          else if @lastEditorModule?
+            modules.unshift @follow
           modules
         selector.show(modules, active: active).then (mod) =>
           return unless mod?
