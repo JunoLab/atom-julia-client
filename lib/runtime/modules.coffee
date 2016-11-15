@@ -36,7 +36,7 @@ module.exports =
     {main, inactive, sub, subInactive} = m
     if main is @follow then return @current @lastEditorModule
     if not main or inactive
-      "Main"
+      "JunoMain"
     else if not sub or subInactive
       main
     else
@@ -57,7 +57,7 @@ module.exports =
     return unless @isValidItem item
     client.require 'change modules', =>
       if (item = atom.workspace.getActivePaneItem())
-        active = item.juliaModule or (if ised then @autodetect else 'Main')
+        active = item.juliaModule or (if ised then @autodetect else 'JunoMain')
         modules = allmodules().then (modules) =>
           modules.unshift if ised then @autodetect else @follow
           modules
@@ -75,14 +75,14 @@ module.exports =
       @itemSubs.add item?.onDidChangeGrammar? => @updateForItem()
       @setCurrent()
     else if not client.isActive()
-      @setCurrent main: 'Main', inactive: true
+      @setCurrent main: 'JunoMain', inactive: true
     else if atom.workspace.isTextEditor item
       @updateForEditor item
     else
-      @setCurrent main: item.juliaModule or 'Main'
+      @setCurrent main: item.juliaModule or 'JunoMain'
 
   updateForEditor: (editor) ->
-    @setCurrent main: editor.juliaModule or 'Main', true
+    @setCurrent main: editor.juliaModule or 'JunoMain', true
     @getEditorModule editor
     @itemSubs.add editor.onDidChangeCursorPosition =>
       @getEditorModuleLazy editor
@@ -132,7 +132,7 @@ module.exports =
       if main is @follow
         return @updateView @lastEditorModule
       @tile ?= @statusBar?.addRightTile item: @dom, priority: 10
-      @mainView.innerText = main or 'Main'
+      @mainView.innerText = main or 'JunoMain'
       if sub
         @subView.innerText = sub
         @dividerView.innerText = '/'

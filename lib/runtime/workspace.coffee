@@ -19,7 +19,7 @@ module.exports =
     return @ws.setItems [] unless client.isActive() and @ws.currentPane()
     clearLazy @lazyTrees
     registerLazy = (id) => @lazyTrees.push id
-    p = workspace('Main').then (ws) =>
+    p = workspace('JunoMain').then (ws) =>
       for {items} in ws
         for item in items
           item.value = views.render item.value, {registerLazy}
