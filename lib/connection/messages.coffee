@@ -79,12 +79,12 @@ module.exports =
 
   connectExternal: ->
     tcp.listen().then (port) ->
-      code = "using Juno; Juno.connect(#{port})"
+      code = "using Juno; Juno.startup(#{port})"
       msg = atom.notifications.addInfo "Connect an external process",
         detail: """
         To connect a Julia process running in the terminal,
         run the command:
-        -
+        
             #{code}
         """
         dismissable: true
