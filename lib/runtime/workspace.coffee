@@ -3,6 +3,8 @@
 {views} = require '../ui'
 {client} = require '../connection'
 
+modules = require './modules'
+
 {workspace, clearLazy} = client.import rpc: 'workspace', msg: 'clearLazy'
 
 module.exports =
@@ -19,7 +21,7 @@ module.exports =
     return @ws.setItems [] unless client.isActive() and @ws.currentPane()
     clearLazy @lazyTrees
     registerLazy = (id) => @lazyTrees.push id
-    p = workspace('Main').then (ws) =>
+    p = workspace(modules.current()).then (ws) =>
       for {items} in ws
         for item in items
           item.value = views.render item.value, {registerLazy}
