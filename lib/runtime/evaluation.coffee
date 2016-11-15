@@ -6,7 +6,8 @@ path = require 'path'
 {paths, blocks, words} = require '../misc'
 modules = require './modules'
 
-{eval: evaluate, evalall, cd, clearLazy} = client.import rpc: ['eval', 'evalall'], msg: ['cd', 'clearLazy']
+{eval: evaluate, evalall, cd, clearLazy, clearall} =
+  client.import rpc: ['eval', 'evalall'], msg: ['cd', 'clearLazy', 'clearall']
 
 module.exports =
   # calls `fn` with the current editor, module and editorpath
@@ -15,6 +16,8 @@ module.exports =
     mod = modules.current() ? 'Main'
     edpath = editor.getPath() || 'untitled-' + editor.getBuffer().id
     fn {editor, mod, edpath}
+
+  resetWorkspace: -> clearall()
 
   eval: ({move}={}) ->
     @withCurrentContext ({editor, mod, edpath}) =>
