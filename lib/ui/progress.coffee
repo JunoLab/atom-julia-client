@@ -27,7 +27,7 @@ module.exports =
       pr.setRightText m
       pr.showTime = false
     else
-      dt = (Date.now() - pr.t0)*(1/pr.progress - 1)/1000
+      dt = (Date.now() - pr.t0)*(1/pr.level - 1)/1000
       pr.showTime = true
       pr.setRightText formatTimePeriod dt
 
