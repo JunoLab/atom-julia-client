@@ -17,8 +17,6 @@ module.exports =
     @subs.add @client.onDetached =>
       @ink?.Result.invalidateAll()
 
-    @client.handle 'progress': (t, p, m) => @progress[t] p, m
-
   deactivate: ->
     @subs.dispose()
     @progress.clear()
@@ -26,9 +24,4 @@ module.exports =
   consumeInk: (@ink) ->
     @views.ink = @ink
     @progress.ink = @ink
-
-    [status] = []
-
-    @subs.add @client.onWorking  => status = @progress.add progress: null, leftText: 'Julia'
-    @subs.add @client.onDone     => status?.destroy()
-    @subs.add @client.onDetached => @progress.clear()
+    @progress.activate()
