@@ -13,7 +13,8 @@
     "atom-space-pen-views": "^2.0.0",
     "underscore-plus": "*",
     "atom-package-deps": "*",
-    "coffee-script": "*"
+    "coffee-script": "*",
+    "etch": "*"
   },
   "consumedServices": {
     "status-bar": {
