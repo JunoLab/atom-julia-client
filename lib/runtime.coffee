@@ -7,11 +7,13 @@ module.exports =
   plots:       require './runtime/plots'
   frontend:    require './runtime/frontend'
   debugger:    require './runtime/debugger'
+  profiler:    require './runtime/profiler'
 
   activate: ->
     @modules.activate()
     @frontend.activate()
     @debugger.activate()
+    @profiler.activate()
 
   deactivate: ->
     mod.deactivate() for mod in [@modules, @console, @frontend, @debugger]
