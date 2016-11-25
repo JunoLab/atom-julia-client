@@ -4,6 +4,7 @@ module.exports =
   paths:   require './misc/paths'
   history: require './misc/history'
   blocks:  require './misc/blocks'
+  cells:   require './misc/cells'
   words:   require './misc/words'
 
   bufferLines: (t, f) ->
