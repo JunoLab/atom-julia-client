@@ -51,6 +51,14 @@ config =
     description: "Limits the Console history's size."
     default: 10000
     order: 8
+  resultsDisplayMode:
+    type: 'string'
+    default: 'inline'
+    enum: [
+      {value:'inline', description:'Float results next to code'}
+      {value:'block', description:'Display results under code'}
+    ]
+    order: 10
 
 if process.platform != 'darwin'
   config.terminal =

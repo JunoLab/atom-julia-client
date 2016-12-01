@@ -23,12 +23,12 @@ module.exports =
         [[start], [end]] = range
         @ink.highlight editor, start, end
         r = null
-        setTimeout (=> r ?= new @ink.Result editor, [start, end]), 0.1
+        setTimeout (=> r ?= new @ink.Result editor, [start, end], type: atom.config.get 'julia-client.resultsDisplayMode'), 0.1
         evaluate({text, line: line+1, mod, path: edpath})
           .then (result) =>
             error = result.type == 'error'
             view = if error then result.view else result
-            if not r? or r.isDestroyed then r = new @ink.Result editor, [start, end]
+            if not r? or r.isDestroyed then r = new @ink.Result editor, [start, end], type: atom.config.get 'julia-client.resultsDisplayMode'
             registerLazy = (id) ->
               r.onDidDestroy client.withCurrent -> clearLazy [id]
               editor.onDidDestroy client.withCurrent -> clearLazy id
