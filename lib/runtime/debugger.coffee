@@ -69,10 +69,9 @@ module.exports =
   consumeInk: (ink) ->
     @stepper = new ink.Stepper
       buttons: [
-        {icon: 'arrow-down', command: 'julia-debug:step-to-next-line'}
         {icon: 'link-external', command: 'julia-debug:finish-function'}
-        {icon: 'move-right', command: 'julia-debug:step-into-function'}
-        {icon: 'chevron-right', command: 'julia-debug:step-to-next-expression'}
+        {icon: 'triangle-right', command: 'julia-debug:step-to-next-expression'}
+        {icon: 'sign-in', command: 'julia-debug:step-into-function'}
       ]
     breakpoints = ink.breakpoints
     @subs.add breakpoints.addScope 'source.julia'
