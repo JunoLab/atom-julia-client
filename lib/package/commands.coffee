@@ -1,4 +1,5 @@
 shell =                 require 'shell'
+cells =                 require '../misc/cells'
 {CompositeDisposable} = require 'atom'
 
 module.exports =
@@ -27,6 +28,18 @@ module.exports =
         @withInk ->
           boot()
           juno.runtime.evaluation.evalAll()
+      'julia-client:run-cell': =>
+        @withInk ->
+          boot()
+          juno.runtime.evaluation.eval(cell: true)
+      'julia-client:run-cell-and-move': =>
+        @withInk ->
+          boot()
+          juno.runtime.evaluation.eval(cell: true, move: true)
+      'julia-client:next-cell': =>
+        cells.moveNext()
+      'julia-client:prev-cell': =>
+        cells.movePrev()
       'julia-client:goto-symbol': =>
         @withInk ->
           boot()

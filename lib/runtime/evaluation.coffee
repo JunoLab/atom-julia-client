@@ -3,7 +3,7 @@ path = require 'path'
 
 {client} =  require '../connection'
 {notifications, views, selector} = require '../ui'
-{paths, blocks, words} = require '../misc'
+{paths, blocks, cells, words} = require '../misc'
 modules = require './modules'
 
 {eval: evaluate, evalall, cd, clearLazy} = client.import rpc: ['eval', 'evalall'], msg: ['cd', 'clearLazy']
@@ -16,19 +16,21 @@ module.exports =
     edpath = editor.getPath() || 'untitled-' + editor.getBuffer().id
     fn {editor, mod, edpath}
 
-  eval: ({move}={}) ->
+  eval: ({move, cell}={}) ->
     @withCurrentContext ({editor, mod, edpath}) =>
-      Promise.all blocks.get(editor).map ({range, line, text, selection}) =>
-        blocks.moveNext editor, selection, range if move
+      selector = if cell? then cells else blocks
+      Promise.all selector.get(editor).map ({range, line, text, selection}) =>
+        selector.moveNext editor, selection, range if move
         [[start], [end]] = range
         @ink.highlight editor, start, end
         r = null
-        setTimeout (=> r ?= new @ink.Result editor, [start, end], type: atom.config.get 'julia-client.resultsDisplayMode'), 0.1
+        rtype = if cell? then "block" else atom.config.get 'julia-client.resultsDisplayMode'
+        setTimeout (=> r ?= new @ink.Result editor, [start, end], type: rtype), 0.1
         evaluate({text, line: line+1, mod, path: edpath})
           .then (result) =>
             error = result.type == 'error'
             view = if error then result.view else result
-            if not r? or r.isDestroyed then r = new @ink.Result editor, [start, end], type: atom.config.get 'julia-client.resultsDisplayMode'
+            if not r? or r.isDestroyed then r = new @ink.Result editor, [start, end], type: rtype
             registerLazy = (id) ->
               r.onDidDestroy client.withCurrent -> clearLazy [id]
               editor.onDidDestroy client.withCurrent -> clearLazy id
