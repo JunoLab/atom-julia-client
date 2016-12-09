@@ -91,10 +91,12 @@ module.exports = views =
     view
 
   number: ({value, full}) ->
-    view = @render @tags.span 'constant number', value.toPrecision(3)
+    rounded = value.toPrecision(3)
+    rounded += '…' unless rounded.toString().length >= full.length
+    view = @render @tags.span 'constant number', rounded
     isfull = false
     view.onclick = (e) ->
-      view.innerText = if !isfull then full else value.toPrecision(3)
+      view.innerText = if !isfull then full else rounded
       isfull = !isfull
       e.stopPropagation()
     view
