@@ -5,6 +5,7 @@
 {client} = require '../connection'
 
 modules = require './modules'
+debug = require './debugger'
 
 {evalrepl, clearLazy} = client.import rpc: ['evalrepl'], msg: ['clearLazy']
 
@@ -52,6 +53,7 @@ module.exports =
     atom.views.getView(@c).classList.add 'julia'
     history.read().then (entries) =>
       @c.history.set entries
+    @c.toolbar = @toolbar
 
   ignored: [/^WARNING: Method definition .* overwritten/]
   ignore: (s) ->
@@ -94,6 +96,16 @@ module.exports =
     {name: 'help', prefix: '?', icon: 'question', grammar: 'source.julia'}
     {name: 'shell', prefix: ';', icon: 'terminal', grammar: 'source.shell'}
   ]
+
+  toolbar: [{
+      type: 'group'
+      children: [
+        {icon: 'link-external', alt: 'Debug: Finish Function', onclick: ()->debug.finish()}
+        {icon: 'arrow-down', alt: 'Debug: Next Line', onclick: ()->debug.nextline()}
+        {icon: 'triangle-right', alt: 'Debug: Next Expression', onclick: ()->debug.stepexpr()}
+        {icon: 'sign-in', alt: 'Debug: Step into Function', onclick: () -> debug.stepin()}
+      ]
+  }]
 
   input: ->
     new Promise (resolve) =>
