@@ -10,7 +10,7 @@ module.exports =
     client.handle 'progress': (t, p, m) => @[t] p, m
     status = []
     @subs.add client.onWorking  =>
-        status = @ink?.progress.add(null, leftText: 'Julia')
+        status = @ink?.progress.add(null, description: 'Julia')
     @subs.add client.onDone     => status?.destroy()
     @subs.add client.onDetached => @clear()
 
@@ -31,7 +31,7 @@ module.exports =
 
   message:  (p, m) -> @progs[p.id]?.message = m
 
-  leftText: (p, m) -> @progs[p.id]?.leftText = m
+  rightText: (p, m) -> @progs[p.id]?.description = m
 
   rightText: (p, m) ->
     pr = @progs[p.id]
