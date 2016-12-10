@@ -15,6 +15,7 @@ module.exports =
     @subs.add @client.onAttached =>
       @notifications.show("Client Connected")
     @subs.add @client.onDetached =>
+      atom.notifications.addInfo("Julia has stopped.")
       @ink?.Result.invalidateAll()
 
   deactivate: ->
