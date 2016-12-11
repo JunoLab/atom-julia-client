@@ -79,7 +79,8 @@ module.exports = views =
         e.stopPropagation()
     else
       tt = atom.tooltips.add view, title: -> file
-      view.onclick = (e) ->
+      view.onclick = (e) =>
+        @ink.util.focusEditorPane()
         atom.workspace.open file,
           initialLine: if line >= 0 then line
           searchAllPanes: true
