@@ -44,7 +44,7 @@ module.exports =
 
   # Choosing Modules
 
-  itemSelector: 'atom-text-editor[data-grammar="source julia"], ink-console.julia'
+  itemSelector: 'atom-text-editor[data-grammar="source julia"], .julia-console.julia'
 
   isValidItem: (item) -> atom.views.getView(item)?.matches @itemSelector
 

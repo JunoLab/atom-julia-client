@@ -49,7 +49,7 @@ module.exports =
     @subs.add @c.onEval (ed) => @eval ed
     @subs.add client.onWorking => @c.loading true
     @subs.add client.onDone => @c.loading false
-    atom.views.getView(@c).classList.add 'julia'
+    atom.views.getView(@c).classList.add 'julia', 'julia-console'
     history.read().then (entries) =>
       @c.history.set entries
 

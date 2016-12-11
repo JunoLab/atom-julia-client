@@ -67,7 +67,7 @@ module.exports =
 
 
     @subs.add atom.commands.add '.item-views > atom-text-editor[data-grammar="source julia"],
-                                 ink-console.julia',
+                                 .julia-console.julia',
       'julia-client:set-working-module': -> juno.runtime.modules.chooseModule()
 
     @subs.add atom.commands.add 'atom-workspace',
