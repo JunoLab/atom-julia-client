@@ -92,6 +92,7 @@ module.exports =
       'julia:open-startup-file': -> atom.workspace.open juno.misc.paths.home '.juliarc.jl'
       'julia:open-julia-home': -> shell.openItem juno.misc.paths.juliaHome()
       'julia:open-package-in-new-window': -> juno.misc.paths.openPackage()
+      'julia:standard-layout': -> juno.ui.layout.standard()
 
       'julia-client:work-in-file-folder': ->
         requireClient 'change working folder', ->

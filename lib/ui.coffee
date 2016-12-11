@@ -5,7 +5,7 @@ module.exports =
   selector:      require './ui/selector'
   views:         require './ui/views'
   progress:      require './ui/progress'
-
+  layout:        require './ui/layout'
 
   activate: (@client) ->
     @subs = new CompositeDisposable

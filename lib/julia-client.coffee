@@ -34,6 +34,9 @@ module.exports = JuliaClient =
   consumeInk: (ink) ->
     commands.ink = ink
     x.consumeInk ink for x in [@connection, @runtime, @ui]
+    if atom.config.get('julia-client.useStandardLayout') and atom.workspace.getPanes().length == 1
+      # HACK: give atom time to open, or buffers go screwy
+      setTimeout (=> @ui.layout.standard()), 100
 
   consumeStatusBar: (bar) ->
     @runtime.consumeStatusBar bar
