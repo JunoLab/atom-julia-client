@@ -58,14 +58,12 @@ module.exports = views =
 
   openEditorById: (id, line) ->
     for pane in atom.workspace.getPanes()
-      ind = 0
       for item in pane.getItems()
         if item.constructor.name is "TextEditor" and item.getBuffer().id is id
-          pane.activateItemAtIndex ind
+          pane.setActiveItem item
           item.setCursorBufferPosition [line, 0]
           item.scrollToCursorPosition()
           return true
-        ind += 1
     false
 
   getUntitledId: (file) -> file.match(/untitled-([\d\w]+)$/)?[1]
@@ -81,7 +79,8 @@ module.exports = views =
         e.stopPropagation()
     else
       tt = atom.tooltips.add view, title: -> file
-      view.onclick = (e) ->
+      view.onclick = (e) =>
+        @ink.util.focusEditorPane()
         atom.workspace.open file,
           initialLine: if line >= 0 then line
           searchAllPanes: true
