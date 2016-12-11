@@ -18,14 +18,14 @@
   'cmd-j cmd-g': 'julia-client:goto-symbol'
 
 '.platform-darwin .item-views > atom-text-editor[data-grammar="source julia"],
- .platform-darwin ink-console.julia,
- .platform-darwin ink-console.julia atom-text-editor':
+ .platform-darwin .julia-console.julia,
+ .platform-darwin .julia-console.julia atom-text-editor':
   'ctrl-c': 'julia-client:interrupt-julia'
   'cmd-j cmd-m': 'julia-client:set-working-module'
 
 '.platform-darwin .item-views > atom-text-editor[data-grammar="source julia"].debug,
- .platform-darwin ink-console.julia.debug,
- .platform-darwin ink-console.julia.debug atom-text-editor':
+ .platform-darwin .julia-console.julia.debug,
+ .platform-darwin .julia-console.julia.debug atom-text-editor':
   'ctrl-l': 'julia-debug:step-to-next-line'
   'ctrl-m': 'julia-debug:step-to-next-expression'
   'ctrl-f': 'julia-debug:finish-function'
@@ -54,10 +54,10 @@
   'alt-x': 'julia-debug:toggle-breakpoint'
   'ctrl-j ctrl-g': 'julia-client:goto-symbol'
 
-'.platform-win32 ink-console.julia,
- .platform-win32 ink-console.julia atom-text-editor,
- .platform-linux ink-console.julia,
- .platform-linux ink-console.julia atom-text-editor':
+'.platform-win32 .julia-console.julia,
+ .platform-win32 .julia-console.julia atom-text-editor,
+ .platform-linux .julia-console.julia,
+ .platform-linux .julia-console.julia atom-text-editor':
   'ctrl-shift-c': 'julia-client:interrupt-julia'
   'ctrl-j ctrl-m': 'julia-client:set-working-module'
 
