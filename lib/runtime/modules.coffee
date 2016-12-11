@@ -1,3 +1,5 @@
+# TODO: this code is awful, refactor
+
 {CompositeDisposable, Emitter} = require 'atom'
 {debounce} = require 'underscore-plus'
 
@@ -44,7 +46,7 @@ module.exports =
 
   # Choosing Modules
 
-  itemSelector: 'atom-text-editor[data-grammar="source julia"], .julia-console.julia'
+  itemSelector: 'atom-text-editor[data-grammar="source julia"], .julia-console.julia, .ink-workspace'
 
   isValidItem: (item) -> atom.views.getView(item)?.matches @itemSelector
 
@@ -70,6 +72,7 @@ module.exports =
             delete item.juliaModule
           else
             item.juliaModule = mod
+          item.setModule?(mod if mod isnt @autodetect)
           @updateForItem item
 
   updateForItem: (item = atom.workspace.getActivePaneItem()) ->

@@ -21,7 +21,8 @@ module.exports =
     return @ws.setItems [] unless client.isActive() and @ws.currentPane()
     clearLazy @lazyTrees
     registerLazy = (id) => @lazyTrees.push id
-    p = workspace(modules.current()).then (ws) =>
+    mod = if @mod == modules.follow then modules.current() else (@mod or 'Main')
+    p = workspace(mod).then (ws) =>
       for {items} in ws
         for item in items
           item.value = views.render item.value, {registerLazy}
@@ -33,5 +34,6 @@ module.exports =
 
   create: ->
     @ws = @ink.Workspace.fromId 'julia'
+    @ws.setModule = (mod) => @mod = mod
 
   open: -> @ws.open split: 'right'
