@@ -33,12 +33,17 @@ module.exports =
     @bar.addButton
       icon: 'terminal'
       callback: 'julia-client:open-console'
-      tooltip: 'Open Console'
+      tooltip: 'Show Console'
 
     @bar.addButton
       icon: 'graph'
       callback: 'julia-client:open-plot-pane'
       tooltip: 'Show Plots'
+
+    @bar.addButton
+      icon: 'book'
+      callback: 'julia-client:open-workspace'
+      tooltip: 'Show Workspace'
 
     @bar.addSpacer()
 
