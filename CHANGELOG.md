@@ -1,3 +1,9 @@
+## 0.5.11
+* Connect Juno to Jupyter or a terminal repl
+* Cell-block eval mode
+* Inline results can be displayed in block-mode
+* Much more powerful `@progress` with support for nested loops and concurrency
+
 ## 0.5.0
 * Inline Documentation
 * Debugger
