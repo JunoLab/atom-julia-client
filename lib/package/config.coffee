@@ -49,7 +49,7 @@ config =
   useStandardLayout:
     type: 'boolean'
     default: false
-    description: 'Open the console, workspace and plot pane when on start.'
+    description: 'Open the console, workspace and plot pane on start.'
     order: 7.5
   maximumConsoleSize:
     type: 'integer'
