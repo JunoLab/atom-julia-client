@@ -55,7 +55,8 @@ module.exports =
       {label: 'Open Workspace', command: 'julia-client:open-workspace'}
 
       {type: 'separator'}
-      
+
+      {label: 'Help...', command: 'julia:get-help'}
       {label: 'Settings...', command: 'julia-client:settings'}
     ]
   }]

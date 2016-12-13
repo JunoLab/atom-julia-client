@@ -93,6 +93,7 @@ module.exports =
       'julia:open-julia-home': -> shell.openItem juno.misc.paths.juliaHome()
       'julia:open-package-in-new-window': -> juno.misc.paths.openPackage()
       'julia:standard-layout': -> juno.ui.layout.standard()
+      'julia:get-help': -> shell.openExternal 'http://discourse.julialang.org'
 
       'julia-client:work-in-file-folder': ->
         requireClient 'change working folder', ->
