@@ -27,8 +27,8 @@ module.exports =
 
   plotSize: ->
     @ensureVisible().then =>
-      view = atom.views.getView @pane
-      [view.clientWidth or 400, view.clientHeight or 300]
+      view = atom.views.getView(@pane).querySelector('.fill')
+      [view?.clientWidth or 400, view?.clientHeight or 300]
 
   ploturl: (url) ->
     @show webview
