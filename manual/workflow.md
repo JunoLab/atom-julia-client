@@ -24,7 +24,7 @@ while loading /Users/sglyon/Desktop/temp/julia/junk/foo.jl, in expression starti
 At this point you have two options:
 
 1. Quit Julia completely and start over. Then we will be able to `include("foo.jl")` one time before seeing that error message again.
-2. Follow the [workflow tips](http://docs.julialang.org/en/latest/manual/workflow-tips/#repl-based-workflow) section of the manual and wrap the code in a module.
+2. Follow the [workflow tips](http://docs.julialang.org/en/latest/manual/workflow-tips.html) section of the manual and wrap the code in a module.
 
 Option 1 is painful for obvious reasons: every time we make a change to anything
 in `foo.jl` we have to restart Julia  and reload everything associated with our
