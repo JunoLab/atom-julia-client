@@ -31,7 +31,7 @@ module.exports =
 
   message:  (p, m) -> @progs[p.id]?.message = m
 
-  rightText: (p, m) -> @progs[p.id]?.description = m
+  leftText: (p, m) -> @progs[p.id]?.description = m
 
   rightText: (p, m) ->
     pr = @progs[p.id]
