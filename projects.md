@@ -2,7 +2,7 @@ This page lists ideas for student summer projects, specifically related to tooli
 
 These ideas are meant to serve as a foundation for a solid proposal, but you're not limited to what's specified here. We encourage you to extend and change proposals and even come up with your own when applying.
 
-For any questions, reach out to the [Julia mailing list](https://groups.google.com/forum/#!forum/julia-users) or to the [Juno forum](http://discuss.junolab.org). If you're interested in a project but not sure how you'd get started, we're happy to help.
+For any questions, reach out to the [Julia forum](http://discourse.julialang.org). If you're interested in a project but not sure how you'd get started, we're happy to help.
 
 ## Documentation search & navigation
 
