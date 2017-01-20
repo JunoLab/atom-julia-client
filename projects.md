@@ -16,10 +16,6 @@ Juno could provide a simple way to browse available packages and view what's ins
 
 This could also be extended by having metadata about the package, such as a readme, github stars, activity and so on. To support this we probably need a [pkg.julialang.org](http://pkg.julialang.org) style API which provides the info in JSON format.
 
-## Swirl-style tutorial
-
-The [swirl](http://swirlstats.com) tutorial teaches R users through an interactive REPL experience. Something similar in Julia could provide a tutorial that takes advantage of Juno's frontend integration, e.g. for getting input and displaying results. In particular, we'd expect this project to involve building a solid *framework* for building swirl-style tutorials, and allowing the Julia community to easily create new tutorials using Julia. Some research into how Swirl itself achieves this would be a good start.
-
 ## Julia Code Analysis
 
 The foundation for tools like refactoring, linting or autoformatting is a powerful framework for reading and writing Julia code while preserving various features of the source code; comments, original formatting, and perhaps even syntax errors. This could build on the work in JuliaParser.jl.
