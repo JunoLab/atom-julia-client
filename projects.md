@@ -32,7 +32,7 @@ While static analysis has long been used as a tool for understanding and finding
 
 ## Support for ANSI codes in the console
 
-The Ink console has some nice features, including being able to display graphics and HTML inline. However, it could be useful to integrate some more terminal-esc features like support for ANSI colour codes.
+The Ink console has some nice features, including being able to display graphics and HTML inline. However, it could be useful to integrate some more terminal-esque features like support for ANSI colour codes.
 
 ## Workspace saving and loading
 
