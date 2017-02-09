@@ -30,7 +30,10 @@ module.exports = views =
 
   lazy: ({head, id}, opts) ->
     conn = client.conn
-    opts.registerLazy id
+    if opts.registerLazy?
+      opts.registerLazy id
+    else
+      console.warn 'Unregistered lazy view'
     view = @ink.tree.treeView @render(head, opts), [],
       onToggle: once =>
         return unless client.conn == conn
