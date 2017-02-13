@@ -81,8 +81,9 @@ module.exports =
       "julia-client:clear-console": => juno.runtime.console.reset()
       'julia-client:open-plot-pane': => @withInk -> juno.runtime.plots.open()
       'julia-client:open-workspace': => @withInk -> juno.runtime.workspace.open()
-      'julia-client:settings': ->
-        atom.workspace.open('atom://config/packages/julia-client')
+      'julia-client:settings': -> atom.workspace.open('atom://config/packages/julia-client')
+      'julia-debug:clear-all-breakpoints': => juno.runtime.debugger.clearall()
+      'julia-debug:get-all-breakpoints': => juno.runtime.debugger.getBPs()
       'julia-debug:step-to-next-line': => juno.runtime.debugger.nextline()
       'julia-debug:step-to-next-expression': => juno.runtime.debugger.stepexpr()
       'julia-debug:step-into-function': => juno.runtime.debugger.stepin()

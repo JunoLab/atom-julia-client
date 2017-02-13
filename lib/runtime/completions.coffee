@@ -15,6 +15,9 @@ module.exports =
   filterSuggestions: true
   excludeLowerPriority: false
 
+  sleep: (n) ->
+    new Promise((resolve) -> setTimeout(resolve, n*1000))
+
   getTextEditorSelector: -> 'atom-text-editor'
 
   rawCompletions: ({editor, bufferPosition: {row, column}, activatedManually}) ->
@@ -41,9 +44,10 @@ module.exports =
 
   getSuggestions: (data) ->
     return [] unless client.isActive() and @validScope data.scopeDescriptor
-    @rawCompletions(data).then ({completions, prefix, mod}) =>
+    cs = @rawCompletions(data).then ({completions, prefix, mod}) =>
       return @fromCache mod, prefix if not completions?
       @processCompletions completions, prefix
+    Promise.race([cs, @sleep(1).then(->[])])
 
   cache: {}
 
