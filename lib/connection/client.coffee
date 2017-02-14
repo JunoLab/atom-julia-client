@@ -38,6 +38,7 @@ module.exports =
       if atom.config.get 'julia-client.errorNotifications'
         atom.notifications.addError options.msg, options
       console.error options.detail
+      atom.beep()
 
   deactivate: ->
     @emitter.dispose()

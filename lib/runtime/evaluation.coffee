@@ -16,6 +16,7 @@ module.exports =
     edpath = editor.getPath() || 'untitled-' + editor.getBuffer().id
     fn {editor, mod, edpath}
 
+  # TODO: this is horrible, refactor
   eval: ({move, cell}={}) ->
     @withCurrentContext ({editor, mod, edpath}) =>
       selector = if cell? then cells else blocks
@@ -38,6 +39,7 @@ module.exports =
             r.view.classList.add 'julia'
             if error and result.highlights?
               @showError r, result.highlights
+            atom.beep() if error
             notifications.show "Evaluation Finished"
             require('../runtime').workspace.update()
             result
