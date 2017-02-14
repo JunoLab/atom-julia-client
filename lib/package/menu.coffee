@@ -24,7 +24,6 @@ module.exports =
     submenu: [
       {label: 'Start Julia', command: 'julia-client:start-julia'}
       {label: 'Stop Julia', command: 'julia-client:kill-julia'}
-      {label: 'Interrupt Julia', command: 'julia-client:interrupt-julia'}
       {label: 'Open Terminal', command: 'julia-client:open-a-repl'}
       {
         label: 'Working Directory'

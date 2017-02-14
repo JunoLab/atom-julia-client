@@ -1,8 +1,11 @@
 child_process = require 'child_process'
 net = require 'net'
 
+tcp = require './process/tcp'
 client = require './client'
 {paths} = require '../misc'
+
+platformioTerm = null
 
 module.exports =
 
@@ -33,3 +36,16 @@ module.exports =
       'x-terminal-emulator -e'
 
   repl: -> @term "#{@escpath paths.jlpath()}"
+
+  connectCommand: ->
+    tcp.listen().then (port) =>
+      "#{@escpath paths.jlpath()} -i -e 'using Juno; Juno.connect(#{port})'"
+
+  # PlatformIO Terminal integration
+
+  consumeTerminal: (term) ->
+    platformioTerm = term
+
+  runPlatformIOTerm: ->
+    @connectCommand().then (cmd) =>
+      platformioTerm.run([cmd])

@@ -38,6 +38,9 @@ module.exports = JuliaClient =
       # HACK: give atom time to open, or buffers go screwy
       setTimeout (=> @ui.layout.standard()), 100
 
+  consumeTerminal: (term) ->
+    @connection.consumeTerminal term
+
   consumeStatusBar: (bar) ->
     @runtime.consumeStatusBar bar
 

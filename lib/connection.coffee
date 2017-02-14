@@ -24,6 +24,9 @@ module.exports =
   consumeInk: (ink) ->
     @IPC.consumeInk ink
 
+  consumeTerminal: (term) ->
+    @terminal.consumeTerminal term
+
   boot: ->
     if not @client.isActive()
       @local.start()
