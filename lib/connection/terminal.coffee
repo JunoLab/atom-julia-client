@@ -39,7 +39,9 @@ module.exports =
 
   connectCommand: ->
     tcp.listen().then (port) =>
-      "#{@escpath paths.jlpath()} -i -e 'using Juno; Juno.connect(#{port})'"
+      "#{@escpath paths.jlpath()} -i -e \"using Juno; Juno.connect(#{port})\""
+
+  connectedRepl: -> @connectCommand().then (cmd) => @term cmd
 
   # PlatformIO Terminal integration
 
