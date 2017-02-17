@@ -7,13 +7,13 @@ tires, but be ready to get your hands dirty!
 
 This project is composed of many sub-projects, and it can be hard to know the appropriate
 place to file issues. For that reason we prefer that non-developers report issues on the
-[Juno discussion forum](http://discuss.junolab.org/) under the "issue" category, and we can
+[Julia discussion forum](https://discourse.julialang.org) under the "usage" category with "juno" tag, and we can 
 funnel things through to the right places from there.
 
 ## Contributing
 
 If you have feature ideas you'd like to implement, or bugs you'd like to fix, feel free to
-open a [discussion](http://discuss.junolab.org/) under the "dev" category – we're always happy
+open a [discussion](https://discourse.julialang.org) under the "usage" category with "juno" tag – we're always happy 
 to help people flesh out their ideas or get unstuck on problems.
 
 If you look over the GitHub issues for the various packages, you may notice some labelled
