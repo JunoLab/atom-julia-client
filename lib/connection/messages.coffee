@@ -22,7 +22,7 @@ module.exports =
         Go to the Packages → Julia → Open Terminal menu and
         run `Pkg.update()`in Julia, then try again.
         If you still see an issue, please report it to:
-            http://discuss.junolab.org/
+            https://discourse.julialang.org/
         """
         dismissable: true
 
