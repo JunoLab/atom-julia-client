@@ -6,6 +6,7 @@ module.exports =
   blocks:  require './misc/blocks'
   cells:   require './misc/cells'
   words:   require './misc/words'
+  weave:   require './misc/weave'
 
   bufferLines: (t, f) ->
     if not f? then [t, f] = [null, t]

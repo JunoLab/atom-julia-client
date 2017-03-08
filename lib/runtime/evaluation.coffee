@@ -3,10 +3,9 @@ path = require 'path'
 
 {client} =  require '../connection'
 {notifications, views, selector} = require '../ui'
-{paths, blocks, cells, words} = require '../misc'
+{paths, blocks, cells, words, weave} = require '../misc'
 workspace = require './workspace'
 modules = require './modules'
-
 {eval: evaluate, evalall, evalrepl, cd, clearLazy} =
     client.import rpc: ['eval', 'evalall', 'evalrepl'], msg: ['cd', 'clearLazy']
 
@@ -60,6 +59,18 @@ module.exports =
             }).then (result) ->
         notifications.show "Evaluation Finished"
         workspace.update()
+
+  evalAllChunks: ->
+    editor = atom.workspace.getActiveTextEditor()
+    atom.commands.dispatch atom.views.getView(editor), 'inline-results:clear-all'
+    evalall({
+              path: editor.getPath()
+              module: editor.juliaModule
+              code: weave.getCode();
+            }).then (result) ->
+        notifications.show "Evaluation Finished"
+        require('../runtime').workspace.update()
+
 
   gotoSymbol: ->
     {editor, mod, edpath} = @currentContext()
