@@ -28,6 +28,11 @@ module.exports =
         @withInk ->
           boot()
           juno.runtime.evaluation.evalAll()
+      'julia-client:run-all-chunks': (event) =>
+          cancelComplete event
+          @withInk ->
+          boot()
+          juno.runtime.evaluation.evalAllChunks()
       'julia-client:run-cell': =>
         @withInk ->
           boot()
