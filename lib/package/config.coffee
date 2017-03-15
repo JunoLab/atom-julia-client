@@ -72,12 +72,4 @@ if process.platform != 'darwin'
     description: 'Command used to open a terminal.'
     order: 9
 
-if process.platform == 'win32'
-  config.enablePowershellWrapper =
-    type: 'boolean'
-    default: true
-    description: 'Use a powershell wrapper to spawn Julia.
-                  Necessary to enable interrupts.'
-    order: 3.5
-
 module.exports = config
