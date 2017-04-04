@@ -19,15 +19,20 @@ module.exports =
 
   walkForward: (ed, start) ->
     mark = end = start
+    multiline = false
     while mark < ed.getLastBufferRow()
       mark++
       l = @getLine ed, mark
+      if multiline
+        if l.match(/=#/) then multiline = false else continue
       break if @isStart l
       if @isEnd l
         if not (scopes.forLines(ed, start, mark-1).length is 0)
           end = mark
       else if not (@isBlank(l) or @isStart(l))
         end = mark
+      else if l.match(/#=.*(?!=#)/)
+        multiline = true
     end
 
   getRange: (ed, row) ->

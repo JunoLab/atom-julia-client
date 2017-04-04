@@ -94,7 +94,6 @@ module.exports =
                                         -wrapPort #{wrapPort}
                                         -jlpath \"#{path}\"
                                         -jlargs #{jlargs}"])
-
             @createProc proc,
               wrapper: true
               kill: => @sendSignalToWrapper 'KILL', wrapPort

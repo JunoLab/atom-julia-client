@@ -1,6 +1,7 @@
 module.exports =
 
-  openers: ['if','while','for','begin','function','macro','module','baremodule','type','immutable','struct','try','let','do','quote']
+  openers: ['if','while','for','begin','function','macro','module','baremodule',
+            'type','immutable','struct','try','let','do','quote']
   reopeners: ['else','elseif','catch','finally']
 
   isKeywordScope: (ss) ->
