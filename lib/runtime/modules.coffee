@@ -95,7 +95,8 @@ module.exports =
 
   getEditorModule: (ed) ->
     return unless client.isActive()
-    {row, column} = ed.getCursors()[0].getBufferPosition()
+    sels = ed.getSelections()
+    {row, column} = sels[sels.length - 1].getBufferRange().end
     data =
       path: ed.getPath()
       code: ed.getText()
