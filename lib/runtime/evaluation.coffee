@@ -4,7 +4,7 @@ path = require 'path'
 {client} =  require '../connection'
 {notifications, views, selector} = require '../ui'
 {paths, blocks, cells, words} = require '../misc'
-{workspace} = require '../runtime'
+{workspace} = require './workspace'
 modules = require './modules'
 
 {eval: evaluate, evalall, evalrepl, cd, clearLazy} =
