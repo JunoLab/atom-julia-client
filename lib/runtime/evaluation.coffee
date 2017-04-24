@@ -4,9 +4,11 @@ path = require 'path'
 {client} =  require '../connection'
 {notifications, views, selector} = require '../ui'
 {paths, blocks, cells, words} = require '../misc'
+{workspace} = require '../runtime'
 modules = require './modules'
 
-{eval: evaluate, evalall, cd, clearLazy} = client.import rpc: ['eval', 'evalall'], msg: ['cd', 'clearLazy']
+{eval: evaluate, evalall, evalrepl, cd, clearLazy} =
+    client.import rpc: ['eval', 'evalall', 'evalrepl'], msg: ['cd', 'clearLazy']
 
 module.exports =
   # calls `fn` with the current editor, module and editorpath
@@ -16,7 +18,7 @@ module.exports =
     edpath = editor.getPath() || 'untitled-' + editor.getBuffer().id
     fn {editor, mod, edpath}
 
-  # TODO: this is horrible, refactor
+  # TODO: this is very horrible, refactor
   eval: ({move, cell}={}) ->
     @withCurrentContext ({editor, mod, edpath}) =>
       selector = if cell? then cells else blocks
@@ -26,24 +28,29 @@ module.exports =
         @ink.highlight editor, start, end
         r = null
         rtype = if cell? then "block" else atom.config.get 'julia-client.resultsDisplayMode'
-        setTimeout (=> r ?= new @ink.Result editor, [start, end], type: rtype), 0.1
-        evaluate({text, line: line+1, mod, path: edpath})
-          .then (result) =>
-            error = result.type == 'error'
-            view = if error then result.view else result
-            if not r? or r.isDestroyed then r = new @ink.Result editor, [start, end], type: rtype
-            registerLazy = (id) ->
-              r.onDidDestroy client.withCurrent -> clearLazy [id]
-              editor.onDidDestroy client.withCurrent -> clearLazy id
-            r.setContent views.render(view, {registerLazy}), {error}
-            r.view.classList.add 'julia'
-            if error and result.highlights?
-              @showError r, result.highlights
-            atom.beep() if error
-            notifications.show "Evaluation Finished"
-            require('../runtime').workspace.update()
-            result
-          .catch -> r?.destroy()
+        if rtype is 'console'
+          evalrepl(code: text, mod: mod)
+            .then (result) => workspace.update()
+            .catch =>
+        else
+          setTimeout (=> r ?= new @ink.Result editor, [start, end], type: rtype), 0.1
+          evaluate({text, line: line+1, mod, path: edpath})
+            .then (result) =>
+              error = result.type == 'error'
+              view = if error then result.view else result
+              if not r? or r.isDestroyed then r = new @ink.Result editor, [start, end], type: rtype
+              registerLazy = (id) ->
+                r.onDidDestroy client.withCurrent -> clearLazy [id]
+                editor.onDidDestroy client.withCurrent -> clearLazy id
+              r.setContent views.render(view, {registerLazy}), {error}
+              r.view.classList.add 'julia'
+              if error and result.highlights?
+                @showError r, result.highlights
+              atom.beep() if error
+              notifications.show "Evaluation Finished"
+              workspace.update()
+              result
+            .catch -> r?.destroy()
 
   evalAll: ->
     editor = atom.workspace.getActiveTextEditor()
@@ -54,7 +61,7 @@ module.exports =
               code: editor.getText()
             }).then (result) ->
         notifications.show "Evaluation Finished"
-        require('../runtime').workspace.update()
+        workspace.update()
 
   gotoSymbol: ->
     @withCurrentContext ({editor, mod}) =>

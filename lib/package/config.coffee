@@ -64,6 +64,7 @@ config =
     enum: [
       {value:'inline', description:'Float results next to code'}
       {value:'block', description:'Display results under code'}
+      {value:'console', description:'Display results in the console'}
     ]
     order: 10
 
