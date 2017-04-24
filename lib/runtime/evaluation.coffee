@@ -4,7 +4,7 @@ path = require 'path'
 {client} =  require '../connection'
 {notifications, views, selector} = require '../ui'
 {paths, blocks, cells, words} = require '../misc'
-{workspace} = require './workspace'
+workspace = require './workspace'
 modules = require './modules'
 
 {eval: evaluate, evalall, evalrepl, cd, clearLazy} =
@@ -26,13 +26,13 @@ module.exports =
         selector.moveNext editor, selection, range if move
         [[start], [end]] = range
         @ink.highlight editor, start, end
-        r = null
         rtype = if cell? then "block" else atom.config.get 'julia-client.resultsDisplayMode'
         if rtype is 'console'
           evalrepl(code: text, mod: mod)
             .then (result) => workspace.update()
             .catch =>
         else
+          r = null
           setTimeout (=> r ?= new @ink.Result editor, [start, end], type: rtype), 0.1
           evaluate({text, line: line+1, mod, path: edpath})
             .then (result) =>
