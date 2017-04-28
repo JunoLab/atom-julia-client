@@ -39,3 +39,6 @@ addons:
     - git
     - libgnome-keyring-dev
     - fakeroot
+
+notifications:
+    email: false
