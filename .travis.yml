@@ -1,8 +1,8 @@
 language: julia
 
 julia:
-  - 0.4
   - 0.5
+  - 0.6
 
 env:
   global:
@@ -26,10 +26,6 @@ matrix:
     - os: linux
       julia: 0.5
       env: ATOM_CHANNEL=beta
-  exclude:
-    # Master won't work with 0.4
-    - julia: 0.4
-      env: ATOMJL=master
 
 script:
   - julia ci/packages.jl
