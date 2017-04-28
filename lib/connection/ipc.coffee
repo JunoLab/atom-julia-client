@@ -91,7 +91,7 @@ class IPC
     {type: 'error', message: obj.message, stack: obj.stack}
 
   readStream: (s) ->
-    s.on 'data', cb = bufferLines (m) => @input JSON.parse m
+    s.on 'data', cb = bufferLines (m) => if m then @input JSON.parse m
     @unreadStream = -> s.removeListener 'data', cb
 
   writeStream: (s) ->

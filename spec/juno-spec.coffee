@@ -42,7 +42,7 @@ describe "interaction with client cycler", ->
 describe "before use", ->
   beforeEach cyclerSetup
   it 'boots the client', ->
-    waitsFor 60*1000, (done) ->
+    waitsFor 5*60*1000, (done) ->
       juno.connection.boot().then -> done()
     runs ->
       conn = client.conn

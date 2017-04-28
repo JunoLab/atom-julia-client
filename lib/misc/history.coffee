@@ -8,8 +8,12 @@ module.exports =
 
   read: ->
     new Promise (resolve) =>
+      raw = fs.createReadStream @path
+
+      raw.on 'error', () -> resolve []
+
       lineReader = readline.createInterface
-        input: fs.createReadStream @path
+        input: raw
 
       entries = []
       readingMeta = false
