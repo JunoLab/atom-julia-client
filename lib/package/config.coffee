@@ -22,7 +22,9 @@ config =
       bootMode:
         title: 'Boot Mode'
         type: 'string'
-        enum: ['Basic', 'Cycler', 'Server']
+        # Server mode is non-functional for now
+        # enum: ['Basic', 'Cycler', 'Server']
+        enum: ['Basic', 'Cycler']
         default: 'Basic'
     order: 3
   notifications:

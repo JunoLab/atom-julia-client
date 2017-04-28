@@ -19,9 +19,9 @@ basicSetup = ->
       deprecationWarnings: false
       precompiled: true
 
-serverSetup = ->
+cyclerSetup = ->
   basicSetup()
-  runs -> atom.config.set 'julia-client.juliaOptions.bootMode', 'Server'
+  runs -> atom.config.set 'julia-client.juliaOptions.bootMode', 'Cycler'
 
 conn = null
 
@@ -35,12 +35,12 @@ describe "managing a basic client", ->
   beforeEach basicSetup
   testClient()
 
-describe "interaction with client server", ->
-  beforeEach serverSetup
+describe "interaction with client cycler", ->
+  beforeEach cyclerSetup
   testClient()
 
 describe "before use", ->
-  beforeEach serverSetup
+  beforeEach cyclerSetup
   it 'boots the client', ->
     waitsFor 60*1000, (done) ->
       juno.connection.boot().then -> done()
@@ -48,12 +48,12 @@ describe "before use", ->
       conn = client.conn
 
 describe "in an editor", ->
-  beforeEach serverSetup
+  beforeEach cyclerSetup
   withClient()
   testEval()
 
 describe "after use", ->
-  beforeEach serverSetup
+  beforeEach cyclerSetup
   withClient()
   it "kills the client", ->
     client.kill()

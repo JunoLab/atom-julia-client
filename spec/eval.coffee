@@ -47,6 +47,7 @@ module.exports = ->
       editor: editor
       bufferPosition: editor.getCursors()[0].getBufferPosition()
       scopeDescriptor: editor.getCursors()[0].getScopeDescriptor()
+      prefix: editor.getText()
 
     getSuggestions = -> juno.runtime.completions.getSuggestions completionsData()
 
@@ -55,7 +56,7 @@ module.exports = ->
       completions = null
 
       beforeEach ->
-        editor.insertText 'f'
+        editor.insertText 'sin'
         waitsForPromise ->
           getSuggestions().then (cs) ->
             completions = cs
@@ -67,6 +68,6 @@ module.exports = ->
 
       it 'retrieves completions', ->
         completions = completions.map (c) -> c.text
-        expect(completions).toContain 'fft'
+        expect(completions).toContain 'sin'
         expect(completions).toContain '@time'
         expect(completions).toContain 'Base'
