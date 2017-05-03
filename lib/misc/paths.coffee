@@ -40,7 +40,9 @@ module.exports =
       .catch =>
         atom.notifications.addError "Couldn't find your Julia packages."
 
-  jlpath: -> atom.config.get("julia-client.juliaPath")
+  jlpath: ->
+    pf = p = atom.config.get("julia-client.juliaPath")
+    if p.slice(0, 1) is '~' then @home p else pf
 
   getVersion: (path = @jlpath()) ->
     new Promise (resolve, reject) =>
