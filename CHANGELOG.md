@@ -1,3 +1,10 @@
+## 0.5.13
+* PlatformIO terminal integration
+* Results can be displayed in the Console instead of inline
+
+## 0.5.12
+* Graphical breakpoints
+
 ## 0.5.11
 * Connect Juno to Jupyter or a terminal repl
 * Cell-block eval mode
