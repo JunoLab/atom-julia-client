@@ -2,7 +2,7 @@
 vm = require 'vm'
 
 {client} = require '../connection'
-{selector} = require '../ui'
+{selector, notifications} = require '../ui'
 
 module.exports =
 
@@ -32,6 +32,9 @@ module.exports =
 
       winActive: (id) =>
         @windows.hasOwnProperty id
+
+      notify: (msg) ->
+        notifications.show msg, true
 
     client.onDetached =>
       for id, win of @windows

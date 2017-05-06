@@ -10,8 +10,8 @@ module.exports =
 
   enabled: -> atom.config.get('julia-client.notifications')
 
-  show: (msg) ->
-    return unless @enabled() and not document.hasFocus()
+  show: (msg, force) ->
+    return unless force or (@enabled() and not document.hasFocus())
     n = new Notification "Julia Client",
       body: msg
       icon: @iconPath
