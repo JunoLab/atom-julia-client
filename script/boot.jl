@@ -20,10 +20,15 @@ if precompile
   print(STDERR, "juno-msg-precompiling")
 end
 
+junorc = abspath(homedir(), ".junorc.jl")
+
 try
   import Atom
   @eval using $(VERSION < v"0.5-" ? :Atom : :Juno)
-  @sync Atom.connect(port, welcome = precompile || install)
+  @sync begin
+    Atom.connect(port, welcome = precompile || install)
+    ispath(junorc) && include(junorc)
+  end
 catch
   print(STDERR, "juno-msg-load")
   rethrow()
