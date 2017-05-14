@@ -33,17 +33,16 @@ module.exports =
             .catch =>
         else
           r = null
-          setTimeout (=> r ?= new @ink.Result editor, [start, end], type: rtype), 0.1
+          setTimeout (=> r ?= new @ink.Result editor, [start, end], {type: rtype, scope: 'julia'}), 0.1
           evaluate({text, line: line+1, mod, path: edpath})
             .then (result) =>
               error = result.type == 'error'
               view = if error then result.view else result
-              if not r? or r.isDestroyed then r = new @ink.Result editor, [start, end], type: rtype
+              if not r? or r.isDestroyed then r = new @ink.Result editor, [start, end], {type: rtype, scope: 'julia'}
               registerLazy = (id) ->
                 r.onDidDestroy client.withCurrent -> clearLazy [id]
                 editor.onDidDestroy client.withCurrent -> clearLazy id
               r.setContent views.render(view, {registerLazy}), {error}
-              r.view.classList.add 'julia'
               if error and result.highlights?
                 @showError r, result.highlights
               atom.beep() if error
