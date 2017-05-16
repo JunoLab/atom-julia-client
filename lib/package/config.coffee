@@ -24,6 +24,12 @@ config =
         type: 'string'
         enum: ['Basic', 'Cycler', 'Server']
         default: 'Basic'
+      arguments:
+        title: 'Arguments'
+        type: 'array'
+        default: []
+        items:
+          type: 'string'
     order: 3
   notifications:
     type: 'boolean'
