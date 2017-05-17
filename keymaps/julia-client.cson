@@ -71,3 +71,10 @@
   'ctrl-j ctrl-c': 'julia-client:clear-console'
   'ctrl-j ctrl-k': 'julia-client:kill-julia'
   'ctrl-j ctrl-,': 'julia-client:settings'
+
+'.platform-win32 ink-console atom-text-editor:not([mini]),
+ .platform-linux ink-console atom-text-editor:not([mini])':
+  'ctrl-enter': 'editor:newline'
+
+'.platform-darwin ink-console atom-text-editor:not([mini])':
+  'cmd-enter': 'editor:newline'
