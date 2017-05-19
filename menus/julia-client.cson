@@ -3,5 +3,6 @@
     {label: 'Run block', command: 'julia-client:run-block'}
     {label: 'Go to defintion', command: 'julia-client:goto-symbol'}
     {label: 'Toggle documentation', command: 'julia-client:toggle-documentation'}
+    {label: 'Toggle breakpoint', command: 'julia-debug:toggle-breakpoint'}
     {type: 'separator'}
   ]
