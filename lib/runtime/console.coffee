@@ -54,8 +54,10 @@ module.exports =
     history.read().then (entries) =>
       @c.history.set entries
     @c.toolbar = @toolbar
+    @c.getDefaultLocation = -> 'bottom'
 
   ignored: [/^WARNING: Method definition .* overwritten/]
+
   ignore: (s) ->
     for i in @ignored
       return true if s.match(i)
@@ -69,10 +71,12 @@ module.exports =
 
   info: (data) -> @c.info data
 
-  open: ->
-    @c.open
-      split: 'down'
-      searchAllPanes: true
+  toggle: ->
+    d = atom.workspace.paneContainerForItem(@c)
+    if !d
+      @c.open()
+    if d.toggle
+      d.toggle()
 
   reset: -> @c.reset()
 

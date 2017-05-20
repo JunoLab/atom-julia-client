@@ -79,7 +79,7 @@ module.exports =
       'julia-client:connnect-external-process': -> disrequireClient -> juno.connection.messages.connectExternal()
       'julia-client:connect-platformio-terminal': -> disrequireClient -> juno.connection.terminal.runPlatformIOTerm()
       'julia-client:connect-terminal': -> disrequireClient -> juno.connection.terminal.connectedRepl()
-      'julia-client:open-console': => @withInk -> juno.runtime.console.open()
+      'julia-client:toggle-console': => @withInk -> juno.runtime.console.toggle()
       "julia-client:clear-console": => juno.runtime.console.reset()
       'julia-client:open-plot-pane': => @withInk -> juno.runtime.plots.open()
       'julia-client:open-workspace': => @withInk -> juno.runtime.workspace.open()
