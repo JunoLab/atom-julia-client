@@ -24,7 +24,7 @@ module.exports =
         {
           icon: 'icon-terminal',
           onclick: () ->
-            require('./console').c.result(res.view.rawView, {error: res.view.rawError})
+            require('./console').c.result(res.view.getRawContent()...)
             res.remove()
             return
         }
