@@ -18,6 +18,18 @@ module.exports =
     edpath = editor.getPath() || 'untitled-' + editor.getBuffer().id
     fn {editor, mod, edpath}
 
+  buttons: () ->
+    (res) ->
+      [
+        {
+          icon: 'icon-terminal',
+          onclick: () ->
+            require('./console').c.result(res.view.rawView, {error: res.view.rawError})
+            res.remove()
+            return
+        }
+      ]
+
   # TODO: this is very horrible, refactor
   eval: ({move, cell}={}) ->
     @withCurrentContext ({editor, mod, edpath}) =>
@@ -33,12 +45,13 @@ module.exports =
             .catch =>
         else
           r = null
-          setTimeout (=> r ?= new @ink.Result editor, [start, end], {type: rtype, scope: 'julia'}), 0.1
+          opts = {type: rtype, scope: 'julia', customButtons: @buttons()}
+          setTimeout (=> r ?= new @ink.Result editor, [start, end], opts), 0.1
           evaluate({text, line: line+1, mod, path: edpath})
             .then (result) =>
               error = result.type == 'error'
               view = if error then result.view else result
-              if not r? or r.isDestroyed then r = new @ink.Result editor, [start, end], {type: rtype, scope: 'julia'}
+              if not r? or r.isDestroyed then r = new @ink.Result editor, [start, end], opts
               registerLazy = (id) ->
                 r.onDidDestroy client.withCurrent -> clearLazy [id]
                 editor.onDidDestroy client.withCurrent -> clearLazy id
