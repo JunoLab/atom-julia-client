@@ -1,6 +1,9 @@
 ## 0.5.13
 * PlatformIO terminal integration
 * Results can be displayed in the Console instead of inline
+* add support for `.junorc.jl`
+* add support for `Juno.notify()` API
+* julia path setting will now resolve `~` properly
 
 ## 0.5.12
 * Graphical breakpoints
