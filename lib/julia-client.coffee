@@ -11,7 +11,7 @@ module.exports = JuliaClient =
   runtime:    require './runtime'
 
   activate: (state) ->
-    etch.setScheduler(atom.views);
+    etch.setScheduler(atom.views)
     @requireInk =>
       commands.activate @
       x.activate() for x in [menu, @connection, @runtime]
