@@ -105,7 +105,7 @@ module.exports = views =
 
   code: ({text, scope}) ->
     grammar = atom.grammars.grammarForScopeName("source.julia")
-    @render {type: 'html', content: Highlighter.highlight text, grammar}
+    @render {type: 'html', content: Highlighter.highlight text, grammar, {scopePrefix: 'syntax--'}}
 
   views:
     dom:     (a...) -> views.dom  a...
