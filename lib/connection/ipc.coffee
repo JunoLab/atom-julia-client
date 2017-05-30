@@ -81,10 +81,10 @@ class IPC
           if rpc then @rpc f, args... else @msg f, args...
     mod
 
-  isWorking: -> @loading.isWorking()
-  onWorking: (f) -> @loading.onWorking f
-  onDone: (f) -> @loading.onDone f
-  onceDone: (f) -> @loading.onceDone f
+  isWorking: -> @loading?.isWorking()
+  onWorking: (f) -> @loading?.onWorking f
+  onDone: (f) -> @loading?.onDone f
+  onceDone: (f) -> @loading?.onceDone f
 
   errJson: (obj) ->
     return unless obj instanceof Error
