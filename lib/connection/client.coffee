@@ -41,7 +41,9 @@ module.exports =
       atom.beep()
 
     @onAttached =>
-      @import('args') atom.config.get 'julia-client.juliaOptions.arguments'
+      args = atom.config.get 'julia-client.juliaOptions.arguments'
+      if args.length > 0
+        @import('args') args
 
   deactivate: ->
     @emitter.dispose()
