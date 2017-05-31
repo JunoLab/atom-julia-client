@@ -40,6 +40,11 @@ module.exports =
       console.error options.detail
       atom.beep()
 
+    @onAttached =>
+      args = atom.config.get 'julia-client.juliaOptions.arguments'
+      if args.length > 0
+        @import('args') args
+
   deactivate: ->
     @emitter.dispose()
     if @isActive() then @detach()
