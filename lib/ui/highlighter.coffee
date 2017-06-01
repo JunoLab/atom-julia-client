@@ -4,7 +4,8 @@ _ = require 'underscore-plus'
 # but uses an externally provided grammar.
 module.exports =
   # Highlights some `text` according to the specified `grammar`.
-  highlight: (text, grammar) ->
+  highlight: (text, grammar, {scopePrefix}={}) ->
+    scopePrefix ?= ''
     lineTokens = grammar.tokenizeLines(text)
 
     # Remove trailing newline
@@ -20,7 +21,7 @@ module.exports =
       html += '<div class="line">'
       for {value, scopes} in tokens
         value = ' ' unless value
-        html = @updateScopeStack(scopeStack, scopes, html)
+        html = @updateScopeStack(scopeStack, scopes, html, scopePrefix)
         html += "<span>#{@escapeString(value)}</span>"
       html = @popScope(scopeStack, html) while scopeStack.length > 0
       html += '</div>'
@@ -38,7 +39,7 @@ module.exports =
         when ' ' then '&nbsp;'
         else match
 
-  updateScopeStack: (scopeStack, desiredScopes, html) ->
+  updateScopeStack: (scopeStack, desiredScopes, html, scopePrefix) ->
     excessScopes = scopeStack.length - desiredScopes.length
     if excessScopes > 0
       html = @popScope(scopeStack, html) while excessScopes--
@@ -50,13 +51,14 @@ module.exports =
 
     # push on top of common prefix until scopeStack is desiredScopes
     for j in [i...desiredScopes.length]
-      html = @pushScope(scopeStack, desiredScopes[j], html)
+      html = @pushScope(scopeStack, desiredScopes[j], html, scopePrefix)
 
     html
 
-  pushScope: (scopeStack, scope, html) ->
+  pushScope: (scopeStack, scope, html, scopePrefix) ->
     scopeStack.push(scope)
-    html += "<span class=\"#{scope.replace(/\.+/g, ' ')}\">"
+    className = scopePrefix + scope.replace(/\.+/g, " #{scopePrefix}")
+    html += "<span class=\"#{className}\">"
 
   popScope: (scopeStack, html) ->
     scopeStack.pop()
