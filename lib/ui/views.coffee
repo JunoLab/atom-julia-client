@@ -59,35 +59,17 @@ module.exports = views =
         e.stopPropagation()
     view
 
-  openEditorById: (id, line) ->
-    for pane in atom.workspace.getPanes()
-      for item in pane.getItems()
-        if item.constructor.name is "TextEditor" and item.getBuffer().id is id
-          pane.setActiveItem item
-          item.setCursorBufferPosition [line, 0]
-          item.scrollToCursorPosition()
-          return true
-    false
-
-  getUntitledId: (file) -> file.match(/untitled-([\d\w]+)$/)?[1]
-
   link: ({file, line, contents}) ->
     view = @render @tags.a {href: '#'}, contents
     # TODO: maybe need to dispose of the tooltip onclick and readd them, but
     # that doesn't seem to be necessary
-    if id = @getUntitledId file
+    if @ink.Opener.isUntitled(file)
       tt = atom.tooltips.add view, title: -> 'untitled'
-      view.onclick = (e) =>
-        @openEditorById id, line
-        e.stopPropagation()
     else
       tt = atom.tooltips.add view, title: -> file
-      view.onclick = (e) =>
-        @ink.util.focusEditorPane()
-        atom.workspace.open file,
-          initialLine: if line >= 0 then line
-          searchAllPanes: true
-        e.stopPropagation()
+    view.onclick = (e) =>
+      @ink.Opener.open(file, line)
+      e.stopPropagation()
     view.addEventListener 'DOMNodeRemovedFromDocument', =>
       tt.dispose()
     view
