@@ -34,6 +34,7 @@ module.exports =
         r = null
         setTimeout (=> r ?= new @ink.Result editor, [start, end], {type: rtype, scope: 'julia'}), 0.1
         evaluate({text, line: line+1, mod, path: edpath})
+          .catch -> r?.destroy()
           .then (result) =>
             error = result.type == 'error'
             view = if error then result.view else result
@@ -48,7 +49,6 @@ module.exports =
             notifications.show "Evaluation Finished"
             workspace.update()
             result
-          .catch -> r?.destroy()
 
   evalAll: ->
     editor = atom.workspace.getActiveTextEditor()
