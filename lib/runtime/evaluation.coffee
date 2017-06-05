@@ -11,45 +11,44 @@ modules = require './modules'
     client.import rpc: ['eval', 'evalall', 'evalrepl'], msg: ['cd', 'clearLazy']
 
 module.exports =
-  # calls `fn` with the current editor, module and editorpath
-  withCurrentContext: (fn) ->
+  currentContext: ->
     editor = atom.workspace.getActiveTextEditor()
     mod = modules.current() ? 'Main'
     edpath = editor.getPath() || 'untitled-' + editor.getBuffer().id
-    fn {editor, mod, edpath}
+    {editor, mod, edpath}
 
   # TODO: this is very horrible, refactor
   eval: ({move, cell}={}) ->
-    @withCurrentContext ({editor, mod, edpath}) =>
-      selector = if cell? then cells else blocks
-      Promise.all selector.get(editor).map ({range, line, text, selection}) =>
-        selector.moveNext editor, selection, range if move
-        [[start], [end]] = range
-        @ink.highlight editor, start, end
-        rtype = if cell? then "block" else atom.config.get 'julia-client.resultsDisplayMode'
-        if rtype is 'console'
-          evalrepl(code: text, mod: mod)
-            .then (result) => workspace.update()
-            .catch =>
-        else
-          r = null
-          setTimeout (=> r ?= new @ink.Result editor, [start, end], {type: rtype, scope: 'julia'}), 0.1
-          evaluate({text, line: line+1, mod, path: edpath})
-            .then (result) =>
-              error = result.type == 'error'
-              view = if error then result.view else result
-              if not r? or r.isDestroyed then r = new @ink.Result editor, [start, end], {type: rtype, scope: 'julia'}
-              registerLazy = (id) ->
-                r.onDidDestroy client.withCurrent -> clearLazy [id]
-                editor.onDidDestroy client.withCurrent -> clearLazy id
-              r.setContent views.render(view, {registerLazy}), {error}
-              if error and result.highlights?
-                @showError r, result.highlights
-              atom.beep() if error
-              notifications.show "Evaluation Finished"
-              workspace.update()
-              result
-            .catch -> r?.destroy()
+    {editor, mod, edpath} = @currentContext()
+    selector = if cell? then cells else blocks
+    Promise.all selector.get(editor).map ({range, line, text, selection}) =>
+      selector.moveNext editor, selection, range if move
+      [[start], [end]] = range
+      @ink.highlight editor, start, end
+      rtype = if cell? then "block" else atom.config.get 'julia-client.resultsDisplayMode'
+      if rtype is 'console'
+        evalrepl(code: text, mod: mod)
+          .then (result) => workspace.update()
+          .catch =>
+      else
+        r = null
+        setTimeout (=> r ?= new @ink.Result editor, [start, end], {type: rtype, scope: 'julia'}), 0.1
+        evaluate({text, line: line+1, mod, path: edpath})
+          .then (result) =>
+            error = result.type == 'error'
+            view = if error then result.view else result
+            if not r? or r.isDestroyed then r = new @ink.Result editor, [start, end], {type: rtype, scope: 'julia'}
+            registerLazy = (id) ->
+              r.onDidDestroy client.withCurrent -> clearLazy [id]
+              editor.onDidDestroy client.withCurrent -> clearLazy id
+            r.setContent views.render(view, {registerLazy}), {error}
+            if error and result.highlights?
+              @showError r, result.highlights
+            atom.beep() if error
+            notifications.show "Evaluation Finished"
+            workspace.update()
+            result
+          .catch -> r?.destroy()
 
   evalAll: ->
     editor = atom.workspace.getActiveTextEditor()
@@ -63,20 +62,20 @@ module.exports =
         workspace.update()
 
   gotoSymbol: ->
-    @withCurrentContext ({editor, mod}) =>
-      words.withWord editor, (word, range) =>
-        client.import("methods")({word: word, mod: mod}).then (symbols) =>
-          @ink.goto.goto symbols unless symbols.error
+    {editor, mod, edpath} = @currentContext()
+    words.withWord editor, (word, range) =>
+      client.import("methods")({word: word, mod: mod}).then (symbols) =>
+        @ink.goto.goto symbols unless symbols.error
 
   toggleDocs: ->
-    @withCurrentContext ({editor, mod}) =>
-      words.withWord editor, (word, range) =>
-        client.import("docs")({word: word, mod: mod}).then (result) =>
-          if result.error then return
-          d = new @ink.InlineDoc editor, range,
-            content: views.render result
-            highlight: true
-          d.view.classList.add 'julia'
+    {editor, mod, edpath} = @currentContext()
+    words.withWord editor, (word, range) =>
+      client.import("docs")({word: word, mod: mod}).then (result) =>
+        if result.error then return
+        d = new @ink.InlineDoc editor, range,
+          content: views.render result
+          highlight: true
+        d.view.classList.add 'julia'
 
   showError: (r, lines) ->
     @errorLines?.lights.destroy()
