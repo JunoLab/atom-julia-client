@@ -71,16 +71,8 @@ module.exports =
 
   info: (data) -> @c.info data
 
-  toggle: ->
-    dock = atom.workspace.paneContainerForItem(@c)
-    if dock and dock.toggle
-      if dock.isVisible()
-        dock.hide()
-      else
-        dock.show()
-        @c.open()
-    else
-      @c.open()
+  open: ->
+    @c.open()
 
   reset: -> @c.reset()
 

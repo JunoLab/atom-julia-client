@@ -34,7 +34,7 @@
 '.platform-darwin atom-workspace':
   'cmd-j cmd-r': 'julia-client:open-a-repl'
   'cmd-j cmd-s': 'julia-client:start-julia'
-  'cmd-j cmd-o': 'julia-client:toggle-console'
+  'cmd-j cmd-o': 'julia-client:open-console'
   'cmd-j cmd-p': 'julia-client:open-plot-pane'
   'cmd-j cmd-c': 'julia-client:clear-console'
   'cmd-j cmd-k': 'julia-client:kill-julia'
@@ -66,7 +66,7 @@
  .platform-linux atom-workspace':
   'ctrl-j ctrl-r': 'julia-client:open-a-repl'
   'ctrl-j ctrl-s': 'julia-client:start-julia'
-  'ctrl-j ctrl-o': 'julia-client:toggle-console'
+  'ctrl-j ctrl-o': 'julia-client:open-console'
   'ctrl-j ctrl-p': 'julia-client:open-plot-pane'
   'ctrl-j ctrl-c': 'julia-client:clear-console'
   'ctrl-j ctrl-k': 'julia-client:kill-julia'
