@@ -33,7 +33,7 @@ config =
         items:
           type: 'string'
       numberOfThreads:
-        title: 'Number of Threads'
+        title: 'Number of Threads (only on Julia v0.6+, experimental)'
         type: 'integer'
         default: 1
     order: 3
