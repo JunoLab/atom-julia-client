@@ -101,6 +101,7 @@ module.exports =
               socket: @clientSocket proc
 
   get_: (a...) ->
+    process.env.JULIA_NUM_THREADS = atom.config.get('julia-client.juliaOptions.numberOfThreads')
     if process.platform is 'win32'
       @getWindows a...
     else
