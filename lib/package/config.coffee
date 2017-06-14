@@ -32,6 +32,10 @@ config =
         default: []
         items:
           type: 'string'
+      numberOfThreads:
+        title: 'Number of Threads (experimental)'
+        type: 'integer'
+        default: 1
     order: 3
   notifications:
     type: 'boolean'
