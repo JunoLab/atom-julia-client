@@ -11,7 +11,7 @@ module.exports =
     cancelComplete = (e) ->
       atom.commands.dispatch(e.currentTarget, 'autocomplete-plus:cancel')
 
-    @subs = new CompositeDisposable
+    @subs = new CompositeDisposable()
 
     @subs.add atom.commands.add '.item-views > atom-text-editor',
       'julia-client:run-block': (event) =>
@@ -28,11 +28,11 @@ module.exports =
         @withInk ->
           boot()
           juno.runtime.evaluation.evalAll()
-      'julia-client:run-all-chunks': (event) =>
+      'julia-client:run-weave-chunks': (event) =>
           cancelComplete event
           @withInk ->
-          boot()
-          juno.runtime.evaluation.evalAllChunks()
+            boot()
+            juno.runtime.evaluation.evalAllWeaveChunks()
       'julia-client:run-cell': =>
         @withInk ->
           boot()

@@ -60,7 +60,7 @@ module.exports =
         notifications.show "Evaluation Finished"
         workspace.update()
 
-  evalAllChunks: ->
+  evalAllWeaveChunks: ->
     editor = atom.workspace.getActiveTextEditor()
     atom.commands.dispatch atom.views.getView(editor), 'inline-results:clear-all'
     evalall({
@@ -69,7 +69,7 @@ module.exports =
               code: weave.getCode();
             }).then (result) ->
         notifications.show "Evaluation Finished"
-        require('../runtime').workspace.update()
+        workspace.update()
 
 
   gotoSymbol: ->
