@@ -66,7 +66,7 @@ module.exports =
     evalall({
               path: editor.getPath()
               module: editor.juliaModule
-              code: weave.getCode();
+              code: weave.getCode(editor)
             }).then (result) ->
         notifications.show "Evaluation Finished"
         workspace.update()
