@@ -1,10 +1,11 @@
-## 0.5.13
+## 0.6.0
 * PlatformIO terminal integration
-* Results can be displayed in the Console instead of inline (#332)
+* Results can be displayed in the Console instead of inline ([#332](https://github.com/JunoLab/atom-julia-client/pull/332))
 * add support for `.junorc.jl`
 * add support for `Juno.notify()` API
 * julia path setting will now resolve `~` properly
-* added in-editor profile viewer (#349)
+* added in-editor profile viewer ([#349](https://github.com/JunoLab/atom-julia-client/pull/349))
+* overhaul of inline result display ([#127](https://github.com/JunoLab/atom-ink/pull/127))
 
 ## 0.5.12
 * Graphical breakpoints
