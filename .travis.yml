@@ -33,15 +33,16 @@ script:
   - julia ci/packages.jl
   - curl -s -O https://raw.githubusercontent.com/atom/ci/master/build-package.sh
   - bash build-package.sh
-
+  
 addons:
   apt:
+    sources:
+    - ubuntu-toolchain-r-test
     packages:
-    - build-essential
-    - git
-    - libgnome-keyring-dev
-    - libsecret-1-dev
+    - g++-6
     - fakeroot
+    - git
+    - libsecret-1-dev
 
 notifications:
     email: false
