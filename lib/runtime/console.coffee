@@ -34,6 +34,8 @@ module.exports =
 
       input: => @input()
 
+      clearconsole: => @reset()
+
     @subs.add client.onStdout (s) => @stdout s
     @subs.add client.onStderr (s) => @stderr s
     @subs.add client.onInfo   (s) => @info s
