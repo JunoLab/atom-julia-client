@@ -78,3 +78,6 @@
 
 '.platform-darwin ink-console atom-text-editor:not([mini])':
   'cmd-enter': 'editor:newline'
+  
+'ink-console atom-text-editor:not([mini])':
+  'alt-enter': 'editor:newline'
