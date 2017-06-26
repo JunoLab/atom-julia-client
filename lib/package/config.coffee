@@ -33,9 +33,9 @@ config =
         items:
           type: 'string'
       numberOfThreads:
-        title: 'Number of Threads (experimental)'
-        type: 'integer'
-        default: 1
+        title: 'Number of Threads (experimental, 0 will use global setting)'
+        type: 'string'
+        default: '0'
     order: 3
   notifications:
     type: 'boolean'

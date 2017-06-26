@@ -100,12 +100,11 @@ module.exports =
               interrupt: => @sendSignalToWrapper 'SIGINT', wrapPort
               socket: @clientSocket proc
 
-  nthreadsset: false
-
   get_: (a...) ->
-    if not process.env.JULIA_NUM_THREADS? or @nthreadsset
-      process.env.JULIA_NUM_THREADS = atom.config.get('julia-client.juliaOptions.numberOfThreads')
-      @nthreadsset = true
+    confnt = parseInt(atom.config.get('julia-client.juliaOptions.numberOfThreads'))
+    if confnt != 0 and isFinite(confnt)
+      process.env.JULIA_NUM_THREADS = confnt
+
     if process.platform is 'win32'
       @getWindows a...
     else
