@@ -52,7 +52,7 @@
     },
     "hyperclick.provider": {
       "versions": {
-        "0.0.0": "consumeHyperclick"
+        "0.0.0": "provideHyperclick"
       }
     }
   },

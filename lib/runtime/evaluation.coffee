@@ -71,6 +71,15 @@ module.exports =
         notifications.show "Evaluation Finished"
         workspace.update()
 
+  provideHyperclick: () ->
+    {
+      wordRegExp:  new RegExp(words.wordRegex, "g")
+      getSuggestionForWord: (editor, text, range) =>
+        {
+          range: range
+          callback: => @gotoSymbol(text, range)
+        }
+    }
 
   gotoSymbol: (word, range) ->
     {editor, mod, edpath} = @currentContext()
