@@ -16,4 +16,4 @@ module.exports =
     # cursor which also has `function` or `macro` as its class.
     range = cursor.getCurrentWordBufferRange({wordRegex: /[\u00A0-\uFFFF\w_!´\.]*@?[\u00A0-\uFFFF\w_!´]+/})
     word = editor.getTextInBufferRange range
-    [word, range]
+    {word, range}

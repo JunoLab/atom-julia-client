@@ -72,21 +72,23 @@ module.exports =
         workspace.update()
 
 
-  gotoSymbol: ->
+  gotoSymbol: (word, range) ->
     {editor, mod, edpath} = @currentContext()
-    words.withWord editor, (word, range) =>
-      client.import("methods")({word: word, mod: mod}).then (symbols) =>
-        @ink.goto.goto symbols unless symbols.error
+    {word, range} = words.getWord(editor) unless word? and range?
+    if word.length == 0 || !isNaN(word) then return
+    client.import("methods")({word: word, mod: mod}).then (symbols) =>
+      @ink.goto.goto symbols unless symbols.error
 
-  toggleDocs: ->
+  toggleDocs: (word, range) ->
     {editor, mod, edpath} = @currentContext()
-    words.withWord editor, (word, range) =>
-      client.import("docs")({word: word, mod: mod}).then (result) =>
-        if result.error then return
-        d = new @ink.InlineDoc editor, range,
-          content: views.render result
-          highlight: true
-        d.view.classList.add 'julia'
+    {word, range} = words.getWord(editor) unless word? and range?
+    if word.length == 0 || !isNaN(word) then return
+    client.import("docs")({word: word, mod: mod}).then (result) =>
+      if result.error then return
+      d = new @ink.InlineDoc editor, range,
+        content: views.render result
+        highlight: true
+      d.view.classList.add 'julia'
 
   showError: (r, lines) ->
     @errorLines?.lights.destroy()

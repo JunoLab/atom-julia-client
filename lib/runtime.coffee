@@ -25,5 +25,16 @@ module.exports =
       mod.ink = ink
       mod.activate()
 
+  consumeHyperclick: ->
+    e = @evaluation
+    {
+      wordRegExp:  /\b[\u00A0-\uFFFF\w_!´\.]*@?[\u00A0-\uFFFF\w_!´]+\b(?=\()/
+      getSuggestionForWord: (editor, text, range) ->
+        {
+          range: range
+          callback: => e.gotoSymbol(text, range)
+        }
+    }
+
   consumeStatusBar: (bar) ->
     @modules.consumeStatusBar bar
