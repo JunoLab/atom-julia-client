@@ -1,5 +1,5 @@
 module.exports =
-  wordRegex: /\b[\u00A0-\uFFFF\w_!´\.]*@?[\u00A0-\uFFFF\w_!´]+\b/
+  wordRegex: /[\u00A0-\uFFFF\w_!´\.]*@?[\u00A0-\uFFFF\w_!´]+/
 
   # takes an editor and gets the current word. If that is nonempty, call function
   # `fn` with arguments `word` and `range`.
