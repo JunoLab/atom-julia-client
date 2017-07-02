@@ -29,8 +29,8 @@ matrix:
       julia: 0.6
       env: ATOM_CHANNEL=beta
   allow_failures:
-    julia: nightly
-    env: ATOM_CHANNEL=beta
+    - julia: nightly
+    - env: ATOM_CHANNEL=beta
 
 script:
   - julia ci/packages.jl
