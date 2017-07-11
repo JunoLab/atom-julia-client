@@ -6,6 +6,7 @@ module.exports =
   views:         require './ui/views'
   progress:      require './ui/progress'
   layout:        require './ui/layout'
+  docpane:       require './ui/docs'
 
   activate: (@client) ->
     @subs = new CompositeDisposable
@@ -24,4 +25,5 @@ module.exports =
   consumeInk: (@ink) ->
     @views.ink = @ink
     @progress.ink = @ink
+    @docpane.activate(@ink)
     @progress.activate()
