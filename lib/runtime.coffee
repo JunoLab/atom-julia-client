@@ -25,5 +25,7 @@ module.exports =
       mod.ink = ink
       mod.activate()
 
+  provideHyperclick: -> @evaluation.provideHyperclick()    
+
   consumeStatusBar: (bar) ->
     @modules.consumeStatusBar bar

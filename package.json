@@ -49,6 +49,11 @@
       "versions": {
         "0.1.0": "provideClient"
       }
+    },
+    "hyperclick.provider": {
+      "versions": {
+        "0.0.0": "provideHyperclick"
+      }
     }
   },
   "package-deps": [

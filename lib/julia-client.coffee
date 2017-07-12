@@ -48,5 +48,7 @@ module.exports = JuliaClient =
 
   provideClient: -> @connection.client
 
+  provideHyperclick: -> @runtime.provideHyperclick()
+
   config: require './package/config'
   completions: -> @runtime.completions
