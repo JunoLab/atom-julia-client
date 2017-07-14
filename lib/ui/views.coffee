@@ -77,7 +77,7 @@ module.exports = views =
   number: ({value, full}) ->
     rounded = value.toPrecision(3)
     rounded += '…' unless rounded.toString().length >= full.length
-    view = @render @tags.span 'syntax--constant syntax--number', rounded
+    view = @render @tags.span 'syntax--constant syntax--numeric', rounded
     isfull = false
     view.onclick = (e) ->
       view.innerText = if !isfull then full else rounded
