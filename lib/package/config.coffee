@@ -33,9 +33,9 @@ config =
         items:
           type: 'string'
       numberOfThreads:
-        title: 'Number of Threads (experimental, 0 will use global setting)'
+        title: 'Number of Threads (`global` will use global setting, `auto` sets it to number of cores)'
         type: 'string'
-        default: '0'
+        default: 'auto'
     order: 3
   notifications:
     type: 'boolean'
