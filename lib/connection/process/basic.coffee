@@ -101,9 +101,12 @@ module.exports =
               socket: @clientSocket proc
 
   get_: (a...) ->
-    confnt = parseInt(atom.config.get('julia-client.juliaOptions.numberOfThreads'))
-    if confnt != 0 and isFinite(confnt)
-      process.env.JULIA_NUM_THREADS = confnt
+    confnt = atom.config.get('julia-client.juliaOptions.numberOfThreads')
+    confntInt = parseInt(confnt)
+    if confnt == 'auto'
+      process.env.JULIA_NUM_THREADS = require('physical-cpu-count')
+    else if confntInt != 0 and isFinite(confntInt)
+      process.env.JULIA_NUM_THREADS = confntInt
 
     if process.platform is 'win32'
       @getWindows a...
