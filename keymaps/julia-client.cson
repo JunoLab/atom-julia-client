@@ -61,6 +61,7 @@
  .platform-linux .julia-console.julia atom-text-editor':
   'ctrl-shift-c': 'julia-client:interrupt-julia'
   'ctrl-j ctrl-m': 'julia-client:set-working-module'
+  'ctrl-w': 'editor:delete-to-beginning-of-word'
 
 '.platform-win32 atom-workspace,
  .platform-linux atom-workspace':
