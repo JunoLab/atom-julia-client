@@ -18,8 +18,8 @@ module.exports = views =
         view.appendChild @render child, opts
     view
 
-  html: ({content}) ->
-    view = @render @tags.div()
+  html: ({content, inline = false}) ->
+    view = @render if inline then @tags.span() else @tags.div()
     view.innerHTML = content
     view = if view.children.length == 1 then view.children[0] else view
 
@@ -85,9 +85,10 @@ module.exports = views =
       e.stopPropagation()
     view
 
-  code: ({text, scope}) ->
+  code: ({text, attrs, scope}) ->
     grammar = atom.grammars.grammarForScopeName("source.julia")
-    @render {type: 'html', content: Highlighter.highlight text, grammar, {scopePrefix: 'syntax--'}}
+    highlighted = Highlighter.highlight(text, grammar, {scopePrefix: 'syntax--', inline: !attrs['block']})
+    @render {type: 'html', inline: true, content: highlighted}
 
   views:
     dom:     (a...) -> views.dom  a...
