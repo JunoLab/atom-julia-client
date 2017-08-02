@@ -3,6 +3,7 @@
 // See https://github.com/atom/atom-dark-ui/blob/master/styles/ui-variables.less
 // for a full listing of what's available.
 @import "ui-variables";
+@import "syntax-variables";
 
 .julia {
   table {
@@ -33,5 +34,17 @@ atom-text-editor.editor {
   }
   .medium {
     opacity: 0.8;
+  }
+}
+
+.markdown {
+  .admonition {
+    padding-left: 1em;
+    &.note, &.tip {
+      border-left: 2px solid @text-color-info;
+    }
+    &.warning {
+      border-left: 2px solid @text-color-warning;
+    }
   }
 }
