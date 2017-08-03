@@ -11,7 +11,7 @@ module.exports =
         Go to the Packages → Julia → Open Terminal menu and
         run `Pkg.add("Atom")` in Julia, then try again.
         If you still see an issue, please report it to:
-            julia-users@googlegroups.com
+            https://discourse.julialang.org/
         """
         dismissable: true
 
