@@ -39,12 +39,34 @@ atom-text-editor.editor {
 
 .markdown {
   .admonition {
-    padding-left: 1em;
-    &.note, &.tip {
-      border-left: 2px solid @text-color-info;
+    margin: 1em 0;
+    .admonition-title {
+      margin: 0;
+      padding: 1em 1em .5em 1em;
+      font-weight: bold;
+
+      &:before {
+        margin-right: 0.5em;
+      }
     }
+    >.markdown {
+      padding: 1em 0 0.5em 1em;
+    }
+
+    .admonition-title {
+      background-color: mix(@text-color-info, @syntax-background-color, 10%);
+    }
+    .markdown {
+      background-color: mix(@text-color-info, @syntax-background-color, 5%);
+    }
+
     &.warning {
-      border-left: 2px solid @text-color-warning;
+      .admonition-title {
+        background-color: mix(@text-color-warning, @syntax-background-color, 10%);
+      }
+      .markdown {
+        background-color: mix(@text-color-warning, @syntax-background-color, 5%);
+      }
     }
 
     .title {
