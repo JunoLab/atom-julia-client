@@ -99,6 +99,12 @@ module.exports =
   toolbar: [{
       type: 'group'
       children: [
+        {icon: 'playback-pause', alt: 'Interrupt Julia', onclick: ()->client.interrupt()}
+        {icon: 'remove-close', alt: 'Kill Julia', onclick: ()->client.kill()}
+    ]
+    }, {
+      type: 'group'
+      children: [
         {icon: 'link-external', alt: 'Debug: Finish Function', onclick: ()->debug.finish()}
         {icon: 'arrow-down', alt: 'Debug: Next Line', onclick: ()->debug.nextline()}
         {icon: 'triangle-right', alt: 'Debug: Next Expression', onclick: ()->debug.stepexpr()}
