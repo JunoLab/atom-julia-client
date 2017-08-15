@@ -31,8 +31,10 @@ module.exports =
     @ensureVisible().then => @pane.size()
 
   ploturl: (url) ->
-    v = @show webview
+    v = views.render webview
       class: 'blinkjl',
       src: url,
       style: 'width: 100%; height: 100%'
+    @ensureVisible()
+    @pane.show v
     v.addEventListener('console-message', (e) => console.log(e.message))
