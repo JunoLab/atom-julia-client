@@ -24,7 +24,7 @@ module.exports =
   show: (view) ->
     @ensureVisible()
     v = views.render view
-    @pane.show new @ink.Pannable([], v)
+    @pane.show new @ink.Pannable(v)
     v
 
   plotSize: ->
