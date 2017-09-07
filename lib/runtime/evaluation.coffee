@@ -4,6 +4,7 @@ path = require 'path'
 {client} =  require '../connection'
 {notifications, views, selector} = require '../ui'
 {paths, blocks, cells, words, weave} = require '../misc'
+{processLinks} = require '../ui/docs'
 workspace = require './workspace'
 modules = require './modules'
 {eval: evaluate, evalall, evalrepl, cd, clearLazy} =
@@ -95,8 +96,10 @@ module.exports =
     if word.length == 0 || !isNaN(word) then return
     client.import("docs")({word: word, mod: mod}).then (result) =>
       if result.error then return
+      v = views.render result
+      processLinks(v.getElementsByTagName('a'))
       d = new @ink.InlineDoc editor, range,
-        content: views.render result
+        content: v
         highlight: true
       d.view.classList.add 'julia'
 

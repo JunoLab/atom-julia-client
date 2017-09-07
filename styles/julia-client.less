@@ -3,6 +3,7 @@
 // See https://github.com/atom/atom-dark-ui/blob/master/styles/ui-variables.less
 // for a full listing of what's available.
 @import "ui-variables";
+@import "syntax-variables";
 
 .julia {
   table {
@@ -33,5 +34,43 @@ atom-text-editor.editor {
   }
   .medium {
     opacity: 0.8;
+  }
+}
+
+.markdown {
+  .admonition {
+    margin: 1em 0;
+    .admonition-title {
+      margin: 0;
+      padding: 1em 1em .5em 1em;
+      font-weight: bold;
+
+      &:before {
+        margin-right: 0.5em;
+      }
+    }
+    >.markdown {
+      padding: 1em 0 0.5em 1em;
+    }
+
+    .admonition-title {
+      background-color: mix(@background-color-info, @syntax-background-color, 15%);
+    }
+    .markdown {
+      background-color: mix(@background-color-info, @syntax-background-color, 10%);
+    }
+
+    &.warning {
+      .admonition-title {
+        background-color: mix(@background-color-warning, @syntax-background-color, 15%);
+      }
+      .markdown {
+        background-color: mix(@background-color-warning, @syntax-background-color, 10%);
+      }
+    }
+
+    .title {
+      font-weight: bold;
+    }
   }
 }

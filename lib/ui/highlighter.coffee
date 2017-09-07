@@ -4,8 +4,9 @@ _ = require 'underscore-plus'
 # but uses an externally provided grammar.
 module.exports =
   # Highlights some `text` according to the specified `grammar`.
-  highlight: (text, grammar, {scopePrefix}={}) ->
+  highlight: (text, grammar, {scopePrefix, block}={}) ->
     scopePrefix ?= ''
+    block ?= false
     lineTokens = grammar.tokenizeLines(text)
 
     # Remove trailing newline
@@ -15,17 +16,17 @@ module.exports =
       if lastLineTokens.length is 1 and lastLineTokens[0].value is ''
         lineTokens.pop()
 
-    html = '<pre class="editor editor-colors">'
+    html = '<code class="editor editor-colors">'
     for tokens in lineTokens
       scopeStack = []
-      html += '<div class="line">'
+      html += "<#{if block then "div" else "span"} class=\"line\">"
       for {value, scopes} in tokens
         value = ' ' unless value
         html = @updateScopeStack(scopeStack, scopes, html, scopePrefix)
         html += "<span>#{@escapeString(value)}</span>"
       html = @popScope(scopeStack, html) while scopeStack.length > 0
-      html += '</div>'
-    html += '</pre>'
+      html += "</#{if block then "div" else "span"}>"
+    html += '</code>'
     html
 
   escapeString: (string) ->

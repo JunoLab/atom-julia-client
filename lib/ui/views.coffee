@@ -18,8 +18,8 @@ module.exports = views =
         view.appendChild @render child, opts
     view
 
-  html: ({content}) ->
-    view = @render @tags.div()
+  html: ({content, block = false}) ->
+    view = @render if block then @tags.div() else @tags.span()
     view.innerHTML = content
     view = if view.children.length == 1 then view.children[0] else view
 
@@ -85,9 +85,14 @@ module.exports = views =
       e.stopPropagation()
     view
 
-  code: ({text, scope}) ->
+  code: ({text, attrs, scope}) ->
     grammar = atom.grammars.grammarForScopeName("source.julia")
-    @render {type: 'html', content: Highlighter.highlight text, grammar, {scopePrefix: 'syntax--'}}
+    highlighted = Highlighter.highlight(text, grammar, {scopePrefix: 'syntax--', block: attrs['block']})
+    @render {type: 'html', block: attrs['block'], content: highlighted}
+
+  latex: ({attrs, text}) ->
+    latex = @ink.KaTeX.texify(text, attrs['block'])
+    @render {type: 'html', block: attrs['block'], content: latex}
 
   views:
     dom:     (a...) -> views.dom  a...
@@ -99,6 +104,7 @@ module.exports = views =
     copy:    (a...) -> views.copy a...
     number:  (a...) -> views.number a...
     code:    (a...) -> views.code a...
+    latex:   (a...) -> views.latex a...
 
   render: (data, opts = {}) ->
     if @views.hasOwnProperty(data.type)
