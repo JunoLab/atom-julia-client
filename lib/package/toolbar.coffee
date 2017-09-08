@@ -45,6 +45,11 @@ module.exports =
       callback: 'julia-client:open-workspace'
       tooltip: 'Show Workspace'
 
+    @bar.addButton
+      icon: 'info'
+      callback: 'julia-client:open-documentation-browser'
+      tooltip: 'Show Documentation Browser'
+
     @bar.addSpacer()
 
     # Evaluation
