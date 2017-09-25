@@ -87,12 +87,14 @@ module.exports = views =
 
   code: ({text, attrs, scope}) ->
     grammar = atom.grammars.grammarForScopeName("source.julia")
-    highlighted = Highlighter.highlight(text, grammar, {scopePrefix: 'syntax--', block: attrs['block']})
-    @render {type: 'html', block: attrs['block'], content: highlighted}
+    block = attrs?.block || false
+    highlighted = Highlighter.highlight(text, grammar, {scopePrefix: 'syntax--', block})
+    @render {type: 'html', block, content: highlighted}
 
   latex: ({attrs, text}) ->
-    latex = @ink.KaTeX.texify(text, attrs['block'])
-    @render {type: 'html', block: attrs['block'], content: latex}
+    block = attrs?.block || false
+    latex = @ink.KaTeX.texify(text, block)
+    @render {type: 'html', block, content: latex}
 
   views:
     dom:     (a...) -> views.dom  a...
