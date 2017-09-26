@@ -45,6 +45,9 @@ module.exports =
     @subs.dispose()
     history.write @c.history.items
 
+  consumeAutocompleteWatchEditor: (watchEditor) ->
+    @c.watchEditor = watchEditor
+
   create: ->
     @c = @ink.Console.fromId 'julia'
     # TODO: have a way to update the current input

@@ -12,6 +12,7 @@ evaluation = require './evaluation'
 module.exports =
   scopeSelector: '.source.julia'
   textEditorSelectors: 'atom-text-editor'
+  labels: ['workspace-center']
   filterSuggestions: true
   excludeLowerPriority: false
 
