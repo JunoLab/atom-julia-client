@@ -51,22 +51,22 @@ module.exports =
             result
 
   evalAll: ->
-    editor = atom.workspace.getActiveTextEditor()
+    {editor, mod, edpath} = @currentContext()
     atom.commands.dispatch atom.views.getView(editor), 'inline-results:clear-all'
     evalall({
-              path: editor.getPath()
-              module: editor.juliaModule
+              path: edpath
+              module: mod
               code: editor.getText()
             }).then (result) ->
         notifications.show "Evaluation Finished"
         workspace.update()
 
   evalAllWeaveChunks: ->
-    editor = atom.workspace.getActiveTextEditor()
+    {editor, mod, edpath} = @currentContext()
     atom.commands.dispatch atom.views.getView(editor), 'inline-results:clear-all'
     evalall({
-              path: editor.getPath()
-              module: editor.juliaModule
+              path: edpath
+              module: mod
               code: weave.getCode(editor)
             }).then (result) ->
         notifications.show "Evaluation Finished"
