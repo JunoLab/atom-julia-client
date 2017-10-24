@@ -24,7 +24,11 @@ module.exports =
       mark++
       l = @getLine ed, mark
       if multiline
-        if l.match(/=#/) then multiline = false else continue
+        if l.match(/=#/)
+          multiline = false
+          mark++
+        else
+          continue
       break if @isStart l
       if @isEnd l
         if not (scopes.forLines(ed, start, mark-1).length is 0)
@@ -60,8 +64,26 @@ module.exports =
       sel.insertText '\n'
     # Move the cursor
     to = row + 1
-    while to < ed.getLastBufferRow() and @isBlank @getLine ed, to
-      to++
+    docstring = false
+    multicomment = false
+    while to < ed.getLastBufferRow()
+      l = @getLine(ed, to)
+      if l.match(/^""".*(?!""")/) and not (docstring or multicomment)
+        docstring = true
+        to++
+      else if l.match(/"""/)
+        docstring = false
+        to++
+      else if l.match(/^#=.*(?!=#)/) and not (docstring or multicomment)
+        multicomment = true
+        to++
+      else if l.match(/=#/)
+        multicomment = false
+        to++
+      else if @isBlank(l) or multicomment or docstring
+        to++
+      else
+        break
     to = @walkForward ed, to
     sel.setBufferRange [[to, Infinity], [to, Infinity]]
 
