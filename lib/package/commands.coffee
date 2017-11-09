@@ -92,6 +92,7 @@ module.exports =
       'julia-debug:clear-all-breakpoints': => juno.runtime.debugger.clearbps()
       'julia-debug:get-all-breakpoints': => juno.runtime.debugger.getBPs()
       'julia-debug:step-to-next-line': => juno.runtime.debugger.nextline()
+      'julia-debug:step-to-selected-line': => juno.runtime.debugger.toselectedline()
       'julia-debug:step-to-next-expression': => juno.runtime.debugger.stepexpr()
       'julia-debug:step-into-function': => juno.runtime.debugger.stepin()
       'julia-debug:finish-function': => juno.runtime.debugger.finish()

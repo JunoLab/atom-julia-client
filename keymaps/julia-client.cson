@@ -78,6 +78,11 @@
 
 '.platform-darwin ink-console atom-text-editor:not([mini])':
   'cmd-enter': 'editor:newline'
-  
+
 'ink-console atom-text-editor:not([mini])':
   'alt-enter': 'editor:newline'
+
+'atom-text-editor[data-grammar="source julia"]':
+  'f10': 'julia-debug:step-to-next-expression'
+  'f11': 'julia-debug:step-into-function'
+  'shift-f11': 'julia-debug:finish-function'

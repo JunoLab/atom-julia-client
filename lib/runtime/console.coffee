@@ -110,6 +110,7 @@ module.exports =
       children: [
         {icon: 'link-external', alt: 'Debug: Finish Function', onclick: ()->debug.finish()}
         {icon: 'arrow-down', alt: 'Debug: Next Line', onclick: ()->debug.nextline()}
+        {icon: 'jump-down', alt: 'Debug: Step to Selected Line', onclick: ()->debug.toselectedline()}
         {icon: 'triangle-right', alt: 'Debug: Next Expression', onclick: ()->debug.stepexpr()}
         {icon: 'sign-in', alt: 'Debug: Step into Function', onclick: () -> debug.stepin()}
       ]

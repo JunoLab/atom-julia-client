@@ -24,7 +24,7 @@ junorc = abspath(homedir(), ".junorc.jl")
 
 try
   import Atom
-  @eval using $(VERSION < v"0.5-" ? :Atom : :Juno)
+  using Juno
   @sync begin
     Atom.connect(port, welcome = precompile || install)
     ispath(junorc) && include(junorc)
