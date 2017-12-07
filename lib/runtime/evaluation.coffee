@@ -51,11 +51,11 @@ module.exports =
             result
 
   evalAll: ->
-    {editor, mod, edpath} = @currentContext()
+    {editor, edpath} = @currentContext()
     atom.commands.dispatch atom.views.getView(editor), 'inline-results:clear-all'
     evalall({
               path: edpath
-              module: mod
+              module: editor.juliaModule
               code: editor.getText()
             }).then (result) ->
         notifications.show "Evaluation Finished"
