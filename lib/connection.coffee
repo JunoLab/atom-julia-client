@@ -20,7 +20,6 @@ module.exports =
     @local.activate()
 
   deactivate: ->
-    @emitter.dispose()
     @client.deactivate()
 
   consumeInk: (ink) ->

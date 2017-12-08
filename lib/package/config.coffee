@@ -24,7 +24,7 @@ config =
         type: 'string'
         # Server mode is non-functional for now
         # enum: ['Basic', 'Cycler', 'Server']
-        enum: ['Basic', 'Cycler']
+        enum: ['Basic', 'Cycler', 'New Console']
         default: 'Basic'
       arguments:
         title: 'Arguments'

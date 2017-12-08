@@ -12,11 +12,11 @@ server = require './process/server'
 module.exports =
   server: server
 
-  provider: -> basic2
-    # switch atom.config.get 'julia-client.juliaOptions.bootMode'
-    #   when 'Server' then server
-    #   when 'Cycler' then cycler
-    #   when 'Basic' then basic
+  provider: ->
+    switch atom.config.get 'julia-client.juliaOptions.bootMode'
+      when 'New Console' then basic2
+      when 'Cycler' then cycler
+      when 'Basic' then basic
 
   activate: ->
     paths.getVersion()
