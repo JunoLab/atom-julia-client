@@ -1,6 +1,4 @@
 net = require 'net'
-
-{bufferLines} = require '../../misc'
 client = require '../client'
 
 module.exports =
