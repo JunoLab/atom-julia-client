@@ -101,7 +101,6 @@ module.exports =
   info: (data) -> @emitter.emit 'info', data
 
   clientCall: (name, f, args...) ->
-    console.log @conn
     if not @conn[f]?
       atom.notifications.addError "This client doesn't support #{name}."
     else
