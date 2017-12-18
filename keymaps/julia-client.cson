@@ -19,7 +19,8 @@
 
 '.platform-darwin .item-views > atom-text-editor[data-grammar="source julia"],
  .platform-darwin .julia-console.julia,
- .platform-darwin .julia-console.julia atom-text-editor':
+ .platform-darwin .julia-console.julia atom-text-editor,
+ .platform-darwin .julia-terminal':
   'ctrl-c': 'julia-client:interrupt-julia'
   'cmd-j cmd-m': 'julia-client:set-working-module'
 
@@ -34,9 +35,9 @@
 '.platform-darwin atom-workspace':
   'cmd-j cmd-r': 'julia-client:open-a-repl'
   'cmd-j cmd-s': 'julia-client:start-julia'
-  'cmd-j cmd-o': 'julia-client:open-console'
+  'cmd-j cmd-o': 'julia-client:julia-terminal'
   'cmd-j cmd-p': 'julia-client:open-plot-pane'
-  'cmd-j cmd-c': 'julia-client:clear-console'
+  'cmd-j cmd-c': 'julia-client:clear-terminal'
   'cmd-j cmd-k': 'julia-client:kill-julia'
   'cmd-j cmd-,': 'julia-client:settings'
 
@@ -56,8 +57,10 @@
   'ctrl-j ctrl-g': 'julia-client:goto-symbol'
 
 '.platform-win32 .julia-console.julia,
+ .platform-win32 .julia-terminal,
  .platform-win32 .julia-console.julia atom-text-editor,
  .platform-linux .julia-console.julia,
+ .platform-linux .julia-terminal,
  .platform-linux .julia-console.julia atom-text-editor':
   'ctrl-shift-c': 'julia-client:interrupt-julia'
   'ctrl-j ctrl-m': 'julia-client:set-working-module'
@@ -66,9 +69,9 @@
  .platform-linux atom-workspace':
   'ctrl-j ctrl-r': 'julia-client:open-a-repl'
   'ctrl-j ctrl-s': 'julia-client:start-julia'
-  'ctrl-j ctrl-o': 'julia-client:open-console'
+  'ctrl-j ctrl-o': 'julia-client:julia-terminal'
   'ctrl-j ctrl-p': 'julia-client:open-plot-pane'
-  'ctrl-j ctrl-c': 'julia-client:clear-console'
+  'ctrl-j ctrl-c': 'julia-client:clear-terminal'
   'ctrl-j ctrl-k': 'julia-client:kill-julia'
   'ctrl-j ctrl-,': 'julia-client:settings'
 
