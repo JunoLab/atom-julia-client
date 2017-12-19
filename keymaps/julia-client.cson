@@ -57,12 +57,13 @@
   'ctrl-j ctrl-g': 'julia-client:goto-symbol'
 
 '.platform-win32 .julia-console.julia,
- .platform-win32 .julia-terminal,
  .platform-win32 .julia-console.julia atom-text-editor,
  .platform-linux .julia-console.julia,
- .platform-linux .julia-terminal,
  .platform-linux .julia-console.julia atom-text-editor':
   'ctrl-shift-c': 'julia-client:interrupt-julia'
+  'ctrl-j ctrl-m': 'julia-client:set-working-module'
+
+'.platform-win32 .julia-terminal, .platform-linux .julia-terminal':
   'ctrl-j ctrl-m': 'julia-client:set-working-module'
 
 '.platform-win32 atom-workspace,
