@@ -49,7 +49,7 @@ module.exports =
     proc
 
   monitor2: (proc) ->
-    client.emitter.emit('boot', proc.ty)
+    client.emitter.emit('boot', proc)
     proc.ready = -> false
     client.attach(proc)
     return proc
