@@ -27,7 +27,7 @@ config =
         enum: ['Basic', 'Cycler']
         default: 'Basic'
       consoleStyle:
-        title: 'Console Style'
+        title: 'Console Style (requires restart)'
         type: 'string'
         enum: ['REPL-based', 'Legacy']
         default: 'REPL-based'
