@@ -4,19 +4,27 @@ client = require './client'
 
 cd = client.import 'cd', false
 
+# legacy
 basic  = require './process/basic'
-basic2  = require './process/basic2'
 cycler = require './process/cycler'
-server = require './process/server'
+# server = require './process/server'
+
+# new console
+basic2 = require './process/basic2'
 
 module.exports =
-  server: server
+  # server: server
 
   provider: ->
-    switch atom.config.get 'julia-client.juliaOptions.bootMode'
-      when 'New Console' then basic2
-      when 'Cycler' then cycler
-      when 'Basic' then basic
+    switch atom.config.get 'julia-client.juliaOptions.consoleStyle'
+      when 'REPL-based'
+        switch atom.config.get 'julia-client.juliaOptions.bootMode'
+          when 'Cycler' then basic2
+          when 'Basic' then basic2
+      when 'Legacy'
+        switch atom.config.get 'julia-client.juliaOptions.bootMode'
+          when 'Cycler' then cycler
+          when 'Basic' then basic
 
   activate: ->
     paths.getVersion()

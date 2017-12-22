@@ -24,8 +24,13 @@ config =
         type: 'string'
         # Server mode is non-functional for now
         # enum: ['Basic', 'Cycler', 'Server']
-        enum: ['Basic', 'Cycler', 'New Console']
+        enum: ['Basic', 'Cycler']
         default: 'Basic'
+      consoleStyle:
+        title: 'Console Style'
+        type: 'string'
+        enum: ['REPL-based', 'Legacy']
+        default: 'REPL-based'
       arguments:
         title: 'Arguments'
         type: 'array'
