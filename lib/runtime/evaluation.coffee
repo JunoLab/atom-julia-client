@@ -36,6 +36,10 @@ module.exports =
         evaluate({text, line: line+1, mod, path: edpath})
           .catch -> r?.destroy()
           .then (result) =>
+            if not result?
+              r?.destroy()
+              console.error 'Error: Something went wrong while evaluating.'
+              return
             error = result.type == 'error'
             view = if error then result.view else result
             if not r? or r.isDestroyed then r = new @ink.Result editor, [start, end], {type: rtype, scope: 'julia'}
