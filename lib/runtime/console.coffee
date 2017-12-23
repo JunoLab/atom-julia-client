@@ -11,7 +11,7 @@ debug = require './debugger'
 
 module.exports =
   activate: ->
-    if atom.config.get('julia-client.juliaOptions.consoleStyle') is not 'Legacy' then return
+    if atom.config.get('julia-client.juliaOptions.consoleStyle') != 'Legacy' then return
 
     @subs = new CompositeDisposable
 
