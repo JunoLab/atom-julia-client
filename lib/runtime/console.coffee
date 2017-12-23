@@ -12,7 +12,6 @@ debug = require './debugger'
 module.exports =
   activate: ->
     if atom.config.get('julia-client.juliaOptions.consoleStyle') is not 'Legacy' then return
-    console.log atom.config.get 'julia-client.juliaOptions.consoleStyle'
 
     @subs = new CompositeDisposable
 
@@ -42,6 +41,10 @@ module.exports =
     @subs.add client.onStdout (s) => @stdout s
     @subs.add client.onStderr (s) => @stderr s
     @subs.add client.onInfo   (s) => @info s
+
+    @subs.add atom.commands.add 'atom-workspace',
+      'julia-client:open-console': => @open()
+      'julia-client:clear-console': => @reset()
 
   deactivate: ->
     @c?.close()
