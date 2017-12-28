@@ -16,15 +16,12 @@ module.exports =
   # server: server
 
   provider: ->
-    switch atom.config.get 'julia-client.juliaOptions.consoleStyle'
-      when 'REPL-based'
-        switch atom.config.get 'julia-client.juliaOptions.bootMode'
-          when 'Cycler' then basic2
-          when 'Basic' then basic2
-      when 'Legacy'
-        switch atom.config.get 'julia-client.juliaOptions.bootMode'
-          when 'Cycler' then cycler
-          when 'Basic' then basic
+    switch atom.config.get 'julia-client.juliaOptions.bootMode'
+      when 'Cycler' then cycler
+      when 'Basic'
+        switch atom.config.get 'julia-client.juliaOptions.consoleStyle'
+          when 'REPL-based' then basic2
+          when 'Legacy' then basic
 
   activate: ->
     paths.getVersion()
