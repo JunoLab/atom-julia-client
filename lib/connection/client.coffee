@@ -95,6 +95,7 @@ module.exports =
   onStdout: (f) -> @emitter.on 'stdout', f
   onStderr: (f) -> @emitter.on 'stderr', f
   onInfo: (f) -> @emitter.on 'info', f
+  onBoot: (f) -> @emitter.on 'boot', f
   stdout: (data) -> @emitter.emit 'stdout', data
   stderr: (data) -> @emitter.emit 'stderr', data unless @basicHandler data
   info: (data) -> @emitter.emit 'info', data
@@ -108,8 +109,8 @@ module.exports =
   stdin: (data) -> @clientCall 'STDIN', 'stdin', data
 
   interrupt: ->
-    if @isActive() and @isWorking()
-      @clientCall 'interrupts', 'interrupt'
+    # if @isActive() and @isWorking()
+    @clientCall 'interrupts', 'interrupt'
 
   kill: ->
     if @isActive()

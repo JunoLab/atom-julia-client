@@ -51,7 +51,7 @@ module.exports =
 
   getUnix: (path, args) ->
     tcp.listen().then (port) =>
-      proc = child_process.spawn path, [args..., paths.script('boot.jl'), port]
+      proc = child_process.spawn path, [args..., paths.script('boot_sync.jl'), port]
 
       @createProc proc,
         kill: -> proc.kill()
@@ -87,7 +87,7 @@ module.exports =
       else
         tcp.listen().then (port) =>
           @freePort().then (wrapPort) =>
-            jlargs = [args..., '"`"' + paths.script('boot.jl') + '`""', port]
+            jlargs = [args..., '"`"' + paths.script('boot_sync.jl') + '`""', port]
             proc = child_process.spawn("powershell",
                                        ["-NoProfile", "-ExecutionPolicy", "bypass",
                                         "& \"#{paths.script "spawnInterruptible.ps1"}\"

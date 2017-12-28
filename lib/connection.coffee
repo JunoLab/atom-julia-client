@@ -16,6 +16,7 @@ module.exports =
     @messages.activate()
     @client.activate()
     @client.boot = => @boot()
+
     @local.activate()
 
   deactivate: ->

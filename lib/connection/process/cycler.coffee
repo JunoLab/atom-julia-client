@@ -1,9 +1,14 @@
 {isEqual} = require 'underscore-plus'
 basic = require './basic'
+basic2 = require './basic2'
 
 IPC = require '../ipc'
 
 module.exports =
+  provider: ->
+    switch atom.config.get 'julia-client.juliaOptions.consoleStyle'
+      when 'REPL-based' then basic2
+      when 'Legacy' then basic
 
   cacheLength: 1
 
@@ -31,9 +36,9 @@ module.exports =
       p.proc
 
   start: (path, args) ->
-    basic.lock (release) =>
+    @provider().lock (release) =>
       if @cache(path, args).length < @cacheLength
-        basic.get_(path, args).then (proc) =>
+        @provider().get_(path, args).then (proc) =>
           obj = {path, args, proc: proc}
           @monitor proc
           @warmup obj
@@ -52,6 +57,7 @@ module.exports =
 
   monitor: (proc) ->
     proc.events = []
+    proc.wasCached = true
     proc.onStdout (data) -> proc.events?.push {type: 'stdout', data}
     proc.onStderr (data) -> proc.events?.push {type: 'stderr', data}
     proc.flush = (out, err) =>
@@ -80,7 +86,7 @@ module.exports =
 
   get: (path, args) ->
     if (proc = @fromCache path, args) then p = proc
-    else p = basic.get path, args
+    else p = @provider().get path, args
     @start path, args
     p
 

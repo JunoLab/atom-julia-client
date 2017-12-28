@@ -26,6 +26,11 @@ config =
         # enum: ['Basic', 'Cycler', 'Server']
         enum: ['Basic', 'Cycler']
         default: 'Basic'
+      consoleStyle:
+        title: 'Console Style (requires restart)'
+        type: 'string'
+        enum: ['REPL-based', 'Legacy']
+        default: 'REPL-based'
       arguments:
         title: 'Arguments'
         type: 'array'

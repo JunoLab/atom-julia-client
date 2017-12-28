@@ -4,18 +4,24 @@ client = require './client'
 
 cd = client.import 'cd', false
 
+# legacy
 basic  = require './process/basic'
 cycler = require './process/cycler'
-server = require './process/server'
+# server = require './process/server'
+
+# new console
+basic2 = require './process/basic2'
 
 module.exports =
-  server: server
+  # server: server
 
   provider: ->
     switch atom.config.get 'julia-client.juliaOptions.bootMode'
-      when 'Server' then server
       when 'Cycler' then cycler
-      when 'Basic' then basic
+      when 'Basic'
+        switch atom.config.get 'julia-client.juliaOptions.consoleStyle'
+          when 'REPL-based' then basic2
+          when 'Legacy' then basic
 
   activate: ->
     paths.getVersion()
@@ -47,6 +53,12 @@ module.exports =
     client.attach proc
     proc
 
+  monitor2: (proc) ->
+    client.emitter.emit('boot', proc)
+    proc.ready = -> false
+    client.attach(proc)
+    return proc
+
   connect: (proc, sock) ->
     proc.message = (m) -> sock.write JSON.stringify m
     client.readStream sock
@@ -66,7 +78,7 @@ module.exports =
 
     proc = check
       .then => @spawnJulia(path, args)
-      .then (proc) => @monitor proc
+      .then (proc) => if proc.ty? then @monitor2(proc) else @monitor(proc)
     proc
       .then (proc) =>
         Promise.all [proc, proc.socket]
@@ -78,4 +90,4 @@ module.exports =
     proc
 
   spawnJulia: (path, args) ->
-    @provider().get path, args
+    @provider().get(path, args)

@@ -11,6 +11,8 @@ debug = require './debugger'
 
 module.exports =
   activate: ->
+    if atom.config.get('julia-client.juliaOptions.consoleStyle') != 'Legacy' then return
+
     @subs = new CompositeDisposable
 
     @create()
@@ -40,13 +42,17 @@ module.exports =
     @subs.add client.onStderr (s) => @stderr s
     @subs.add client.onInfo   (s) => @info s
 
+    @subs.add atom.commands.add 'atom-workspace',
+      'julia-client:open-console': => @open()
+      'julia-client:clear-console': => @reset()
+
   deactivate: ->
-    @c.close()
-    @subs.dispose()
-    history.write @c.history.items
+    @c?.close()
+    @subs?.dispose()
+    if @c then history.write @c.history.items
 
   consumeAutocompleteWatchEditor: (watchEditor) ->
-    @c.watchEditor = watchEditor
+    if @c then @c.watchEditor = watchEditor
 
   create: ->
     @c = @ink.Console.fromId 'julia'

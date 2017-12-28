@@ -3,6 +3,7 @@ module.exports =
   modules:     require './runtime/modules'
   evaluation:  require './runtime/evaluation'
   console:     require './runtime/console'
+  console2:    require './runtime/console2'
   workspace:   require './runtime/workspace'
   plots:       require './runtime/plots'
   frontend:    require './runtime/frontend'
@@ -21,11 +22,12 @@ module.exports =
     @evaluation.ink = ink
     @debugger.consumeInk ink
     @profiler.activate ink
+    @console2.activate ink
     for mod in [@console, @workspace, @plots]
       mod.ink = ink
       mod.activate()
 
-  provideHyperclick: -> @evaluation.provideHyperclick()    
+  provideHyperclick: -> @evaluation.provideHyperclick()
 
   consumeStatusBar: (bar) ->
     @modules.consumeStatusBar bar

@@ -72,7 +72,7 @@ module.exports =
 
 
     @subs.add atom.commands.add '.item-views > atom-text-editor[data-grammar="source julia"],
-                                 .julia-console.julia, .ink-workspace',
+                                 .julia-console.julia, ink-terminal, .ink-workspace',
       'julia-client:set-working-module': -> juno.runtime.modules.chooseModule()
 
     @subs.add atom.commands.add 'atom-workspace',
@@ -84,8 +84,6 @@ module.exports =
       'julia-client:connnect-external-process': -> disrequireClient -> juno.connection.messages.connectExternal()
       'julia-client:connect-platformio-terminal': -> disrequireClient -> juno.connection.terminal.runPlatformIOTerm()
       'julia-client:connect-terminal': -> disrequireClient -> juno.connection.terminal.connectedRepl()
-      'julia-client:open-console': => @withInk -> juno.runtime.console.open()
-      "julia-client:clear-console": => juno.runtime.console.reset()
       'julia-client:open-plot-pane': => @withInk -> juno.runtime.plots.open()
       'julia-client:open-workspace': => @withInk -> juno.runtime.workspace.open()
       'julia-client:settings': -> atom.workspace.open('atom://config/packages/julia-client')

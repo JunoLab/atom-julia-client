@@ -7,8 +7,8 @@ path = require 'path'
 {processLinks} = require '../ui/docs'
 workspace = require './workspace'
 modules = require './modules'
-{eval: evaluate, evalall, evalrepl, cd, clearLazy} =
-    client.import rpc: ['eval', 'evalall', 'evalrepl'], msg: ['cd', 'clearLazy']
+{eval: evaluate, evalall, evalrepl, evalshow, cd, clearLazy} =
+    client.import rpc: ['eval', 'evalall', 'evalrepl', 'evalshow'], msg: ['cd', 'clearLazy']
 
 module.exports =
   currentContext: ->
@@ -27,15 +27,22 @@ module.exports =
       @ink.highlight editor, start, end
       rtype = if cell? then "block" else atom.config.get 'julia-client.resultsDisplayMode'
       if rtype is 'console'
-        evalrepl(code: text, mod: mod)
-          .then (result) => workspace.update()
-          .catch =>
+        if atom.config.get('julia-client.juliaOptions.consoleStyle') is 'REPL-based'
+          evalshow({text, line: line+1, mod, path: edpath})
+        else
+          evalrepl(code: text, mod: mod)
+            .then (result) => workspace.update()
+            .catch =>
       else
         r = null
         setTimeout (=> r ?= new @ink.Result editor, [start, end], {type: rtype, scope: 'julia'}), 0.1
         evaluate({text, line: line+1, mod, path: edpath})
           .catch -> r?.destroy()
           .then (result) =>
+            if not result?
+              r?.destroy()
+              console.error 'Error: Something went wrong while evaluating.'
+              return
             error = result.type == 'error'
             view = if error then result.view else result
             if not r? or r.isDestroyed then r = new @ink.Result editor, [start, end], {type: rtype, scope: 'julia'}
