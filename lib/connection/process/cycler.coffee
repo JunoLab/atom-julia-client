@@ -57,6 +57,7 @@ module.exports =
 
   monitor: (proc) ->
     proc.events = []
+    proc.wasCached = true
     proc.onStdout (data) -> proc.events?.push {type: 'stdout', data}
     proc.onStderr (data) -> proc.events?.push {type: 'stderr', data}
     proc.flush = (out, err) =>
