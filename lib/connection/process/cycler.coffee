@@ -6,7 +6,6 @@ IPC = require '../ipc'
 
 module.exports =
   provider: ->
-    console.log basic2
     switch atom.config.get 'julia-client.juliaOptions.consoleStyle'
       when 'REPL-based' then basic2
       when 'Legacy' then basic
