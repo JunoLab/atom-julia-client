@@ -25,7 +25,7 @@ config =
         # Server mode is non-functional for now
         # enum: ['Basic', 'Cycler', 'Server']
         enum: ['Basic', 'Cycler']
-        default: 'Basic'
+        default: 'Cycler'
       consoleStyle:
         title: 'Console Style (requires restart)'
         type: 'string'
