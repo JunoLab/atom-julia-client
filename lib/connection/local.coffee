@@ -86,7 +86,7 @@ module.exports =
         @connect proc, sock
       .catch (e) ->
         client.detach()
-        throw e
+        console.error("Julia exited with #{e}.")
     proc
 
   spawnJulia: (path, args) ->
