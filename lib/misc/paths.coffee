@@ -44,6 +44,17 @@ module.exports =
     p = atom.config.get("julia-client.juliaPath")
     if p.startsWith '~' then p.replace '~', @home() else p
 
+  fullPath: (path) ->
+    new Promise (resolve, reject) ->
+      if fs.existsSync(path) then resolve(path)
+
+      which = if process.platform is 'win32' then 'where' else 'which'
+      proc = child_process.exec "#{which} \"#{path}\"", (err, stdout, stderr) ->
+        return reject(stderr) if err?
+        p = stdout.trim()
+        return resolve(p) if fs.existsSync(p)
+        reject("Couldn't resolve path.")
+
   getVersion: (path = @jlpath()) ->
     new Promise (resolve, reject) =>
       proc = child_process.exec "\"#{path}\" --version", (err, stdout, stderr) =>
