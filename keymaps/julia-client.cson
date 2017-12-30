@@ -72,7 +72,7 @@
   'ctrl-j ctrl-s': 'julia-client:start-julia'
   'ctrl-j ctrl-o': 'julia-client:open-console'
   'ctrl-j ctrl-p': 'julia-client:open-plot-pane'
-  'ctrl-j ctrl-c': 'julia-client:clear-terminal'
+  'ctrl-j ctrl-c': 'julia-client:clear-console'
   'ctrl-j ctrl-k': 'julia-client:kill-julia'
   'ctrl-j ctrl-,': 'julia-client:settings'
 
