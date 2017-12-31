@@ -6,7 +6,3 @@
     {label: 'Toggle breakpoint', command: 'julia-debug:toggle-breakpoint'}
     {type: 'separator'}
   ]
-  'ink-terminal': [
-    {label: 'Copy', command: 'ink-terminal:copy'}
-    {label: 'Paste', command: 'ink-terminal:paste'}
-  ]

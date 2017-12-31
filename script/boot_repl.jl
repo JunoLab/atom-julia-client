@@ -24,6 +24,7 @@ junorc = abspath(homedir(), ".junorc.jl")
 
 try
   import Atom
+  using Juno
   Atom.connect(port, welcome = precompile || install)
   ispath(junorc) && include(junorc)
 catch
