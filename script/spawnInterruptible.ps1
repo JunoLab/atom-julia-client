@@ -48,7 +48,7 @@ function Receive-TCPMessage {
     }
 }
 
-while ($true){
+while (!($proc.HasExited)){
   $msg = Receive-TCPMessage -Port $wrapPort # wait for interrupts
   if ($msg -match "SIGINT"){
     $status = $Kernel32::GenerateConsoleCtrlEvent(0, $proc.Id)
