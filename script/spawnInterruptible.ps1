@@ -34,12 +34,13 @@ function Receive-TCPMessage {
         $stream = $data.GetStream()
 
         while (($i = $stream.Read($bytes,0,$bytes.Length)) -ne 0){
-            $EncodedText = New-Object System.Text.ASCIIEncoding
-            $data = $EncodedText.GetString($bytes,0, $i)
-            Write-Output $data
+          $EncodedText = New-Object System.Text.ASCIIEncoding
+          $data = $EncodedText.GetString($bytes,0, $i)
+          Write-Output $data
         }
 
         $stream.close()
+
         $listener.stop()
     }
   catch [exception]{
@@ -48,7 +49,7 @@ function Receive-TCPMessage {
     }
 }
 
-while (!($proc.HasExited)){
+while ($true){
   $msg = Receive-TCPMessage -Port $wrapPort # wait for interrupts
   if ($msg -match "SIGINT"){
     $status = $Kernel32::GenerateConsoleCtrlEvent(0, $proc.Id)

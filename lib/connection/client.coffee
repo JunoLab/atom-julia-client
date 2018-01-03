@@ -109,8 +109,8 @@ module.exports =
   stdin: (data) -> @clientCall 'STDIN', 'stdin', data
 
   interrupt: ->
-    # if @isActive() and @isWorking()
-    @clientCall 'interrupts', 'interrupt'
+    if @isActive() and @isWorking()
+      @clientCall 'interrupts', 'interrupt'
 
   kill: ->
     if @isActive()
