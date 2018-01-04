@@ -73,6 +73,11 @@ config =
     description: "Limits the Console history's size."
     default: 10000
     order: 8
+  terminal:
+    type: 'string'
+    default: terminal.defaultTerminal()
+    description: 'Command used to open a terminal.'
+    order: 9
   resultsDisplayMode:
     type: 'string'
     default: 'inline'
@@ -83,12 +88,7 @@ config =
     ]
     order: 10
 
-if process.platform != 'darwin'
-  config.terminal =
-    type: 'string'
-    default: terminal.defaultTerminal()
-    description: 'Command used to open a terminal.'
-    order: 9
+
 
 if process.platform == 'win32'
   config.enablePowershellWrapper =

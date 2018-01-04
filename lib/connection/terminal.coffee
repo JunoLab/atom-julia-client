@@ -30,10 +30,13 @@ module.exports =
   terminal: -> atom.config.get("julia-client.terminal")
 
   defaultTerminal: ->
-    if process.platform == 'win32'
-      'cmd /C start cmd /C'
+    sh = process.env["SHELL"]
+    if sh?
+      sh
+    else if process.platform == 'win32'
+      'cmd.exe'
     else
-      'x-terminal-emulator -e'
+      'bash'
 
   repl: -> @term "#{@escpath paths.jlpath()}"
 
