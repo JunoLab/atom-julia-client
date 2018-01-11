@@ -109,8 +109,11 @@ module.exports =
   stdin: (data) -> @clientCall 'STDIN', 'stdin', data
 
   interrupt: ->
-    if @isActive() and @isWorking()
-      @clientCall 'interrupts', 'interrupt'
+    if @isActive()
+      if @isWorking()
+        @clientCall 'interrupts', 'interrupt'
+      else if atom.config.get('julia-client.juliaOptions.consoleStyle') is 'REPL-based'
+        @clientCall 'interrupts', 'interruptREPL'
 
   kill: ->
     if @isActive()

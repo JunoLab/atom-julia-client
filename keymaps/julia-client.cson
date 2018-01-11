@@ -65,6 +65,9 @@
 
 '.platform-win32 .julia-terminal, .platform-linux .julia-terminal':
   'ctrl-j ctrl-m': 'julia-client:set-working-module'
+  'ctrl-c': 'ink-terminal:copy'
+  'ctrl-shift-c': 'julia-client:interrupt-julia'
+  'ctrl-v': 'ink-terminal:paste'
 
 '.platform-win32 atom-workspace,
  .platform-linux atom-workspace':
@@ -90,3 +93,4 @@
   'f10': 'julia-debug:step-to-next-expression'
   'f11': 'julia-debug:step-into-function'
   'shift-f11': 'julia-debug:finish-function'
+  
