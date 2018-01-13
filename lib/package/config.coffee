@@ -73,10 +73,15 @@ config =
     description: "Limits the Console history's size."
     default: 10000
     order: 8
+  shell:
+    type: 'string'
+    default: terminal.defaultShell()
+    description: 'Shell. Defaults to $SHELL.'
+    order: 8.5
   terminal:
     type: 'string'
     default: terminal.defaultTerminal()
-    description: 'Command used to open a terminal.'
+    description: 'Command used to open an external terminal.'
     order: 9
   resultsDisplayMode:
     type: 'string'
