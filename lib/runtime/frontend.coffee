@@ -15,7 +15,7 @@ module.exports =
   activate: ->
     client.handle select: (items) -> selector.show items
 
-    client.handle colors: () -> colors.getColors()
+    client.handle syntaxcolors: (selectors) -> colors.getColors(selectors)
 
     # Blink APIs
 
