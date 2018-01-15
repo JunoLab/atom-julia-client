@@ -12,6 +12,10 @@ module.exports = JuliaClient =
 
   activate: (state) ->
     etch.setScheduler(atom.views)
+
+    # use Atom as the default editor for Julia
+    process.env["JULIA_EDITOR"] = "atom -a"
+
     @requireInk =>
       commands.activate @
       x.activate() for x in [menu, @connection, @runtime]
