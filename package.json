@@ -15,7 +15,7 @@
     "atom-package-deps": "*",
     "coffee-script": "*",
     "physical-cpu-count": "*",
-    "pty.js": "platformio/pty.js#prebuilt",
+    "node-pty-prebuilt": "^0.7.3",
     "etch": "*"
   },
   "consumedServices": {
