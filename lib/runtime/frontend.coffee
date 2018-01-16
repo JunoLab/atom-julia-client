@@ -3,6 +3,7 @@ vm = require 'vm'
 
 {client} = require '../connection'
 {selector, notifications} = require '../ui'
+{colors} = require '../misc'
 
 module.exports =
 
@@ -13,6 +14,8 @@ module.exports =
 
   activate: ->
     client.handle select: (items) -> selector.show items
+
+    client.handle syntaxcolors: (selectors) -> colors.getColors(selectors)
 
     # Blink APIs
 
@@ -35,6 +38,7 @@ module.exports =
 
       notify: (msg) ->
         notifications.show msg, true
+
 
     client.onDetached =>
       for id, win of @windows
