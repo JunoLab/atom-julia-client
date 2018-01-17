@@ -121,7 +121,7 @@ module.exports =
 
   cdHere: ->
     file = atom.workspace.getActiveTextEditor()?.getPath()
-    file? or atom.notifications.addError 'This file has no path.'
+    if !file then atom.notifications.addError 'This file has no path.'
     cd path.dirname(file)
 
   cdProject: ->
