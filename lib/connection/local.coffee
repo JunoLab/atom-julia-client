@@ -24,6 +24,11 @@ module.exports =
           when 'Legacy' then basic
 
   activate: ->
+    if process.platform == 'win32'
+      process.env.JULIA_EDITOR = "\"#{process.execPath}\" -a"
+    else
+      process.env.JULIA_EDITOR = "atom -a"
+      
     paths.getVersion()
       .then =>
         @provider().start? paths.jlpath(), client.clargs()
