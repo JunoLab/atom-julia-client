@@ -27,7 +27,10 @@ try
   using Juno
   @sync begin
     Atom.connect(port, welcome = precompile || install)
-    ispath(junorc) && include(junorc)
+    Atom.handle("connected") do
+      ispath(junorc) && include(junorc)
+      nothing
+    end
   end
 catch
   print(STDERR, "juno-msg-load")
