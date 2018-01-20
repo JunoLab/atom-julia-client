@@ -34,9 +34,6 @@ module.exports = JuliaClient =
   consumeInk: (ink) ->
     commands.ink = ink
     x.consumeInk ink for x in [@connection, @runtime, @ui]
-    if atom.config.get('julia-client.useStandardLayout') #and not @ui.layout.isCustomLayout()
-      # HACK: give atom time to open, or buffers go screwy
-      setTimeout (=> @ui.layout.standard()), 100
 
   consumeTerminal: (term) ->
     @connection.consumeTerminal term
