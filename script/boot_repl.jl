@@ -26,7 +26,7 @@ try
   import Atom
   using Juno
   Atom.connect(port, welcome = precompile || install)
-  Atom.handle("connected") do args...
+  Atom.handle("connected") do
     ispath(junorc) && include(junorc)
     nothing
   end
