@@ -19,6 +19,16 @@
     a {
       color: @text-color-error;
     }
+
+    .body {
+      color: @text-color-error;
+      .error-description {
+        color: @syntax-text-color;
+      }
+      span [style="color:#FFF"] {
+        color: @syntax-text-color!important;
+      }
+    }
   }
 }
 
