@@ -14,7 +14,7 @@ module.exports =
 
   forRange: (ed, range) ->
     scopes = []
-    for l in ed.getGrammar().tokenizeLines ed.getTextInBufferRange range
+    for l in atom.grammars.grammarForScopeName("source.julia").tokenizeLines ed.getTextInBufferRange range
       for t in l
         continue unless @isKeywordScope t.scopes
         continue if @isCompFor t
