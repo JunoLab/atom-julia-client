@@ -16,6 +16,8 @@ module.exports = JuliaClient =
       commands.activate @
       x.activate() for x in [menu, @connection, @runtime]
       @ui.activate @connection.client
+      if atom.config.get('julia-client.firstBoot')
+        setTimeout (=> @ui.layout.resetLayout())
 
   requireInk: (fn) ->
     if atom.packages.isPackageLoaded "ink" then fn()
