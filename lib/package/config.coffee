@@ -63,10 +63,10 @@ config =
     default: false
     description: 'Show Julia icons in the tool bar (requires restart).'
     order: 7
-  useStandardLayout:
+  firstBoot:
     type: 'boolean'
-    default: false
-    description: 'Open the console, workspace and plot pane on start.'
+    default: true
+    # description: 'Open the console, workspace and plot pane on start.'
     order: 7.5
   maximumConsoleSize:
     type: 'integer'
