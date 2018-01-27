@@ -49,7 +49,7 @@ module.exports =
         @withInk ->
           boot()
           juno.runtime.evaluation.gotoSymbol()
-      'julia-client:toggle-documentation': =>
+      'julia-client:show-documentation': =>
         @withInk ->
           boot()
           juno.runtime.evaluation.toggleDocs()
@@ -87,14 +87,15 @@ module.exports =
       'julia-client:open-plot-pane': => @withInk -> juno.runtime.plots.open()
       'julia-client:open-workspace': => @withInk -> juno.runtime.workspace.open()
       'julia-client:settings': -> atom.workspace.open('atom://config/packages/julia-client')
-      'julia-debug:clear-all-breakpoints': => juno.runtime.debugger.clearbps()
-      'julia-debug:get-all-breakpoints': => juno.runtime.debugger.getBPs()
+      # breakpoints not supported
+      # 'julia-debug:clear-all-breakpoints': => juno.runtime.debugger.clearbps()
+      # 'julia-debug:get-all-breakpoints': => juno.runtime.debugger.getBPs()
+      # 'julia-debug:toggle-breakpoint': => juno.runtime.debugger.togglebp()
       'julia-debug:step-to-next-line': => juno.runtime.debugger.nextline()
       'julia-debug:step-to-selected-line': => juno.runtime.debugger.toselectedline()
       'julia-debug:step-to-next-expression': => juno.runtime.debugger.stepexpr()
       'julia-debug:step-into-function': => juno.runtime.debugger.stepin()
       'julia-debug:finish-function': => juno.runtime.debugger.finish()
-      'julia-debug:toggle-breakpoint': => juno.runtime.debugger.togglebp()
 
       'julia:open-startup-file': -> atom.workspace.open juno.misc.paths.home '.juliarc.jl'
       'julia:open-julia-home': -> shell.openItem juno.misc.paths.juliaHome()
