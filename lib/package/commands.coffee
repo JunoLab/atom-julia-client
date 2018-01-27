@@ -80,7 +80,7 @@ module.exports =
       'julia-client:start-julia': -> disrequireClient 'boot Julia', -> boot()
       'julia-client:kill-julia': -> juno.connection.client.kill()
       'julia-client:interrupt-julia': => requireClient 'interrupt Julia', -> juno.connection.client.interrupt()
-      'julia-client:reset-julia-server': -> juno.connection.local.server.reset()
+      # 'julia-client:reset-julia-server': -> juno.connection.local.server.reset() # server mode not functional
       'julia-client:connnect-external-process': -> disrequireClient -> juno.connection.messages.connectExternal()
       'julia-client:connect-platformio-terminal': -> disrequireClient -> juno.connection.terminal.runPlatformIOTerm()
       'julia-client:connect-terminal': -> disrequireClient -> juno.connection.terminal.connectedRepl()
