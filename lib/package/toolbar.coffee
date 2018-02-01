@@ -66,6 +66,12 @@ module.exports =
       iconset: 'ion'
 
     @bar.addButton
+      icon: 'pause'
+      callback: 'julia-client:interrupt-julia'
+      tooltip: 'Interrupt Julia'
+      iconset: 'ion'
+
+    @bar.addButton
       icon: 'stop'
       callback: 'julia-client:kill-julia'
       tooltip: 'Stop Julia'
