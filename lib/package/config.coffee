@@ -92,8 +92,11 @@ config =
       {value:'console', description:'Display results in the console'}
     ]
     order: 10
-
-
+  openNewEditorWhenDebugging:
+    type: 'boolean'
+    default: false
+    description: 'Opens a new editor tab when stepping into a new file instead of reusing the current one (requires restart).'
+    order: 11
 
 if process.platform == 'win32'
   config.enablePowershellWrapper =
