@@ -31,7 +31,7 @@ module.exports =
           end = mark
       else if not (@isBlank(l) or @isStart(l))
         end = mark
-      else if l.match(/#=.*(?!=#)/)
+      else if l.match(/#=/) and not l.match(/=#/)
         multiline = true
     end
 
