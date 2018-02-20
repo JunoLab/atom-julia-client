@@ -66,7 +66,6 @@ module.exports =
 
   boot: (ipc) -> ipc.rpc 'ping'
   console: (ipc) -> ipc.rpc 'evalrepl', {code: 'Void()'}
-  editor: (ipc) -> ipc.rpc 'eval', {text: '2+2', mod: 'Main', line: 1, path: 'untitled'}
   completions: (ipc) -> ipc.rpc 'cacheCompletions', 'Main'
 
   warmup: (obj) ->
@@ -75,7 +74,7 @@ module.exports =
       .then (sock) =>
         return unless obj.cached
         ipc = new IPC sock
-        [@boot, @console, @editor, @completions].forEach (f) ->
+        [@boot, @console, @completions].forEach (f) ->
           obj.init = obj.init.then ->
             if obj.cached then f ipc
         obj.init = obj.init
