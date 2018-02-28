@@ -16,8 +16,9 @@ module.exports = JuliaClient =
       commands.activate @
       x.activate() for x in [menu, @connection, @runtime]
       @ui.activate @connection.client
+
       if atom.config.get('julia-client.firstBoot')
-        @ui.layout.resetLayout()
+        @ui.layout.queryStandardLayout()
       if atom.config.get('julia-client.useStandardLayout')
         setTimeout (=> @ui.layout.standard()), 150
 
