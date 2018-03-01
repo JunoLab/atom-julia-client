@@ -60,7 +60,7 @@ module.exports =
 
   # Windows Stuff
 
-  wrapperEnabled: -> atom.config.get "julia-client.juliaOptions.enablePowershellWrapper"
+  wrapperEnabled: -> atom.config.get "julia-client.enablePowershellWrapper"
 
   sendSignalToWrapper: (signal, port) ->
     wrapper = net.connect({port})

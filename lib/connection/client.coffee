@@ -132,7 +132,8 @@ module.exports =
     as.push "--depwarn=#{if deprecationWarnings then 'yes' else 'no'}"
     as.push "-O#{optimisationLevel}" unless optimisationLevel is 2
     as.push "-i"
-    as.push atom.config.get 'julia-client.juliaOptions.startupArguments'
+    startupArgs = atom.config.get 'julia-client.juliaOptions.startupArguments'
+    if startupArgs.length > 0 then as.push startupArgs
     as
 
   connectedError: (action = 'do that') ->

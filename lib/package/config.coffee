@@ -114,18 +114,23 @@ config =
         type: 'integer'
         default: 10000
         order: 2
+      prompt:
+        title: 'Terminal Prompt'
+        type: 'string'
+        default: 'julia>'
+        order: 3
       shell:
         title: 'Shell'
         type: 'string'
         default: terminal.defaultShell()
         description: 'Shell. Defaults to `$SHELL`.'
-        order: 3
+        order: 4
       terminal:
         title: 'Terminal'
         type: 'string'
         default: terminal.defaultTerminal()
         description: 'Command used to open an external terminal.'
-        order: 4
+        order: 5
   firstBoot:
     type: 'boolean'
     default: true
@@ -133,11 +138,12 @@ config =
 
 
 if process.platform == 'win32'
-  config.juliaOptions.enablePowershellWrapper =
+  config.enablePowershellWrapper =
     title: 'Enable Powershell Wrapper'
     type: 'boolean'
     default: true
     description: 'Use a powershell wrapper to spawn Julia.
                   Necessary to enable interrupts.'
+    order: 2.5
 
 module.exports = config
