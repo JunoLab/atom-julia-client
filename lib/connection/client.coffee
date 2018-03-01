@@ -113,7 +113,7 @@ module.exports =
     if @isActive()
       if @isWorking()
         @clientCall 'interrupts', 'interrupt'
-      else if atom.config.get('julia-client.juliaOptions.consoleStyle') is 'REPL-based'
+      else if atom.config.get('julia-client.consoleOptions.consoleStyle') is 'REPL-based'
         @clientCall 'interrupts', 'interruptREPL'
 
   kill: ->
@@ -132,6 +132,7 @@ module.exports =
     as.push "--depwarn=#{if deprecationWarnings then 'yes' else 'no'}"
     as.push "-O#{optimisationLevel}" unless optimisationLevel is 2
     as.push "-i"
+    as.push atom.config.get 'julia-client.juliaOptions.startupArguments'
     as
 
   connectedError: (action = 'do that') ->

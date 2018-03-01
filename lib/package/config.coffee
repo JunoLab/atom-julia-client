@@ -10,38 +10,48 @@ config =
     type: 'object'
     order: 2
     properties:
-      optimisationLevel:
-        title: 'Optimisation Level'
-        description: 'Higher levels take longer to compile, but produce faster code.'
-        type: 'integer'
-        enum: [0, 1, 2, 3]
-        default: 2
-      deprecationWarnings:
-        title: 'Deprecation Warnings'
-        type: 'boolean'
-        description: 'Hides deprecation warnings if disabled.'
-        default: true
       bootMode:
         title: 'Boot Mode'
         type: 'string'
         enum: ['Basic', 'Cycler']
         default: 'Cycler'
-      consoleStyle:
-        title: 'Console Style (requires restart)'
-        type: 'string'
-        enum: ['REPL-based', 'Legacy']
-        default: 'REPL-based'
+        order: 1
       arguments:
         title: 'Arguments'
         type: 'array'
+        description: 'Set `ARGS` to the following entries.'
         default: []
         items:
           type: 'string'
+        order: 2
+      optimisationLevel:
+        title: 'Optimisation Level'
+        description: 'Higher levels take longer to compile, but produce faster code.'
+        type: 'integer'
+        enum: [0, 1, 2, 3]
+        default: 3
+        order: 3
+      deprecationWarnings:
+        title: 'Deprecation Warnings'
+        type: 'boolean'
+        description: 'Hides deprecation warnings if disabled.'
+        default: true
+        order: 4
       numberOfThreads:
         title: 'Number of Threads'
         type: 'string'
         description: '`global` will use global setting, `auto` sets it to number of cores.'
         default: 'auto'
+        order: 5
+      startupArguments:
+        title: 'Additional Julia Startup Arguments'
+        type: 'array'
+        description: '`-i`, `-O`, and `--depwarn` will be set by the above options
+                      automatically.'
+        default: []
+        items:
+          type: 'string'
+        order: 6
   uiOptions:
     title: 'UI Options'
     type: 'object'
@@ -93,23 +103,29 @@ config =
     type: 'object'
     order: 4
     properties:
+      consoleStyle:
+        title: 'Style (requires restart)'
+        type: 'string'
+        enum: ['REPL-based', 'Legacy']
+        default: 'REPL-based'
+        order: 1
       maximumConsoleSize:
         title: 'Scrollback Buffer Size'
         type: 'integer'
         default: 10000
-        order: 1
+        order: 2
       shell:
         title: 'Shell'
         type: 'string'
         default: terminal.defaultShell()
         description: 'Shell. Defaults to `$SHELL`.'
-        order: 2
+        order: 3
       terminal:
         title: 'Terminal'
         type: 'string'
         default: terminal.defaultTerminal()
         description: 'Command used to open an external terminal.'
-        order: 3
+        order: 4
   firstBoot:
     type: 'boolean'
     default: true

@@ -19,7 +19,7 @@ module.exports =
     switch atom.config.get 'julia-client.juliaOptions.bootMode'
       when 'Cycler' then cycler
       when 'Basic'
-        switch atom.config.get 'julia-client.juliaOptions.consoleStyle'
+        switch atom.config.get 'julia-client.consoleOptions.consoleStyle'
           when 'REPL-based' then basic2
           when 'Legacy' then basic
 
