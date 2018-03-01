@@ -8,7 +8,7 @@ module.exports =
     document.addEventListener 'focusin', =>
       @clear()
 
-  enabled: -> atom.config.get('julia-client.notifications')
+  enabled: -> atom.config.get('julia-client.uiOptions.notifications')
 
   show: (msg, force) ->
     return unless force or (@enabled() and not document.hasFocus())

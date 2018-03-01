@@ -25,9 +25,9 @@ module.exports =
       selector.moveNext editor, selection, range if move
       [[start], [end]] = range
       @ink.highlight editor, start, end
-      rtype = if cell? then "block" else atom.config.get 'julia-client.resultsDisplayMode'
+      rtype = if cell? then "block" else atom.config.get 'julia-client.uiOptions.resultsDisplayMode'
       if rtype is 'console'
-        if atom.config.get('julia-client.juliaOptions.consoleStyle') is 'REPL-based'
+        if atom.config.get('julia-client.consoleOptions.consoleStyle') is 'REPL-based'
           evalshow({text, line: line+1, mod, path: edpath})
         else
           evalrepl(code: text, mod: mod)

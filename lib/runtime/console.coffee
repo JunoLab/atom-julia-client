@@ -11,13 +11,13 @@ debug = require './debugger'
 
 module.exports =
   activate: ->
-    if atom.config.get('julia-client.juliaOptions.consoleStyle') != 'Legacy' then return
+    if atom.config.get('julia-client.consoleOptions.consoleStyle') != 'Legacy' then return
 
     @subs = new CompositeDisposable
 
     @create()
 
-    @subs.add atom.config.observe 'julia-client.maximumConsoleSize', (size) =>
+    @subs.add atom.config.observe 'julia-client.consoleOptions.maximumConsoleSize', (size) =>
       @c.maxSize = size
 
     client.handle

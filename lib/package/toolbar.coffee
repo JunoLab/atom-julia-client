@@ -1,6 +1,6 @@
 module.exports =
   consumeToolBar: (bar) ->
-    return unless atom.config.get 'julia-client.enableToolBar'
+    return unless atom.config.get 'julia-client.uiOptions.enableToolBar'
 
     @bar = bar 'julia-client'
 

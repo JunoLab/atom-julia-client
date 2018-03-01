@@ -27,7 +27,7 @@ module.exports =
       else
         @exec "#{@terminal()} \"#{@escape(sh)}\""
 
-  terminal: -> atom.config.get("julia-client.terminal")
+  terminal: -> atom.config.get("julia-client.consoleOptions.terminal")
 
   defaultShell: ->
     sh = process.env["SHELL"]

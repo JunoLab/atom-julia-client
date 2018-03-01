@@ -35,7 +35,7 @@ module.exports =
         @ipc.queue.push msg
 
     @handle 'error', (options) =>
-      if atom.config.get 'julia-client.errorNotifications'
+      if atom.config.get 'julia-client.uiOptions.errorNotifications'
         atom.notifications.addError options.msg, options
       console.error options.detail
       atom.beep()
@@ -113,7 +113,7 @@ module.exports =
     if @isActive()
       if @isWorking()
         @clientCall 'interrupts', 'interrupt'
-      else if atom.config.get('julia-client.juliaOptions.consoleStyle') is 'REPL-based'
+      else if atom.config.get('julia-client.consoleOptions.consoleStyle') is 'REPL-based'
         @clientCall 'interrupts', 'interruptREPL'
 
   kill: ->
@@ -132,6 +132,8 @@ module.exports =
     as.push "--depwarn=#{if deprecationWarnings then 'yes' else 'no'}"
     as.push "-O#{optimisationLevel}" unless optimisationLevel is 2
     as.push "-i"
+    startupArgs = atom.config.get 'julia-client.juliaOptions.startupArguments'
+    if startupArgs.length > 0 then as.push startupArgs
     as
 
   connectedError: (action = 'do that') ->
