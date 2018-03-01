@@ -5,9 +5,10 @@ config =
     type: 'string'
     default: 'julia'
     description: 'The location of the Julia binary.'
-    order: 2
+    order: 1
   juliaOptions:
     type: 'object'
+    order: 2
     properties:
       optimisationLevel:
         title: 'Optimisation Level'
@@ -18,12 +19,11 @@ config =
       deprecationWarnings:
         title: 'Deprecation Warnings'
         type: 'boolean'
+        description: 'Hides deprecation warnings if disabled.'
         default: true
       bootMode:
         title: 'Boot Mode'
         type: 'string'
-        # Server mode is non-functional for now
-        # enum: ['Basic', 'Cycler', 'Server']
         enum: ['Basic', 'Cycler']
         default: 'Cycler'
       consoleStyle:
@@ -38,72 +38,90 @@ config =
         items:
           type: 'string'
       numberOfThreads:
-        title: 'Number of Threads (`global` will use global setting, `auto` sets it to number of cores)'
+        title: 'Number of Threads'
         type: 'string'
+        description: '`global` will use global setting, `auto` sets it to number of cores.'
         default: 'auto'
+  uiOptions:
+    title: 'UI Options'
+    type: 'object'
     order: 3
-  notifications:
-    type: 'boolean'
-    default: true
-    description: 'Enable notifications for evaluation.'
+    properties:
+      resultsDisplayMode:
+        title: 'Result Display Mode'
+        type: 'string'
+        default: 'inline'
+        enum: [
+          {value:'inline', description:'Float results next to code'}
+          {value:'block', description:'Display results under code'}
+          {value:'console', description:'Display results in the console'}
+        ]
+        order: 1
+      notifications:
+        title: 'Notifications'
+        type: 'boolean'
+        default: true
+        description: 'Enable notifications for evaluation.'
+        order: 2
+      errorNotifications:
+        title: 'Error Notifications'
+        type: 'boolean'
+        default: true
+        description: 'When evaluating a script, show errors in a notification as
+                      well as in the console.'
+        order: 3
+      enableMenu:
+        title: 'Enable Menu'
+        type: 'boolean'
+        default: false
+        description: 'Show a Julia menu in the menu bar (requires restart).'
+        order: 4
+      enableToolBar:
+        title: 'Enable Toolbar'
+        type: 'boolean'
+        default: false
+        description: 'Show Julia icons in the tool bar (requires restart).'
+        order: 5
+      openNewEditorWhenDebugging:
+        title: 'Open New Editor When Debugging'
+        type: 'boolean'
+        default: false
+        description: 'Opens a new editor tab when stepping into a new file instead
+                      of reusing the current one (requires restart).'
+        order: 6
+  consoleOptions:
+    type: 'object'
     order: 4
-  errorNotifications:
-    type: 'boolean'
-    default: true
-    description: 'When evaluating a script, show errors in a notification as
-                  well as in the console.'
-    order: 5
-  enableMenu:
-    type: 'boolean'
-    default: false
-    description: 'Show a Julia menu in the menu bar (requires restart).'
-    order: 6
-  enableToolBar:
-    type: 'boolean'
-    default: false
-    description: 'Show Julia icons in the tool bar (requires restart).'
-    order: 7
+    properties:
+      maximumConsoleSize:
+        title: 'Scrollback Buffer Size'
+        type: 'integer'
+        default: 10000
+        order: 1
+      shell:
+        title: 'Shell'
+        type: 'string'
+        default: terminal.defaultShell()
+        description: 'Shell. Defaults to `$SHELL`.'
+        order: 2
+      terminal:
+        title: 'Terminal'
+        type: 'string'
+        default: terminal.defaultTerminal()
+        description: 'Command used to open an external terminal.'
+        order: 3
   firstBoot:
     type: 'boolean'
     default: true
-    # description: 'Open the console, workspace and plot pane on start.'
-    order: 7.5
-  maximumConsoleSize:
-    type: 'integer'
-    description: "Limits the Console history's size."
-    default: 10000
-    order: 8
-  shell:
-    type: 'string'
-    default: terminal.defaultShell()
-    description: 'Shell. Defaults to $SHELL.'
-    order: 8.5
-  terminal:
-    type: 'string'
-    default: terminal.defaultTerminal()
-    description: 'Command used to open an external terminal.'
-    order: 9
-  resultsDisplayMode:
-    type: 'string'
-    default: 'inline'
-    enum: [
-      {value:'inline', description:'Float results next to code'}
-      {value:'block', description:'Display results under code'}
-      {value:'console', description:'Display results in the console'}
-    ]
-    order: 10
-  openNewEditorWhenDebugging:
-    type: 'boolean'
-    default: false
-    description: 'Opens a new editor tab when stepping into a new file instead of reusing the current one (requires restart).'
-    order: 11
+    order: 99
+
 
 if process.platform == 'win32'
-  config.enablePowershellWrapper =
+  config.juliaOptions.enablePowershellWrapper =
+    title: 'Enable Powershell Wrapper'
     type: 'boolean'
     default: true
     description: 'Use a powershell wrapper to spawn Julia.
                   Necessary to enable interrupts.'
-    order: 3.5
 
 module.exports = config

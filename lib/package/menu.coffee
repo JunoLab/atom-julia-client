@@ -10,7 +10,7 @@ module.exports =
     }]
 
     # App Menu
-    if atom.config.get 'julia-client.enableMenu'
+    if atom.config.get 'julia-client.uiOptions.enableMenu'
       @subs.add = atom.menu.add @menu
       # TODO: find a less hacky way to do this
       menu = atom.menu.template.pop()
