@@ -7,6 +7,7 @@ module.exports =
   progress:      require './ui/progress'
   layout:        require './ui/layout'
   docpane:       require './ui/docs'
+  focusutils:    require './ui/focusutils'
 
   activate: (@client) ->
     @subs = new CompositeDisposable
@@ -20,6 +21,7 @@ module.exports =
 
   deactivate: ->
     @subs.dispose()
+    @focusutils.deactivate()
     @progress.clear()
 
   consumeInk: (@ink) ->
@@ -27,3 +29,4 @@ module.exports =
     @progress.ink = @ink
     @docpane.activate(@ink)
     @progress.activate()
+    @focusutils.activate(@ink)
