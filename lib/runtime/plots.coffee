@@ -18,7 +18,6 @@ module.exports =
     @pane.open split: 'right'
 
   ensureVisible: ->
-    return Promise.resolve(@pane) if @pane.currentPane()
     @open()
 
   show: (view) ->
