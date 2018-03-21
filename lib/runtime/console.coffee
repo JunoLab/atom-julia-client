@@ -20,6 +20,8 @@ module.exports =
     @subs.add atom.config.observe 'julia-client.consoleOptions.maximumConsoleSize', (size) =>
       @c.maxSize = size
 
+    @c.getDefaultLocation => 'bottom'
+
     client.handle
       info: (msg) =>
         @c.info msg
