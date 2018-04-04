@@ -3,6 +3,7 @@
 module.exports =
   notifications: require './ui/notifications'
   selector:      require './ui/selector'
+  customSelector:require './ui/customSelector'
   views:         require './ui/views'
   progress:      require './ui/progress'
   layout:        require './ui/layout'
