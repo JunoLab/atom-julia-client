@@ -1,8 +1,9 @@
+# TODO: this is very horrible, refactor
 path = require 'path'
 {dialog, BrowserWindow} = require('electron').remote
 
 {client} =  require '../connection'
-{notifications, views, selector} = require '../ui'
+{notifications, views, selector, docpane} = require '../ui'
 {paths, blocks, cells, words, weave} = require '../misc'
 {processLinks} = require '../ui/docs'
 workspace = require './workspace'
@@ -17,7 +18,6 @@ module.exports =
     edpath = editor.getPath() || 'untitled-' + editor.getBuffer().id
     {editor, mod, edpath}
 
-  # TODO: this is very horrible, refactor
   eval: ({move, cell}={}) ->
     {editor, mod, edpath} = @currentContext()
     selector = if cell? then cells else blocks
@@ -101,14 +101,28 @@ module.exports =
     {editor, mod, edpath} = @currentContext()
     {word, range} = words.getWord(editor) unless word? and range?
     if word.length == 0 || !isNaN(word) then return
-    client.import("docs")({word: word, mod: mod}).then (result) =>
-      if result.error then return
-      v = views.render result
-      processLinks(v.getElementsByTagName('a'))
-      d = new @ink.InlineDoc editor, range,
-        content: v
-        highlight: true
-      d.view.classList.add 'julia'
+    # client.import("docs")({word: word, mod: mod}).then (result) =>
+    #   if result.error then return
+    #   v = views.render result
+    #   processLinks(v.getElementsByTagName('a'))
+    #   if atom.config.get('julia-client.uiOptions.docsDisplayMode') == 'inline'
+    #     d = new @ink.InlineDoc editor, range,
+    #       content: v
+    #       highlight: true
+    #     d.view.classList.add 'julia'
+    #   else
+    #     docpane.pane.showDocument(v, [])
+    if atom.config.get('julia-client.uiOptions.docsDisplayMode') == 'inline'
+      client.import("docs")({word: word, mod: mod}).then (result) =>
+        if result.error then return
+        v = views.render result
+        processLinks(v.getElementsByTagName('a'))
+        d = new @ink.InlineDoc editor, range,
+          content: v
+          highlight: true
+        d.view.classList.add 'julia'
+    else
+      docpane.pane._search(word, mod, false, false, true)
 
   showError: (r, lines) ->
     @errorLines?.lights.destroy()
