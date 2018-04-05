@@ -64,7 +64,9 @@ class IPC
       if callback
         result
           .then (result) => @msg 'cb', callback, result
-          .catch (err) => @msg 'cancelCallback', callback, @errJson err
+          .catch (err) =>
+            console.error(err)
+            @msg 'cancelCallback', callback, @errJson err
     else
       console.log "julia-client: unrecognised message #{type}", args
 
