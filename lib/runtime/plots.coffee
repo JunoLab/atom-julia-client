@@ -18,7 +18,9 @@ module.exports =
     @pane.open split: 'right'
 
   ensureVisible: ->
+    p = atom.workspace.getActivePane()
     @open()
+    p.activate()
 
   show: (view) ->
     @ensureVisible()
