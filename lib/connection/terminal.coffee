@@ -34,7 +34,7 @@ module.exports =
     if sh?
       sh
     else if process.platform == 'win32'
-      'cmd.exe'
+      'powershell.exe'
     else
       'bash'
 
