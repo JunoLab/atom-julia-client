@@ -19,8 +19,9 @@ module.exports =
 
   ensureVisible: ->
     p = atom.workspace.getActivePane()
-    @open()
-    p.activate()
+    prom = @open()
+    prom.then(() => p.activate())
+    prom
 
   show: (view) ->
     @ensureVisible()
