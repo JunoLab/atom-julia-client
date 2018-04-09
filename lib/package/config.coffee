@@ -70,10 +70,10 @@ config =
       docsDisplayMode:
         title: 'Documentation Display Mode'
         type: 'string'
-        default: 'inline'
+        default: 'pane'
         enum: [
-          {value: 'inline', description: 'Show documentation in the editor.'}
-          {value: 'pane', description: 'Show documentation in the documentation pane.'}
+          {value: 'inline', description: 'Show documentation in the editor'}
+          {value: 'pane', description: 'Show documentation in the documentation pane'}
         ]
         order: 2
       notifications:
