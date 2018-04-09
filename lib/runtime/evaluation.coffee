@@ -101,28 +101,18 @@ module.exports =
     {editor, mod, edpath} = @currentContext()
     {word, range} = words.getWord(editor) unless word? and range?
     if word.length == 0 || !isNaN(word) then return
-    # client.import("docs")({word: word, mod: mod}).then (result) =>
-    #   if result.error then return
-    #   v = views.render result
-    #   processLinks(v.getElementsByTagName('a'))
-    #   if atom.config.get('julia-client.uiOptions.docsDisplayMode') == 'inline'
-    #     d = new @ink.InlineDoc editor, range,
-    #       content: v
-    #       highlight: true
-    #     d.view.classList.add 'julia'
-    #   else
-    #     docpane.pane.showDocument(v, [])
-    if atom.config.get('julia-client.uiOptions.docsDisplayMode') == 'inline'
-      client.import("docs")({word: word, mod: mod}).then (result) =>
-        if result.error then return
-        v = views.render result
-        processLinks(v.getElementsByTagName('a'))
+    client.import("docs")({word: word, mod: mod}).then (result) =>
+      if result.error then return
+      v = views.render result
+      processLinks(v.getElementsByTagName('a'))
+      if atom.config.get('julia-client.uiOptions.docsDisplayMode') == 'inline'
         d = new @ink.InlineDoc editor, range,
           content: v
           highlight: true
         d.view.classList.add 'julia'
-    else
-      docpane.pane._search(word, mod, false, false, true)
+      else
+        docpane.pane.open()
+        docpane.pane.showDocument(v, [])
 
   showError: (r, lines) ->
     @errorLines?.lights.destroy()
