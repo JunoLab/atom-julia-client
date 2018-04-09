@@ -1,8 +1,8 @@
 'context-menu':
   'atom-text-editor[data-grammar="source julia"]': [
     {label: 'Run block', command: 'julia-client:run-block'}
-    {label: 'Go to defintion', command: 'julia-client:goto-symbol'}
-    {label: 'Show documentation', command: 'julia-client:show-documentation'}
+    {label: 'Go to Defintion', command: 'julia-client:goto-symbol'}
+    {label: 'Show Documentation', command: 'julia-client:show-documentation'}
     # {label: 'Toggle breakpoint', command: 'julia-debug:toggle-breakpoint'}
     {type: 'separator'}
   ]

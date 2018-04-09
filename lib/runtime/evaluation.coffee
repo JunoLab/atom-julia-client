@@ -1,8 +1,9 @@
+# TODO: this is very horrible, refactor
 path = require 'path'
 {dialog, BrowserWindow} = require('electron').remote
 
 {client} =  require '../connection'
-{notifications, views, selector} = require '../ui'
+{notifications, views, selector, docpane} = require '../ui'
 {paths, blocks, cells, words, weave} = require '../misc'
 {processLinks} = require '../ui/docs'
 workspace = require './workspace'
@@ -17,7 +18,6 @@ module.exports =
     edpath = editor.getPath() || 'untitled-' + editor.getBuffer().id
     {editor, mod, edpath}
 
-  # TODO: this is very horrible, refactor
   eval: ({move, cell}={}) ->
     {editor, mod, edpath} = @currentContext()
     selector = if cell? then cells else blocks
@@ -105,10 +105,14 @@ module.exports =
       if result.error then return
       v = views.render result
       processLinks(v.getElementsByTagName('a'))
-      d = new @ink.InlineDoc editor, range,
-        content: v
-        highlight: true
-      d.view.classList.add 'julia'
+      if atom.config.get('julia-client.uiOptions.docsDisplayMode') == 'inline'
+        d = new @ink.InlineDoc editor, range,
+          content: v
+          highlight: true
+        d.view.classList.add 'julia'
+      else
+        docpane.pane.ensureVisible()
+        docpane.pane.showDocument(v, [])
 
   showError: (r, lines) ->
     @errorLines?.lights.destroy()

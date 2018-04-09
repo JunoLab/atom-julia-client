@@ -67,38 +67,47 @@ config =
           {value:'console', description:'Display results in the console'}
         ]
         order: 1
+      docsDisplayMode:
+        title: 'Documentation Display Mode'
+        type: 'string'
+        default: 'inline'
+        enum: [
+          {value: 'inline', description: 'Show documentation in the editor.'}
+          {value: 'pane', description: 'Show documentation in the documentation pane.'}
+        ]
+        order: 2
       notifications:
         title: 'Notifications'
         type: 'boolean'
         default: true
         description: 'Enable notifications for evaluation.'
-        order: 2
+        order: 3
       errorNotifications:
         title: 'Error Notifications'
         type: 'boolean'
         default: true
         description: 'When evaluating a script, show errors in a notification as
                       well as in the console.'
-        order: 3
+        order: 4
       enableMenu:
         title: 'Enable Menu'
         type: 'boolean'
         default: false
         description: 'Show a Julia menu in the menu bar (requires restart).'
-        order: 4
+        order: 5
       enableToolBar:
         title: 'Enable Toolbar'
         type: 'boolean'
         default: false
         description: 'Show Julia icons in the tool bar (requires restart).'
-        order: 5
+        order: 6
       openNewEditorWhenDebugging:
         title: 'Open New Editor When Debugging'
         type: 'boolean'
         default: false
         description: 'Opens a new editor tab when stepping into a new file instead
                       of reusing the current one (requires restart).'
-        order: 6
+        order: 7
   consoleOptions:
     type: 'object'
     order: 4
