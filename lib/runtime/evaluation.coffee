@@ -111,7 +111,7 @@ module.exports =
           highlight: true
         d.view.classList.add 'julia'
       else
-        docpane.pane.open()
+        docpane.pane.ensureVisible()
         docpane.pane.showDocument(v, [])
 
   showError: (r, lines) ->
