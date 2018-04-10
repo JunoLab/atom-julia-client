@@ -17,6 +17,8 @@ module.exports = JuliaClient =
       x.activate() for x in [menu, @connection, @runtime]
       @ui.activate @connection.client
 
+      require('./package/settings').updateSettings()
+
       if atom.config.get('julia-client.firstBoot')
         @ui.layout.queryStandardLayout()
       if atom.config.get('julia-client.useStandardLayout')
