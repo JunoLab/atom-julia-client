@@ -1,4 +1,8 @@
 let
+<<<<<<< HEAD
+=======
+
+>>>>>>> cut down boot script
 port = parse(Int, shift!(ARGS))
 
 junorc = abspath(homedir(), ".junorc.jl")
