@@ -41,7 +41,9 @@ module.exports =
         atom.notifications.addError "Couldn't find your Julia packages."
 
   jlpath: ->
-    p = atom.config.get("julia-client.juliaPath")
+    @expandHome(atom.config.get("julia-client.juliaPath"))
+
+  expandHome: (p) ->
     if p.startsWith '~' then p.replace '~', @home() else p
 
   fullPath: (path) ->
