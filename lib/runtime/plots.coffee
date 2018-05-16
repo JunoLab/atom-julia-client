@@ -18,7 +18,7 @@ module.exports =
     @pane.open split: 'right'
 
   ensureVisible: ->
-    @pane.ensureVisible()
+    @pane.ensureVisible({split: 'right'})
 
   show: (view) ->
     @ensureVisible()
