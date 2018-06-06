@@ -157,6 +157,12 @@ config =
         default: []
         description: 'The listed keybindings are not handled by any terminals and instead directly passed to Atom.'
         order: 7
+      cursorStyle:
+        type: 'string'
+        enum: ['block', 'underline', 'bar']
+        default: 'block'
+        description: 'Only applied to new terminals.'
+        order: 8
 
   firstBoot:
     type: 'boolean'
