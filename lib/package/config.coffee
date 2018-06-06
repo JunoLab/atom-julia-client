@@ -145,11 +145,26 @@ config =
         default: terminal.defaultTerminal()
         description: 'Command used to open an external terminal.'
         order: 5
+      whitelistedKeybindingsREPL:
+        title: 'Whitelisted Keybindings for the Julia REPL'
+        type: 'array'
+        default: ['Ctrl-C']
+        description: 'The listed keybindings are not handled by the REPL and instead directly passed to Atom.'
+        order: 6
+      whitelistedKeybindingsTerminal:
+        title: 'Whitelisted Keybindings for Terminals'
+        type: 'array'
+        default: []
+        description: 'The listed keybindings are not handled by any terminals and instead directly passed to Atom.'
+        order: 7
+
   firstBoot:
     type: 'boolean'
     default: true
     order: 99
 
+if process.platform != 'darwin'
+  config.consoleOptions.properties.whitelistedKeybindingsREPL.default = ['Ctrl-C', 'Ctrl-J', 'Ctrl-K', 'Ctrl-E', 'Ctrl-V']
 
 if process.platform == 'win32'
   config.enablePowershellWrapper =
