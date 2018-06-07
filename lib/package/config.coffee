@@ -158,6 +158,7 @@ config =
         description: 'The listed keybindings are not handled by any terminals and instead directly passed to Atom.'
         order: 7
       cursorStyle:
+        title: 'Cursor Style'
         type: 'string'
         enum: ['block', 'underline', 'bar']
         default: 'block'
