@@ -101,6 +101,12 @@ config =
         default: false
         description: 'Show Julia icons in the tool bar (requires restart).'
         order: 6
+      usePlotPane:
+        title: 'Enable Plot Pane'
+        type: 'boolean'
+        description: 'Show plots in Atom.'
+        default: true
+        order: 6.5
       openNewEditorWhenDebugging:
         title: 'Open New Editor When Debugging'
         type: 'boolean'
@@ -113,6 +119,7 @@ config =
         type: 'array'
         default: ['##', '#---', '#%%', '# %%']
         description: 'Regular expressions for determining cell delimiters.'
+        order: 8
   consoleOptions:
     type: 'object'
     order: 4

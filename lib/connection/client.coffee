@@ -40,11 +40,20 @@ module.exports =
       console.error options.detail
       atom.beep()
 
+    plotpane = null
+
     @onAttached =>
       args = atom.config.get 'julia-client.juliaOptions.arguments'
       @import('connected')()
       if args.length > 0
         @import('args') args
+
+      plotpane = atom.config.observe 'julia-client.uiOptions.usePlotPane', (use) =>
+        @import('enableplotpane')(use)
+
+    @onDetached =>
+      plotpane?.dispose()
+
 
   deactivate: ->
     @emitter.dispose()
