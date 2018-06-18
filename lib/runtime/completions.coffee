@@ -29,7 +29,7 @@ module.exports =
     completions
       path: editor.getPath()
       mod: modules.current()
-      line: editor.getTextInBufferRange [[row, 0], [row, Infinity]]
+      line: editor.getTextInBufferRange [[row, 0], [row, column]]
       column: column+1
       force: activatedManually || false
 
