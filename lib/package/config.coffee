@@ -52,6 +52,12 @@ config =
         items:
           type: 'string'
         order: 6
+      externalProcessPort:
+            title: 'Port of external Julia process'
+            type: 'string'
+            description: '`random` will use a new port each time, or enter an integer to set the port statically.'
+            default: 'random'
+            order: 7
   uiOptions:
     title: 'UI Options'
     type: 'object'
