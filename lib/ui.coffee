@@ -27,6 +27,7 @@ module.exports =
 
   consumeInk: (@ink) ->
     @views.ink = @ink
+    @selector.ink = @ink
     @progress.ink = @ink
     @docpane.activate(@ink)
     @progress.activate()

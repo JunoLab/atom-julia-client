@@ -184,7 +184,7 @@ config =
     order: 99
 
 if process.platform != 'darwin'
-  config.consoleOptions.properties.whitelistedKeybindingsREPL.default = ['Ctrl-C', 'Ctrl-J', 'Ctrl-K', 'Ctrl-E', 'Ctrl-V']
+  config.consoleOptions.properties.whitelistedKeybindingsREPL.default = ['Ctrl-C', 'Ctrl-J', 'Ctrl-K', 'Ctrl-E', 'Ctrl-V', 'Ctrl-M']
 
 if process.platform == 'win32'
   config.enablePowershellWrapper =
