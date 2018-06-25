@@ -1,5 +1,5 @@
 let
-port = parse(Int, shift!(ARGS))
+port = parse(Int, popfirst!(ARGS))
 
 junorc = abspath(homedir(), ".junorc.jl")
 
@@ -12,7 +12,7 @@ try
   end
   Atom.connect(port)
 catch
-  print(STDERR, "juno-msg-load")
+  print(stderr, "juno-msg-load")
   rethrow()
 end
 
