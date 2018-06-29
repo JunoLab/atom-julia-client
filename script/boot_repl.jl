@@ -3,6 +3,8 @@ port = parse(Int, popfirst!(ARGS))
 
 junorc = abspath(homedir(), ".junorc.jl")
 
+println("Starting Julia...")
+
 try
   import Atom
   using Juno
@@ -12,7 +14,6 @@ try
   end
   Atom.connect(port)
 catch
-  print(stderr, "juno-msg-load")
   rethrow()
 end
 
