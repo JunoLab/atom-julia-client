@@ -65,7 +65,7 @@ module.exports =
       delete proc.events
 
   boot: (ipc) -> ipc.rpc 'ping'
-  console: (ipc) -> ipc.rpc 'evalrepl', {code: 'Void()'}
+  console: (ipc) -> ipc.rpc 'evalrepl', {code: 'nothing'}
   completions: (ipc) -> ipc.rpc 'cacheCompletions', 'Main'
 
   warmup: (obj) ->
