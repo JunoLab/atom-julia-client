@@ -35,5 +35,8 @@ module.exports =
   create: ->
     @ws = @ink.Workspace.fromId 'julia'
     @ws.setModule = (mod) => @mod = mod
+    @ws.refresh = () => @update()
+    @ws.refreshModule = () =>
+      modules.chooseModule().then(() => @update())
 
   open: -> @ws.open split: 'right'
