@@ -177,6 +177,12 @@ config =
         default: 'block'
         description: 'Only applied to new terminals.'
         order: 8
+      rendererType:
+        title: 'Fallback Renderer'
+        type: 'boolean'
+        default: false
+        description: 'Enable this if you\'re experiencing slowdowns in the built-in terminals. Only applied to new terminals.'
+        order: 9
 
   firstBoot:
     type: 'boolean'
