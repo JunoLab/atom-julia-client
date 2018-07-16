@@ -1,5 +1,9 @@
 let
-port = parse(Int, popfirst!(ARGS))
+if VERSION > v"0.7-"
+  port = parse(Int, popfirst!(ARGS))
+else
+  port = parse(Int, shift!(ARGS))
+end
 
 junorc = abspath(homedir(), ".junorc.jl")
 
