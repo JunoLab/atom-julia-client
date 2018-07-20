@@ -7,7 +7,7 @@ module.exports =
 
   activate: ->
     @subs = new CompositeDisposable
-    client.handle 'progress': (t, p, m) => @[t] p, m
+    client.handle 'progress': (t, id, m) => @[t] id, m
     status = []
     @subs.add client.onWorking  =>
         status = @ink?.progress.add(null, description: 'Julia')
@@ -27,7 +27,7 @@ module.exports =
     pr = @progs[id]
     return unless pr?
     pr.level = prog
-    if pr.showTime then @rightText p
+    if pr.showTime then @rightText id, null
 
   message:  (id, m) -> @progs[id]?.message = m
 
@@ -48,7 +48,7 @@ module.exports =
     pr = @progs[id]
     return unless pr?
     pr.destroy()
-    delete @progs[p.id]
+    delete @progs[id]
 
   clear: ->
     for _, p of @progs
