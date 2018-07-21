@@ -4,12 +4,15 @@ module.exports =
   show: (xs, {active} = {}) ->
     @selector ?= new SelectListView
     @selector.list.addClass 'mark-active'
+    @selector.addClass('command-palette')
+    @selector.addClass('julia-client-selector')
+
     @selector.setItems []
     @selector.storeFocusedElement()
     @selector.viewForItem = (item) =>
       view = document.createElement 'li'
-      view.innerText = item
       view.classList.add 'active' if item is active
+      view.appendChild(@ink.matchHighlighter.highlightMatches(item, @selector.getFilterQuery(), 0))
       view
 
     panel = atom.workspace.addModalPanel(item: @selector)

@@ -177,6 +177,12 @@ config =
         default: 'block'
         description: 'Only applied to new terminals.'
         order: 8
+      rendererType:
+        title: 'Fallback Renderer'
+        type: 'boolean'
+        default: false
+        description: 'Enable this if you\'re experiencing slowdowns in the built-in terminals. Only applied to new terminals.'
+        order: 9
 
   firstBoot:
     type: 'boolean'
@@ -184,7 +190,7 @@ config =
     order: 99
 
 if process.platform != 'darwin'
-  config.consoleOptions.properties.whitelistedKeybindingsREPL.default = ['Ctrl-C', 'Ctrl-J', 'Ctrl-K', 'Ctrl-E', 'Ctrl-V']
+  config.consoleOptions.properties.whitelistedKeybindingsREPL.default = ['Ctrl-C', 'Ctrl-J', 'Ctrl-K', 'Ctrl-E', 'Ctrl-V', 'Ctrl-M']
 
 if process.platform == 'win32'
   config.enablePowershellWrapper =

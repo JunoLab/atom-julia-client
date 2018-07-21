@@ -16,7 +16,7 @@ module.exports =
     @debugger.activate()
 
   deactivate: ->
-    mod.deactivate() for mod in [@modules, @console, @frontend, @debugger, @profiler]
+    mod.deactivate() for mod in [@modules, @console, @frontend, @debugger, @profiler, @console2]
 
   consumeInk: (ink) ->
     @evaluation.ink = ink

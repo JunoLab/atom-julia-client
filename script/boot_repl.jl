@@ -1,7 +1,13 @@
 let
-port = parse(Int, shift!(ARGS))
+if VERSION > v"0.7-"
+  port = parse(Int, popfirst!(ARGS))
+else
+  port = parse(Int, shift!(ARGS))
+end
 
 junorc = abspath(homedir(), ".junorc.jl")
+
+println("Starting Julia...")
 
 try
   import Atom
@@ -12,7 +18,6 @@ try
   end
   Atom.connect(port)
 catch
-  print(STDERR, "juno-msg-load")
   rethrow()
 end
 
