@@ -39,8 +39,8 @@ module.exports = views =
         return unless client.conn == conn
         getlazy(id).then (children) =>
           body = view.querySelector ':scope > .body'
-          children.map((x) => @render(@tags.div([x]), opts)).forEach (x) ->
-            body.appendChild x
+          children.map((x) => @render(@tags.div([x]), opts)).forEach (x) =>
+            body.appendChild(@ink.ansiToHTML(x))
 
   subtree: ({label, child}, opts) ->
     @render (if child.type == "tree"
