@@ -44,6 +44,7 @@ module.exports =
 
     @onAttached =>
       args = atom.config.get 'julia-client.juliaOptions.arguments'
+      @import('junorc')()
       @import('connected')()
       if args.length > 0
         @import('args') args

@@ -12,7 +12,7 @@ println("Starting Julia...")
 try
   import Atom
   using Juno
-  Atom.handle("connected") do
+  Atom.handle("junorc") do
     ispath(junorc) && include(junorc)
     nothing
   end
