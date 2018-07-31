@@ -13,7 +13,7 @@ module.exports =
   scopeSelector: '.source.julia'
   textEditorSelectors: 'atom-text-editor'
   labels: ['workspace-center']
-  filterSuggestions: true
+  filterSuggestions: false
   excludeLowerPriority: false
 
   load: ->
@@ -51,21 +51,21 @@ module.exports =
     return [] unless client.isActive() and @validScope data.scopeDescriptor
     if data.prefix.length < @minWordLength then return []
     cs = @rawCompletions(data).then ({completions, prefix, mod}) =>
-      return @fromCache mod, prefix if not completions?
+      # return @fromCache mod, prefix if not completions?
       @processCompletions completions, prefix
-    Promise.race([cs, @sleep(1).then(->[])])
+    cs
 
-  cache: {}
+  # cache: {}
 
-  updateCache_: (mod) ->
-    cacheCompletions(mod).then (cs) =>
-      @cache[mod] = cs
-
-  updateCache: debounce ((mod) -> @updateCache_ mod), 1000, true
-
-  fromCache: (mod, prefix) ->
-    @updateCache mod
-    @processCompletions(@cache[mod] or [], prefix)
+  # updateCache_: (mod) ->
+  #   cacheCompletions(mod).then (cs) =>
+  #     @cache[mod] = cs
+  #
+  # updateCache: debounce ((mod) -> @updateCache_ mod), 1000, true
+  #
+  # fromCache: (mod, prefix) ->
+  #   @updateCache mod
+  #   @processCompletions(@cache[mod] or [], prefix)
 
   onDidInsertSuggestion: ({editor, suggestion: {type}}) ->
     if type is 'function'
