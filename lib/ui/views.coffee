@@ -110,7 +110,9 @@ module.exports = views =
 
   render: (data, opts = {}) ->
     if @views.hasOwnProperty(data.type)
-      @views[data.type](data, opts)
+      r = @views[data.type](data, opts)
+      @ink.ansiToHTML(r)
+      r
     else if data?.constructor is String
       new Text data
     else
