@@ -10,6 +10,7 @@ module.exports =
   messages: require './connection/messages'
   client:   require './connection/client'
   local:    require './connection/local'
+  ssh:      require './connection/ssh'
   terminal: require './connection/terminal'
 
   activate: ->
