@@ -9,6 +9,12 @@ module.exports =
       if scope.indexOf('keyword') > -1
         return true
 
+  isStringScope: (scopes) ->
+    for scope in scopes
+      if scope.indexOf('string') > -1
+        return true
+    return false
+
   forRange: (ed, range) ->
     scopes = []
     n_parens = 0
@@ -17,22 +23,23 @@ module.exports =
       for t in l
         {value} = t
 
-        if n_parens > 0 and value == ')'
-          n_parens -= 1
-          scopes.splice(scopes.lastIndexOf('paren'), 1)
-          continue
-        if n_brackets > 0 and value == ']'
-          n_brackets -= 1
-          scopes.splice(scopes.lastIndexOf('bracket'), 1)
-          continue
-        if value == '('
-          n_parens += 1
-          scopes.push 'paren'
-          continue
-        if value == '['
-          n_brackets += 1
-          scopes.push 'bracket'
-          continue
+        if not @isStringScope(t.scopes)
+          if n_parens > 0 and value == ')'
+            n_parens -= 1
+            scopes.splice(scopes.lastIndexOf('paren'), 1)
+            continue
+          if n_brackets > 0 and value == ']'
+            n_brackets -= 1
+            scopes.splice(scopes.lastIndexOf('bracket'), 1)
+            continue
+          if value == '('
+            n_parens += 1
+            scopes.push 'paren'
+            continue
+          if value == '['
+            n_brackets += 1
+            scopes.push 'bracket'
+            continue
 
         continue unless @isKeywordScope t.scopes
         continue unless n_parens == 0 and n_brackets == 0
