@@ -15,7 +15,7 @@
     "atom-package-deps": "*",
     "coffee-script": "*",
     "physical-cpu-count": "*",
-    "node-pty-prebuilt": "^0.7.3",
+    "node-pty-prebuilt": "0.7.6",
     "etch": "*"
   },
   "consumedServices": {
