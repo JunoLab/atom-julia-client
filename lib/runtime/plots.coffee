@@ -32,6 +32,7 @@ module.exports =
   ploturl: (url) ->
     v = views.render webview
       class: 'blinkjl',
+      disablewebsecurity: true,
       src: url,
       style: 'width: 100%; height: 100%'
     @ensureVisible()
