@@ -3,6 +3,7 @@
 
 {webview} = views.tags
 
+
 module.exports =
   activate: ->
     client.handle
@@ -40,7 +41,7 @@ module.exports =
     @pane.show v
     v.addEventListener('console-message', (e) => console.log(e.message))
 
-  newpane: (id, url, opts) ->
+  newpane: (id, url, opts={}) ->
     v = views.render webview
       class: 'blinkjl',
       disablewebsecurity: true,
@@ -52,6 +53,8 @@ module.exports =
       item: v,
       icon: opts.icon || 'graph',
       title: opts.title || 'HTMLPane'
-      })
+    })
 
-    pane.ensureVisible({split: 'right'})
+    pane.ensureVisible({
+      split: opts.split || 'right'
+    })
