@@ -42,17 +42,21 @@ module.exports =
     v.addEventListener('console-message', (e) => console.log(e.message))
 
   newpane: (id, url, opts={}) ->
-    v = views.render webview
-      class: 'blinkjl',
-      disablewebsecurity: true,
-      src: url,
-      style: 'width: 100%; height: 100%'
-    v.addEventListener('console-message', (e) => console.log(e.message))
+    v = undefined
+    if url
+      v = views.render webview
+        class: 'blinkjl',
+        disablewebsecurity: true,
+        src: url,
+        style: 'width: 100%; height: 100%'
+      v.addEventListener('console-message', (e) => console.log(e.message))
 
-    pane = @ink.HTMLPane.fromId(id, {
+    pane = @ink.HTMLPane.fromId(id)
+
+    pane.show({
       item: v,
-      icon: opts.icon || 'graph',
-      title: opts.title || 'HTMLPane'
+      icon: opts.icon,
+      title: opts.title
     })
 
     pane.ensureVisible({
