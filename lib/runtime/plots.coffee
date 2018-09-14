@@ -3,6 +3,14 @@
 
 {webview} = views.tags
 
+consoleLog = (e) ->
+  if e.level is 0
+    log = console.log
+  else if e.level is 1
+    log = console.warn
+  else if e.level is 2
+    log = console.error
+  log(e.message, "\nat #{e.sourceID}:#{e.line}")
 
 module.exports =
   activate: ->
@@ -10,7 +18,7 @@ module.exports =
       plot: (x) => @show x
       plotsize: => @plotSize()
       ploturl: (url) => @ploturl url
-      newpane: (id, url, opts) => @newpane(id, url, opts)
+      jlpane: (id, opts) => @jlpane(id, opts)
     @create()
 
   create: ->
@@ -39,26 +47,29 @@ module.exports =
       style: 'width: 100%; height: 100%'
     @ensureVisible()
     @pane.show v
-    v.addEventListener('console-message', (e) => console.log(e.message))
+    v.addEventListener('console-message', (e) => consoleLog(e))
 
-  newpane: (id, url, opts={}) ->
+  jlpane: (id, opts={}) ->
     v = undefined
-    if url
+    if opts.url
       v = views.render webview
         class: 'blinkjl',
         disablewebsecurity: true,
-        src: url,
+        src: opts.url,
         style: 'width: 100%; height: 100%'
-      v.addEventListener('console-message', (e) => console.log(e.message))
+      v.addEventListener('console-message', (e) => consoleLog(e))
 
     pane = @ink.HTMLPane.fromId(id)
 
-    pane.show({
-      item: v,
-      icon: opts.icon,
-      title: opts.title
-    })
+    if opts.close
+      pane.close()
+    else
+      pane.show({
+        item: v,
+        icon: opts.icon,
+        title: opts.title
+        })
 
-    pane.ensureVisible({
-      split: opts.split || 'right'
-    })
+      pane.ensureVisible({
+        split: opts.split || 'right'
+        })
