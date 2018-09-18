@@ -5,7 +5,7 @@ else
   port = parse(Int, shift!(ARGS))
 end
 
-junorc = abspath(homedir(), ".junorc.jl")
+junorc = haskey(ENV, "JUNORC_PATH")? normpath(joinpath(ENV["JUNORC_PATH"], ".junorc.jl")): abspath(homedir(), ".junorc.jl")
 
 if (VERSION > v"0.7-" ? Base.find_package("Atom") : Base.find_in_path("Atom")) == nothing
   p = VERSION > v"0.7-" ? (x) -> printstyled(x, color=:cyan, bold=true) : (x) -> print_with_color(:cyan, x, bold=true)
