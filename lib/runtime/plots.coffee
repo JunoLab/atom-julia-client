@@ -39,25 +39,28 @@ module.exports =
   plotSize: ->
     @ensureVisible().then => @pane.size()
 
-  ploturl: (url) ->
+  webview: (url) ->
     v = views.render webview
       class: 'blinkjl',
       disablewebsecurity: true,
+      nodeintegration: true,
       src: url,
       style: 'width: 100%; height: 100%'
+    v.addEventListener('console-message', (e) => consoleLog(e))
+    v.addEventListener 'ipc-message', (e) =>
+      if e.channel.indexOf('JULIA_') > -1
+        client.import({msg: e.channel})[e.channel](e.args)
+    v
+
+  ploturl: (url) ->
+    v = @webview(url)
     @ensureVisible()
     @pane.show v
-    v.addEventListener('console-message', (e) => consoleLog(e))
 
   jlpane: (id, opts={}) ->
     v = undefined
     if opts.url
-      v = views.render webview
-        class: 'blinkjl',
-        disablewebsecurity: true,
-        src: opts.url,
-        style: 'width: 100%; height: 100%'
-      v.addEventListener('console-message', (e) => consoleLog(e))
+      v = @webview(opts.url)
 
     pane = @ink.HTMLPane.fromId(id)
 
