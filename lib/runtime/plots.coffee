@@ -42,14 +42,9 @@ module.exports =
   webview: (url) ->
     v = views.render webview
       class: 'blinkjl',
-      disablewebsecurity: true,
-      nodeintegration: true,
       src: url,
       style: 'width: 100%; height: 100%'
     v.addEventListener('console-message', (e) => consoleLog(e))
-    v.addEventListener 'ipc-message', (e) =>
-      if e.channel.indexOf('JULIA_') > -1
-        client.import({msg: e.channel})[e.channel](e.args)
     v
 
   ploturl: (url) ->
@@ -61,6 +56,9 @@ module.exports =
     v = undefined
     if opts.url
       v = @webview(opts.url)
+      if opts.devtools
+        v.addEventListener 'dom-ready', () =>
+          v.openDevTools()
 
     pane = @ink.HTMLPane.fromId(id)
 
