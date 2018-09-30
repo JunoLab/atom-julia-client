@@ -16,8 +16,8 @@ module.exports =
     @messages.activate()
     @client.activate()
     @client.boot = => @boot()
-
     @local.activate()
+    @booting = false
 
   deactivate: ->
     @client.deactivate()
@@ -29,7 +29,9 @@ module.exports =
     @terminal.consumeTerminal term
 
   boot: ->
-    if not @client.isActive()
+    if not @client.isActive() and not @booting
+      @booting = true
       @local.start()
-      time "Julia Boot", @client.import('ping')().then ->
+      time "Julia Boot", @client.import('ping')().then =>
         metrics()
+        @booting = false
