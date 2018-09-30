@@ -97,7 +97,8 @@ module.exports =
       'julia-debug:step-into-function': => juno.runtime.debugger.stepin()
       'julia-debug:finish-function': => juno.runtime.debugger.finish()
 
-      'julia:open-startup-file': -> atom.workspace.open(juno.misc.paths.home('.julia', 'config', 'startup.jl'))
+      'julia:open-julia-startup-file': -> atom.workspace.open(juno.misc.paths.home('.julia', 'config', 'startup.jl'))
+      'julia:open-juno-startup-file': -> atom.workspace.open(juno.misc.paths.home('.julia', 'config', 'juno_startup.jl'))
       'julia:open-julia-home': -> shell.openItem juno.misc.paths.juliaHome()
       'julia:open-package-in-new-window': -> juno.misc.paths.openPackage()
       'julia:standard-layout': -> juno.ui.layout.standard()
