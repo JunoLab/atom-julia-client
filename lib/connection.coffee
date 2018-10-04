@@ -31,7 +31,10 @@ module.exports =
   boot: ->
     if not @client.isActive() and not @booting
       @booting = true
-      @local.start()
+      p = @local.start()
+      p.then =>
+        @booting = false
+      p.catch =>
+        @booting = false
       time "Julia Boot", @client.import('ping')().then =>
         metrics()
-        @booting = false
