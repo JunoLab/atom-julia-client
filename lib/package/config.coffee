@@ -181,7 +181,7 @@ config =
         title: 'Fallback Renderer'
         type: 'boolean'
         default: false
-        description: 'Enable this if you\'re experiencing slowdowns in the built-in terminals. Only applied to new terminals.'
+        description: 'Enable this if you\'re experiencing slowdowns in the built-in terminals.'
         order: 9
 
   firstBoot:
