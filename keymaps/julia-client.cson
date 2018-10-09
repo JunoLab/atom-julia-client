@@ -97,13 +97,3 @@
   'f10': 'julia-debug:step-to-next-expression'
   'f11': 'julia-debug:step-into-function'
   'shift-f11': 'julia-debug:finish-function'
-
-'.ink-plot-pane webview':
-  'backspace': 'native!'
-  'delete': 'native!'
-  'right': 'native!'
-  'tab': 'native!'
-  'down': 'native!'
-  'up': 'native!'
-  'left': 'native!'
-  'enter': 'native!'

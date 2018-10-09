@@ -44,6 +44,7 @@ module.exports =
       class: 'blinkjl',
       src: url,
       style: 'width: 100%; height: 100%'
+    v.classList.add('native-key-bindings')
     v.addEventListener('console-message', (e) => consoleLog(e))
     v
 
