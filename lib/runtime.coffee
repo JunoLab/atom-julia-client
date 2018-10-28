@@ -9,6 +9,7 @@ module.exports =
   frontend:    require './runtime/frontend'
   debugger:    require './runtime/debugger'
   profiler:    require './runtime/profiler'
+  linter: require './runtime/linter'
 
   activate: ->
     @modules.activate()
@@ -16,13 +17,14 @@ module.exports =
     @debugger.activate()
 
   deactivate: ->
-    mod.deactivate() for mod in [@modules, @console, @frontend, @debugger, @profiler, @console2]
+    mod.deactivate() for mod in [@modules, @console, @frontend, @debugger, @profiler, @console2, @linter]
 
   consumeInk: (ink) ->
     @evaluation.ink = ink
     @debugger.consumeInk ink
     @profiler.activate ink
     @console2.activate ink
+    @linter.activate ink
     for mod in [@console, @workspace, @plots]
       mod.ink = ink
       mod.activate()
