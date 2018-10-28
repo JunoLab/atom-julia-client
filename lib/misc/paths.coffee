@@ -62,7 +62,7 @@ module.exports =
       proc = child_process.exec "\"#{path}\" --version", (err, stdout, stderr) =>
         return reject(stderr) if err?
         res = stdout.match /(\d+)\.(\d+)\.(\d+)/
-        return reject("Coudln't resolve version.") unless res?
+        return reject("Couldn't resolve version.") unless res?
         [_, major, minor, patch] = res
         resolve {major, minor, patch}
 
