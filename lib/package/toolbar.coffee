@@ -15,7 +15,7 @@ module.exports =
       iconset: 'ion'
 
     @bar.addButton
-      icon: 'floppy-o'
+      icon: 'save'
       callback: 'core:save'
       tooltip: 'Save'
       iconset: 'fa'
