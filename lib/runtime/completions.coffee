@@ -37,6 +37,7 @@ module.exports =
     if c.constructor is String
       c = text: c
     c.replacementPrefix = c._prefix ? pre
+    if c.type is 'path' then c.iconHTML = '<i class="icon-file-code"></i>'
     c
 
   processCompletions: (completions, prefix) ->
