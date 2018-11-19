@@ -16,10 +16,6 @@ module.exports =
   filterSuggestions: false
   excludeLowerPriority: false
 
-  load: ->
-    atom.config.observe 'autocomplete-plus.minimumWordLength', (val) =>
-      @minWordLength = val
-
   sleep: (n) ->
     new Promise((resolve) -> setTimeout(resolve, n*1000))
 
@@ -50,7 +46,8 @@ module.exports =
 
   getSuggestions: (data) ->
     return [] unless client.isActive() and @validScope data.scopeDescriptor
-    if data.prefix.length < @minWordLength then return []
+    if not data.activatedManually and data.prefix.length < atom.config.get('autocomplete-plus.minimumWordLength')
+      return []
     cs = @rawCompletions(data).then ({completions, prefix, mod}) =>
       # return @fromCache mod, prefix if not completions?
       @processCompletions completions, prefix

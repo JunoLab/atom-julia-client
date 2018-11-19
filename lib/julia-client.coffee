@@ -54,8 +54,5 @@ module.exports = JuliaClient =
 
   provideHyperclick: -> @runtime.provideHyperclick()
 
-  consumeAutocompleteWatchEditor: (watchEditor) ->
-    @runtime.console.consumeAutocompleteWatchEditor(watchEditor)
-
   config: require './package/config'
   completions: -> @runtime.completions

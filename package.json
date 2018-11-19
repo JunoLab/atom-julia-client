@@ -38,11 +38,6 @@
       "versions": {
         "*": "consumeTerminal"
       }
-    },
-    "autocomplete.watchEditor": {
-      "versions": {
-        "1.0.0": "consumeAutocompleteWatchEditor"
-      }
     }
   },
   "providedServices": {
