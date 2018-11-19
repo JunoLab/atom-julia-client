@@ -38,17 +38,12 @@
       "versions": {
         "*": "consumeTerminal"
       }
-    },
-    "autocomplete.watchEditor": {
-      "versions": {
-        "1.0.0": "consumeAutocompleteWatchEditor"
-      }
     }
   },
   "providedServices": {
     "autocomplete.provider": {
       "versions": {
-        "3.0.0": "completions"
+        "4.0.0": "completions"
       }
     },
     "julia-client": {
