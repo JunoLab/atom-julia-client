@@ -183,6 +183,40 @@ config =
         default: false
         description: 'Enable this if you\'re experiencing slowdowns in the built-in terminals.'
         order: 9
+  remoteOptions:
+    type: 'object'
+    order: 5
+    properties:
+      server:
+        title: 'Server URL'
+        type: 'string'
+        default: ''
+        order: 1
+      port:
+        title: 'SSH Port'
+        type: 'number'
+        default: 22
+        order: 2
+      username:
+        title: 'Username'
+        type: 'string'
+        default: ''
+        order: 3
+      passphrase:
+        title: 'Passphrase'
+        type: 'string'
+        default: ''
+        order: 4
+      keyfile:
+        title: 'Path to Keyfile'
+        type: 'string'
+        default: ''
+        order: 5
+      remoteJulia:
+        title: 'Command to execute Julia on the remote server'
+        type: 'string'
+        default: 'julia'
+        order: 6
 
   firstBoot:
     type: 'boolean'
