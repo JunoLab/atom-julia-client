@@ -13,7 +13,7 @@ config =
       bootMode:
         title: 'Boot Mode'
         type: 'string'
-        enum: ['Basic', 'Cycler']
+        enum: ['Basic', 'Cycler', 'Remote']
         default: 'Cycler'
         order: 1
       arguments:

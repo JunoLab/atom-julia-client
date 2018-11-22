@@ -6,7 +6,9 @@ cd = client.import 'cd', false
 
 # legacy
 basic  = require './process/basic'
+
 cycler = require './process/cycler'
+ssh = require './process/remote'
 # server = require './process/server'
 
 # new console
@@ -18,6 +20,7 @@ module.exports =
   provider: ->
     switch atom.config.get 'julia-client.juliaOptions.bootMode'
       when 'Cycler' then cycler
+      when 'Remote' then ssh
       when 'Basic'
         switch atom.config.get 'julia-client.consoleOptions.consoleStyle'
           when 'REPL-based' then basic2
@@ -28,7 +31,7 @@ module.exports =
       process.env.JULIA_EDITOR = "\"#{process.execPath}\" -a"
     else
       process.env.JULIA_EDITOR = "atom -a"
-      
+
     paths.getVersion()
       .then =>
         @provider().start? paths.jlpath(), client.clargs()

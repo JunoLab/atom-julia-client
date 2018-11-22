@@ -16,6 +16,8 @@
     "coffee-script": "*",
     "physical-cpu-count": "*",
     "node-pty-prebuilt": "0.7.6",
+    "ssh2": "*",
+    "fuzzaldrin-plus": "^0.6.0",
     "etch": "*"
   },
   "consumedServices": {

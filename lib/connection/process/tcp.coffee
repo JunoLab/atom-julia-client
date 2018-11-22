@@ -37,7 +37,7 @@ module.exports =
     else
       port = parseInt(externalPort)
     new Promise (resolve) =>
-      @server = net.createServer (c) => @handle c
+      @server = net.createServer((sock) => @handle(sock))
       @server.listen port, '127.0.0.1', =>
         @port = @server.address().port
-        resolve @port
+        resolve(@port)
