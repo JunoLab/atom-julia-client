@@ -207,6 +207,11 @@ config =
         type: 'string'
         default: ''
         order: 4
+      usekeyfile:
+        title: 'Use a keyfile for identification'
+        type: 'boolean'
+        default: true
+        order: 4.5
       keyfile:
         title: 'Path to Keyfile'
         type: 'string'
