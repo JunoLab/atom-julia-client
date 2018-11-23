@@ -40,6 +40,11 @@
       "versions": {
         "*": "consumeTerminal"
       }
+    },
+    "ftp-remote.getCurrentServerConfig": {
+      "versions": {
+        "*": "consumeGetServerConfig"
+      }
     }
   },
   "providedServices": {

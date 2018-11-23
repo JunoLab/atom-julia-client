@@ -28,6 +28,9 @@ module.exports =
   consumeTerminal: (term) ->
     @terminal.consumeTerminal term
 
+  consumeGetServerConfig: (getconf) ->
+    @local.consumeGetServerConfig(getconf)
+
   boot: ->
     if not @client.isActive() and not @booting
       @booting = true

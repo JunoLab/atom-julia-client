@@ -15,7 +15,9 @@ ssh = require './process/remote'
 basic2 = require './process/basic2'
 
 module.exports =
-  # server: server
+  consumeGetServerConfig: (getconf) ->
+    if atom.config.get('julia-client.juliaOptions.bootMode') is 'Remote'
+      @provider().consumeGetServerConfig(getconf)
 
   provider: ->
     switch atom.config.get 'julia-client.juliaOptions.bootMode'

@@ -50,6 +50,8 @@ module.exports = JuliaClient =
 
   consumeToolBar: (bar) -> toolbar.consumeToolBar bar
 
+  consumeGetServerConfig: (conf) -> @connection.consumeGetServerConfig(conf)
+
   provideClient: -> @connection.client
 
   provideHyperclick: -> @runtime.provideHyperclick()
