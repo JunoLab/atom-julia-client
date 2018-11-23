@@ -80,7 +80,8 @@ module.exports =
 
   start: ->
     [path, args] = [paths.jlpath(), client.clargs()]
-    paths.projectDir().then (dir) -> cd dir
+    if atom.config.get('julia-client.juliaOptions.bootMode') is not 'Remote'
+      paths.projectDir().then (dir) -> cd dir
     check = paths.getVersion()
 
     check.catch (err) =>
