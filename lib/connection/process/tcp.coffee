@@ -31,12 +31,12 @@ module.exports =
 
   listen: ->
     return Promise.resolve(@port) if @port?
-    externalPort = atom.config.get('julia-client.juliaOptions.externalProcessPort')
-    if externalPort == 'random'
-      port = 0
-    else
-      port = parseInt(externalPort)
     new Promise (resolve) =>
+      externalPort = atom.config.get('julia-client.juliaOptions.externalProcessPort')
+      if externalPort == 'random'
+        port = 0
+      else
+        port = parseInt(externalPort)
       @server = net.createServer((sock) => @handle(sock))
       @server.listen port, '127.0.0.1', =>
         @port = @server.address().port
