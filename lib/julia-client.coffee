@@ -51,6 +51,8 @@ module.exports = JuliaClient =
   consumeToolBar: (bar) -> toolbar.consumeToolBar bar
 
   consumeGetServerConfig: (conf) -> @connection.consumeGetServerConfig(conf)
+  
+  consumeGetServerName: (name) -> @connection.consumeGetServerName(name)
 
   provideClient: -> @connection.client
 

@@ -19,6 +19,10 @@ module.exports =
     if atom.config.get('julia-client.juliaOptions.bootMode') is 'Remote'
       @provider().consumeGetServerConfig(getconf)
 
+  consumeGetServerName: (name) ->
+    if atom.config.get('julia-client.juliaOptions.bootMode') is 'Remote'
+      @provider().consumeGetServerName(name)
+
   provider: ->
     switch atom.config.get 'julia-client.juliaOptions.bootMode'
       when 'Cycler' then cycler

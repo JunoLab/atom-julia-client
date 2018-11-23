@@ -45,6 +45,11 @@
       "versions": {
         "*": "consumeGetServerConfig"
       }
+    },
+    "ftp-remote.getCurrentServerName": {
+      "versions": {
+        "*": "consumeGetServerName"
+      }
     }
   },
   "providedServices": {

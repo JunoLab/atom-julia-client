@@ -31,6 +31,9 @@ module.exports =
   consumeGetServerConfig: (getconf) ->
     @local.consumeGetServerConfig(getconf)
 
+  consumeGetServerName: (name) ->
+    @local.consumeGetServerName(name)
+
   boot: ->
     if not @client.isActive() and not @booting
       @booting = true
