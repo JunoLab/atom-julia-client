@@ -24,6 +24,7 @@ module.exports =
 
   consumeInk: (ink) ->
     @IPC.consumeInk ink
+    @ink = ink
 
   consumeTerminal: (term) ->
     @terminal.consumeTerminal term
@@ -38,6 +39,8 @@ module.exports =
     if not @client.isActive() and not @booting
       @booting = true
       p = @local.start()
+      if @ink?
+        @ink.Opener.allowRemoteFiles(atom.config.get('julia-client.juliaOptions.bootMode') is 'Remote')
       p.then =>
         @booting = false
       p.catch =>
