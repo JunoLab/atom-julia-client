@@ -84,8 +84,6 @@ module.exports =
 
   start: ->
     [path, args] = [paths.jlpath(), client.clargs()]
-    if atom.config.get('julia-client.juliaOptions.bootMode') is not 'Remote'
-      paths.projectDir().then (dir) -> cd dir
     check = paths.getVersion()
 
     check.catch (err) =>
@@ -102,6 +100,11 @@ module.exports =
       .catch (e) ->
         client.detach()
         console.error("Julia exited with #{e}.")
+      .then ->
+        if atom.config.get('julia-client.juliaOptions.bootMode') is 'Remote'
+          ssh.withRemoteConfig((conf) -> cd conf.remote).catch ->
+        else
+          paths.projectDir().then (dir) -> cd dir
     proc
 
   spawnJulia: (path, args) ->
