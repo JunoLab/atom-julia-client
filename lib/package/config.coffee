@@ -191,7 +191,13 @@ config =
         title: 'Command to execute Julia on the remote server'
         type: 'string'
         default: 'julia'
-        order: 6
+        order: 1
+      tmux:
+        title: 'Use a persistent tmux session'
+        description: 'Requires tmux to be installed on the server you\'re connecting to.'
+        type: 'boolean'
+        default: false
+        order: 2
 
   firstBoot:
     type: 'boolean'
