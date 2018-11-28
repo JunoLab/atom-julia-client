@@ -66,7 +66,9 @@ module.exports =
       path = ed.getPath()
       ind = path.indexOf(@remoteConfig.host)
       if ind > -1
-        return path.slice(ind + @remoteConfig.host.length, path.length)
+        path = path.slice(ind + @remoteConfig.host.length, path.length)
+        path = path.replace(/\\/g, '/')
+        return path
       else
         return path
 
