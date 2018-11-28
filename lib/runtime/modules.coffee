@@ -98,7 +98,7 @@ module.exports =
     sels = ed.getSelections()
     {row, column} = sels[sels.length - 1].getBufferRange().end
     data =
-      path: ed.getPath()
+      path: client.editorPath(ed)
       code: ed.getText()
       row: row+1, column: column+1
       module: ed.juliaModule

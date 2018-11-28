@@ -15,7 +15,7 @@ module.exports =
   currentContext: ->
     editor = atom.workspace.getActiveTextEditor()
     mod = modules.current() ? 'Main'
-    edpath = editor.getPath() || 'untitled-' + editor.getBuffer().id
+    edpath = client.editorPath(editor) || 'untitled-' + editor.getBuffer().id
     {editor, mod, edpath}
 
   eval: ({move, cell}={}) ->
@@ -124,7 +124,7 @@ module.exports =
   # Working Directory
 
   cdHere: ->
-    file = atom.workspace.getActiveTextEditor()?.getPath()
+    file = client.editorPath(atom.workspace.getActiveTextEditor()?)
     if !file then atom.notifications.addError 'This file has no path.'
     cd path.dirname(file)
 

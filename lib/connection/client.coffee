@@ -55,6 +55,20 @@ module.exports =
     @onDetached =>
       plotpane?.dispose()
 
+    @onBoot (proc) =>
+      @remoteConfig = proc.config
+
+  editorPath: (ed) ->
+    if not ed? then return ed
+    if atom.config.get('julia-client.juliaOptions.bootMode') is not 'Remote'
+      return ed.getPath()
+    else
+      path = ed.getPath()
+      ind = path.indexOf(@remoteConfig.host)
+      if ind > -1
+        return path.slice(ind + @remoteConfig.host.length, path.length)
+      else
+        return path
 
   deactivate: ->
     @emitter.dispose()
