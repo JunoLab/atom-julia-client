@@ -198,6 +198,17 @@ config =
         type: 'boolean'
         default: false
         order: 2
+      agentAuth:
+        title: 'Use SSH agent'
+        description: 'Requires `$SSH_AUTH_SOCKET` to be set. Defaults to putty\'s pageant on Windows'
+        type: 'boolean'
+        default: true
+        order: 3
+      forwardAgent:
+        title: 'Forward SSH agent'
+        type: 'boolean'
+        default: true
+        order: 4
 
   firstBoot:
     type: 'boolean'
