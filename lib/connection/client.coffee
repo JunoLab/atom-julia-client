@@ -64,6 +64,7 @@ module.exports =
       return ed.getPath()
     else
       path = ed.getPath()
+      if not path? then return path
       ind = path.indexOf(@remoteConfig.host)
       if ind > -1
         path = path.slice(ind + @remoteConfig.host.length, path.length)
