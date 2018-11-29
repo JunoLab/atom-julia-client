@@ -28,6 +28,8 @@ module.exports =
 
     @emitter = new Emitter
 
+    @bootMode = atom.config.get('julia-client.juliaOptions.bootMode')
+
     @ipc.writeMsg = (msg) =>
       if @isActive() and @conn.ready?() isnt false
         @conn.message msg
@@ -58,9 +60,11 @@ module.exports =
     @onBoot (proc) =>
       @remoteConfig = proc.config
 
+  setBootMode: (@bootMode) ->
+
   editorPath: (ed) ->
     if not ed? then return ed
-    if atom.config.get('julia-client.juliaOptions.bootMode') is not 'Remote'
+    if @bootMode is not 'Remote'
       return ed.getPath()
     else
       path = ed.getPath()
