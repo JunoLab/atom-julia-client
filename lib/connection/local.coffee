@@ -27,7 +27,6 @@ module.exports =
       @bootMode = p
     else
       @bootMode = atom.config.get('julia-client.juliaOptions.bootMode')
-    client.setBootMode(@bootMode)  
     switch @bootMode
       when 'Cycler' then cycler
       when 'Remote' then ssh

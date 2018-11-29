@@ -64,9 +64,7 @@ module.exports =
 
   editorPath: (ed) ->
     if not ed? then return ed
-    if @bootMode is not 'Remote'
-      return ed.getPath()
-    else
+    if @bootMode is 'Remote' and @remoteConfig?
       path = ed.getPath()
       if not path? then return path
       ind = path.indexOf(@remoteConfig.host)
@@ -76,6 +74,8 @@ module.exports =
         return path
       else
         return path
+    else
+      return ed.getPath()
 
   deactivate: ->
     @emitter.dispose()
