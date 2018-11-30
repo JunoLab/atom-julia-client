@@ -28,6 +28,14 @@ module.exports =
 
     @bar.addSpacer()
 
+    @bar.addButton
+      icon: 'planet'
+      callback: 'julia-client:start-remote-julia-process'
+      tooltip: 'Start Remote Julia Process'
+      iconset: 'ion'
+
+    @bar.addSpacer()
+
     # Windows & Panes
 
     @bar.addButton
