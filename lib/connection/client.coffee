@@ -28,6 +28,8 @@ module.exports =
 
     @emitter = new Emitter
 
+    @bootMode = atom.config.get('julia-client.juliaOptions.bootMode')
+
     @ipc.writeMsg = (msg) =>
       if @isActive() and @conn.ready?() isnt false
         @conn.message msg
@@ -55,6 +57,25 @@ module.exports =
     @onDetached =>
       plotpane?.dispose()
 
+    @onBoot (proc) =>
+      @remoteConfig = proc.config
+
+  setBootMode: (@bootMode) ->
+
+  editorPath: (ed) ->
+    if not ed? then return ed
+    if @bootMode is 'Remote' and @remoteConfig?
+      path = ed.getPath()
+      if not path? then return path
+      ind = path.indexOf(@remoteConfig.host)
+      if ind > -1
+        path = path.slice(ind + @remoteConfig.host.length, path.length)
+        path = path.replace(/\\/g, '/')
+        return path
+      else
+        return path
+    else
+      return ed.getPath()
 
   deactivate: ->
     @emitter.dispose()
@@ -126,6 +147,10 @@ module.exports =
       else if atom.config.get('julia-client.consoleOptions.consoleStyle') is 'REPL-based'
         @clientCall 'interrupts', 'interruptREPL'
 
+  disconnect: ->
+    if @isActive()
+      @clientCall 'disconnecting', 'disconnect'
+
   kill: ->
     if @isActive()
       if not @isWorking()
@@ -150,7 +175,7 @@ module.exports =
   connectedError: (action = 'do that') ->
     if @isActive()
       atom.notifications.addError "Can't #{action} with a Julia client running.",
-        detail: "Stop the current client with Packages → Julia → Stop Julia."
+        description: "Stop the current client with Packages → Julia → Stop Julia."
       true
     else
       false
@@ -158,7 +183,7 @@ module.exports =
   notConnectedError: (action = 'do that') ->
     if not @isActive()
       atom.notifications.addError "Can't #{action} without a Julia client running.",
-        detail: "Start Julia using Packages → Julia → Start Julia."
+        description: "Start Julia using Packages → Julia → Start Julia."
       true
     else
       false

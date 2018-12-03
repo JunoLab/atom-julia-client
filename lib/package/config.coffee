@@ -13,7 +13,7 @@ config =
       bootMode:
         title: 'Boot Mode'
         type: 'string'
-        enum: ['Basic', 'Cycler']
+        enum: ['Basic', 'Cycler', 'Remote']
         default: 'Cycler'
         order: 1
       arguments:
@@ -183,6 +183,37 @@ config =
         default: false
         description: 'Enable this if you\'re experiencing slowdowns in the built-in terminals.'
         order: 9
+  remoteOptions:
+    type: 'object'
+    order: 5
+    properties:
+      remoteJulia:
+        title: 'Command to execute Julia on the remote server'
+        type: 'string'
+        default: 'julia'
+        order: 1
+      tmux:
+        title: 'Use a persistent tmux session'
+        description: 'Requires tmux to be installed on the server you\'re connecting to.'
+        type: 'boolean'
+        default: false
+        order: 2
+      tmuxName:
+        title: 'tmux session name'
+        type: 'string'
+        default: 'juno_tmux_session'
+        order: 3
+      agentAuth:
+        title: 'Use SSH agent'
+        description: 'Requires `$SSH_AUTH_SOCKET` to be set. Defaults to putty\'s pageant on Windows'
+        type: 'boolean'
+        default: true
+        order: 4
+      forwardAgent:
+        title: 'Forward SSH agent'
+        type: 'boolean'
+        default: true
+        order: 5
 
   firstBoot:
     type: 'boolean'

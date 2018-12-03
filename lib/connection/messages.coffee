@@ -92,4 +92,4 @@ module.exports =
       client.onceAttached ->
         if not msg.isDismissed()
           msg.dismiss()
-          atom.notifications.addSuccess "Julia is connected."
+        atom.notifications.addSuccess "Julia is connected."

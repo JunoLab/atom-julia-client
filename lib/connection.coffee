@@ -24,17 +24,33 @@ module.exports =
 
   consumeInk: (ink) ->
     @IPC.consumeInk ink
+    @ink = ink
 
   consumeTerminal: (term) ->
     @terminal.consumeTerminal term
 
-  boot: ->
+  consumeGetServerConfig: (getconf) ->
+    @local.consumeGetServerConfig(getconf)
+
+  consumeGetServerName: (name) ->
+    @local.consumeGetServerName(name)
+
+  _boot: (provider) ->
     if not @client.isActive() and not @booting
       @booting = true
-      p = @local.start()
+      p = @local.start(provider)
+      @client.setBootMode(provider)
+      if @ink?
+        @ink.Opener.allowRemoteFiles(provider == 'Remote')
       p.then =>
         @booting = false
       p.catch =>
         @booting = false
       time "Julia Boot", @client.import('ping')().then =>
         metrics()
+
+  bootRemote: ->
+    @_boot('Remote')
+
+  boot: ->
+    @_boot(atom.config.get('julia-client.juliaOptions.bootMode'))

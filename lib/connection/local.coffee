@@ -6,20 +6,32 @@ cd = client.import 'cd', false
 
 # legacy
 basic  = require './process/basic'
+
 cycler = require './process/cycler'
+ssh = require './process/remote'
 # server = require './process/server'
 
 # new console
 basic2 = require './process/basic2'
 
 module.exports =
-  # server: server
+  consumeGetServerConfig: (getconf) ->
+    ssh.consumeGetServerConfig(getconf)
 
-  provider: ->
-    switch atom.config.get 'julia-client.juliaOptions.bootMode'
+  consumeGetServerName: (name) ->
+    ssh.consumeGetServerName(name)
+
+  provider: (p) ->
+    @bootMode = undefined
+    if p?
+      @bootMode = p
+    else
+      @bootMode = atom.config.get('julia-client.juliaOptions.bootMode')
+    switch @bootMode
       when 'Cycler' then cycler
+      when 'Remote' then ssh
       when 'Basic'
-        switch atom.config.get 'julia-client.consoleOptions.consoleStyle'
+        switch atom.config.get('julia-client.consoleOptions.consoleStyle')
           when 'REPL-based' then basic2
           when 'Legacy' then basic
 
@@ -28,7 +40,7 @@ module.exports =
       process.env.JULIA_EDITOR = "\"#{process.execPath}\" -a"
     else
       process.env.JULIA_EDITOR = "atom -a"
-      
+
     paths.getVersion()
       .then =>
         @provider().start? paths.jlpath(), client.clargs()
@@ -73,16 +85,15 @@ module.exports =
     client.flush()
     proc
 
-  start: ->
+  start: (provider) ->
     [path, args] = [paths.jlpath(), client.clargs()]
-    paths.projectDir().then (dir) -> cd dir
     check = paths.getVersion()
 
     check.catch (err) =>
       messages.jlNotFound paths.jlpath(), err
 
     proc = check
-      .then => @spawnJulia(path, args)
+      .then => @spawnJulia(path, args, provider)
       .then (proc) => if proc.ty? then @monitor2(proc) else @monitor(proc)
     proc
       .then (proc) =>
@@ -92,7 +103,12 @@ module.exports =
       .catch (e) ->
         client.detach()
         console.error("Julia exited with #{e}.")
+      .then =>
+        if @bootMode is 'Remote'
+          ssh.withRemoteConfig((conf) -> cd conf.remote).catch ->
+        else
+          paths.projectDir().then (dir) -> cd dir
     proc
 
-  spawnJulia: (path, args) ->
-    @provider().get(path, args)
+  spawnJulia: (path, args, provider) ->
+    @provider(provider).get(path, args)
