@@ -46,24 +46,9 @@ module.exports =
 
   getSuggestions: (data) ->
     return [] unless client.isActive() and @validScope data.scopeDescriptor
-    if not data.activatedManually # and data.prefix.length < atom.config.get('autocomplete-plus.minimumWordLength')
-      return []
     cs = @rawCompletions(data).then ({completions, prefix, mod}) =>
-      # return @fromCache mod, prefix if not completions?
       @processCompletions completions, prefix
     cs
-
-  # cache: {}
-
-  # updateCache_: (mod) ->
-  #   cacheCompletions(mod).then (cs) =>
-  #     @cache[mod] = cs
-  #
-  # updateCache: debounce ((mod) -> @updateCache_ mod), 1000, true
-  #
-  # fromCache: (mod, prefix) ->
-  #   @updateCache mod
-  #   @processCompletions(@cache[mod] or [], prefix)
 
   onDidInsertSuggestion: ({editor, suggestion: {type}}) ->
     if type is 'function'
