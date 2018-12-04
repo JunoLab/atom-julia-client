@@ -67,6 +67,18 @@ module.exports =
         resolve {major, minor, patch}
 
   projectDir: ->
+    if atom.config.get('julia-client.juliaOptions.persistWorkingDir')
+      return new Promise (resolve) =>
+        p = atom.config.get('julia-client.juliaOptions.workingDir')
+        fs.stat p, (err, stats) =>
+          if err
+            resolve(@atomProjectDir())
+          else
+            resolve(p)
+    else
+      return @atomProjectDir()
+
+  atomProjectDir: ->
     dirs = atom.workspace.project.getDirectories()
     ws = process.env.HOME || process.env.USERPROFILE
     if dirs.length is 0 or dirs[0].path.match 'app.asar'

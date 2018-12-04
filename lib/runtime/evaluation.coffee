@@ -124,25 +124,30 @@ module.exports =
   # Working Directory
 
   cdHere: ->
-    file = client.editorPath(atom.workspace.getActiveTextEditor()?)
+    file = client.editorPath(atom.workspace.getActiveTextEditor())
     if !file then atom.notifications.addError 'This file has no path.'
-    cd path.dirname(file)
+    @_cd path.dirname(file)
 
   cdProject: ->
     dirs = atom.project.getPaths()
     if dirs.length < 1
       atom.notifications.addError 'This project has no folders.'
     else if dirs.length == 1
-      cd dirs[0]
+      @_cd dirs[0]
     else
       selector.show(dirs).then (dir) =>
         return unless dir?
-        cd dir
+        @_cd dir
 
   cdHome: ->
-    cd paths.home()
+    @_cd paths.home()
 
   cdSelect: ->
     opts = properties: ['openDirectory']
     dialog.showOpenDialog BrowserWindow.getFocusedWindow(), opts, (path) ->
-      if path? then cd path[0]
+      if path? then @_cd path[0]
+
+  _cd: (dir) ->
+    if atom.config.get('julia-client.juliaOptions.persistWorkingDir')
+      atom.config.set('julia-client.juliaOptions.workingDir', dir)
+    cd(dir)

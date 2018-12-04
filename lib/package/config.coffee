@@ -53,11 +53,21 @@ config =
           type: 'string'
         order: 6
       externalProcessPort:
-            title: 'Port of external Julia process'
-            type: 'string'
-            description: '`random` will use a new port each time, or enter an integer to set the port statically.'
-            default: 'random'
-            order: 7
+        title: 'Port of external Julia process'
+        type: 'string'
+        description: '`random` will use a new port each time, or enter an integer to set the port statically.'
+        default: 'random'
+        order: 7
+      persistWorkingDir:
+        title: 'Persist Working Directory'
+        type: 'boolean'
+        default: false
+        order: 8
+      workingDir:
+        title: 'Working Directory'
+        type: 'string'
+        default: ''
+        order: 9
   uiOptions:
     title: 'UI Options'
     type: 'object'
