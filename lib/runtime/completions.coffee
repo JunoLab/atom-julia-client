@@ -46,7 +46,7 @@ module.exports =
 
   getSuggestions: (data) ->
     return [] unless client.isActive() and @validScope data.scopeDescriptor
-    if not data.activatedManually and data.prefix.length < atom.config.get('autocomplete-plus.minimumWordLength')
+    if not data.activatedManually # and data.prefix.length < atom.config.get('autocomplete-plus.minimumWordLength')
       return []
     cs = @rawCompletions(data).then ({completions, prefix, mod}) =>
       # return @fromCache mod, prefix if not completions?

@@ -9,7 +9,8 @@ module.exports =
   frontend:    require './runtime/frontend'
   debugger:    require './runtime/debugger'
   profiler:    require './runtime/profiler'
-  linter: require './runtime/linter'
+  linter:      require './runtime/linter'
+  packages:    require './runtime/packages'
 
   activate: ->
     @modules.activate()
