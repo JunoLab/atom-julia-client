@@ -21,6 +21,12 @@ module.exports =
       jlpane: (id, opts) => @jlpane(id, opts)
     @create()
 
+    atom.config.observe 'julia-client.uiOptions.usePlotPane', (enabled) =>
+      if enabled
+        @pane.setTitle 'Plots'
+      else
+        @pane.setTitle 'Plots (disabled)'
+
   create: ->
     @pane = @ink.PlotPane.fromId 'default'
 
