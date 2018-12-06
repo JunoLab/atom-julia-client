@@ -46,6 +46,15 @@ module.exports =
 
   getSuggestions: (data) ->
     return [] unless client.isActive() and @validScope data.scopeDescriptor
+    # don't show suggestions if preceding char is a space (unless activate manually)
+    if not data.activatedManually
+      point = data.bufferPosition
+      if point.column == 0
+        return []
+      else
+        text = data.editor.getTextInBufferRange([[point.row, point.column - 1], point])
+        if text.match(/\s/)
+          return []
     cs = @rawCompletions(data).then ({completions, prefix, mod}) =>
       @processCompletions completions, prefix
     cs
