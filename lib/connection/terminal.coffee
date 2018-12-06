@@ -48,7 +48,7 @@ module.exports =
 
   connectCommand: ->
     tcp.listen().then (port) =>
-      "#{@escpath paths.jlpath()} -i -e \"using Juno; Juno.connect(#{port})\""
+      "#{@escpath paths.jlpath()} #{client.clargs().join(' ')} #{paths.script('boot_repl.jl')} #{port}"
 
   connectedRepl: -> @connectCommand().then (cmd) => @term cmd
 
