@@ -19,7 +19,7 @@ config =
       arguments:
         title: 'Arguments'
         type: 'array'
-        description: 'Set `ARGS` to the following entries.'
+        description: 'Set `ARGS` to the following entries. Requires restart of Julia process.'
         default: []
         items:
           type: 'string'
