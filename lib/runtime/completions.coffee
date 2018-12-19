@@ -57,7 +57,7 @@ module.exports =
           return []
     cs = @rawCompletions(data).then ({completions, prefix, mod}) =>
       @processCompletions completions, prefix
-    cs
+    Promise.race([cs, @sleep(1)])
 
   onDidInsertSuggestion: ({editor, suggestion: {type}}) ->
     if type is 'function'
