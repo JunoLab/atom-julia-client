@@ -144,7 +144,7 @@ module.exports =
 
   cdSelect: ->
     opts = properties: ['openDirectory']
-    dialog.showOpenDialog BrowserWindow.getFocusedWindow(), opts, (path) ->
+    dialog.showOpenDialog BrowserWindow.getFocusedWindow(), opts, (path) =>
       if path? then @_cd path[0]
 
   _cd: (dir) ->
