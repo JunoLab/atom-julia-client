@@ -16,33 +16,25 @@ config =
         enum: ['Basic', 'Cycler', 'Remote']
         default: 'Cycler'
         order: 1
-      arguments:
-        title: 'Arguments'
-        type: 'array'
-        description: 'Set `ARGS` to the following entries. Requires restart of Julia process.'
-        default: []
-        items:
-          type: 'string'
-        order: 2
       optimisationLevel:
         title: 'Optimisation Level'
         description: 'Higher levels take longer to compile, but produce faster code.'
         type: 'integer'
         enum: [0, 1, 2, 3]
         default: 3
-        order: 3
+        order: 2
       deprecationWarnings:
         title: 'Deprecation Warnings'
         type: 'boolean'
         description: 'Hides deprecation warnings if disabled.'
         default: true
-        order: 4
+        order: 3
       numberOfThreads:
         title: 'Number of Threads'
         type: 'string'
         description: '`global` will use global setting, `auto` sets it to number of cores.'
         default: 'auto'
-        order: 5
+        order: 4
       startupArguments:
         title: 'Additional Julia Startup Arguments'
         type: 'array'
@@ -51,12 +43,20 @@ config =
         default: []
         items:
           type: 'string'
-        order: 6
+        order: 5
       externalProcessPort:
         title: 'Port of external Julia process'
         type: 'string'
         description: '`random` will use a new port each time, or enter an integer to set the port statically.'
         default: 'random'
+        order: 6
+      arguments:
+        title: 'Arguments'
+        type: 'array'
+        description: 'Set `ARGS` to the following entries. Requires restart of Julia process.'
+        default: []
+        items:
+          type: 'string'
         order: 7
       persistWorkingDir:
         title: 'Persist Working Directory'
