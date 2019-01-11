@@ -31,13 +31,30 @@ module.exports =
 
   listen: ->
     return Promise.resolve(@port) if @port?
-    new Promise (resolve) =>
+    new Promise (resolve, reject) =>
       externalPort = atom.config.get('julia-client.juliaOptions.externalProcessPort')
       if externalPort == 'random'
         port = 0
       else
         port = parseInt(externalPort)
       @server = net.createServer((sock) => @handle(sock))
+      @server.on 'error', (err) =>
+        if err.code == 'EADDRINUSE'
+          details = ''
+          if port != 0
+            details = 'Please change to another port in the settings and try again.'
+          atom.notifications.addError "Julia could not be started.",
+            description: """
+            Port `#{port}` is already in use.
+
+            """ + if details isnt ''
+              """
+              #{details}
+              """
+            else
+              "Please try again or set a fixed port that you know is unused."
+            dismissable: true
+        reject(err)
       @server.listen port, '127.0.0.1', =>
         @port = @server.address().port
         resolve(@port)

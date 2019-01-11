@@ -38,7 +38,7 @@ module.exports =
   start: (path, args) ->
     @provider().lock (release) =>
       if @cache(path, args).length < @cacheLength
-        @provider().get_(path, args).then (proc) =>
+        p = @provider().get_(path, args).then (proc) =>
           obj = {path, args, proc: proc}
           @monitor proc
           @warmup obj
@@ -47,6 +47,8 @@ module.exports =
             .then => @start path, args
             .catch (e) => @removeFromCache path, args, obj
           release proc.socket
+        p.catch (err) =>
+          release()
       else
         release()
     return
