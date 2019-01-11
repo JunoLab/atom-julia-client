@@ -45,7 +45,7 @@ config =
           type: 'string'
         order: 5
       externalProcessPort:
-        title: 'Port of external Julia process'
+        title: 'Port for communicating with the Julia process'
         type: 'string'
         description: '`random` will use a new port each time, or enter an integer to set the port statically.'
         default: 'random'
