@@ -13,6 +13,13 @@ config =
       bootMode:
         title: 'Boot Mode'
         type: 'string'
+        description: '`Basic` spins up a local Julia process on demand and is the most
+                      robust option. The `Cycler` will keep three local Julia processes
+                      around at all times to reduce downtime when a process exits.
+                      `Remote` is similar to the `Start Remote Julia Process`
+                      command but changes the default, so that evaluating a line
+                      in the editor or pressing `Enter` in the REPL tab will start
+                      a remote Julia process instead of a local one.'
         enum: ['Basic', 'Cycler', 'Remote']
         default: 'Cycler'
         order: 1
