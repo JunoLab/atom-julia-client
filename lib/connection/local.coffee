@@ -37,9 +37,9 @@ module.exports =
 
   activate: ->
     if process.platform == 'win32'
-      process.env.JULIA_EDITOR = "\"#{process.execPath}\" -a"
+      process.env.JULIA_EDITOR = "\"#{process.execPath}\" #{if atom.devMode then '-d' else ''} -a"
     else
-      process.env.JULIA_EDITOR = "atom -a"
+      process.env.JULIA_EDITOR = "atom #{if atom.devMode then '-d' else ''} -a"
 
     paths.getVersion()
       .then =>
