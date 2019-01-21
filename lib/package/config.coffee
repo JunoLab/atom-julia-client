@@ -233,6 +233,13 @@ config =
 if process.platform != 'darwin'
   config.consoleOptions.properties.whitelistedKeybindingsREPL.default = ['Ctrl-C', 'Ctrl-J', 'Ctrl-K', 'Ctrl-E', 'Ctrl-V', 'Ctrl-M']
 
+if process.platform == 'darwin'
+  config.consoleOptions.properties.macOptionIsMeta =
+    title: 'Use Option as Meta'
+    type: 'boolean'
+    default: false
+    order: 5.5
+
 if process.platform == 'win32'
   config.enablePowershellWrapper =
     title: 'Enable Powershell Wrapper'
