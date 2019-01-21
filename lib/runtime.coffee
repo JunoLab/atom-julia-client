@@ -22,6 +22,7 @@ module.exports =
 
   consumeInk: (ink) ->
     @evaluation.ink = ink
+    @frontend.ink = ink
     @debugger.consumeInk ink
     @profiler.activate ink
     @console2.activate ink

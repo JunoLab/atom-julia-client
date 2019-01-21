@@ -6,7 +6,6 @@ vm = require 'vm'
 {colors} = require '../misc'
 
 module.exports =
-
   evalwith: (obj, code) ->
     vm.runInThisContext("(function(){return #{code}})").call obj
 
@@ -16,6 +15,8 @@ module.exports =
     client.handle select: (items) -> selector.show items
 
     client.handle syntaxcolors: (selectors) -> colors.getColors(selectors)
+
+    client.handle openFile: (file, line) => @ink?.Opener.open(file, line)
 
     # Blink APIs
 
