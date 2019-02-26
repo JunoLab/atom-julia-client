@@ -46,7 +46,9 @@ config =
         title: 'Additional Julia Startup Arguments'
         type: 'array'
         description: '`-i`, `-O`, and `--depwarn` will be set by the above options
-                      automatically.'
+                      automatically, but can be overwritten here. Arguments are
+                      comma-separated, and you should never need to quote
+                      anything (even e.g. paths with spaces in them).'
         default: []
         items:
           type: 'string'
@@ -60,7 +62,7 @@ config =
       arguments:
         title: 'Arguments'
         type: 'array'
-        description: 'Set `ARGS` to the following entries. Requires restart of Julia process.'
+        description: 'Set `ARGS` to the following entries (comma-separated). Requires restart of Julia process.'
         default: []
         items:
           type: 'string'

@@ -169,7 +169,8 @@ module.exports =
     as.push "--color=yes"
     as.push "-i"
     startupArgs = atom.config.get 'julia-client.juliaOptions.startupArguments'
-    if startupArgs.length > 0 then as.push startupArgs
+    if startupArgs.length > 0
+      as = as.concat startupArgs
     as
 
   connectedError: (action = 'do that') ->
