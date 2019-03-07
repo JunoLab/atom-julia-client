@@ -22,12 +22,12 @@ module.exports =
     ssh.consumeGetServerName(name)
 
   provider: (p) ->
-    @bootMode = undefined
+    bootMode = undefined
     if p?
-      @bootMode = p
+      bootMode = p
     else
-      @bootMode = atom.config.get('julia-client.juliaOptions.bootMode')
-    switch @bootMode
+      bootMode = atom.config.get('julia-client.juliaOptions.bootMode')
+    switch bootMode
       when 'Cycler' then cycler
       when 'Remote' then ssh
       when 'Basic'
@@ -89,8 +89,11 @@ module.exports =
     [path, args] = [paths.jlpath(), client.clargs()]
     check = paths.getVersion()
 
-    check.catch (err) =>
-      messages.jlNotFound paths.jlpath(), err
+    if provider is 'Remote'
+      check = Promise.resolve()
+    else
+      check.catch (err) =>
+        messages.jlNotFound paths.jlpath(), err
 
     proc = check
       .then => @spawnJulia(path, args, provider)
@@ -104,7 +107,7 @@ module.exports =
         client.detach()
         console.error("Julia exited with #{e}.")
       .then =>
-        if @bootMode is 'Remote'
+        if provider is 'Remote'
           ssh.withRemoteConfig((conf) -> cd conf.remote).catch ->
         else
           paths.projectDir().then (dir) -> cd dir
