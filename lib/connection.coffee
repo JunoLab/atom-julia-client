@@ -38,8 +38,8 @@ module.exports =
   _boot: (provider) ->
     if not @client.isActive() and not @booting
       @booting = true
-      p = @local.start(provider)
       @client.setBootMode(provider)
+      p = @local.start(provider)
       if @ink?
         @ink.Opener.allowRemoteFiles(provider == 'Remote')
       p.then =>

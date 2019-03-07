@@ -89,8 +89,11 @@ module.exports =
     [path, args] = [paths.jlpath(), client.clargs()]
     check = paths.getVersion()
 
-    check.catch (err) =>
-      messages.jlNotFound paths.jlpath(), err
+    if @bootMode is 'Remote'
+      check = Promise.resolve()
+    else
+      check.catch (err) =>
+        messages.jlNotFound paths.jlpath(), err
 
     proc = check
       .then => @spawnJulia(path, args, provider)
