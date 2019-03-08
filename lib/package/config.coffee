@@ -145,6 +145,10 @@ config =
         default: ['##', '#---', '#%%', '# %%']
         description: 'Regular expressions for determining cell delimiters.'
         order: 8
+      useStandardLayout:
+        title: 'Restore Standard Layout on Start'
+        type: 'boolean'
+        default: false
   consoleOptions:
     type: 'object'
     order: 4

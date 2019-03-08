@@ -21,7 +21,7 @@ module.exports = JuliaClient =
 
       if atom.config.get('julia-client.firstBoot')
         @ui.layout.queryStandardLayout()
-      if atom.config.get('julia-client.useStandardLayout')
+      if atom.config.get('julia-client.uiOptions.useStandardLayout')
         setTimeout (=> @ui.layout.standard()), 150
 
   requireInk: (fn) ->
@@ -51,7 +51,7 @@ module.exports = JuliaClient =
   consumeToolBar: (bar) -> toolbar.consumeToolBar bar
 
   consumeGetServerConfig: (conf) -> @connection.consumeGetServerConfig(conf)
-  
+
   consumeGetServerName: (name) -> @connection.consumeGetServerName(name)
 
   provideClient: -> @connection.client
