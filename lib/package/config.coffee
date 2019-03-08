@@ -194,7 +194,6 @@ config =
         type: 'string'
         enum: ['block', 'underline', 'bar']
         default: 'block'
-        description: 'Only applied to new terminals.'
         order: 8
       rendererType:
         title: 'Fallback Renderer'
