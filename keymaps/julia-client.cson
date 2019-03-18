@@ -14,7 +14,7 @@
   'alt-up': 'julia-client:prev-cell'
   'cmd-j cmd-d': 'julia-client:show-documentation'
   'cmd-shift-a': 'julia:select-block'
-  # 'ctrl-x': 'julia-debug:toggle-breakpoint'
+  'ctrl-x': 'julia-debug:toggle-breakpoint'
   'cmd-j cmd-g': 'julia-client:goto-symbol'
 
 '.platform-darwin .item-views > atom-text-editor[data-grammar="source julia"],
@@ -55,7 +55,7 @@
   'ctrl-j ctrl-m': 'julia-client:set-working-module'
   'ctrl-shift-c': 'julia-client:interrupt-julia'
   'ctrl-j ctrl-d': 'julia-client:show-documentation'
-  # 'alt-x': 'julia-debug:toggle-breakpoint'
+  'alt-x': 'julia-debug:toggle-breakpoint'
   'ctrl-j ctrl-g': 'julia-client:goto-symbol'
 
 '.platform-win32 .julia-console.julia,
