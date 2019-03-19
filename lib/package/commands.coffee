@@ -97,6 +97,7 @@ module.exports =
       'julia-debug:step-to-selected-line': => juno.runtime.debugger.toselectedline()
       'julia-debug:step-to-next-expression': => juno.runtime.debugger.stepexpr()
       'julia-debug:step-into-function': => juno.runtime.debugger.stepin()
+      'julia-debug:stop-debugging': => juno.runtime.debugger.stop()
       'julia-debug:finish-function': => juno.runtime.debugger.finish()
 
       'julia:open-julia-startup-file': -> atom.workspace.open(juno.misc.paths.home('.julia', 'config', 'startup.jl'))
