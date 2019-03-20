@@ -99,6 +99,7 @@ module.exports =
       'julia-debug:step-into-function': => juno.runtime.debugger.stepin()
       'julia-debug:stop-debugging': => juno.runtime.debugger.stop()
       'julia-debug:finish-function': => juno.runtime.debugger.finish()
+      'julia-debug:open-debugger-pane': => juno.runtime.debugger.openPane()
 
       'julia:open-julia-startup-file': -> atom.workspace.open(juno.misc.paths.home('.julia', 'config', 'startup.jl'))
       'julia:open-juno-startup-file': -> atom.workspace.open(juno.misc.paths.home('.julia', 'config', 'juno_startup.jl'))

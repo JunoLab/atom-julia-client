@@ -58,6 +58,11 @@ module.exports =
       callback: 'julia-client:open-documentation-browser'
       tooltip: 'Show Documentation Browser'
 
+    @bar.addButton
+      icon: 'bug'
+      callback: 'julia-debug:open-debugger-pane'
+      tooltip: 'Show Debugger Pane'
+
     @bar.addSpacer()
 
     # Evaluation
