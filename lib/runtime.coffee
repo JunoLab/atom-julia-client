@@ -15,7 +15,6 @@ module.exports =
   activate: ->
     @modules.activate()
     @frontend.activate()
-    @debugger.activate()
 
   deactivate: ->
     mod.deactivate() for mod in [@modules, @console, @frontend, @debugger, @profiler, @console2, @linter]
@@ -23,8 +22,8 @@ module.exports =
   consumeInk: (ink) ->
     @evaluation.ink = ink
     @frontend.ink = ink
-    @debugger.consumeInk ink
     @profiler.activate ink
+    @debugger.activate ink
     @console2.activate ink
     @linter.activate ink
     for mod in [@console, @workspace, @plots]
