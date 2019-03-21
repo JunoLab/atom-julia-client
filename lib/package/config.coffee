@@ -149,6 +149,13 @@ config =
         title: 'Restore Standard Layout on Start'
         type: 'boolean'
         default: false
+        order: 9
+      noAutoParenthesis:
+        title: 'Don\'t Insert Parenthesis on Function Autocompletion'
+        description: 'Juno will not insert parenthesis after completing a function if this is enabled.'
+        type: 'boolean'
+        default: false
+        order: 10
   consoleOptions:
     type: 'object'
     order: 4

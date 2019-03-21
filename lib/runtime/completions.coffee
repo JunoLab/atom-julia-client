@@ -56,11 +56,14 @@ module.exports =
         if text.match(/\s/)
           return []
     cs = @rawCompletions(data).then ({completions, prefix, mod}) =>
-      @processCompletions completions, prefix
+      try
+        @processCompletions completions, prefix
+      catch err
+        []
     Promise.race([cs, @sleep(1)])
 
   onDidInsertSuggestion: ({editor, suggestion: {type}}) ->
-    if type is 'function'
+    if type is 'function' and !atom.config.get('julia-client.uiOptions.noAutoParenthesis')
       editor.mutateSelectedText (selection) ->
         return unless selection.isEmpty()
         {row, column} = selection.getBufferRange().start
