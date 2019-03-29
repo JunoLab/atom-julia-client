@@ -206,12 +206,17 @@ config =
         enum: ['block', 'underline', 'bar']
         default: 'block'
         order: 8
+      cursorBlink:
+        title: 'Cursor Blink'
+        type: 'boolean'
+        default: false
+        order: 9
       rendererType:
         title: 'Fallback Renderer'
         type: 'boolean'
         default: false
         description: 'Enable this if you\'re experiencing slowdowns in the built-in terminals.'
-        order: 9
+        order: 10
   remoteOptions:
     type: 'object'
     order: 5
