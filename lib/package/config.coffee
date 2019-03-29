@@ -163,7 +163,7 @@ config =
       consoleStyle:
         title: 'Style (requires restart)'
         type: 'string'
-        enum: ['REPL-based', 'Legacy']
+        enum: ['REPL-based']
         default: 'REPL-based'
         order: 1
       maximumConsoleSize:
