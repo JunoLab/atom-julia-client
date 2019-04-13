@@ -29,7 +29,8 @@ try
   import Atom
   using Juno
   @sync begin
-    Atom.handle("junorc") do
+    Atom.handle("junorc") do path
+      cd(path)
       ispath(junorc) && include(junorc)
       nothing
     end

@@ -30,7 +30,8 @@ println("Starting Julia...")
 try
   import Atom
   using Juno
-  Atom.handle("junorc") do
+  Atom.handle("junorc") do path
+    cd(path)
     ispath(junorc) && include(junorc)
     nothing
   end

@@ -2,7 +2,7 @@
 messages = require './messages'
 client = require './client'
 
-cd = client.import 'cd', false
+junorc = client.import 'junorc', false
 
 # legacy
 basic  = require './process/basic'
@@ -108,9 +108,9 @@ module.exports =
         console.error("Julia exited with #{e}.")
       .then =>
         if provider is 'Remote'
-          ssh.withRemoteConfig((conf) -> cd conf.remote).catch ->
+          ssh.withRemoteConfig((conf) -> junorc conf.remote).catch ->
         else
-          paths.projectDir().then (dir) -> cd dir
+          paths.projectDir().then (dir) -> junorc dir
     proc
 
   spawnJulia: (path, args, provider) ->
