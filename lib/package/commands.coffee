@@ -105,7 +105,8 @@ module.exports =
       'julia:open-julia-startup-file': -> atom.workspace.open(juno.misc.paths.home('.julia', 'config', 'startup.jl'))
       'julia:open-juno-startup-file': -> atom.workspace.open(juno.misc.paths.home('.julia', 'config', 'juno_startup.jl'))
       'julia:open-julia-home': -> shell.openItem juno.misc.paths.juliaHome()
-      'julia:open-package-in-new-window': -> juno.runtime.packages.openPackage()
+      'julia:open-package-in-new-window': -> requireClient 'get packages', -> juno.runtime.packages.openPackage()
+      'julia:open-package-as-project-folder': -> requireClient 'get packages', -> juno.runtime.packages.openPackage(false)
       'julia:standard-layout': -> juno.ui.layout.standard()
       'julia:get-help': -> shell.openExternal 'http://discourse.julialang.org'
 
