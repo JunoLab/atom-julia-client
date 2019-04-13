@@ -85,7 +85,9 @@ module.exports =
     else if atom.workspace.isTextEditor item
       @updateForEditor item
     else
-      @setCurrent main: item.juliaModule or 'Main'
+      allmodules().then (modules) =>
+        mod = item.juliaModule or 'Main'
+        @setCurrent main: mod, inactive: !(modules.indexOf(mod) > -1)
 
   updateForEditor: (editor) ->
     @setCurrent main: editor.juliaModule or 'Main', true
