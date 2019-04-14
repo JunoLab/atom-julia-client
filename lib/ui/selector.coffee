@@ -1,11 +1,12 @@
 {SelectListView} = require 'atom-space-pen-views'
 
 module.exports =
-  show: (xs, {active} = {}) ->
+  show: (xs, {active, emptyMessage, allowCustom} = {}) ->
     @selector ?= new SelectListView
     @selector.addClass('command-palette')
     @selector.addClass('julia-client-selector')
     @selector.list.addClass('mark-active') if active
+    @selector.getEmptyMessage = () => emptyMessage or ''
 
     @selector.setItems []
     @selector.storeFocusedElement()
@@ -54,4 +55,10 @@ module.exports =
       @selector.cancelled = =>
         panel.destroy()
         @selector.restoreFocus()
-        resolve() unless confirmed
+        query = @selector.getFilterQuery()
+        if not confirmed
+          console.log query
+          if allowCustom and query.length > 0
+            resolve(query)
+          else
+            resolve()
