@@ -1,4 +1,4 @@
-Copyright (c) 2015 Mike Innes
+Copyright (c) 2019: Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
