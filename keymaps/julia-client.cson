@@ -42,6 +42,7 @@
   'cmd-j cmd-,': 'julia-client:settings'
   'cmd-j cmd-e': 'julia-client:focus-last-editor'
   'cmd-j cmd-t': 'julia-client:focus-last-terminal'
+  'cmd-j cmd-b': 'julia-client:return-from-goto'
 
 '.platform-win32 .item-views > atom-text-editor[data-grammar="source julia"],
  .platform-linux .item-views > atom-text-editor[data-grammar="source julia"]':
@@ -82,6 +83,7 @@
   'ctrl-j ctrl-,': 'julia-client:settings'
   'ctrl-j ctrl-e': 'julia-client:focus-last-editor'
   'ctrl-j ctrl-t': 'julia-client:focus-last-terminal'
+  'ctrl-j ctrl-b': 'julia-client:return-from-goto'
 
 '.platform-win32 ink-console atom-text-editor:not([mini]),
  .platform-linux ink-console atom-text-editor:not([mini])':
