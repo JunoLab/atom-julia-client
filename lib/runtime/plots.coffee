@@ -72,8 +72,8 @@ module.exports =
     if opts.close
       pane.close()
     else if opts.destroy
-      if pane.destroy
-        pane.destroy()
+      if pane.closeAndDestroy
+        pane.closeAndDestroy()
     else
       pane.show({
         item: v,
