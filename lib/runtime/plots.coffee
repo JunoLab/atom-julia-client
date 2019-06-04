@@ -27,14 +27,18 @@ module.exports =
       else
         @pane.setTitle 'Plots (disabled)'
 
+    atom.config.observe 'julia-client.uiOptions.customLayoutOptions.plotPane.defaultLocation', (defaultLocation) =>
+      @pane.setDefaultLocation defaultLocation
+
   create: ->
     @pane = @ink.PlotPane.fromId 'default'
 
   open: ->
-    @pane.open split: 'right'
+    @pane.open
+      split: atom.config.get('julia-client.uiOptions.customLayoutOptions.plotPane.split')
 
   ensureVisible: ->
-    @pane.ensureVisible({split: 'right'})
+    @pane.ensureVisible({ split: atom.config.get('julia-client.uiOptions.customLayoutOptions.plotPane.split') })
 
   show: (view) ->
     @ensureVisible()

@@ -150,12 +150,178 @@ config =
         type: 'boolean'
         default: false
         order: 9
+      customLayoutOptions:
+        title: 'Custom Layout Options'
+        type: 'object'
+        order: 10
+        collapsed: true
+        properties:
+          console:
+            title: 'Console'
+            type: 'object'
+            order: 1
+            collapsed: true
+            properties:
+              defaultLocation:
+                title: 'Default location of Console Pane'
+                type: 'string'
+                enum: ['center', 'left', 'bottom', 'right']
+                default: 'bottom'
+                radio: true
+                order: 1
+              split:
+                title: 'How to split Console Pane'
+                type: 'string'
+                enum: ['no split', 'left', 'up', 'right', 'down']
+                default: 'no split'
+                radio: true
+                order: 2
+          terminal:
+            title: 'Terminal'
+            type: 'object'
+            order: 2
+            collapsed: true
+            properties:
+              defaultLocation:
+                title: 'Default location of Terminal Pane'
+                type: 'string'
+                enum: ['center', 'left', 'bottom', 'right']
+                default: 'bottom'
+                radio: true
+                order: 1
+              split:
+                title: 'How to split Terminal Pane'
+                type: 'string'
+                enum: ['no split', 'left', 'up', 'right', 'down']
+                default: 'no split'
+                radio: true
+                order: 2
+          workspace:
+            title: 'Workspace'
+            type: 'object'
+            order: 3
+            collapsed: true
+            properties:
+              defaultLocation:
+                title: 'Default location of Workspace Pane'
+                type: 'string'
+                enum: ['center', 'left', 'bottom', 'right']
+                default: 'center'
+                radio: true
+                order: 1
+              split:
+                title: 'How to split Workspace Pane'
+                type: 'string'
+                enum: ['no split', 'left', 'up', 'right', 'down']
+                default: 'right'
+                radio: true
+                order: 2
+          documentation:
+            title: 'Documentation Browser'
+            type: 'object'
+            order: 4
+            collapsed: true
+            properties:
+              defaultLocation:
+                title: 'Default location of Documentation Browser Pane'
+                type: 'string'
+                enum: ['center', 'left', 'bottom', 'right']
+                default: 'right'
+                radio: true
+                order: 1
+              split:
+                title: 'How to split Documentation Browser Pane'
+                type: 'string'
+                enum: ['no split', 'left', 'up', 'right', 'down']
+                default: 'no split'
+                radio: true
+                order: 2
+          plotPane:
+            title: 'Plot Pane'
+            type: 'object'
+            order: 5
+            collapsed: true
+            properties:
+              defaultLocation:
+                title: 'Default location of Plot Pane'
+                type: 'string'
+                enum: ['center', 'left', 'bottom', 'right']
+                default: 'center'
+                radio: true
+                order: 1
+              split:
+                title: 'How to split Plot Pane'
+                type: 'string'
+                enum: ['no split', 'left', 'up', 'right', 'down']
+                default: 'right'
+                radio: true
+                order: 2
+          debuggerPane:
+            title: 'Debugger Pane'
+            type: 'object'
+            order: 6
+            collapsed: true
+            properties:
+              defaultLocation:
+                title: 'Default location of Debugger Pane'
+                type: 'string'
+                enum: ['center', 'left', 'bottom', 'right']
+                default: 'right'
+                radio: true
+                order: 1
+              split:
+                title: 'How to split Debugger Pane'
+                type: 'string'
+                enum: ['no split', 'left', 'up', 'right', 'down']
+                default: 'no split'
+                radio: true
+                order: 2
+          profiler:
+            title: 'Profiler'
+            type: 'object'
+            order: 7
+            collapsed: true
+            properties:
+              defaultLocation:
+                title: 'Default location of Profiler Pane'
+                type: 'string'
+                enum: ['center', 'left', 'bottom', 'right']
+                default: 'center'
+                radio: true
+                order: 1
+              split:
+                title: 'How to split Profiler Pane'
+                type: 'string'
+                enum: ['no split', 'left', 'up', 'right', 'down']
+                default: 'right'
+                radio: true
+                order: 2
+          linter:
+            title: 'Linter'
+            type: 'object'
+            order: 8
+            collapsed: true
+            properties:
+              defaultLocation:
+                title: 'Default location of Linter Pane'
+                type: 'string'
+                enum: ['center', 'left', 'bottom', 'right']
+                default: 'bottom'
+                radio: true
+                order: 1
+              split:
+                title: 'How to split Linter Pane'
+                type: 'string'
+                enum: ['no split', 'left', 'up', 'right', 'down']
+                default: 'no split'
+                radio: true
+                order: 2
       noAutoParenthesis:
         title: 'Don\'t Insert Parenthesis on Function Autocompletion'
         description: 'Juno will not insert parenthesis after completing a function if this is enabled.'
         type: 'boolean'
         default: false
-        order: 10
+        order: 11
   consoleOptions:
     type: 'object'
     order: 4

@@ -15,6 +15,9 @@ module.exports =
       @ws.setItems []
       @lazyTrees = []
 
+    atom.config.observe 'julia-client.uiOptions.customLayoutOptions.workspace.defaultLocation', (defaultLocation) =>
+      @ws.setDefaultLocation defaultLocation
+
   lazyTrees: []
 
   update: ->
@@ -41,4 +44,6 @@ module.exports =
       if m?.then?
         m.then(() => @update())
 
-  open: -> @ws.open split: 'right'
+  open: ->
+    @ws.open
+      split: atom.config.get 'julia-client.uiOptions.customLayoutOptions.workspace.split'

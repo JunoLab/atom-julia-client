@@ -21,6 +21,7 @@ module.exports =
 
   deactivate: ->
     @subs.dispose()
+    @docpane.deactivate()
     @focusutils.deactivate()
     @progress.clear()
 
