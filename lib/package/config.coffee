@@ -77,6 +77,12 @@ config =
         type: 'string'
         default: ''
         order: 9
+      noAutoParenthesis:
+        title: 'Don\'t Insert Parenthesis on Function Autocompletion'
+        description: 'If enabled, Juno will not insert parenthesis after completing a function.'
+        type: 'boolean'
+        default: false
+        order: 10
   uiOptions:
     title: 'UI Options'
     type: 'object'
@@ -316,12 +322,6 @@ config =
                 default: 'no split'
                 radio: true
                 order: 2
-      noAutoParenthesis:
-        title: 'Don\'t Insert Parenthesis on Function Autocompletion'
-        description: 'Juno will not insert parenthesis after completing a function if this is enabled.'
-        type: 'boolean'
-        default: false
-        order: 11
   consoleOptions:
     type: 'object'
     order: 4
@@ -431,12 +431,11 @@ if process.platform == 'darwin'
     order: 5.5
 
 if process.platform == 'win32'
-  config.enablePowershellWrapper =
+  config.juliaOptions.enablePowershellWrapper =
     title: 'Enable Powershell Wrapper'
     type: 'boolean'
     default: true
-    description: 'Use a powershell wrapper to spawn Julia.
-                  Necessary to enable interrupts.'
-    order: 2.5
+    description: 'If enabled, use a Powershell wrapper to spawn Julia. Necessary to enable interrupts.'
+    order: 11
 
 module.exports = config
