@@ -156,8 +156,8 @@ config =
         type: 'boolean'
         default: false
         order: 10
-      customLayoutOptions:
-        title: 'Custom Layout Options'
+      layouts:
+        title: 'Layout'
         type: 'object'
         order: 11
         collapsed: true
