@@ -33,7 +33,7 @@ config =
       deprecationWarnings:
         title: 'Deprecation Warnings'
         type: 'boolean'
-        description: 'Hides deprecation warnings if disabled.'
+        description: 'If disabled, hides deprecation warnings.'
         default: true
         order: 3
       numberOfThreads:
@@ -54,7 +54,7 @@ config =
           type: 'string'
         order: 5
       externalProcessPort:
-        title: 'Port for communicating with the Julia process'
+        title: 'Port for Communicating with the Julia Process'
         type: 'string'
         description: '`random` will use a new port each time, or enter an integer to set the port statically.'
         default: 'random'
@@ -137,29 +137,29 @@ config =
         type: 'boolean'
         description: 'Show plots in Atom.'
         default: true
-        order: 6.5
+        order: 7
       openNewEditorWhenDebugging:
         title: 'Open New Editor When Debugging'
         type: 'boolean'
         default: false
         description: 'Opens a new editor tab when stepping into a new file instead
                       of reusing the current one (requires restart).'
-        order: 7
+        order: 8
       cellDelimiter:
         title: 'Cell Delimiter'
         type: 'array'
         default: ['##', '#---', '#%%', '# %%']
         description: 'Regular expressions for determining cell delimiters.'
-        order: 8
+        order: 9
       useStandardLayout:
         title: 'Restore Standard Layout on Start'
         type: 'boolean'
         default: false
-        order: 9
+        order: 10
       customLayoutOptions:
         title: 'Custom Layout Options'
         type: 'object'
-        order: 10
+        order: 11
         collapsed: true
         properties:
           console:
@@ -346,7 +346,7 @@ config =
         title: 'Shell'
         type: 'string'
         default: terminal.defaultShell()
-        description: 'Shell. Defaults to `$SHELL`.'
+        description: 'The location of an executable shell. Set to `$SHELL` by default, and if `$SHELL` isn\'t set then fallback to `bash` or `powershell.exe` (on Windows).'
         order: 4
       terminal:
         title: 'Terminal'
@@ -371,6 +371,7 @@ config =
         type: 'string'
         enum: ['block', 'underline', 'bar']
         default: 'block'
+        radio: true
         order: 8
       cursorBlink:
         title: 'Cursor Blink'
@@ -405,7 +406,7 @@ config =
         order: 3
       agentAuth:
         title: 'Use SSH agent'
-        description: 'Requires `$SSH_AUTH_SOCKET` to be set. Defaults to putty\'s pageant on Windows'
+        description: 'Requires `$SSH_AUTH_SOCKET` to be set. Defaults to putty\'s pageant on Windows.'
         type: 'boolean'
         default: true
         order: 4
@@ -431,7 +432,7 @@ if process.platform == 'darwin'
     order: 5.5
 
 if process.platform == 'win32'
-  config.juliaOptions.enablePowershellWrapper =
+  config.juliaOptions.properties.enablePowershellWrapper =
     title: 'Enable Powershell Wrapper'
     type: 'boolean'
     default: true
