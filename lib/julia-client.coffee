@@ -1,7 +1,9 @@
 etch = require 'etch'
 
 commands = require './package/commands'
+config = require './package/config'
 menu = require './package/menu'
+settings = require './package/settings'
 toolbar = require './package/toolbar'
 
 module.exports = JuliaClient =
@@ -17,7 +19,7 @@ module.exports = JuliaClient =
       x.activate() for x in [menu, @connection, @runtime]
       @ui.activate @connection.client
 
-      require('./package/settings').updateSettings()
+      settings.updateSettings()
 
       if atom.config.get('julia-client.firstBoot')
         @ui.layout.queryStandardLayout()
@@ -34,6 +36,8 @@ module.exports = JuliaClient =
             detail: 'Julia Client requires the Ink package to run.
                      Please install it manually from the settings view.'
             dismissable: true
+
+  config: config
 
   deactivate: ->
     x.deactivate() for x in [commands, menu, toolbar, @connection, @runtime, @ui]
@@ -58,5 +62,4 @@ module.exports = JuliaClient =
 
   provideHyperclick: -> @runtime.provideHyperclick()
 
-  config: require './package/config'
   completions: -> @runtime.completions
