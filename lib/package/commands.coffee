@@ -88,6 +88,7 @@ module.exports =
       'julia-client:connect-terminal': -> disrequireClient -> juno.connection.terminal.connectedRepl()
       'julia-client:open-plot-pane': => @withInk -> juno.runtime.plots.open()
       'julia-client:open-workspace': => @withInk -> juno.runtime.workspace.open()
+      'julia-client:default-layout': -> juno.ui.layout.defaultLayout()
       'julia-client:settings': -> atom.workspace.open('atom://config/packages/julia-client')
       'julia-debug:toggle-breakpoint': => juno.runtime.debugger.togglebp()
       'julia-debug:toggle-conditional-breakpoint': => juno.runtime.debugger.togglebp(true)
@@ -106,7 +107,6 @@ module.exports =
       'julia:open-julia-home': -> shell.openItem juno.misc.paths.juliaHome()
       'julia:open-package-in-new-window': -> requireClient 'get packages', -> juno.runtime.packages.openPackage()
       'julia:open-package-as-project-folder': -> requireClient 'get packages', -> juno.runtime.packages.openPackage(false)
-      'julia:standard-layout': -> juno.ui.layout.standard()
       'julia:get-help': -> shell.openExternal 'http://discourse.julialang.org'
 
       'julia-client:work-in-file-folder': ->

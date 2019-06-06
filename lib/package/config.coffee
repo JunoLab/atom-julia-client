@@ -151,16 +151,10 @@ config =
         default: ['##', '#---', '#%%', '# %%']
         description: 'Regular expressions for determining cell delimiters.'
         order: 9
-      useStandardLayout:
-        title: 'Restore Standard Layout on Start'
-        type: 'boolean'
-        default: false
-        order: 10
       layouts:
         title: 'Layout'
         type: 'object'
-        order: 11
-        collapsed: true
+        order: 10
         properties:
           console:
             title: 'Console'
@@ -322,6 +316,51 @@ config =
                 default: 'no split'
                 radio: true
                 order: 2
+          defaultPanes:
+            title: 'Default Panes'
+            description: 'Specify panes that are opened by `Julia-Client:Default-Layout`.
+                          Default location and rule of splitting follow the settings above.'
+            type: 'object'
+            order: 9
+            properties:
+              console:
+                title: 'Console'
+                type: 'boolean'
+                default: true
+                order: 1
+              workspace:
+                title: 'Workspace'
+                type: 'boolean'
+                default: true
+                order: 2
+              documentation:
+                title: 'Documentation Browser'
+                type: 'boolean'
+                default: true
+                order: 3
+              plotPane:
+                title: 'Plot Pane'
+                type: 'boolean'
+                default: true
+                order: 4
+              debuggerPane:
+                title: 'Debugger Pane'
+                type: 'boolean'
+                default: false
+                order: 5
+              linter:
+                title: 'Linter'
+                type: 'boolean'
+                default: false
+                order: 6
+          openDefaultPanesOnStartUp:
+            title: 'Open Default Panes on Startup'
+            description: 'If enabled, opens panes specified above on startup.
+                          If there are the panes restored from a previous window state,
+                          the pane would stay there.'
+            type: 'boolean'
+            default: true
+            order: 10
   consoleOptions:
     type: 'object'
     order: 4
