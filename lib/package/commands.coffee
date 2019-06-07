@@ -89,8 +89,6 @@ module.exports =
       'julia-client:open-plot-pane': => @withInk -> juno.runtime.plots.open()
       'julia-client:open-workspace': => @withInk -> juno.runtime.workspace.open()
       'julia-client:settings': -> atom.workspace.open('atom://config/packages/julia-client')
-      # breakpoints not supported
-      'julia-debug:clear-all-breakpoints': => juno.runtime.debugger.clearbps()
       'julia-debug:get-all-breakpoints': => juno.runtime.debugger.getBPs()
       'julia-debug:toggle-breakpoint': => juno.runtime.debugger.togglebp()
       'julia-debug:step-to-next-line': => juno.runtime.debugger.nextline()
@@ -101,6 +99,7 @@ module.exports =
       'julia-debug:finish-function': => juno.runtime.debugger.finish()
       'julia-debug:continue': => juno.runtime.debugger.continueForward()
       'julia-debug:open-debugger-pane': => juno.runtime.debugger.openPane()
+      'julia-debug:toggle-conditional-breakpoint': -> juno.runtime.debugger.togglebp(true)
 
       'julia:open-julia-startup-file': -> atom.workspace.open(juno.misc.paths.home('.julia', 'config', 'startup.jl'))
       'julia:open-juno-startup-file': -> atom.workspace.open(juno.misc.paths.home('.julia', 'config', 'juno_startup.jl'))
