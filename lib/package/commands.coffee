@@ -41,9 +41,9 @@ module.exports =
         @withInk ->
           boot()
           juno.runtime.evaluation.eval(cell: true, move: true)
-      'julia-client:next-cell': ->
+      'julia-client:next-cell': =>
         cells.moveNext()
-      'julia-client:prev-cell': ->
+      'julia-client:prev-cell': =>
         cells.movePrev()
       'julia-client:goto-symbol': =>
         @withInk ->
@@ -53,14 +53,14 @@ module.exports =
         @withInk ->
           boot()
           juno.runtime.evaluation.toggleDocs()
-      'julia-client:reset-workspace': ->
+      'julia-client:reset-workspace': =>
         requireClient 'reset the workspace', ->
           editor = atom.workspace.getActiveTextEditor()
           atom.commands.dispatch atom.views.getView(editor), 'inline-results:clear-all'
           juno.connection.client.import('clear-workspace')()
-      'julia:select-block': ->
+      'julia:select-block': =>
         juno.misc.blocks.select()
-      'julia-client:send-to-stdin': (e) ->
+      'julia-client:send-to-stdin': (e) =>
         requireClient ->
           ed = e.currentTarget.getModel()
           done = false
@@ -80,8 +80,8 @@ module.exports =
       'julia-client:start-julia': -> disrequireClient 'boot Julia', -> boot()
       'julia-client:start-remote-julia-process': -> disrequireClient 'boot a remote Julia process', -> juno.connection.bootRemote()
       'julia-client:kill-julia': -> juno.connection.client.kill()
-      'julia-client:interrupt-julia': -> requireClient 'interrupt Julia', -> juno.connection.client.interrupt()
-      'julia-client:disconnect-julia': -> requireClient 'disconnect Julia', -> juno.connection.client.disconnect()
+      'julia-client:interrupt-julia': => requireClient 'interrupt Julia', -> juno.connection.client.interrupt()
+      'julia-client:disconnect-julia': => requireClient 'disconnect Julia', -> juno.connection.client.disconnect()
       # 'julia-client:reset-julia-server': -> juno.connection.local.server.reset() # server mode not functional
       'julia-client:connect-external-process': -> disrequireClient -> juno.connection.messages.connectExternal()
       'julia-client:connect-platformio-terminal': -> disrequireClient -> juno.connection.terminal.runPlatformIOTerm()
@@ -89,17 +89,16 @@ module.exports =
       'julia-client:open-plot-pane': => @withInk -> juno.runtime.plots.open()
       'julia-client:open-workspace': => @withInk -> juno.runtime.workspace.open()
       'julia-client:settings': -> atom.workspace.open('atom://config/packages/julia-client')
-      'julia-debug:clear-all-breakpoints': -> juno.runtime.debugger.clearbps()
-      'julia-debug:toggle-breakpoint': -> juno.runtime.debugger.togglebp()
-      'julia-debug:toggle-conditional-breakpoint': -> juno.runtime.debugger.togglebp(true)
-      'julia-debug:step-to-next-line': -> juno.runtime.debugger.nextline()
-      'julia-debug:step-to-selected-line': -> juno.runtime.debugger.toselectedline()
-      'julia-debug:step-to-next-expression': -> juno.runtime.debugger.stepexpr()
-      'julia-debug:step-into-function': -> juno.runtime.debugger.stepin()
-      'julia-debug:stop-debugging': -> juno.runtime.debugger.stop()
-      'julia-debug:finish-function': -> juno.runtime.debugger.finish()
-      'julia-debug:continue': -> juno.runtime.debugger.continueForward()
-      'julia-debug:open-debugger-pane': -> juno.runtime.debugger.open()
+      'julia-debug:toggle-breakpoint': => juno.runtime.debugger.togglebp()
+      'julia-debug:toggle-conditional-breakpoint': => juno.runtime.debugger.togglebp(true)
+      'julia-debug:step-to-next-line': => juno.runtime.debugger.nextline()
+      'julia-debug:step-to-selected-line': => juno.runtime.debugger.toselectedline()
+      'julia-debug:step-to-next-expression': => juno.runtime.debugger.stepexpr()
+      'julia-debug:step-into-function': => juno.runtime.debugger.stepin()
+      'julia-debug:stop-debugging': => juno.runtime.debugger.stop()
+      'julia-debug:finish-function': => juno.runtime.debugger.finish()
+      'julia-debug:continue': => juno.runtime.debugger.continueForward()
+      'julia-debug:open-debugger-pane': => juno.runtime.debugger.openPane()
 
       'julia:open-julia-startup-file': -> atom.workspace.open(juno.misc.paths.home('.julia', 'config', 'startup.jl'))
       'julia:open-juno-startup-file': -> atom.workspace.open(juno.misc.paths.home('.julia', 'config', 'juno_startup.jl'))
