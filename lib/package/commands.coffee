@@ -91,6 +91,7 @@ module.exports =
       'julia-client:settings': -> atom.workspace.open('atom://config/packages/julia-client')
       'julia-debug:toggle-breakpoint': => juno.runtime.debugger.togglebp()
       'julia-debug:toggle-conditional-breakpoint': => juno.runtime.debugger.togglebp(true)
+      'julia-debug:clear-all-breakpoints': => juno.runtime.debugger.clearbps()
       'julia-debug:step-to-next-line': => juno.runtime.debugger.nextline()
       'julia-debug:step-to-selected-line': => juno.runtime.debugger.toselectedline()
       'julia-debug:step-to-next-expression': => juno.runtime.debugger.stepexpr()
