@@ -63,7 +63,7 @@ module.exports =
     Promise.race([cs, @sleep(1)])
 
   onDidInsertSuggestion: ({editor, suggestion: {type}}) ->
-    if type is 'function' and !atom.config.get('julia-client.uiOptions.noAutoParenthesis')
+    if type is 'function' and !atom.config.get('julia-client.juliaOptions.noAutoParenthesis')
       editor.mutateSelectedText (selection) ->
         return unless selection.isEmpty()
         {row, column} = selection.getBufferRange().start
