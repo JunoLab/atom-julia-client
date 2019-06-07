@@ -29,10 +29,10 @@ module.exports =
           boot()
           juno.runtime.evaluation.evalAll()
       'julia-client:run-weave-chunks': (event) =>
-          cancelComplete event
-          @withInk ->
-            boot()
-            juno.runtime.evaluation.evalAllWeaveChunks()
+        cancelComplete event
+        @withInk ->
+          boot()
+          juno.runtime.evaluation.evalAllWeaveChunks()
       'julia-client:run-cell': =>
         @withInk ->
           boot()
@@ -100,7 +100,7 @@ module.exports =
       'julia-debug:stop-debugging': => juno.runtime.debugger.stop()
       'julia-debug:finish-function': => juno.runtime.debugger.finish()
       'julia-debug:continue': => juno.runtime.debugger.continueForward()
-      'julia-debug:open-debugger-pane': => juno.runtime.debugger.openPane()
+      'julia-debug:open-debugger-pane': => juno.runtime.debugger.open()
 
       'julia:open-julia-startup-file': -> atom.workspace.open(juno.misc.paths.home('.julia', 'config', 'startup.jl'))
       'julia:open-juno-startup-file': -> atom.workspace.open(juno.misc.paths.home('.julia', 'config', 'juno_startup.jl'))

@@ -86,5 +86,5 @@ module.exports =
         })
 
       pane.ensureVisible({
-        split: opts.split || 'right'
+        split: opts.split || atom.config.get('julia-client.uiOptions.layouts.plotPane.split')
         })

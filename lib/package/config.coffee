@@ -170,7 +170,7 @@ config =
                 radio: true
                 order: 1
               split:
-                title: 'How to split Console Pane'
+                title: 'Splitting rule of Console Pane'
                 type: 'string'
                 enum: ['no split', 'left', 'up', 'right', 'down']
                 default: 'no split'
@@ -190,7 +190,7 @@ config =
                 radio: true
                 order: 1
               split:
-                title: 'How to split Terminal Pane'
+                title: 'Splitting rule of Terminal Pane'
                 type: 'string'
                 enum: ['no split', 'left', 'up', 'right', 'down']
                 default: 'no split'
@@ -210,7 +210,7 @@ config =
                 radio: true
                 order: 1
               split:
-                title: 'How to split Workspace Pane'
+                title: 'Splitting rule of Workspace Pane'
                 type: 'string'
                 enum: ['no split', 'left', 'up', 'right', 'down']
                 default: 'right'
@@ -230,7 +230,7 @@ config =
                 radio: true
                 order: 1
               split:
-                title: 'How to split Documentation Browser Pane'
+                title: 'Splitting rule of Documentation Browser Pane'
                 type: 'string'
                 enum: ['no split', 'left', 'up', 'right', 'down']
                 default: 'no split'
@@ -250,7 +250,7 @@ config =
                 radio: true
                 order: 1
               split:
-                title: 'How to split Plot Pane'
+                title: 'Splitting rule of Plot Pane'
                 type: 'string'
                 enum: ['no split', 'left', 'up', 'right', 'down']
                 default: 'right'
@@ -270,7 +270,7 @@ config =
                 radio: true
                 order: 1
               split:
-                title: 'How to split Debugger Pane'
+                title: 'Splitting rule of Debugger Pane'
                 type: 'string'
                 enum: ['no split', 'left', 'up', 'right', 'down']
                 default: 'no split'
@@ -290,7 +290,7 @@ config =
                 radio: true
                 order: 1
               split:
-                title: 'How to split Profiler Pane'
+                title: 'Splitting rule of Profiler Pane'
                 type: 'string'
                 enum: ['no split', 'left', 'up', 'right', 'down']
                 default: 'right'
@@ -310,7 +310,7 @@ config =
                 radio: true
                 order: 1
               split:
-                title: 'How to split Linter Pane'
+                title: 'Splitting rule of Linter Pane'
                 type: 'string'
                 enum: ['no split', 'left', 'up', 'right', 'down']
                 default: 'no split'
@@ -319,7 +319,7 @@ config =
           defaultPanes:
             title: 'Default Panes'
             description: 'Specify panes that are opened by `Julia-Client:Default-Layout`.
-                          Default location and rule of splitting follow the settings above.'
+                          Default location and splitting rule follow the settings above.'
             type: 'object'
             order: 9
             properties:
@@ -357,7 +357,7 @@ config =
             title: 'Open Default Panes on Startup'
             description: 'If enabled, opens panes specified above on startup.
                           If there are the panes restored from a previous window state,
-                          the pane would stay there.'
+                          the pane would still stay there.'
             type: 'boolean'
             default: true
             order: 10
@@ -385,7 +385,8 @@ config =
         title: 'Shell'
         type: 'string'
         default: terminal.defaultShell()
-        description: 'The location of an executable shell. Set to `$SHELL` by default, and if `$SHELL` isn\'t set then fallback to `bash` or `powershell.exe` (on Windows).'
+        description: 'The location of an executable shell. Set to `$SHELL` by default,
+                      and if `$SHELL` isn\'t set then fallback to `bash` or `powershell.exe` (on Windows).'
         order: 4
       terminal:
         title: 'Terminal'
@@ -461,7 +462,8 @@ config =
     order: 99
 
 if process.platform != 'darwin'
-  config.consoleOptions.properties.whitelistedKeybindingsREPL.default = ['Ctrl-C', 'Ctrl-J', 'Ctrl-K', 'Ctrl-E', 'Ctrl-V', 'Ctrl-M']
+  config.consoleOptions.properties.whitelistedKeybindingsREPL.default =
+    ['Ctrl-C', 'Ctrl-J', 'Ctrl-K', 'Ctrl-E', 'Ctrl-V', 'Ctrl-M']
 
 if process.platform == 'darwin'
   config.consoleOptions.properties.macOptionIsMeta =
