@@ -47,3 +47,6 @@ module.exports =
   open: ->
     @ws.open
       split: atom.config.get 'julia-client.uiOptions.layouts.workspace.split'
+
+  close: ->
+    @ws.close()

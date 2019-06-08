@@ -40,6 +40,9 @@ module.exports =
   ensureVisible: ->
     @pane.ensureVisible({ split: atom.config.get('julia-client.uiOptions.layouts.plotPane.split') })
 
+  close: ->
+    @pane.close()
+
   show: (view) ->
     @ensureVisible()
     v = views.render view
