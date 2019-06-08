@@ -226,14 +226,14 @@ config =
                 title: 'Default location of Documentation Browser Pane'
                 type: 'string'
                 enum: ['center', 'left', 'bottom', 'right']
-                default: 'right'
+                default: 'center'
                 radio: true
                 order: 1
               split:
                 title: 'Splitting rule of Documentation Browser Pane'
                 type: 'string'
                 enum: ['no split', 'left', 'up', 'right', 'down']
-                default: 'no split'
+                default: 'right'
                 radio: true
                 order: 2
           plotPane:
