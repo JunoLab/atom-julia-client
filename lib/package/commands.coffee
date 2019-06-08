@@ -89,6 +89,7 @@ module.exports =
       'julia-client:open-plot-pane': => @withInk -> juno.runtime.plots.open()
       'julia-client:open-workspace': => @withInk -> juno.runtime.workspace.open()
       'julia-client:default-layout': -> juno.ui.layout.defaultLayout()
+      'julia-client:reset-layout-settings': -> juno.ui.layout.resetLayoutSettings()
       'julia-client:settings': -> atom.workspace.open('atom://config/packages/julia-client')
       'julia-debug:toggle-breakpoint': => juno.runtime.debugger.togglebp()
       'julia-debug:toggle-conditional-breakpoint': => juno.runtime.debugger.togglebp(true)
