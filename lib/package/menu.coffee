@@ -51,9 +51,10 @@ module.exports =
 
       {type: 'separator'}
 
-      {label: 'Open Plot Pane', command: 'julia-client:open-plot-pane'}
       {label: 'Open Workspace', command: 'julia-client:open-workspace'}
       {label: 'Open Documentation Browser', command: 'julia-client:open-documentation-browser'}
+      {label: 'Open Plot Pane', command: 'julia-client:open-plot-pane'}
+      {label: 'Open Debugger Pane', command: 'julia-client:open-debugger-pane'}
 
       {type: 'separator'}
 

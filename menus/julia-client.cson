@@ -1,8 +1,18 @@
 'context-menu':
   'atom-text-editor[data-grammar="source julia"]': [
-    {label: 'Run Block', command: 'julia-client:run-block'}
-    {label: 'Go to Definition', command: 'julia-client:goto-symbol'}
-    {label: 'Show Documentation', command: 'julia-client:show-documentation'}
-    # {label: 'Toggle breakpoint', command: 'julia-debug:toggle-breakpoint'}
+    {type: 'separator'}
+
+    {
+      label: 'Julia-Client',
+      submenu: [
+        {label: 'Run Block', command: 'julia-client:run-block'}
+        {label: 'Select Block', command: 'julia-client:select-block'}
+        {label: 'Go to Definition', command: 'julia-client:goto-symbol'}
+        {label: 'Show Documentation', command: 'julia-client:show-documentation'}
+        {label: 'Toggle Breakpoint', command: 'julia-debug:toggle-breakpoint'}
+        {label: 'Toggle Conditional Breakpoint', command: 'julia-debug:toggle-conditional-breakpoint'}
+      ]
+    }
+
     {type: 'separator'}
   ]
