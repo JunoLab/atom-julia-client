@@ -455,6 +455,15 @@ config =
         type: 'boolean'
         default: true
         order: 5
+  juliaSyntaxScopes:
+    title: 'Julia Syntax Scopes'
+    description:
+      'The listed syntax scopes (comma separated) will be recoginized as julia files.
+       Requires Atom to be restarted to take an effect.\n
+       **DO NOT** edit this unless you\'re sure about the effect.'
+    type: 'array'
+    default: ['source.julia', 'source.weave.md', 'source.weave.latex']
+    order: 6
 
   firstBoot:
     type: 'boolean'

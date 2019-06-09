@@ -81,6 +81,8 @@ module.exports =
 
   provideHyperclick: () ->
     {
+      providerName: 'julia-client-hyperclick-provider'
+      grammarScopes: atom.config.get('julia-client.juliaSyntaxScopes')
       wordRegExp:  new RegExp(words.wordRegex, "g")
       getSuggestionForWord: (editor, text, range) =>
         require('../connection').boot()
