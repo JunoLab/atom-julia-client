@@ -3,10 +3,12 @@ jlpath = readchomp(`which julia`)
 mkpath("../julia")
 run(`ln -s $jlpath ../julia/julia`)
 
-Pkg.add("Atom")
+using Pkg
+pkg"add Juno Atom"
 
 if get(ENV, "ATOMJL", "") == "master"
-  Pkg.checkout("Atom")
+  pkg"add Atom#master"
 end
 
-using Atom
+using Juno
+import Atom
