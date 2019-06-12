@@ -10,14 +10,14 @@ basicSetup = ->
   waitsForPromise -> atom.packages.activatePackage 'ink'
   waitsForPromise -> atom.packages.activatePackage 'julia-client'
   runs ->
-    client.onStdout (data) -> console.log data
-    client.onStderr (data) -> console.log data
     atom.config.set 'julia-client.juliaPath', 'julia'
     atom.config.set 'julia-client.juliaOptions',
       bootMode: 'Basic'
       optimisationLevel: 2
       deprecationWarnings: false
       precompiled: true
+      consoleOptions:
+        rendererType: true
 
 cyclerSetup = ->
   basicSetup()
@@ -26,7 +26,9 @@ cyclerSetup = ->
 conn = null
 
 withClient = ->
-  beforeEach -> client.attach conn
+  beforeEach ->
+    if conn?
+      client.attach conn
 
 testClient = require './client'
 testEval = require './eval'
