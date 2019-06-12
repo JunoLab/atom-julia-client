@@ -1,0 +1,68 @@
+const juno = require('../lib/julia-client')
+const path = require('path')
+const {client} = juno.connection
+
+function loadDependencies () {
+  waitsForPromise(() => atom.packages.activatePackage('language-julia'))
+  waitsForPromise(() => atom.packages.activatePackage('ink'))
+  waitsForPromise(() => atom.packages.activatePackage('julia-client'))
+  runs(() => {
+      atom.config.set('julia-client.juliaPath', 'julia')
+      atom.config.set('julia-client.juliaOptions', {
+        bootMode: 'Basic',
+        optimisationLevel: 2,
+        deprecationWarnings: false,
+      }
+      )
+  })
+}
+
+describe("before booting", function () {
+  let checkPath = p => juno.misc.paths.getVersion(p)
+
+  beforeEach(loadDependencies)
+  it("can validate an existing julia binary", () => {
+    waitsFor(done => {
+      checkPath("julia").then(() => done())
+    })
+  })
+  it("can not validate a not existing julia binary", () => {
+    waitsFor(done => {
+      checkPath("imprettysureimnotjulia").catch(() => done())
+    })
+  })
+})
+function clientStatus () {
+  return [client.isActive(), client.isWorking()]
+}
+let {echo, evalsimple} = client.import(['echo', 'evalsimple'])
+
+describe("managing a basic client", function () {
+  beforeEach(loadDependencies)
+  describe("when booting the client", function () {
+    it("recognises the client's state before boot", () => {
+      expect(clientStatus()).toEqual([false, false])
+    })
+
+    it("boots a julia process", () => {
+      let pingpong = client.import('ping')
+      waitsFor("the boot process to complete", 5*60*1000, (done) => {
+        console.log(client);
+        juno.connection.boot().then(() => {
+          expect(clientStatus()).toEqual([true, true])
+          pingpong().then(val => {
+            expect(val).toBe('pong')
+            done()
+          })
+        })
+      })
+      runs(() => {
+        conn = client.conn
+      })
+    })
+
+    it("recognises the client's state after boot", () => {
+      expect(clientStatus()).toEqual([true, false])
+    })
+  })
+})

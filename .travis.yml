@@ -1,7 +1,8 @@
 language: julia
 
 julia:
-  - 0.6
+  - 1.0
+  - 1.1
   - nightly
 
 env:
@@ -22,11 +23,11 @@ matrix:
   include:
     # Sanity check for OS X
     - os: osx
-      julia: 0.6
+      julia: 1.0
       env: ATOMJL=master
     # Sanity check for Atom Beta
     - os: linux
-      julia: 0.6
+      julia: 1.0
       env: ATOM_CHANNEL=beta
   allow_failures:
     - julia: nightly

@@ -61,14 +61,8 @@ module.exports = ->
           getSuggestions().then (cs) ->
             completions = cs
 
-      it 'fills the autocomplete cache', ->
-        waitsForClient()
-        runs ->
-          # This fails spuriously
-          # expect(juno.runtime.completions.cache.Main).toBeTruthy()
-
       it 'retrieves completions', ->
         completions = completions.map (c) -> c.text
         expect(completions).toContain 'sin'
-        expect(completions).toContain '@time'
-        expect(completions).toContain 'Base'
+        expect(completions).toContain 'sincos'
+        expect(completions).toContain 'sinc'
