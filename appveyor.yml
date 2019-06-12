@@ -1,6 +1,6 @@
 ### Project specific config ###
 environment:
-  APM_TEST_PACKAGES:
+  APM_TEST_PACKAGES: "ink language-julia"
   ATOM_LINT_WITH_BUNDLED_NODE: "true"
 
   matrix:
