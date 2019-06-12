@@ -42,7 +42,7 @@ describe "interaction with client cycler", ->
   testClient()
 
 describe "before use", ->
-  beforeEach cyclerSetup
+  beforeEach basicSetup
   it 'boots the client', ->
     waitsFor 5*60*1000, (done) ->
       juno.connection.boot().then -> done()
@@ -50,12 +50,12 @@ describe "before use", ->
       conn = client.conn
 
 describe "in an editor", ->
-  beforeEach cyclerSetup
+  beforeEach basicSetup
   withClient()
   testEval()
 
 describe "after use", ->
-  beforeEach cyclerSetup
+  beforeEach basicSetup
   withClient()
   it "kills the client", ->
     client.kill()
