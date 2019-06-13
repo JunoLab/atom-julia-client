@@ -10,14 +10,14 @@ basicSetup = ->
   waitsForPromise -> atom.packages.activatePackage 'ink'
   waitsForPromise -> atom.packages.activatePackage 'julia-client'
   runs ->
-    client.onStdout (data) -> console.log data
-    client.onStderr (data) -> console.log data
     atom.config.set 'julia-client.juliaPath', 'julia'
     atom.config.set 'julia-client.juliaOptions',
       bootMode: 'Basic'
       optimisationLevel: 2
       deprecationWarnings: false
       precompiled: true
+      consoleOptions:
+        rendererType: true
 
 cyclerSetup = ->
   basicSetup()
@@ -26,7 +26,9 @@ cyclerSetup = ->
 conn = null
 
 withClient = ->
-  beforeEach -> client.attach conn
+  beforeEach ->
+    if conn?
+      client.attach conn
 
 testClient = require './client'
 testEval = require './eval'
@@ -40,7 +42,7 @@ describe "interaction with client cycler", ->
   testClient()
 
 describe "before use", ->
-  beforeEach cyclerSetup
+  beforeEach basicSetup
   it 'boots the client', ->
     waitsFor 5*60*1000, (done) ->
       juno.connection.boot().then -> done()
@@ -48,12 +50,12 @@ describe "before use", ->
       conn = client.conn
 
 describe "in an editor", ->
-  beforeEach cyclerSetup
+  beforeEach basicSetup
   withClient()
   testEval()
 
 describe "after use", ->
-  beforeEach cyclerSetup
+  beforeEach basicSetup
   withClient()
   it "kills the client", ->
     client.kill()
