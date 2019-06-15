@@ -33,7 +33,7 @@ config =
       deprecationWarnings:
         title: 'Deprecation Warnings'
         type: 'boolean'
-        description: 'Hides deprecation warnings if disabled.'
+        description: 'If disabled, hides deprecation warnings.'
         default: true
         order: 3
       numberOfThreads:
@@ -54,7 +54,7 @@ config =
           type: 'string'
         order: 5
       externalProcessPort:
-        title: 'Port for communicating with the Julia process'
+        title: 'Port for Communicating with the Julia Process'
         type: 'string'
         description: '`random` will use a new port each time, or enter an integer to set the port statically.'
         default: 'random'
@@ -77,6 +77,12 @@ config =
         type: 'string'
         default: ''
         order: 9
+      noAutoParenthesis:
+        title: 'Don\'t Insert Parenthesis on Function Autocompletion'
+        description: 'If enabled, Juno will not insert parenthesis after completing a function.'
+        type: 'boolean'
+        default: false
+        order: 10
   uiOptions:
     title: 'UI Options'
     type: 'object'
@@ -131,31 +137,230 @@ config =
         type: 'boolean'
         description: 'Show plots in Atom.'
         default: true
-        order: 6.5
+        order: 7
       openNewEditorWhenDebugging:
         title: 'Open New Editor When Debugging'
         type: 'boolean'
         default: false
         description: 'Opens a new editor tab when stepping into a new file instead
                       of reusing the current one (requires restart).'
-        order: 7
+        order: 8
       cellDelimiter:
         title: 'Cell Delimiter'
         type: 'array'
         default: ['##', '#---', '#%%', '# %%']
         description: 'Regular expressions for determining cell delimiters.'
-        order: 8
-      useStandardLayout:
-        title: 'Restore Standard Layout on Start'
-        type: 'boolean'
-        default: false
         order: 9
-      noAutoParenthesis:
-        title: 'Don\'t Insert Parenthesis on Function Autocompletion'
-        description: 'Juno will not insert parenthesis after completing a function if this is enabled.'
-        type: 'boolean'
-        default: false
+      layouts:
+        title: 'Layout'
+        type: 'object'
         order: 10
+        properties:
+          console:
+            title: 'Console'
+            type: 'object'
+            order: 1
+            collapsed: true
+            properties:
+              defaultLocation:
+                title: 'Default location of Console Pane'
+                type: 'string'
+                enum: ['center', 'left', 'bottom', 'right']
+                default: 'bottom'
+                radio: true
+                order: 1
+              split:
+                title: 'Splitting rule of Console Pane'
+                type: 'string'
+                enum: ['no split', 'left', 'up', 'right', 'down']
+                default: 'no split'
+                radio: true
+                order: 2
+          terminal:
+            title: 'Terminal'
+            type: 'object'
+            order: 2
+            collapsed: true
+            properties:
+              defaultLocation:
+                title: 'Default location of Terminal Pane'
+                type: 'string'
+                enum: ['center', 'left', 'bottom', 'right']
+                default: 'bottom'
+                radio: true
+                order: 1
+              split:
+                title: 'Splitting rule of Terminal Pane'
+                type: 'string'
+                enum: ['no split', 'left', 'up', 'right', 'down']
+                default: 'no split'
+                radio: true
+                order: 2
+          workspace:
+            title: 'Workspace'
+            type: 'object'
+            order: 3
+            collapsed: true
+            properties:
+              defaultLocation:
+                title: 'Default location of Workspace Pane'
+                type: 'string'
+                enum: ['center', 'left', 'bottom', 'right']
+                default: 'center'
+                radio: true
+                order: 1
+              split:
+                title: 'Splitting rule of Workspace Pane'
+                type: 'string'
+                enum: ['no split', 'left', 'up', 'right', 'down']
+                default: 'right'
+                radio: true
+                order: 2
+          documentation:
+            title: 'Documentation Browser'
+            type: 'object'
+            order: 4
+            collapsed: true
+            properties:
+              defaultLocation:
+                title: 'Default location of Documentation Browser Pane'
+                type: 'string'
+                enum: ['center', 'left', 'bottom', 'right']
+                default: 'center'
+                radio: true
+                order: 1
+              split:
+                title: 'Splitting rule of Documentation Browser Pane'
+                type: 'string'
+                enum: ['no split', 'left', 'up', 'right', 'down']
+                default: 'right'
+                radio: true
+                order: 2
+          plotPane:
+            title: 'Plot Pane'
+            type: 'object'
+            order: 5
+            collapsed: true
+            properties:
+              defaultLocation:
+                title: 'Default location of Plot Pane'
+                type: 'string'
+                enum: ['center', 'left', 'bottom', 'right']
+                default: 'center'
+                radio: true
+                order: 1
+              split:
+                title: 'Splitting rule of Plot Pane'
+                type: 'string'
+                enum: ['no split', 'left', 'up', 'right', 'down']
+                default: 'right'
+                radio: true
+                order: 2
+          debuggerPane:
+            title: 'Debugger Pane'
+            type: 'object'
+            order: 6
+            collapsed: true
+            properties:
+              defaultLocation:
+                title: 'Default location of Debugger Pane'
+                type: 'string'
+                enum: ['center', 'left', 'bottom', 'right']
+                default: 'right'
+                radio: true
+                order: 1
+              split:
+                title: 'Splitting rule of Debugger Pane'
+                type: 'string'
+                enum: ['no split', 'left', 'up', 'right', 'down']
+                default: 'no split'
+                radio: true
+                order: 2
+          profiler:
+            title: 'Profiler'
+            type: 'object'
+            order: 7
+            collapsed: true
+            properties:
+              defaultLocation:
+                title: 'Default location of Profiler Pane'
+                type: 'string'
+                enum: ['center', 'left', 'bottom', 'right']
+                default: 'center'
+                radio: true
+                order: 1
+              split:
+                title: 'Splitting rule of Profiler Pane'
+                type: 'string'
+                enum: ['no split', 'left', 'up', 'right', 'down']
+                default: 'right'
+                radio: true
+                order: 2
+          linter:
+            title: 'Linter'
+            type: 'object'
+            order: 8
+            collapsed: true
+            properties:
+              defaultLocation:
+                title: 'Default location of Linter Pane'
+                type: 'string'
+                enum: ['center', 'left', 'bottom', 'right']
+                default: 'bottom'
+                radio: true
+                order: 1
+              split:
+                title: 'Splitting rule of Linter Pane'
+                type: 'string'
+                enum: ['no split', 'left', 'up', 'right', 'down']
+                default: 'no split'
+                radio: true
+                order: 2
+          defaultPanes:
+            title: 'Default Panes'
+            description: 'Specify panes that are opened by `Julia-Client:Default-Layout`.
+                          Default location and splitting rule follow the settings above.'
+            type: 'object'
+            order: 9
+            properties:
+              console:
+                title: 'Console'
+                type: 'boolean'
+                default: true
+                order: 1
+              workspace:
+                title: 'Workspace'
+                type: 'boolean'
+                default: true
+                order: 2
+              documentation:
+                title: 'Documentation Browser'
+                type: 'boolean'
+                default: true
+                order: 3
+              plotPane:
+                title: 'Plot Pane'
+                type: 'boolean'
+                default: true
+                order: 4
+              debuggerPane:
+                title: 'Debugger Pane'
+                type: 'boolean'
+                default: false
+                order: 5
+              linter:
+                title: 'Linter'
+                type: 'boolean'
+                default: false
+                order: 6
+          openDefaultPanesOnStartUp:
+            title: 'Open Default Panes on Startup'
+            description: 'If enabled, opens panes specified above on startup.
+                          If there are the panes restored from a previous window state,
+                          the pane would still stay there.'
+            type: 'boolean'
+            default: true
+            order: 10
   consoleOptions:
     type: 'object'
     order: 4
@@ -180,7 +385,8 @@ config =
         title: 'Shell'
         type: 'string'
         default: terminal.defaultShell()
-        description: 'Shell. Defaults to `$SHELL`.'
+        description: 'The location of an executable shell. Set to `$SHELL` by default,
+                      and if `$SHELL` isn\'t set then fallback to `bash` or `powershell.exe` (on Windows).'
         order: 4
       terminal:
         title: 'Terminal'
@@ -205,6 +411,7 @@ config =
         type: 'string'
         enum: ['block', 'underline', 'bar']
         default: 'block'
+        radio: true
         order: 8
       cursorBlink:
         title: 'Cursor Blink'
@@ -239,7 +446,7 @@ config =
         order: 3
       agentAuth:
         title: 'Use SSH agent'
-        description: 'Requires `$SSH_AUTH_SOCKET` to be set. Defaults to putty\'s pageant on Windows'
+        description: 'Requires `$SSH_AUTH_SOCKET` to be set. Defaults to putty\'s pageant on Windows.'
         type: 'boolean'
         default: true
         order: 4
@@ -255,7 +462,8 @@ config =
     order: 99
 
 if process.platform != 'darwin'
-  config.consoleOptions.properties.whitelistedKeybindingsREPL.default = ['Ctrl-C', 'Ctrl-J', 'Ctrl-K', 'Ctrl-E', 'Ctrl-V', 'Ctrl-M']
+  config.consoleOptions.properties.whitelistedKeybindingsREPL.default =
+    ['Ctrl-C', 'Ctrl-J', 'Ctrl-K', 'Ctrl-E', 'Ctrl-V', 'Ctrl-M']
 
 if process.platform == 'darwin'
   config.consoleOptions.properties.macOptionIsMeta =
@@ -265,12 +473,11 @@ if process.platform == 'darwin'
     order: 5.5
 
 if process.platform == 'win32'
-  config.enablePowershellWrapper =
+  config.juliaOptions.properties.enablePowershellWrapper =
     title: 'Enable Powershell Wrapper'
     type: 'boolean'
     default: true
-    description: 'Use a powershell wrapper to spawn Julia.
-                  Necessary to enable interrupts.'
-    order: 2.5
+    description: 'If enabled, use a Powershell wrapper to spawn Julia. Necessary to enable interrupts.'
+    order: 11
 
 module.exports = config

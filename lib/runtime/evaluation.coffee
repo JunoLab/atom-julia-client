@@ -111,8 +111,8 @@ module.exports =
           highlight: true
         d.view.classList.add 'julia'
       else
-        docpane.pane.ensureVisible()
-        docpane.pane.showDocument(v, [])
+        docpane.ensureVisible()
+        docpane.showDocument(v, [])
 
   showError: (r, lines) ->
     @errorLines?.lights.destroy()

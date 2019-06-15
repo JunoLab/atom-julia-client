@@ -29,10 +29,10 @@ module.exports =
           boot()
           juno.runtime.evaluation.evalAll()
       'julia-client:run-weave-chunks': (event) =>
-          cancelComplete event
-          @withInk ->
-            boot()
-            juno.runtime.evaluation.evalAllWeaveChunks()
+        cancelComplete event
+        @withInk ->
+          boot()
+          juno.runtime.evaluation.evalAllWeaveChunks()
       'julia-client:run-cell': =>
         @withInk ->
           boot()
@@ -88,6 +88,8 @@ module.exports =
       'julia-client:connect-terminal': -> disrequireClient -> juno.connection.terminal.connectedRepl()
       'julia-client:open-plot-pane': => @withInk -> juno.runtime.plots.open()
       'julia-client:open-workspace': => @withInk -> juno.runtime.workspace.open()
+      'julia-client:default-layout': -> juno.ui.layout.defaultLayout()
+      'julia-client:reset-layout-settings': -> juno.ui.layout.resetLayoutSettings()
       'julia-client:settings': -> atom.workspace.open('atom://config/packages/julia-client')
       'julia-debug:toggle-breakpoint': => juno.runtime.debugger.togglebp()
       'julia-debug:toggle-conditional-breakpoint': => juno.runtime.debugger.togglebp(true)
@@ -99,14 +101,13 @@ module.exports =
       'julia-debug:stop-debugging': => juno.runtime.debugger.stop()
       'julia-debug:finish-function': => juno.runtime.debugger.finish()
       'julia-debug:continue': => juno.runtime.debugger.continueForward()
-      'julia-debug:open-debugger-pane': => juno.runtime.debugger.openPane()
+      'julia-debug:open-debugger-pane': => juno.runtime.debugger.open()
 
       'julia:open-julia-startup-file': -> atom.workspace.open(juno.misc.paths.home('.julia', 'config', 'startup.jl'))
       'julia:open-juno-startup-file': -> atom.workspace.open(juno.misc.paths.home('.julia', 'config', 'juno_startup.jl'))
       'julia:open-julia-home': -> shell.openItem juno.misc.paths.juliaHome()
       'julia:open-package-in-new-window': -> requireClient 'get packages', -> juno.runtime.packages.openPackage()
       'julia:open-package-as-project-folder': -> requireClient 'get packages', -> juno.runtime.packages.openPackage(false)
-      'julia:standard-layout': -> juno.ui.layout.standard()
       'julia:get-help': -> shell.openExternal 'http://discourse.julialang.org'
 
       'julia-client:work-in-file-folder': ->
