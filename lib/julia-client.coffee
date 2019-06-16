@@ -25,7 +25,7 @@ module.exports = JuliaClient =
         @ui.layout.queryDefaultLayout()
       else
         if atom.config.get('julia-client.uiOptions.layouts.openDefaultPanesOnStartUp')
-          setTimeout (=> @ui.layout.defaultLayout()), 150
+          setTimeout (=> @ui.layout.restoreDefaultLayout()), 150
 
   requireInk: (fn) ->
     if atom.packages.isPackageLoaded "ink" then fn()
