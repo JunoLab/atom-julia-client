@@ -6,18 +6,22 @@ if process.platform is 'darwin'
 
 basicSetup = ->
   jasmine.attachToDOM atom.views.getView atom.workspace
+  runs ->
+    atom.config.set 'julia-client',
+      juliaPath: 'julia'
+      juliaOptions:
+        bootMode: 'Basic'
+        optimisationLevel: 2
+        deprecationWarnings: false
+      uiOptions:
+        layouts:
+          openDefaultPanesOnStartUp: false
+      consoleOptions:
+        rendererType: true
+      firstBoot: false
   waitsForPromise -> atom.packages.activatePackage 'language-julia'
   waitsForPromise -> atom.packages.activatePackage 'ink'
   waitsForPromise -> atom.packages.activatePackage 'julia-client'
-  runs ->
-    atom.config.set 'julia-client.juliaPath', 'julia'
-    atom.config.set 'julia-client.juliaOptions',
-      bootMode: 'Basic'
-      optimisationLevel: 2
-      deprecationWarnings: false
-      precompiled: true
-      consoleOptions:
-        rendererType: true
 
 cyclerSetup = ->
   basicSetup()
