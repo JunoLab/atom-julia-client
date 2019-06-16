@@ -24,16 +24,11 @@ module.exports =
           @withInk ->
             boot()
             juno.runtime.evaluation.eval(move: true)
-        'julia-client:run-file': (event) =>
+        'julia-client:run-all': (event) =>
           cancelComplete event
           @withInk ->
             boot()
             juno.runtime.evaluation.evalAll()
-        'julia-client:run-weave-chunks': (event) =>
-          cancelComplete event
-          @withInk ->
-            boot()
-            juno.runtime.evaluation.evalAllWeaveChunks()
         'julia-client:run-cell': =>
           @withInk ->
             boot()

@@ -38,7 +38,7 @@ module.exports =
       {type: 'separator'}
 
       {label: 'Run Block', command: 'julia-client:run-block'}
-      {label: 'Run File', command: 'julia-client:run-file'}
+      {label: 'Run All', command: 'julia-client:run-all'}
       {label: 'Open Console', command: 'julia-client:open-console'}
       {label: 'Clear Console', command: 'julia-client:clear-console'}
 

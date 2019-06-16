@@ -65,26 +65,19 @@ module.exports =
             result
 
   evalAll: ->
-    {editor, edpath} = @_currentContext()
-    atom.commands.dispatch atom.views.getView(editor), 'inline-results:clear-all'
-    evalall({
-              path: edpath
-              module: editor.juliaModule
-              code: editor.getText()
-            }).then (result) ->
-        notifications.show "Evaluation Finished"
-        workspace.update()
-
-  evalAllWeaveChunks: ->
     {editor, mod, edpath} = @_currentContext()
     atom.commands.dispatch atom.views.getView(editor), 'inline-results:clear-all'
+    [scope] = editor.getRootScopeDescriptor().getScopesArray()
+    weaveScopes = ['source.weave.md', 'source.weave.latex']
+    module = if weaveScopes.includes scope then mod else editor.juliaModule
+    code = if weaveScopes.includes scope then weave.getCode editor else editor.getText()
     evalall({
-              path: edpath
-              module: mod
-              code: weave.getCode(editor)
-            }).then (result) ->
-        notifications.show "Evaluation Finished"
-        workspace.update()
+      path: edpath
+      module: module
+      code: code
+    }).then (result) ->
+      notifications.show "Evaluation Finished"
+      workspace.update()
 
   provideHyperclick: () ->
     {
