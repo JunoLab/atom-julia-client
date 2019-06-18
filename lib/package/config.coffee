@@ -318,8 +318,8 @@ config =
                 order: 2
           defaultPanes:
             title: 'Default Panes'
-            description: 'Specify panes that are opened by `Julia-Client:Default-Layout`.
-                          Default location and splitting rule follow the settings above.'
+            description: 'Specify panes that are opened by `Julia-Client:Restore-Default-Layout`.
+                          The location and splitting rule of each pane follow the settings above.'
             type: 'object'
             order: 9
             properties:
