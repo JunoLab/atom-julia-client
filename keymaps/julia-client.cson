@@ -7,7 +7,7 @@
 '.platform-darwin .item-views > atom-text-editor[data-grammar="source julia"]':
   'cmd-enter': 'julia-client:run-block'
   'shift-enter': 'julia-client:run-and-move'
-  'cmd-shift-enter': 'julia-client:run-file'
+  'cmd-shift-enter': 'julia-client:run-all'
   'alt-enter': 'julia-client:run-cell'
   'alt-shift-enter': 'julia-client:run-cell-and-move'
   'alt-down': 'julia-client:next-cell'
@@ -48,7 +48,7 @@
  .platform-linux .item-views > atom-text-editor[data-grammar="source julia"]':
   'ctrl-enter': 'julia-client:run-block'
   'shift-enter': 'julia-client:run-and-move'
-  'ctrl-shift-enter': 'julia-client:run-file'
+  'ctrl-shift-enter': 'julia-client:run-all'
   'alt-enter': 'julia-client:run-cell'
   'alt-shift-enter': 'julia-client:run-cell-and-move'
   'alt-down': 'julia-client:next-cell'

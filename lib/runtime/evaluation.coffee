@@ -12,14 +12,21 @@ modules = require './modules'
     client.import rpc: ['eval', 'evalall', 'evalrepl', 'evalshow'], msg: ['cd', 'clearLazy']
 
 module.exports =
-  currentContext: ->
+  _currentContext: ->
     editor = atom.workspace.getActiveTextEditor()
     mod = modules.current() ? 'Main'
     edpath = client.editorPath(editor) || 'untitled-' + editor.getBuffer().id
     {editor, mod, edpath}
 
+  _showError: (r, lines) ->
+    @errorLines?.lights.destroy()
+    lights = @ink.highlights.errorLines (file: file, line: line-1 for {file, line} in lines)
+    @errorLines = {r, lights}
+    r.onDidDestroy =>
+      if @errorLines?.r == r then @errorLines.lights.destroy()
+
   eval: ({move, cell}={}) ->
-    {editor, mod, edpath} = @currentContext()
+    {editor, mod, edpath} = @_currentContext()
     selector = if cell? then cells else blocks
     Promise.all selector.get(editor).map ({range, line, text, selection}) =>
       selector.moveNext editor, selection, range if move
@@ -51,36 +58,31 @@ module.exports =
               editor.onDidDestroy client.withCurrent -> clearLazy id
             r.setContent views.render(view, {registerLazy}), {error}
             if error and result.highlights?
-              @showError r, result.highlights
+              @_showError r, result.highlights
             atom.beep() if error
             notifications.show "Evaluation Finished"
             workspace.update()
             result
 
   evalAll: ->
-    {editor, edpath} = @currentContext()
+    {editor, mod, edpath} = @_currentContext()
     atom.commands.dispatch atom.views.getView(editor), 'inline-results:clear-all'
+    [scope] = editor.getRootScopeDescriptor().getScopesArray()
+    weaveScopes = ['source.weave.md', 'source.weave.latex']
+    module = if weaveScopes.includes scope then mod else editor.juliaModule
+    code = if weaveScopes.includes scope then weave.getCode editor else editor.getText()
     evalall({
-              path: edpath
-              module: editor.juliaModule
-              code: editor.getText()
-            }).then (result) ->
-        notifications.show "Evaluation Finished"
-        workspace.update()
-
-  evalAllWeaveChunks: ->
-    {editor, mod, edpath} = @currentContext()
-    atom.commands.dispatch atom.views.getView(editor), 'inline-results:clear-all'
-    evalall({
-              path: edpath
-              module: mod
-              code: weave.getCode(editor)
-            }).then (result) ->
-        notifications.show "Evaluation Finished"
-        workspace.update()
+      path: edpath
+      module: module
+      code: code
+    }).then (result) ->
+      notifications.show "Evaluation Finished"
+      workspace.update()
 
   provideHyperclick: () ->
     {
+      providerName: 'julia-client-hyperclick-provider'
+      grammarScopes: atom.config.get('julia-client.juliaSyntaxScopes')
       wordRegExp:  new RegExp(words.wordRegex, "g")
       getSuggestionForWord: (editor, text, range) =>
         require('../connection').boot()
@@ -91,14 +93,14 @@ module.exports =
     }
 
   gotoSymbol: (word, range) ->
-    {editor, mod, edpath} = @currentContext()
+    {editor, mod, edpath} = @_currentContext()
     {word, range} = words.getWord(editor) unless word? and range?
     if word.length == 0 || !isNaN(word) then return
     client.import("methods")({word: word, mod: mod}).then (symbols) =>
       @ink.goto.goto symbols unless symbols.error
 
   toggleDocs: (word, range) ->
-    {editor, mod, edpath} = @currentContext()
+    {editor, mod, edpath} = @_currentContext()
     {word, range} = words.getWord(editor) unless word? and range?
     if word.length == 0 || !isNaN(word) then return
     client.import("docs")({word: word, mod: mod}).then (result) =>
@@ -114,14 +116,12 @@ module.exports =
         docpane.ensureVisible()
         docpane.showDocument(v, [])
 
-  showError: (r, lines) ->
-    @errorLines?.lights.destroy()
-    lights = @ink.highlights.errorLines (file: file, line: line-1 for {file, line} in lines)
-    @errorLines = {r, lights}
-    r.onDidDestroy =>
-      if @errorLines?.r == r then @errorLines.lights.destroy()
-
   # Working Directory
+
+  _cd: (dir) ->
+    if atom.config.get('julia-client.juliaOptions.persistWorkingDir')
+      atom.config.set('julia-client.juliaOptions.workingDir', dir)
+    cd(dir)
 
   cdHere: ->
     file = client.editorPath(atom.workspace.getActiveTextEditor())
@@ -146,8 +146,3 @@ module.exports =
     opts = properties: ['openDirectory']
     dialog.showOpenDialog BrowserWindow.getFocusedWindow(), opts, (path) =>
       if path? then @_cd path[0]
-
-  _cd: (dir) ->
-    if atom.config.get('julia-client.juliaOptions.persistWorkingDir')
-      atom.config.set('julia-client.juliaOptions.workingDir', dir)
-    cd(dir)

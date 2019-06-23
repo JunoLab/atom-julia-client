@@ -10,12 +10,12 @@ basicSetup = ->
   waitsForPromise -> atom.packages.activatePackage 'ink'
   waitsForPromise -> atom.packages.activatePackage 'julia-client'
   runs ->
-    atom.config.set 'julia-client.juliaPath', 'julia'
-    atom.config.set 'julia-client.juliaOptions',
-      bootMode: 'Basic'
-      optimisationLevel: 2
-      deprecationWarnings: false
-      precompiled: true
+    atom.config.set 'julia-client',
+      juliaPath: 'julia'
+      juliaOptions:
+        bootMode: 'Basic'
+        optimisationLevel: 2
+        deprecationWarnings: false
       consoleOptions:
         rendererType: true
 

@@ -74,8 +74,8 @@ module.exports =
 
     @bar.addButton
       icon: 'play'
-      callback: 'julia-client:run-file'
-      tooltip: 'Run File'
+      callback: 'julia-client:run-all'
+      tooltip: 'Run All'
       iconset: 'ion'
 
     @bar.addButton

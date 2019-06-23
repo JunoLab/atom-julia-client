@@ -1,5 +1,5 @@
-shell =                 require 'shell'
-cells =                 require '../misc/cells'
+shell                 = require 'shell'
+cells                 = require '../misc/cells'
 {CompositeDisposable} = require 'atom'
 
 module.exports =
@@ -13,63 +13,59 @@ module.exports =
 
     @subs = new CompositeDisposable()
 
-    @subs.add atom.commands.add '.item-views > atom-text-editor',
-      'julia-client:run-block': (event) =>
-        cancelComplete event
-        @withInk ->
-          boot()
-          juno.runtime.evaluation.eval()
-      'julia-client:run-and-move': (event) =>
-        @withInk ->
-          boot()
-          juno.runtime.evaluation.eval(move: true)
-      'julia-client:run-file': (event) =>
-        cancelComplete event
-        @withInk ->
-          boot()
-          juno.runtime.evaluation.evalAll()
-      'julia-client:run-weave-chunks': (event) =>
-        cancelComplete event
-        @withInk ->
-          boot()
-          juno.runtime.evaluation.evalAllWeaveChunks()
-      'julia-client:run-cell': =>
-        @withInk ->
-          boot()
-          juno.runtime.evaluation.eval(cell: true)
-      'julia-client:run-cell-and-move': =>
-        @withInk ->
-          boot()
-          juno.runtime.evaluation.eval(cell: true, move: true)
-      'julia-client:next-cell': =>
-        cells.moveNext()
-      'julia-client:prev-cell': =>
-        cells.movePrev()
-      'julia-client:goto-symbol': =>
-        @withInk ->
-          boot()
-          juno.runtime.evaluation.gotoSymbol()
-      'julia-client:show-documentation': =>
-        @withInk ->
-          boot()
-          juno.runtime.evaluation.toggleDocs()
-      'julia-client:reset-workspace': =>
-        requireClient 'reset the workspace', ->
-          editor = atom.workspace.getActiveTextEditor()
-          atom.commands.dispatch atom.views.getView(editor), 'inline-results:clear-all'
-          juno.connection.client.import('clear-workspace')()
-      'julia:select-block': =>
-        juno.misc.blocks.select()
-      'julia-client:send-to-stdin': (e) =>
-        requireClient ->
-          ed = e.currentTarget.getModel()
-          done = false
-          for s in ed.getSelections()
-            continue unless s.getText()
-            done = true
-            juno.connection.client.stdin s.getText()
-          juno.connection.client.stdin ed.getText() unless done
-
+    for scope in atom.config.get('julia-client.juliaSyntaxScopes')
+      @subs.add atom.commands.add ".item-views > atom-text-editor[data-grammar='#{scope.replace /\./g, ' '}']",
+        'julia-client:run-block': (event) =>
+          cancelComplete event
+          @withInk ->
+            boot()
+            juno.runtime.evaluation.eval()
+        'julia-client:run-and-move': (event) =>
+          @withInk ->
+            boot()
+            juno.runtime.evaluation.eval(move: true)
+        'julia-client:run-all': (event) =>
+          cancelComplete event
+          @withInk ->
+            boot()
+            juno.runtime.evaluation.evalAll()
+        'julia-client:run-cell': =>
+          @withInk ->
+            boot()
+            juno.runtime.evaluation.eval(cell: true)
+        'julia-client:run-cell-and-move': =>
+          @withInk ->
+            boot()
+            juno.runtime.evaluation.eval(cell: true, move: true)
+        'julia-client:next-cell': =>
+          cells.moveNext()
+        'julia-client:prev-cell': =>
+          cells.movePrev()
+        'julia-client:goto-symbol': =>
+          @withInk ->
+            boot()
+            juno.runtime.evaluation.gotoSymbol()
+        'julia-client:show-documentation': =>
+          @withInk ->
+            boot()
+            juno.runtime.evaluation.toggleDocs()
+        # @NOTE: `'clear-workspace'` is now not handled by Atom.jl
+        # 'julia-client:reset-workspace': =>
+        #   requireClient 'reset the workspace', ->
+        #     editor = atom.workspace.getActiveTextEditor()
+        #     atom.commands.dispatch atom.views.getView(editor), 'inline-results:clear-all'
+        #     juno.connection.client.import('clear-workspace')()
+        'julia:select-block': =>
+          juno.misc.blocks.select()
+        'julia-client:send-to-stdin': (e) =>
+          requireClient ->
+            ed = e.currentTarget.getModel()
+            done = false
+            for s in ed.getSelections()
+              continue unless s.getText()
+              done = true
+              juno.connection.client.stdin s.getText()
+            juno.connection.client.stdin ed.getText() unless done
 
     @subs.add atom.commands.add '.item-views > atom-text-editor[data-grammar="source julia"],
                                  .julia-console.julia, ink-terminal, .ink-workspace',
