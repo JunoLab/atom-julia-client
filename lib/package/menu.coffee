@@ -23,6 +23,7 @@ module.exports =
     label: 'Julia'
     submenu: [
       {label: 'Start Julia', command: 'julia-client:start-julia'}
+      {label: 'Start Remote Julia Process', command: 'julia-client:start-remote-julia-process'}
       {label: 'Interrupt Julia', command: 'julia-client:interrupt-julia'}
       {label: 'Stop Julia', command: 'julia-client:kill-julia'}
       {label: 'Open Console', command: 'julia-client:open-console'}
