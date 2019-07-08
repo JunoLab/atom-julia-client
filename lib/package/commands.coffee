@@ -13,8 +13,9 @@ module.exports =
 
     @subs = new CompositeDisposable()
 
+    # atom-text-editors with Julia scopes
     for scope in atom.config.get('julia-client.juliaSyntaxScopes')
-      @subs.add atom.commands.add ".item-views > atom-text-editor[data-grammar='#{scope.replace /\./g, ' '}']",
+      @subs.add atom.commands.add "atom-text-editor[data-grammar='#{scope.replace /\./g, ' '}']",
         'julia-client:run-block': (event) =>
           cancelComplete event
           @withInk ->
@@ -37,6 +38,8 @@ module.exports =
           @withInk ->
             boot()
             juno.runtime.evaluation.eval(cell: true, move: true)
+        'julia-client:select-block': =>
+          juno.misc.blocks.select()
         'julia-client:next-cell': =>
           cells.moveNext()
         'julia-client:prev-cell': =>
@@ -55,8 +58,6 @@ module.exports =
         #     editor = atom.workspace.getActiveTextEditor()
         #     atom.commands.dispatch atom.views.getView(editor), 'inline-results:clear-all'
         #     juno.connection.client.import('clear-workspace')()
-        'julia:select-block': =>
-          juno.misc.blocks.select()
         'julia-client:send-to-stdin': (e) =>
           requireClient ->
             ed = e.currentTarget.getModel()
@@ -67,13 +68,18 @@ module.exports =
               juno.connection.client.stdin s.getText()
             juno.connection.client.stdin ed.getText() unless done
 
-    @subs.add atom.commands.add '.item-views > atom-text-editor[data-grammar="source julia"],
-                                 .julia-console.julia, ink-terminal, .ink-workspace',
+    # Only Julia atom-text-editor
     @subs.add atom.commands.add 'atom-text-editor[data-grammar="source julia"]',
       'julia-client:format-code': =>
         requireClient 'format code', => juno.runtime.formatter.formatCode()
+
+    # Where "module" matters
+    @subs.add atom.commands.add 'atom-text-editor[data-grammar="source julia"],
+                                 .julia-terminal,
+                                 .ink-workspace',
       'julia-client:set-working-module': -> juno.runtime.modules.chooseModule()
 
+    # atom-work-space
     @subs.add atom.commands.add 'atom-workspace',
       'julia-client:open-a-repl': -> juno.connection.terminal.repl()
       'julia-client:start-julia': -> disrequireClient 'boot Julia', -> boot()
