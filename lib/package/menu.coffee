@@ -23,8 +23,11 @@ module.exports =
     label: 'Julia'
     submenu: [
       {label: 'Start Julia', command: 'julia-client:start-julia'}
+      {label: 'Interrupt Julia', command: 'julia-client:interrupt-julia'}
       {label: 'Stop Julia', command: 'julia-client:kill-julia'}
-      {label: 'Open Terminal', command: 'julia-client:open-a-repl'}
+      {label: 'Open Console', command: 'julia-client:open-console'}
+      {label: 'Clear Console', command: 'julia-client:clear-console'}
+      {label: 'Open REPL', command: 'julia-client:open-a-repl'}
       {
         label: 'Working Directory'
         submenu: [
@@ -34,20 +37,18 @@ module.exports =
           {label: 'Select...', command: 'julia-client:select-working-folder'}
         ]
       }
+      {
+        label: 'Working Module'
+        submenu: [
+          {label: 'Select...', command: 'julia-client:select-working-module'}
+        ]
+      }
 
       {type: 'separator'}
 
       {label: 'Run Block', command: 'julia-client:run-block'}
       {label: 'Run All', command: 'julia-client:run-all'}
-      {label: 'Open Console', command: 'julia-client:open-console'}
-      {label: 'Clear Console', command: 'julia-client:clear-console'}
-
-      {type: 'separator'}
-
-      {label: 'Open Julia Startup File', command: 'julia:open-julia-startup-file'}
-      {label: 'Open Juno Startup File', command: 'julia:open-juno-startup-file'}
-      {label: 'Open Julia Home', command: 'julia:open-julia-home'}
-      {label: 'Open Package in New Window...', command: 'julia:open-package-in-new-window'}
+      {label: 'Format Code', command: 'julia-client:format-code'}
 
       {type: 'separator'}
 
@@ -55,6 +56,13 @@ module.exports =
       {label: 'Open Documentation Browser', command: 'julia-client:open-documentation-browser'}
       {label: 'Open Plot Pane', command: 'julia-client:open-plot-pane'}
       {label: 'Open Debugger Pane', command: 'julia-client:open-debugger-pane'}
+
+      {type: 'separator'}
+
+      {label: 'Open Julia Startup File', command: 'julia:open-julia-startup-file'}
+      {label: 'Open Juno Startup File', command: 'julia:open-juno-startup-file'}
+      {label: 'Open Julia Home', command: 'julia:open-julia-home'}
+      {label: 'Open Package in New Window...', command: 'julia:open-package-in-new-window'}
 
       {type: 'separator'}
 
