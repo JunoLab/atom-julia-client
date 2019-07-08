@@ -11,6 +11,7 @@ module.exports =
   profiler:    require './runtime/profiler'
   linter:      require './runtime/linter'
   packages:    require './runtime/packages'
+  formatter:   require './runtime/formatter'
 
   activate: ->
     @modules.activate()
