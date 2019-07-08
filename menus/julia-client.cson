@@ -9,6 +9,7 @@
         {label: 'Select Block', command: 'julia-client:select-block'}
         {label: 'Go to Definition', command: 'julia-client:goto-symbol'}
         {label: 'Show Documentation', command: 'julia-client:show-documentation'}
+        {label: 'Format Code', command: 'julia-client:format-code'}
         {label: 'Toggle Breakpoint', command: 'julia-debug:toggle-breakpoint'}
         {label: 'Toggle Conditional Breakpoint', command: 'julia-debug:toggle-conditional-breakpoint'}
       ]

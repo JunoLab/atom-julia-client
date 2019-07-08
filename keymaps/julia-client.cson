@@ -14,6 +14,7 @@
   'alt-up': 'julia-client:prev-cell'
   'cmd-j cmd-d': 'julia-client:show-documentation'
   'cmd-shift-a': 'julia:select-block'
+  'cmd-j cmd-f': 'julia-client:format-code'
   'ctrl-x': 'julia-debug:toggle-breakpoint'
   'cmd-j cmd-g': 'julia-client:goto-symbol'
 
@@ -54,6 +55,7 @@
   'alt-down': 'julia-client:next-cell'
   'alt-up': 'julia-client:prev-cell'
   'ctrl-j ctrl-m': 'julia-client:set-working-module'
+  'ctrl-j ctrl-f': 'julia-client:format-code'
   'ctrl-shift-c': 'julia-client:interrupt-julia'
   'ctrl-j ctrl-d': 'julia-client:show-documentation'
   'alt-x': 'julia-debug:toggle-breakpoint'
