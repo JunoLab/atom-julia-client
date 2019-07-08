@@ -183,7 +183,7 @@ module.exports =
   notConnectedError: (action = 'do that') ->
     if not @isActive()
       atom.notifications.addError "Can't #{action} without a Julia client running.",
-        description: "Start Julia using Packages → Julia → Start Julia."
+        description: "Start Julia using **`Julia-Client: Start-Julia`** command."
       true
     else
       false
