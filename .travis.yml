@@ -16,8 +16,6 @@ env:
 os:
   - linux
 
-dist: trusty
-
 matrix:
   include:
     # Sanity check for OS X
@@ -35,17 +33,21 @@ matrix:
 script:
   - julia ci/packages.jl
   - curl -s -O https://raw.githubusercontent.com/atom/ci/master/build-package.sh
-  - bash build-package.sh
+  - chmod u+x build-package.sh
+  - ./build-package.sh
 
+dist: xenial
 addons:
   apt:
     sources:
     - ubuntu-toolchain-r-test
     packages:
     - g++-6
+    - build-essential
     - fakeroot
     - git
     - libsecret-1-dev
+    - libgconf2-4 # @TODO: Remove once Atom v1.39 comes to be stable
 
 notifications:
-    email: false
+  email: false
