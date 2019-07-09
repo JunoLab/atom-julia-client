@@ -114,6 +114,9 @@ module.exports =
       'julia:open-package-in-new-window': -> requireClient 'get packages', -> juno.runtime.packages.openPackage()
       'julia:open-package-as-project-folder': -> requireClient 'get packages', -> juno.runtime.packages.openPackage(false)
       'julia:get-help': -> shell.openExternal 'http://discourse.julialang.org'
+      'julia-client:debug-info': =>
+        boot()
+        juno.runtime.debuginfo()
 
       'julia-client:work-in-file-folder': ->
         requireClient 'change working folder', ->

@@ -67,6 +67,7 @@ module.exports =
 
       {type: 'separator'}
 
+      {label: 'Debug Information', command: 'julia-client:debug-info'}
       {label: 'Help...', command: 'julia:get-help'}
       {label: 'Settings...', command: 'julia-client:settings'}
     ]

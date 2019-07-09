@@ -33,7 +33,7 @@ module.exports =
     @bar.addButton
       icon: 'flame'
       tooltip: 'Start Local Julia Process'
-      callback: 'julia-client:start-remote-julia-process'
+      callback: 'julia-client:start-julia'
 
     @bar.addButton
       icon: 'globe'
