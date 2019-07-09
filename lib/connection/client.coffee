@@ -175,7 +175,7 @@ module.exports =
   connectedError: (action = 'do that') ->
     if @isActive()
       atom.notifications.addError "Can't #{action} with a Julia client running.",
-        description: "Stop the current client with Packages → Julia → Stop Julia."
+        description: "Stop the current client with `Packages -> Julia -> Stop Julia`."
       true
     else
       false
@@ -183,7 +183,7 @@ module.exports =
   notConnectedError: (action = 'do that') ->
     if not @isActive()
       atom.notifications.addError "Can't #{action} without a Julia client running.",
-        description: "Start Julia using Packages → Julia → Start Julia."
+        description: "Start a client with `Packages -> Julia -> Start Julia`."
       true
     else
       false

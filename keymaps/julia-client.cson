@@ -1,51 +1,60 @@
-# It's best not to override default Atom keybindings if possible, and then only
-# in julia-scoped places (e.g. Julia-syntax buffer, console)
+###
+@NOTE
+It's best not to override default Atom keybindings if possible, and then
+register only in Julia-scoped places (e.g. Julia-syntax buffer, console)
+Any global commands should either be non-default or, ideally, prefixed with `C-J`.
+###
 
-# Any global commands should either be non-default or, ideally, prefixed with
-# `C-J`.
+## Common
+# Debug operations
+'atom-text-editor[data-grammar="source julia"]':
+  'f10': 'julia-debug:step-to-next-expression'
+  'f11': 'julia-debug:step-into-function'
+  'shift-f11': 'julia-debug:finish-function'
 
-'.platform-darwin .item-views > atom-text-editor[data-grammar="source julia"]':
+
+## macOS
+# Julia atom-text-editor
+'.platform-darwin atom-text-editor[data-grammar="source julia"]':
   'cmd-enter': 'julia-client:run-block'
   'shift-enter': 'julia-client:run-and-move'
   'cmd-shift-enter': 'julia-client:run-all'
   'alt-enter': 'julia-client:run-cell'
   'alt-shift-enter': 'julia-client:run-cell-and-move'
+  'cmd-shift-a': 'julia-client:select-block'
   'alt-down': 'julia-client:next-cell'
   'alt-up': 'julia-client:prev-cell'
-  'cmd-j cmd-d': 'julia-client:show-documentation'
-  'cmd-shift-a': 'julia:select-block'
-  'ctrl-x': 'julia-debug:toggle-breakpoint'
   'cmd-j cmd-g': 'julia-client:goto-symbol'
+  'cmd-j cmd-d': 'julia-client:show-documentation'
+  'cmd-j cmd-m': 'julia-client:set-working-module'
+  'cmd-j cmd-f': 'julia-client:format-code'
+  'ctrl-x': 'julia-debug:toggle-breakpoint'
+  'ctrl-shift-x': 'julia-debug:toggle-conditional-breakpoint'
 
-'.platform-darwin .item-views > atom-text-editor[data-grammar="source julia"],
- .platform-darwin .julia-console.julia,
- .platform-darwin .julia-console.julia atom-text-editor,
- .platform-darwin .julia-terminal':
+# Julia REPL
+'.platform-darwin .julia-terminal':
   'ctrl-c': 'julia-client:interrupt-julia'
   'cmd-j cmd-m': 'julia-client:set-working-module'
 
-'.platform-darwin .item-views > atom-text-editor[data-grammar="source julia"].debug,
- .platform-darwin .julia-console.julia.debug,
- .platform-darwin .julia-console.julia.debug atom-text-editor':
-  'ctrl-l': 'julia-debug:step-to-next-line'
-  'ctrl-m': 'julia-debug:step-to-next-expression'
-  'ctrl-f': 'julia-debug:finish-function'
-  'ctrl-s': 'julia-debug:step-into-function'
-
+# atom-workspace
 '.platform-darwin atom-workspace':
   'cmd-j cmd-r': 'julia-client:open-a-repl'
-  'cmd-j cmd-s': 'julia-client:start-julia'
   'cmd-j cmd-o': 'julia-client:open-console'
-  'cmd-j cmd-p': 'julia-client:open-plot-pane'
   'cmd-j cmd-c': 'julia-client:clear-console'
+  'cmd-j cmd-s': 'julia-client:start-julia'
   'cmd-j cmd-k': 'julia-client:kill-julia'
+  'cmd-j cmd-p': 'julia-client:open-plot-pane'
+  'cmd-j cmd-w': 'julia-client:open-workspace'
   'cmd-j cmd-,': 'julia-client:settings'
   'cmd-j cmd-e': 'julia-client:focus-last-editor'
   'cmd-j cmd-t': 'julia-client:focus-last-terminal'
   'cmd-j cmd-b': 'julia-client:return-from-goto'
 
-'.platform-win32 .item-views > atom-text-editor[data-grammar="source julia"],
- .platform-linux .item-views > atom-text-editor[data-grammar="source julia"]':
+
+## Windows & Linux
+# Julia atom-text-editor
+'.platform-win32 atom-text-editor[data-grammar="source julia"],
+ .platform-linux atom-text-editor[data-grammar="source julia"]':
   'ctrl-enter': 'julia-client:run-block'
   'shift-enter': 'julia-client:run-and-move'
   'ctrl-shift-enter': 'julia-client:run-all'
@@ -53,49 +62,33 @@
   'alt-shift-enter': 'julia-client:run-cell-and-move'
   'alt-down': 'julia-client:next-cell'
   'alt-up': 'julia-client:prev-cell'
-  'ctrl-j ctrl-m': 'julia-client:set-working-module'
-  'ctrl-shift-c': 'julia-client:interrupt-julia'
-  'ctrl-j ctrl-d': 'julia-client:show-documentation'
-  'alt-x': 'julia-debug:toggle-breakpoint'
   'ctrl-j ctrl-g': 'julia-client:goto-symbol'
-
-'.platform-win32 .julia-console.julia,
- .platform-win32 .julia-console.julia atom-text-editor,
- .platform-linux .julia-console.julia,
- .platform-linux .julia-console.julia atom-text-editor':
-  'ctrl-shift-c': 'julia-client:interrupt-julia'
+  'ctrl-j ctrl-d': 'julia-client:show-documentation'
   'ctrl-j ctrl-m': 'julia-client:set-working-module'
+  'ctrl-j ctrl-f': 'julia-client:format-code'
+  'ctrl-shift-c': 'julia-client:interrupt-julia'
+  'alt-x': 'julia-debug:toggle-breakpoint'
+  'alt-shift-x': 'julia-debug:toggle-conditional-breakpoint'
 
-'.platform-win32 .julia-terminal, .platform-linux .julia-terminal':
+# Julia REPL
+'.platform-win32 .julia-terminal,
+ .platform-linux .julia-terminal':
   'ctrl-j ctrl-m': 'julia-client:set-working-module'
   'ctrl-c': 'julia-client:copy-or-interrupt'
   'ctrl-shift-c': 'julia-client:copy-or-interrupt'
   'ctrl-v': 'ink-terminal:paste'
 
+# atom-workspace
 '.platform-win32 atom-workspace,
  .platform-linux atom-workspace':
   'ctrl-j ctrl-r': 'julia-client:open-a-repl'
-  'ctrl-j ctrl-s': 'julia-client:start-julia'
   'ctrl-j ctrl-o': 'julia-client:open-console'
-  'ctrl-j ctrl-p': 'julia-client:open-plot-pane'
   'ctrl-j ctrl-c': 'julia-client:clear-console'
+  'ctrl-j ctrl-s': 'julia-client:start-julia'
   'ctrl-j ctrl-k': 'julia-client:kill-julia'
+  'ctrl-j ctrl-p': 'julia-client:open-plot-pane'
+  'ctrl-j ctrl-w': 'julia-client:open-workspace'
   'ctrl-j ctrl-,': 'julia-client:settings'
   'ctrl-j ctrl-e': 'julia-client:focus-last-editor'
   'ctrl-j ctrl-t': 'julia-client:focus-last-terminal'
   'ctrl-j ctrl-b': 'julia-client:return-from-goto'
-
-'.platform-win32 ink-console atom-text-editor:not([mini]),
- .platform-linux ink-console atom-text-editor:not([mini])':
-  'ctrl-enter': 'editor:newline'
-
-'.platform-darwin ink-console atom-text-editor:not([mini])':
-  'cmd-enter': 'editor:newline'
-
-'ink-console atom-text-editor:not([mini])':
-  'alt-enter': 'editor:newline'
-
-'atom-text-editor[data-grammar="source julia"]':
-  'f10': 'julia-debug:step-to-next-expression'
-  'f11': 'julia-debug:step-into-function'
-  'shift-f11': 'julia-debug:finish-function'
