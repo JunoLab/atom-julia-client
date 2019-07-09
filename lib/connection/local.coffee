@@ -98,6 +98,13 @@ module.exports =
     proc = check
       .then => @spawnJulia(path, args, provider)
       .then (proc) => if proc.ty? then @monitor2(proc) else @monitor(proc)
+
+    # set working directory here, so we queue this task before anything else
+    if provider is 'Remote'
+      ssh.withRemoteConfig((conf) -> junorc conf.remote).catch ->
+    else
+      paths.projectDir().then (dir) -> junorc dir
+
     proc
       .then (proc) =>
         Promise.all [proc, proc.socket]
@@ -106,11 +113,6 @@ module.exports =
       .catch (e) ->
         client.detach()
         console.error("Julia exited with #{e}.")
-      .then =>
-        if provider is 'Remote'
-          ssh.withRemoteConfig((conf) -> junorc conf.remote).catch ->
-        else
-          paths.projectDir().then (dir) -> junorc dir
     proc
 
   spawnJulia: (path, args, provider) ->
