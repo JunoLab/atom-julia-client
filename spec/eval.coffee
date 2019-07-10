@@ -10,8 +10,8 @@ module.exports = ->
   waitsForClient = -> waitsFor (done) -> client.onceDone done
 
   beforeEach ->
-    # waitsForPromise -> atom.workspace.open().then (ed) -> editor = ed
-    editor = atom.workspace.buildTextEditor()
+    waitsForPromise -> atom.workspace.open().then (ed) -> editor = ed
+    # editor = atom.workspace.buildTextEditor()
     runs ->
       editor.setGrammar(atom.grammars.grammarForScopeName('source.julia'))
 
