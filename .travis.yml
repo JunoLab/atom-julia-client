@@ -19,9 +19,9 @@ os:
 matrix:
   include:
     # Sanity check for OS X
-    - os: osx
-      julia: 1.1
-      env: ATOMJL=master
+    # - os: osx
+    #   julia: 1.1
+    #   env: ATOMJL=master
     # Sanity check for Atom Beta
     - os: linux
       julia: 1.1
