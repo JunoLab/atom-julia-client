@@ -356,8 +356,9 @@ config =
           openDefaultPanesOnStartUp:
             title: 'Open Default Panes on Startup'
             description: 'If enabled, opens panes specified above on startup.
-                          If there are the panes restored from a previous window state,
-                          the pane would still stay there.'
+                          Note a layout deserialized from a previous window state
+                          would be modified by that, i.e.: disable this if you want
+                          to keep the deserialized layout.'
             type: 'boolean'
             default: true
             order: 10
