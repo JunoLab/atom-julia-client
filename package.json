@@ -49,6 +49,11 @@
       "versions": {
         "0.1.0": "consumeGetServerName"
       }
+    },
+    "datatip": {
+      "versions": {
+        "0.1.0": "consumeDatatip"
+      }
     }
   },
   "providedServices": {

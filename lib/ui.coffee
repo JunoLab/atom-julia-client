@@ -32,3 +32,9 @@ module.exports =
     @docpane.activate(@ink)
     @progress.activate()
     @focusutils.activate(@ink)
+
+  consumeDatatip: (datatipService) ->
+    datatipProvider = require './ui/datatip-provider'
+    datatipDisposable = datatipService.addProvider(datatipProvider)
+    @subs.add(datatipDisposable)
+    datatipDisposable
