@@ -88,6 +88,7 @@ module.exports =
       'julia-client:interrupt-julia': => requireClient 'interrupt Julia', -> juno.connection.client.interrupt()
       'julia-client:disconnect-julia': => requireClient 'disconnect Julia', -> juno.connection.client.disconnect()
       # 'julia-client:reset-julia-server': -> juno.connection.local.server.reset() # server mode not functional
+      'julia-client:connect-platformio-terminal': -> disrequireClient -> juno.connection.terminal.runPlatformIOTerm()
       'julia-client:connect-external-process': -> disrequireClient -> juno.connection.messages.connectExternal()
       'julia-client:connect-terminal': -> disrequireClient -> juno.connection.terminal.connectedRepl()
       'julia-client:open-plot-pane': => @withInk -> juno.runtime.plots.open()
