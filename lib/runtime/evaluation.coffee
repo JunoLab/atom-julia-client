@@ -10,6 +10,7 @@ workspace = require './workspace'
 modules = require './modules'
 {eval: evaluate, evalall, evalrepl, evalshow, cd, clearLazy} =
     client.import rpc: ['eval', 'evalall', 'evalrepl', 'evalshow'], msg: ['cd', 'clearLazy']
+searchDoc = client.import('docs')
 
 module.exports =
   _currentContext: ->
@@ -105,7 +106,7 @@ module.exports =
     {editor, mod, edpath} = @_currentContext()
     {word, range} = words.getWord(editor) unless word? and range?
     if word.length == 0 || !isNaN(word) then return
-    client.import("docs")({word: word, mod: mod}).then (result) =>
+    searchDoc({word: word, mod: mod}).then (result) =>
       if result.error then return
       v = views.render result
       processLinks(v.getElementsByTagName('a'))

@@ -5,6 +5,7 @@ tcp = require './process/tcp'
 client = require './client'
 {paths} = require '../misc'
 
+disrequireClient = (a, f) -> client.disrequire a, f
 platformioTerm = null
 
 module.exports =
@@ -56,6 +57,8 @@ module.exports =
 
   consumeTerminal: (term) ->
     platformioTerm = term
+    atom.commands.add 'atom-workspace',
+      'julia-client:connect-platformio-terminal': -> disrequireClient -> juno.connection.terminal.runPlatformIOTerm()
 
   runPlatformIOTerm: ->
     @connectCommand().then (cmd) =>

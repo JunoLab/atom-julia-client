@@ -42,9 +42,7 @@ module.exports =
       p = @local.start(provider)
       if @ink?
         @ink.Opener.allowRemoteFiles(provider == 'Remote')
-      p.then =>
-        @booting = false
-      p.catch =>
+      p.finally =>
         @booting = false
       time "Julia Boot", @client.import('ping')().then =>
         metrics()
