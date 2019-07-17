@@ -32,12 +32,3 @@ module.exports =
     @docpane.activate(@ink)
     @progress.activate()
     @focusutils.activate(@ink)
-
-  consumeDatatip: (datatipService) ->
-    datatipProvider = require './ui/datatip-provider'
-    # @NOTE: Currently only the datatip service provided by Atom-IDE-UI can render code snippets correctly
-    if datatipService.constructor.name == 'DatatipManager'
-      datatipProvider.useAtomIDEUI = true
-    datatipDisposable = datatipService.addProvider(datatipProvider)
-    @subs.add(datatipDisposable)
-    datatipDisposable

@@ -38,3 +38,13 @@ module.exports =
   
   consumeStatusBar: (bar) ->
     @modules.consumeStatusBar bar
+
+  consumeDatatip: (datatipService) ->
+    datatipProvider = require './ui/datatip-provider'
+    # @NOTE: Check if the service is passed by Atom-IDE-UI's datatip service:
+    #          currently atom-ide-datatip can't render code snippets correctly.
+    if datatipService.constructor.name == 'DatatipManager'
+      datatipProvider.useAtomIDEUI = true
+    datatipDisposable = datatipService.addProvider(datatipProvider)
+    @subs.add(datatipDisposable)
+    datatipDisposable
