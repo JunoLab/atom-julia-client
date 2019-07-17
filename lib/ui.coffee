@@ -1,4 +1,4 @@
-{CompositeDisposable} = require 'atom'
+{CompositeDisposable, Disposable} = require 'atom'
 
 module.exports =
   notifications: require './ui/notifications'
@@ -21,9 +21,6 @@ module.exports =
 
   deactivate: ->
     @subs.dispose()
-    @docpane.deactivate()
-    @focusutils.deactivate()
-    @progress.clear()
 
   consumeInk: (@ink) ->
     @views.ink = @ink
@@ -32,3 +29,7 @@ module.exports =
     @docpane.activate(@ink)
     @progress.activate()
     @focusutils.activate(@ink)
+    @subs.add(new Disposable(=>
+      @docpane.deactivate()
+      @progress.deactivate()
+      @focusutils.deactivate()))
