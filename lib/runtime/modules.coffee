@@ -89,25 +89,32 @@ module.exports =
 
   updateForEditor: (editor) ->
     @setCurrent main: editor.juliaModule or 'Main', true
-    @getEditorModule editor
+    @setEditorModule editor
     @itemSubs.add editor.onDidChangeCursorPosition =>
-      @getEditorModuleLazy editor
+      @setEditorModuleLazy editor
 
-  getEditorModule: (ed) ->
+  getEditorModule: (ed, bufferPosition = null) ->
     return unless client.isActive()
-    sels = ed.getSelections()
-    {row, column} = sels[sels.length - 1].getBufferRange().end
+    if bufferPosition
+      {row, column} = bufferPosition
+    else
+      sels = ed.getSelections()
+      {row, column} = sels[sels.length - 1].getBufferRange().end
     data =
       path: client.editorPath(ed)
       code: ed.getText()
       row: row+1, column: column+1
       module: ed.juliaModule
+    getmodule(data)
 
-    getmodule(data).then (mod) =>
+  setEditorModule: (ed) ->
+    modulePromise = @getEditorModule ed
+    return unless modulePromise
+    modulePromise.then (mod) =>
       if atom.workspace.getActivePaneItem() is ed
         @setCurrent mod, true
 
-  getEditorModuleLazy: debounce ((ed) -> @getEditorModule(ed)), 100
+  setEditorModuleLazy: debounce ((ed) -> @setEditorModule(ed)), 100
 
   # The View
 
