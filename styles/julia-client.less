@@ -97,8 +97,11 @@ atom-text-editor.editor {
   opacity: 0;
 }
 
-// @NOTE: Hack datatip component created by atom-ide-datatip
-//        Hopefully someday it will improve and styling here wouldn't needed in the future
+// Hack datatip component
 .datatip-marked-container {
+  // @NOTE: This is only needed for atom-ide-datatip package and might be able to be removed in the future
   font-family: @font-family;
+}
+.datatip-marked-text-editor-container {
+  padding-left: @component-padding;
 }
