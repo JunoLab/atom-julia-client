@@ -19,3 +19,7 @@ module.exports =
     range = cursor.getCurrentWordBufferRange({wordRegex: @wordRegex})
     word = editor.getTextInBufferRange range
     {word, range}
+
+  # Returns `true` if `word` is valid word to be inspected
+  isValidWord: (word) ->
+    word.length > 0 && isNaN(word)

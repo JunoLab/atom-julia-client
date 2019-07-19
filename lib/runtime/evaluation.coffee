@@ -80,28 +80,6 @@ module.exports =
       notifications.show "Evaluation Finished"
       workspace.update()
 
-  provideHyperclick: () ->
-    {
-      providerName: 'julia-client-hyperclick-provider'
-      grammarScopes: atom.config.get('julia-client.juliaSyntaxScopes')
-      wordRegExp:  new RegExp(words.wordRegex, "g")
-      getSuggestionForWord: (editor, text, range) =>
-        require('../connection').boot()
-        {
-          range: range
-          callback: => @gotoSymbol(text, range)
-        }
-    }
-
-  gotoSymbol: (word, range) ->
-    {editor, mod, edpath} = @_currentContext()
-    {word, range} = words.getWord(editor) unless word? and range?
-    if word.length == 0 || !isNaN(word) then return
-    client.import("methods")({word: word, mod: mod}).then (symbols) =>
-      @ink.goto.goto(symbols, {
-        pending: atom.config.get('core.allowPendingPaneItems')
-      }) unless symbols.error
-
   toggleDocs: (word, range) ->
     {editor, mod, edpath} = @_currentContext()
     {word, range} = words.getWord(editor) unless word? and range?

@@ -47,7 +47,7 @@ module.exports =
         'julia-client:goto-symbol': =>
           @withInk ->
             boot()
-            juno.runtime.evaluation.gotoSymbol()
+            juno.runtime.goto.gotoSymbol()
         'julia-client:show-documentation': =>
           @withInk ->
             boot()

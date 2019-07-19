@@ -68,9 +68,9 @@
         "0.1.0": "provideClient"
       }
     },
-    "hyperclick.provider": {
+    "hyperclick": {
       "versions": {
-        "0.0.0": "provideHyperclick"
+        "0.1.0": "provideHyperclick"
       }
     }
   },

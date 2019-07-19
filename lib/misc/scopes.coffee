@@ -16,6 +16,12 @@ module.exports =
         return true
     return false
 
+  isStringOrCommentScope: (scopes) ->
+    for scope in scopes
+      if scope.indexOf('string') > -1 or scope.indexOf('comment') > -1
+        return true
+    return false
+
   forRange: (ed, range) ->
     scopes = []
     n_parens = 0
