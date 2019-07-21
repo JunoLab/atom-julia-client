@@ -16,11 +16,18 @@ module.exports =
         return true
     return false
 
-  isStringOrCommentScope: (scopes) ->
+  isValidInspectionScope: (scopes) ->
+    isValid = true
     for scope in scopes
-      if scope.indexOf('string') > -1 or scope.indexOf('comment') > -1
-        return true
-    return false
+      if scope.indexOf('comment') > -1
+        return false
+      if scope.indexOf('string') > -1
+        isValid = false
+        continue
+      if scope.indexOf('interpolation') > -1
+        isValid = true
+        continue
+    return isValid
 
   forRange: (ed, range) ->
     scopes = []
