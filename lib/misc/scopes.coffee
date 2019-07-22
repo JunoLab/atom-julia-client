@@ -16,7 +16,8 @@ module.exports =
         return true
     return false
 
-  isValidInspectionScope: (scopes) ->
+  # Returns `true` if `scopes` is valid scope to be inspected.
+  isValidScopeToInspect: (scopes) ->
     isValid = true
     for scope in scopes
       if scope.indexOf('comment') > -1
