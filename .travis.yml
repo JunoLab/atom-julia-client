@@ -47,7 +47,6 @@ addons:
     - fakeroot
     - git
     - libsecret-1-dev
-    - libgconf2-4 # @TODO: Remove once Atom v1.39 comes to be stable
 
 notifications:
   email: false
