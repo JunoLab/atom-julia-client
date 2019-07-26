@@ -138,23 +138,33 @@ config =
         description: 'Show plots in Atom.'
         default: true
         order: 7
+      pendingOpen:
+        title: 'Open files in pending state'
+        description: 'If enabled, Juno will open files [in a pending state]
+                      (https://flight-manual.atom.io/api/v1.39.1/Workspace/#instance-open)
+                      when path-links are clicked or `InteractiveUtils.edit` is called, etc.
+                      This would help you keep your workspace cleaner preventing temporarily
+                      inspected files from staying there.'
+        type: 'boolean'
+        default: false
+        order: 8
       openNewEditorWhenDebugging:
         title: 'Open New Editor When Debugging'
         type: 'boolean'
         default: false
         description: 'Opens a new editor tab when stepping into a new file instead
                       of reusing the current one (requires restart).'
-        order: 8
+        order: 9
       cellDelimiter:
         title: 'Cell Delimiter'
         type: 'array'
         default: ['##', '#---', '#%%', '# %%']
         description: 'Regular expressions for determining cell delimiters.'
-        order: 9
+        order: 10
       layouts:
         title: 'Layout'
         type: 'object'
-        order: 10
+        order: 11
         properties:
           console:
             title: 'Console'
