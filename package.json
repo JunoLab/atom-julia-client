@@ -1,7 +1,7 @@
 {
   "name": "julia-client",
   "main": "./lib/julia-client",
-  "version": "0.8.12-beta",
+  "version": "0.8.12-beta2",
   "description": "Julia Evaluation",
   "keywords": [],
   "repository": "https://github.com/JunoLab/atom-julia-client",
