@@ -140,9 +140,9 @@ config =
         order: 7
       pendingOpen:
         title: 'Open files in pending state'
-        description: 'If enabled, Juno will open files [in a pending state]
-                      (https://flight-manual.atom.io/api/v1.39.1/Workspace/#instance-open)
-                      when path-links are clicked or `InteractiveUtils.edit` is called, etc.
+        description: 'If enabled, Juno will open files
+                      [in a pending state](https://flight-manual.atom.io/api/v1.39.1/Workspace/#instance-open)
+                      when you call `Julia-Client: Goto-Symbol` command or `InteractiveUtils.@edit` in REPL, etc.
                       This would help you keep your workspace cleaner preventing temporarily
                       inspected files from staying there.'
         type: 'boolean'
