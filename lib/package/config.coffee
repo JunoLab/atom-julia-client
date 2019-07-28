@@ -78,7 +78,8 @@ config =
         default: ''
         order: 9
       autoCompletionSuggestionPriority:
-        title:
+        title: 'Auto-Completion Suggestion Priority'
+        description:
           '''
           Specify the sort order of Auto-completion suggestion from Julia-Client.
           Note the default providers like snippets have priority of 1.
