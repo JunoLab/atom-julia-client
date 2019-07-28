@@ -55,7 +55,7 @@
   "providedServices": {
     "autocomplete.provider": {
       "versions": {
-        "4.0.0": "completions"
+        "4.0.0": "provideAutoComplete"
       }
     },
     "julia-client": {

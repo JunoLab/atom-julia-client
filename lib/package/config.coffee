@@ -77,12 +77,22 @@ config =
         type: 'string'
         default: ''
         order: 9
+      autoCompletionSuggestionPriority:
+        title:
+          '''
+          Specify the sort order of Auto-completion suggestion from Julia-Client.
+          Note the default providers like snippets have priority of 1.
+          Requires Atom restart to take an effect.
+          '''
+        type: 'integer'
+        default: 3
+        order: 11
       noAutoParenthesis:
-        title: 'Don\'t Insert Parenthesis on Function Autocompletion'
+        title: 'Don\'t Insert Parenthesis on Function Auto-completion'
         description: 'If enabled, Juno will not insert parenthesis after completing a function.'
         type: 'boolean'
         default: false
-        order: 10
+        order: 12
   uiOptions:
     title: 'UI Options'
     type: 'object'

@@ -61,6 +61,6 @@ module.exports = JuliaClient =
 
   provideClient: -> @connection.client
 
-  provideHyperclick: -> @runtime.provideHyperclick()
+  provideAutoComplete: -> @runtime.provideAutoComplete()
 
-  completions: -> @runtime.completions
+  provideHyperclick: -> @runtime.provideHyperclick()
