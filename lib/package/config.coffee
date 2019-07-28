@@ -499,6 +499,6 @@ if process.platform == 'win32'
     type: 'boolean'
     default: true
     description: 'If enabled, use a Powershell wrapper to spawn Julia. Necessary to enable interrupts.'
-    order: 11
+    order: 99
 
 module.exports = config
