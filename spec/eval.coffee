@@ -50,7 +50,9 @@ module.exports = ->
       scopeDescriptor: editor.getCursors()[0].getScopeDescriptor()
       prefix: editor.getText()
 
-    getSuggestions = -> juno.runtime.completions.getSuggestions completionsData()
+    getSuggestions = ->
+      comletions = require '../lib/runtime/completions'
+      completions.getSuggestions completionsData()
 
     describe 'basic module completions', ->
 
