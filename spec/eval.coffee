@@ -51,7 +51,7 @@ module.exports = ->
       prefix: editor.getText()
 
     getSuggestions = ->
-      comletions = require '../lib/runtime/completions'
+      completions = require '../lib/runtime/completions'
       completions.getSuggestions completionsData()
 
     describe 'basic module completions', ->
