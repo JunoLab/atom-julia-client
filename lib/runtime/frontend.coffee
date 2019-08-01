@@ -16,7 +16,9 @@ module.exports =
 
     client.handle syntaxcolors: (selectors) -> colors.getColors(selectors)
 
-    client.handle openFile: (file, line) => @ink?.Opener.open(file, line)
+    client.handle openFile: (file, line) => @ink?.Opener.open(file, line, {
+      pending: atom.config.get('core.allowPendingPaneItems')
+    })
 
     # Blink APIs
 

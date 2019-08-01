@@ -97,7 +97,9 @@ module.exports =
     {word, range} = words.getWord(editor) unless word? and range?
     if word.length == 0 || !isNaN(word) then return
     client.import("methods")({word: word, mod: mod}).then (symbols) =>
-      @ink.goto.goto symbols unless symbols.error
+      @ink.goto.goto(symbols, {
+        pending: atom.config.get('core.allowPendingPaneItems')
+      }) unless symbols.error
 
   toggleDocs: (word, range) ->
     {editor, mod, edpath} = @_currentContext()
