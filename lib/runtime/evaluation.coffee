@@ -98,7 +98,7 @@ module.exports =
     if word.length == 0 || !isNaN(word) then return
     client.import("methods")({word: word, mod: mod}).then (symbols) =>
       @ink.goto.goto(symbols, {
-        pending: atom.config.get('julia-client.uiOptions.pendingOpen')
+        pending: atom.config.get('core.allowPendingPaneItems')
       }) unless symbols.error
 
   toggleDocs: (word, range) ->

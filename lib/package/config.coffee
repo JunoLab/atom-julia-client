@@ -140,16 +140,6 @@ config =
         description: 'Show plots in Atom.'
         default: true
         order: 7
-      pendingOpen:
-        title: 'Open files in pending state'
-        description: 'If enabled, Juno will open files
-                      [in a pending state](https://flight-manual.atom.io/api/v1.39.1/Workspace/#instance-open)
-                      when you call `Julia-Client: Goto-Symbol` command or `InteractiveUtils.@edit` in REPL, etc.
-                      This would help you keep your workspace cleaner preventing temporarily
-                      inspected files from staying there.'
-        type: 'boolean'
-        default: false
-        order: 8
       openNewEditorWhenDebugging:
         title: 'Open New Editor When Debugging'
         type: 'boolean'

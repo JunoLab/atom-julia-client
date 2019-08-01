@@ -69,7 +69,7 @@ module.exports = views =
       tt = atom.tooltips.add view, title: -> file
     view.onclick = (e) =>
       @ink.Opener.open(file, line, {
-        pending: atom.config.get('julia-client.uiOptions.pendingOpen')
+        pending: atom.config.get('core.allowPendingPaneItems')
       })
       e.stopPropagation()
     view.addEventListener 'DOMNodeRemovedFromDocument', =>
