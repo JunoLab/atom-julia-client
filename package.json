@@ -10,15 +10,14 @@
     "atom": ">=1.39.0 <2.0.0"
   },
   "dependencies": {
-    "atom-space-pen-views": "^2.0.0",
-    "underscore-plus": "*",
-    "atom-package-deps": "*",
-    "coffee-script": "*",
-    "physical-cpu-count": "*",
     "@pfitzseb/node-pty-prebuilt": "0.8.1-prebuilt3",
-    "ssh2": "^0.8.4",
+    "atom-package-deps": "*",
+    "atom-space-pen-views": "^2.0.0",
+    "etch": "*",
     "fuzzaldrin-plus": "^0.6.0",
-    "etch": "*"
+    "physical-cpu-count": "*",
+    "ssh2": "^0.8.4",
+    "underscore-plus": "*"
   },
   "consumedServices": {
     "status-bar": {
