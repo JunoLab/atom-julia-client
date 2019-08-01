@@ -43,7 +43,7 @@ module.exports =
   provideAutoComplete: ->
     require './runtime/completions'
 
-  provideHyperclick: -> @evaluation.provideHyperclick()
+  provideHyperclick: -> @goto.provideHyperclick()
   
   consumeStatusBar: (bar) ->
     @modules.consumeStatusBar bar
