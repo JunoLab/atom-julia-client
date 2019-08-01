@@ -146,17 +146,18 @@ config =
         default: false
         description: 'Opens a new editor tab when stepping into a new file instead
                       of reusing the current one (requires restart).'
-        order: 9
+        order: 8
       cellDelimiter:
         title: 'Cell Delimiter'
         type: 'array'
         default: ['##', '#---', '#%%', '# %%']
         description: 'Regular expressions for determining cell delimiters.'
-        order: 10
+        order: 9
       layouts:
-        title: 'Layout'
+        title: 'Layout Options'
         type: 'object'
-        order: 11
+        order: 10
+        collapsed: true
         properties:
           console:
             title: 'Console'
