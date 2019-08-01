@@ -9,6 +9,7 @@ config =
   juliaOptions:
     type: 'object'
     order: 2
+    collapsed: true
     properties:
       bootMode:
         title: 'Boot Mode'
@@ -87,6 +88,7 @@ config =
     title: 'UI Options'
     type: 'object'
     order: 3
+    collapsed: true
     properties:
       resultsDisplayMode:
         title: 'Result Display Mode'
@@ -375,6 +377,7 @@ config =
   consoleOptions:
     type: 'object'
     order: 4
+    collapsed: true
     properties:
       consoleStyle:
         title: 'Style (requires restart)'
@@ -438,6 +441,7 @@ config =
   remoteOptions:
     type: 'object'
     order: 5
+    collapsed: true
     properties:
       remoteJulia:
         title: 'Command to execute Julia on the remote server'
