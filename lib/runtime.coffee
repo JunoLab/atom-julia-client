@@ -1,5 +1,4 @@
 module.exports =
-  completions: require './runtime/completions'
   modules:     require './runtime/modules'
   evaluation:  require './runtime/evaluation'
   console:     require './runtime/console'
@@ -32,7 +31,10 @@ module.exports =
       mod.ink = ink
       mod.activate()
 
-  provideHyperclick: -> @evaluation.provideHyperclick()
+  provideAutoComplete: ->
+    require './runtime/completions'
 
+  provideHyperclick: -> @evaluation.provideHyperclick()
+  
   consumeStatusBar: (bar) ->
     @modules.consumeStatusBar bar
