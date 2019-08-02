@@ -120,12 +120,12 @@ config =
           {value: 'pane', description: 'Show documentation in the documentation pane'}
         ]
         order: 2
-      notifications:
-        title: 'Notifications'
-        type: 'boolean'
-        default: true
-        description: 'Enable notifications for evaluation.'
-        order: 3
+      # notifications:
+      #   title: 'Notifications'
+      #   type: 'boolean'
+      #   default: true
+      #   description: 'Enable notifications for evaluation.'
+      #   order: 3
       errorNotifications:
         title: 'Error Notifications'
         type: 'boolean'
