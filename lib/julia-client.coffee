@@ -59,6 +59,8 @@ module.exports = JuliaClient =
 
   consumeGetServerName: (name) -> @connection.consumeGetServerName(name)
 
+  consumeDatatip: (datatipService) -> @runtime.consumeDatatip datatipService
+
   provideClient: -> @connection.client
 
   provideAutoComplete: -> @runtime.provideAutoComplete()

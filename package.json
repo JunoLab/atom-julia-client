@@ -49,6 +49,11 @@
       "versions": {
         "0.1.0": "consumeGetServerName"
       }
+    },
+    "datatip": {
+      "versions": {
+        "0.1.0": "consumeDatatip"
+      }
     }
   },
   "providedServices": {
@@ -63,9 +68,9 @@
         "0.1.0": "provideClient"
       }
     },
-    "hyperclick.provider": {
+    "hyperclick": {
       "versions": {
-        "0.0.0": "provideHyperclick"
+        "0.1.0": "provideHyperclick"
       }
     }
   },

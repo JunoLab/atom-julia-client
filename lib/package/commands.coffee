@@ -47,7 +47,7 @@ module.exports =
         'julia-client:goto-symbol': =>
           @withInk ->
             boot()
-            juno.runtime.evaluation.gotoSymbol()
+            juno.runtime.goto.gotoSymbol()
         'julia-client:show-documentation': =>
           @withInk ->
             boot()
@@ -89,7 +89,6 @@ module.exports =
       'julia-client:disconnect-julia': => requireClient 'disconnect Julia', -> juno.connection.client.disconnect()
       # 'julia-client:reset-julia-server': -> juno.connection.local.server.reset() # server mode not functional
       'julia-client:connect-external-process': -> disrequireClient -> juno.connection.messages.connectExternal()
-      'julia-client:connect-platformio-terminal': -> disrequireClient -> juno.connection.terminal.runPlatformIOTerm()
       'julia-client:connect-terminal': -> disrequireClient -> juno.connection.terminal.connectedRepl()
       'julia-client:open-plot-pane': => @withInk -> juno.runtime.plots.open()
       'julia-client:open-workspace': => @withInk -> juno.runtime.workspace.open()

@@ -1,6 +1,6 @@
 # TODO: this code is awful, refactor
 
-{CompositeDisposable, Emitter} = require 'atom'
+{CompositeDisposable, Disposable, Emitter} = require 'atom'
 {debounce} = require 'underscore-plus'
 
 {client} = require '../connection'
@@ -18,8 +18,6 @@ module.exports =
     @subs.add atom.workspace.observeActivePaneItem (item) => @updateForItem item
     @subs.add client.onAttached => @updateForItem()
     @subs.add client.onDetached => @updateForItem()
-
-    @activateView()
 
   deactivate: ->
     @subs.dispose()
@@ -91,25 +89,32 @@ module.exports =
 
   updateForEditor: (editor) ->
     @setCurrent main: editor.juliaModule or 'Main', true
-    @getEditorModule editor
+    @setEditorModule editor
     @itemSubs.add editor.onDidChangeCursorPosition =>
-      @getEditorModuleLazy editor
+      @setEditorModuleLazy editor
 
-  getEditorModule: (ed) ->
+  getEditorModule: (ed, bufferPosition = null) ->
     return unless client.isActive()
-    sels = ed.getSelections()
-    {row, column} = sels[sels.length - 1].getBufferRange().end
+    if bufferPosition
+      {row, column} = bufferPosition
+    else
+      sels = ed.getSelections()
+      {row, column} = sels[sels.length - 1].getBufferRange().end
     data =
       path: client.editorPath(ed)
       code: ed.getText()
       row: row+1, column: column+1
       module: ed.juliaModule
+    getmodule(data)
 
-    getmodule(data).then (mod) =>
+  setEditorModule: (ed) ->
+    modulePromise = @getEditorModule ed
+    return unless modulePromise
+    modulePromise.then (mod) =>
       if atom.workspace.getActivePaneItem() is ed
         @setCurrent mod, true
 
-  getEditorModuleLazy: debounce ((ed) -> @getEditorModule(ed)), 100
+  setEditorModuleLazy: debounce ((ed) -> @setEditorModule(ed)), 100
 
   # The View
 
@@ -132,15 +137,24 @@ module.exports =
     atom.tooltips.add @dom,
       title: => "Currently working in module #{@current()}"
 
+    # @NOTE: Grammar selector has `priority` 10 and thus set the it to a bit lower
+    #        than that to avoid collision that may cause unexpected result.
+    @tile = @statusBar.addRightTile item: @dom, priority: 5
+    disposable = new Disposable(=>
+      @tile.destroy()
+      delete @tile)
+    @subs.add(disposable)
+    disposable
+
   updateView: (m) ->
+    return unless @tile?
     if not m?
-      @tile?.destroy()
-      delete @tile
+      @dom.style.display = 'none'
     else
       {main, sub, inactive, subInactive} = m
       if main is @follow
         return @updateView @lastEditorModule
-      @tile ?= @statusBar?.addRightTile item: @dom, priority: 10
+      @dom.style.display = ''
       @mainView.innerText = main or 'Main'
       if sub
         @subView.innerText = sub
@@ -159,4 +173,6 @@ module.exports =
 
   consumeStatusBar: (bar) ->
     @statusBar = bar
+    disposable = @activateView()
     @updateView @_current
+    disposable

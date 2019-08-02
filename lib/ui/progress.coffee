@@ -15,6 +15,7 @@ module.exports =
     @subs.add client.onDetached => @clear()
 
   deactivate: ->
+    @clear()
     @subs.dispose()
 
   add: (id) ->

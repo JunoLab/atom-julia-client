@@ -10,6 +10,7 @@ workspace = require './workspace'
 modules = require './modules'
 {eval: evaluate, evalall, evalrepl, evalshow, cd, clearLazy} =
     client.import rpc: ['eval', 'evalall', 'evalrepl', 'evalshow'], msg: ['cd', 'clearLazy']
+searchDoc = client.import('docs')
 
 module.exports =
   _currentContext: ->
@@ -79,33 +80,11 @@ module.exports =
       notifications.show "Evaluation Finished"
       workspace.update()
 
-  provideHyperclick: () ->
-    {
-      providerName: 'julia-client-hyperclick-provider'
-      grammarScopes: atom.config.get('julia-client.juliaSyntaxScopes')
-      wordRegExp:  new RegExp(words.wordRegex, "g")
-      getSuggestionForWord: (editor, text, range) =>
-        require('../connection').boot()
-        {
-          range: range
-          callback: => @gotoSymbol(text, range)
-        }
-    }
-
-  gotoSymbol: (word, range) ->
-    {editor, mod, edpath} = @_currentContext()
-    {word, range} = words.getWord(editor) unless word? and range?
-    if word.length == 0 || !isNaN(word) then return
-    client.import("methods")({word: word, mod: mod}).then (symbols) =>
-      @ink.goto.goto(symbols, {
-        pending: atom.config.get('core.allowPendingPaneItems')
-      }) unless symbols.error
-
   toggleDocs: (word, range) ->
     {editor, mod, edpath} = @_currentContext()
     {word, range} = words.getWord(editor) unless word? and range?
     if word.length == 0 || !isNaN(word) then return
-    client.import("docs")({word: word, mod: mod}).then (result) =>
+    searchDoc({word: word, mod: mod}).then (result) =>
       if result.error then return
       v = views.render result
       processLinks(v.getElementsByTagName('a'))

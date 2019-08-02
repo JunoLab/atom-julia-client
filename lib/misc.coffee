@@ -8,6 +8,7 @@ module.exports =
   words:   require './misc/words'
   weave:   require './misc/weave'
   colors:  require './misc/colors'
+  scopes:  require './misc/scopes'
 
   bufferLines: (t, f) ->
     if not f? then [t, f] = [null, t]

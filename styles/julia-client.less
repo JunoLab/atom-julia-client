@@ -96,3 +96,12 @@ atom-text-editor.editor {
   background-color: @syntax-background-color;
   opacity: 0;
 }
+
+// Hack datatip component
+.datatip-marked-container {
+  // @NOTE: This is only needed for atom-ide-datatip package and might be able to be removed in the future
+  font-family: @font-family;
+}
+.datatip-marked-text-editor-container {
+  padding-left: @component-padding;
+}
