@@ -71,7 +71,9 @@ module.exports =
     # Only Julia atom-text-editor
     @subs.add atom.commands.add 'atom-text-editor[data-grammar="source julia"]',
       'julia-client:format-code': =>
-        requireClient 'format code', => juno.runtime.formatter.formatCode()
+        @withInk ->
+          boot()
+          juno.runtime.formatter.formatCode()
 
     # Where "module" matters
     @subs.add atom.commands.add 'atom-text-editor[data-grammar="source julia"],
