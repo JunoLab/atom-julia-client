@@ -44,7 +44,7 @@ module.exports =
     require './runtime/completions'
 
   provideHyperclick: -> @goto.provideHyperclick()
-  
+
   consumeStatusBar: (bar) ->
     @modules.consumeStatusBar bar
 
@@ -54,6 +54,11 @@ module.exports =
     #          currently atom-ide-datatip can't render code snippets correctly.
     if datatipService.constructor.name == 'DatatipManager'
       datatipProvider.useAtomIDEUI = true
+    else
+      # @NOTE: Overwrite the weird default config settings of atom-ide-datatip
+      atom.config.set 'atom-ide-datatip',
+        showDataTipOnCursorMove: false
+        showDataTipOnMouseMove: true
     datatipDisposable = datatipService.addProvider(datatipProvider)
     @subs.add(datatipDisposable)
     datatipDisposable
