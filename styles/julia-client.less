@@ -97,11 +97,17 @@ atom-text-editor.editor {
   opacity: 0;
 }
 
-// Hack datatip component
-.datatip-marked-container {
-  // @NOTE: This is only needed for atom-ide-datatip package and might be able to be removed in the future
-  font-family: @font-family;
+/* Hack datatip component style (overwrite user's global style) */
+// atom-ide-ui
+.datatip-marked {
+  max-width: 500px;
 }
 .datatip-marked-text-editor-container {
   padding-left: @component-padding;
+}
+// atom-ide-datatip
+.datatip-marked-container {
+  // @NOTE: This is only needed for atom-ide-datatip package and might be able to be removed in the future
+  font-family: @font-family;
+  max-width: 500px;
 }
