@@ -19,6 +19,9 @@
     "ssh2": "^0.8.4",
     "underscore-plus": "*"
   },
+  "scripts": {
+    "postinstall": "node script/postinstall.js"
+  },
   "consumedServices": {
     "status-bar": {
       "versions": {

@@ -31,12 +31,13 @@ module.exports =
     @bar.addSpacer()
 
     @bar.addButton
-      icon: 'flame'
+      icon: 'globe'
       tooltip: 'Start Local Julia Process'
       callback: 'julia-client:start-julia'
 
     @bar.addButton
-      icon: 'globe'
+      iconset: 'ion'
+      icon: 'planet'
       tooltip: 'Start Remote Julia Process'
       callback: 'julia-client:start-remote-julia-process'
 
@@ -79,28 +80,28 @@ module.exports =
 
     @bar.addButton
       icon: 'terminal'
-      callback: 'julia-client:open-console'
       tooltip: 'Show Console'
+      callback: 'julia-client:open-console'
 
     @bar.addButton
       icon: 'book'
-      callback: 'julia-client:open-workspace'
       tooltip: 'Show Workspace'
+      callback: 'julia-client:open-workspace'
 
     @bar.addButton
       icon: 'info'
-      callback: 'julia-client:open-documentation-browser'
       tooltip: 'Show Documentation Browser'
+      callback: 'julia-client:open-documentation-browser'
 
     @bar.addButton
       icon: 'graph'
-      callback: 'julia-client:open-plot-pane'
       tooltip: 'Show Plots'
+      callback: 'julia-client:open-plot-pane'
 
     @bar.addButton
       icon: 'bug'
-      callback: 'julia-debug:open-debugger-pane'
       tooltip: 'Show Debugger Pane'
+      callback: 'julia-debug:open-debugger-pane'
 
   deactivate: ->
     @bar?.removeItems()
