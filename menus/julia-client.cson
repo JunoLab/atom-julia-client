@@ -3,13 +3,15 @@
     {type: 'separator'}
 
     {
-      label: 'Julia-Client',
+      label: 'Juno',
       submenu: [
         {label: 'Run Block', command: 'julia-client:run-block'}
         {label: 'Select Block', command: 'julia-client:select-block'}
+        {type: 'separator'}
         {label: 'Go to Definition', command: 'julia-client:goto-symbol'}
         {label: 'Show Documentation', command: 'julia-client:show-documentation'}
         {label: 'Format Code', command: 'julia-client:format-code'}
+        {type: 'separator'}
         {label: 'Toggle Breakpoint', command: 'julia-debug:toggle-breakpoint'}
         {label: 'Toggle Conditional Breakpoint', command: 'julia-debug:toggle-conditional-breakpoint'}
       ]
