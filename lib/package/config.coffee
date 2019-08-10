@@ -23,6 +23,7 @@ config =
                       a remote Julia process instead of a local one.'
         enum: ['Basic', 'Cycler', 'Remote']
         default: 'Cycler'
+        radio: true
         order: 1
       optimisationLevel:
         title: 'Optimisation Level'
@@ -30,6 +31,7 @@ config =
         type: 'integer'
         enum: [0, 1, 2, 3]
         default: 3
+        radio: true
         order: 2
       deprecationWarnings:
         title: 'Deprecation Warnings'
