@@ -141,7 +141,7 @@ module.exports =
     else if err
       atom.notifications.addError 'Please install the Ink package.',
         detail: 'Julia Client requires the Ink package to run.
-                 You can install it from the settings view.'
+                 You can install it via `File -> Settings -> Install`.'
         dismissable: true
     else
       setTimeout (=> @withInk f, true), 100
