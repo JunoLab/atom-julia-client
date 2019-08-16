@@ -29,11 +29,8 @@ module.exports =
   consumeInk: (ink) ->
     @evaluation.ink = ink
     @frontend.ink = ink
-    @profiler.activate ink
-    @debugger.activate ink
-    @console2.activate ink
-    @linter.activate ink
-    @goto.activate ink
+    for mod in [@console2, @debugger, @profiler, @linter, @goto]
+      mod.activate(ink)
     for mod in [@console, @workspace, @plots]
       mod.ink = ink
       mod.activate()

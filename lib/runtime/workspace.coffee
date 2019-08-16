@@ -25,7 +25,8 @@ module.exports =
     clearLazy @lazyTrees
     registerLazy = (id) => @lazyTrees.push id
     mod = if @mod == modules.follow then modules.current() else (@mod or 'Main')
-    p = workspace(mod).then (ws) =>
+    hide = atom.config.get 'julia-client.juliaOptions.deprecationWarnings'
+    p = workspace({ mod, hide }).then (ws) =>
       for {items} in ws
         for item in items
           item.value = views.render item.value, {registerLazy}
