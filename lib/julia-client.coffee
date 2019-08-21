@@ -47,9 +47,6 @@ module.exports = JuliaClient =
     commands.ink = ink
     x.consumeInk ink for x in [@connection, @runtime, @ui]
 
-  consumeTerminal: (term) ->
-    @connection.consumeTerminal term
-
   consumeStatusBar: (bar) ->
     @runtime.consumeStatusBar bar
 
