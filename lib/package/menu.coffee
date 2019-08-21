@@ -20,7 +20,7 @@ module.exports =
     @subs.dispose()
 
   menu: [{
-    label: 'Julia'
+    label: 'Juno'
     submenu: [
       {label: 'Start Julia', command: 'julia-client:start-julia'}
       {label: 'Start Remote Julia Process', command: 'julia-client:start-remote-julia-process'}
