@@ -35,12 +35,7 @@ module.exports =
       @ink.highlight editor, start, end
       rtype = if cell? then "block" else atom.config.get 'julia-client.uiOptions.resultsDisplayMode'
       if rtype is 'console'
-        if atom.config.get('julia-client.consoleOptions.consoleStyle') is 'REPL-based'
-          evalshow({text, line: line+1, mod, path: edpath})
-        else
-          evalrepl(code: text, mod: mod)
-            .then (result) => workspace.update()
-            .catch =>
+        evalshow({text, line: line+1, mod, path: edpath})
       else
         r = null
         setTimeout (=> r ?= new @ink.Result editor, [start, end], {type: rtype, scope: 'julia'}), 0.1
