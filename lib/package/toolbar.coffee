@@ -80,7 +80,7 @@ module.exports =
       tooltip: 'Run All'
       callback: 'julia-client:run-all'
 
-    # Format Code
+    # Code Tools
 
     @bar.addSpacer()
 
@@ -111,6 +111,11 @@ module.exports =
           tooltip: 'Unfold all'
           iconset: 'fa'
 
+    if atom.config.get 'julia-client.uiOptions.enableExtraToolbarButtons'
+        @bar.addButton
+          icon: 'question'
+          tooltip: 'Show Documentation [Selection]'
+          callback: 'julia-client:show-documentation'
 
     # Windows & Panes
 
