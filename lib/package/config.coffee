@@ -378,6 +378,12 @@ config =
             type: 'boolean'
             default: true
             order: 10
+      enableExtraToolbarButtons:
+        title: 'Enable Extra Toolbar Buttons'
+        type: 'boolean'
+        default: true
+        description: 'Adds some useful toolbar buttons'
+        order: 11
   consoleOptions:
     type: 'object'
     order: 4

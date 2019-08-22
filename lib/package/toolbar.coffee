@@ -26,15 +26,17 @@ module.exports =
       tooltip: 'Open File...'
       callback: 'application:open-file'
 
-    @bar.addButton
-      icon: 'file-submodule'
-      tooltip: 'Open Folder...'
-      callback: 'application:open-folder'
+    if atom.config.get 'julia-client.uiOptions.enableExtraToolbarButtons'
+        @bar.addButton
+          icon: 'file-submodule'
+          tooltip: 'Open Folder...'
+          callback: 'application:open-folder'
 
-    @bar.addButton
-      icon: 'file-symlink-directory'
-      tooltip: 'Select Working Directory...'
-      callback: 'julia-client:select-working-folder'
+    if atom.config.get 'julia-client.uiOptions.enableExtraToolbarButtons'
+        @bar.addButton
+          icon: 'file-symlink-directory'
+          tooltip: 'Select Working Directory...'
+          callback: 'julia-client:select-working-folder'
 
     # Julia process
 
@@ -88,23 +90,26 @@ module.exports =
       tooltip: 'Format Code'
       callback: 'julia-client:format-code'
 
-    @bar.addButton
-      icon: 'indent'
-      callback: 'editor:auto-indent'
-      tooltip: 'Auto indent (selection)'
-      iconset: 'fa'
+    if atom.config.get 'julia-client.uiOptions.enableExtraToolbarButtons'
+        @bar.addButton
+          icon: 'indent'
+          callback: 'editor:auto-indent'
+          tooltip: 'Auto indent (selection)'
+          iconset: 'fa'
 
-    @bar.addButton
-      icon: 'chevron-right'
-      callback: 'editor:fold-all'
-      tooltip: 'Fold all'
-      iconset: 'fa'
+    if atom.config.get 'julia-client.uiOptions.enableExtraToolbarButtons'
+        @bar.addButton
+          icon: 'chevron-right'
+          callback: 'editor:fold-all'
+          tooltip: 'Fold all'
+          iconset: 'fa'
 
-    @bar.addButton
-      icon: 'chevron-down'
-      callback: 'editor:unfold-all'
-      tooltip: 'Unfold all'
-      iconset: 'fa'
+    if atom.config.get 'julia-client.uiOptions.enableExtraToolbarButtons'
+        @bar.addButton
+          icon: 'chevron-down'
+          callback: 'editor:unfold-all'
+          tooltip: 'Unfold all'
+          iconset: 'fa'
 
 
     # Windows & Panes
@@ -141,39 +146,44 @@ module.exports =
 
     @bar.addSpacer()
 
-    if atom.packages.loadedPackages['markdown-preview']
-      @bar.addButton
-        icon: 'markdown'
-        callback: 'markdown-preview:toggle'
-        tooltip: 'Markdown Preview'
+    if atom.config.get 'julia-client.uiOptions.enableExtraToolbarButtons'
+      if atom.packages.loadedPackages['markdown-preview']
+        @bar.addButton
+          icon: 'markdown'
+          callback: 'markdown-preview:toggle'
+          tooltip: 'Markdown Preview'
 
 
     # Atom
 
     @bar.addSpacer()
 
-    @bar.addButton
-      icon: 'tools'
-      iconset: 'fa'
-      tooltip: 'Julia Client Settings...'
-      callback: 'julia-client:settings'
+    if atom.config.get 'julia-client.uiOptions.enableExtraToolbarButtons'
+        @bar.addButton
+          icon: 'tools'
+          iconset: 'fa'
+          tooltip: 'Julia Client Settings...'
+          callback: 'julia-client:settings'
 
-    @bar.addButton
-      icon: 'gear'
-      callback: 'settings-view:open'
-      tooltip: 'Open Settings View'
+    if atom.config.get 'julia-client.uiOptions.enableExtraToolbarButtons'
+        @bar.addButton
+          icon: 'gear'
+          callback: 'settings-view:open'
+          tooltip: 'Open Settings View'
 
-    @bar.addButton
-      iconset: 'fa'
-      icon: 'arrows-alt'
-      tooltip: 'Toggle Fullscreen'
-      callback: 'window:toggle-full-screen'
+    if atom.config.get 'julia-client.uiOptions.enableExtraToolbarButtons'
+        @bar.addButton
+          iconset: 'fa'
+          icon: 'arrows-alt'
+          tooltip: 'Toggle Fullscreen'
+          callback: 'window:toggle-full-screen'
 
-    @bar.addButton
-      icon: 'navicon-round'
-      callback: 'command-palette:toggle'
-      tooltip: 'Toggle Command Palette'
-      iconset: 'ion'
+    if atom.config.get 'julia-client.uiOptions.enableExtraToolbarButtons'
+        @bar.addButton
+          icon: 'navicon-round'
+          callback: 'command-palette:toggle'
+          tooltip: 'Toggle Command Palette'
+          iconset: 'ion'
 
 
   deactivate: ->
