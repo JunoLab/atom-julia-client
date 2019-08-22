@@ -146,7 +146,6 @@ module.exports =
       tooltip: 'Show Debugger Pane'
       callback: 'julia-debug:open-debugger-pane'
 
-
     # Viewers
 
     @bar.addSpacer()
@@ -163,12 +162,12 @@ module.exports =
 
     @bar.addSpacer()
 
-    if atom.config.get 'julia-client.uiOptions.enableExtraToolbarButtons'
-        @bar.addButton
-          icon: 'tools'
-          iconset: 'fa'
-          tooltip: 'Julia Client Settings...'
-          callback: 'julia-client:settings'
+    # if atom.config.get 'julia-client.uiOptions.enableExtraToolbarButtons'
+    #     @bar.addButton
+    #       icon: 'tools'
+    #       iconset: 'fa'
+    #       tooltip: 'Julia Client Settings...'
+    #       callback: 'julia-client:settings'
 
     if atom.config.get 'julia-client.uiOptions.enableExtraToolbarButtons'
         @bar.addButton
