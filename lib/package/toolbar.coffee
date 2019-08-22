@@ -26,6 +26,16 @@ module.exports =
       tooltip: 'Open File...'
       callback: 'application:open-file'
 
+    @bar.addButton
+      icon: 'file-submodule'
+      tooltip: 'Open Folder...'
+      callback: 'application:open-folder'
+
+    @bar.addButton
+      icon: 'file-symlink-directory'
+      tooltip: 'Select Working Directory...'
+      callback: 'julia-client:select-working-folder'
+
     # Julia process
 
     @bar.addSpacer()
@@ -68,11 +78,34 @@ module.exports =
       tooltip: 'Run All'
       callback: 'julia-client:run-all'
 
+    # Format Code
+
+    @bar.addSpacer()
+
     @bar.addButton
       icon: 'format-float-none'
       iconset: 'mdi'
       tooltip: 'Format Code'
       callback: 'julia-client:format-code'
+
+    @bar.addButton
+      icon: 'indent'
+      callback: 'editor:auto-indent'
+      tooltip: 'Auto indent (selection)'
+      iconset: 'fa'
+
+    @bar.addButton
+      icon: 'chevron-right'
+      callback: 'editor:fold-all'
+      tooltip: 'Fold all'
+      iconset: 'fa'
+
+    @bar.addButton
+      icon: 'chevron-down'
+      callback: 'editor:unfold-all'
+      tooltip: 'Unfold all'
+      iconset: 'fa'
+
 
     # Windows & Panes
 
@@ -102,6 +135,46 @@ module.exports =
       icon: 'bug'
       tooltip: 'Show Debugger Pane'
       callback: 'julia-debug:open-debugger-pane'
+
+
+    # Viewers
+
+    @bar.addSpacer()
+
+    if atom.packages.loadedPackages['markdown-preview']
+      @bar.addButton
+        icon: 'markdown'
+        callback: 'markdown-preview:toggle'
+        tooltip: 'Markdown Preview'
+
+
+    # Atom
+
+    @bar.addSpacer()
+
+    @bar.addButton
+      icon: 'tools'
+      iconset: 'fa'
+      tooltip: 'Julia Client Settings...'
+      callback: 'julia-client:settings'
+
+    @bar.addButton
+      icon: 'gear'
+      callback: 'settings-view:open'
+      tooltip: 'Open Settings View'
+
+    @bar.addButton
+      iconset: 'fa'
+      icon: 'arrows-alt'
+      tooltip: 'Toggle Fullscreen'
+      callback: 'window:toggle-full-screen'
+
+    @bar.addButton
+      icon: 'navicon-round'
+      callback: 'command-palette:toggle'
+      tooltip: 'Toggle Command Palette'
+      iconset: 'ion'
+
 
   deactivate: ->
     @bar?.removeItems()
