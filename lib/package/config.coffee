@@ -382,7 +382,7 @@ config =
         title: 'Enable Extra Toolbar Buttons'
         type: 'boolean'
         default: true
-        description: 'Adds some useful toolbar buttons'
+        description: 'Adds some useful toolbar buttons (requires restart).'
         order: 11
   consoleOptions:
     type: 'object'
