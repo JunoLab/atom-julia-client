@@ -1,14 +1,11 @@
 {isEqual} = require 'underscore-plus'
-basic = require './basic'
 basic2 = require './basic2'
 
 IPC = require '../ipc'
 
 module.exports =
   provider: ->
-    switch atom.config.get 'julia-client.consoleOptions.consoleStyle'
-      when 'REPL-based' then basic2
-      when 'Legacy' then basic
+    basic2
 
   cacheLength: 1
 

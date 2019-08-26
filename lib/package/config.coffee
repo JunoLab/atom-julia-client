@@ -383,65 +383,59 @@ config =
     order: 4
     collapsed: true
     properties:
-      consoleStyle:
-        title: 'Style (requires restart)'
-        type: 'string'
-        enum: ['REPL-based']
-        default: 'REPL-based'
-        order: 1
       maximumConsoleSize:
         title: 'Scrollback Buffer Size'
         type: 'integer'
         default: 10000
-        order: 2
+        order: 1
       prompt:
         title: 'Terminal Prompt'
         type: 'string'
         default: 'julia>'
-        order: 3
+        order: 2
       shell:
         title: 'Shell'
         type: 'string'
         default: terminal.defaultShell()
         description: 'The location of an executable shell. Set to `$SHELL` by default,
                       and if `$SHELL` isn\'t set then fallback to `bash` or `powershell.exe` (on Windows).'
-        order: 4
+        order: 3
       terminal:
         title: 'Terminal'
         type: 'string'
         default: terminal.defaultTerminal()
         description: 'Command used to open an external terminal.'
-        order: 5
+        order: 4
       whitelistedKeybindingsREPL:
         title: 'Whitelisted Keybindings for the Julia REPL'
         type: 'array'
         default: ['Ctrl-C']
         description: 'The listed keybindings are not handled by the REPL and instead directly passed to Atom.'
-        order: 6
+        order: 5
       whitelistedKeybindingsTerminal:
         title: 'Whitelisted Keybindings for Terminals'
         type: 'array'
         default: []
         description: 'The listed keybindings are not handled by any terminals and instead directly passed to Atom.'
-        order: 7
+        order: 6
       cursorStyle:
         title: 'Cursor Style'
         type: 'string'
         enum: ['block', 'underline', 'bar']
         default: 'block'
         radio: true
-        order: 8
+        order: 7
       cursorBlink:
         title: 'Cursor Blink'
         type: 'boolean'
         default: false
-        order: 9
+        order: 8
       rendererType:
         title: 'Fallback Renderer'
         type: 'boolean'
         default: false
         description: 'Enable this if you\'re experiencing slowdowns in the built-in terminals.'
-        order: 10
+        order: 9
   remoteOptions:
     type: 'object'
     order: 5

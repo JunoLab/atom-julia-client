@@ -26,9 +26,6 @@ module.exports =
     @IPC.consumeInk ink
     @ink = ink
 
-  consumeTerminal: (term) ->
-    @terminal.consumeTerminal term
-
   consumeGetServerConfig: (getconf) ->
     @local.consumeGetServerConfig(getconf)
 

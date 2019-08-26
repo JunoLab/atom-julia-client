@@ -143,7 +143,7 @@ module.exports =
     if @isActive()
       if @isWorking()
         @clientCall 'interrupts', 'interrupt'
-      else if atom.config.get('julia-client.consoleOptions.consoleStyle') is 'REPL-based'
+      else
         @clientCall 'interrupts', 'interruptREPL'
 
   disconnect: ->

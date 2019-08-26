@@ -52,14 +52,3 @@ module.exports =
       "#{@escpath paths.jlpath()} #{client.clargs().join(' ')} #{paths.script('boot_repl.jl')} #{port}"
 
   connectedRepl: -> @connectCommand().then (cmd) => @term cmd
-
-  # PlatformIO Terminal integration
-
-  consumeTerminal: (term) ->
-    platformioTerm = term
-    atom.commands.add 'atom-workspace',
-      'julia-client:connect-platformio-terminal': -> disrequireClient -> juno.connection.terminal.runPlatformIOTerm()
-
-  runPlatformIOTerm: ->
-    @connectCommand().then (cmd) =>
-      platformioTerm.run([cmd])

@@ -1,20 +1,19 @@
 { CompositeDisposable, Disposable } = require 'atom'
 
 module.exports =
-  modules:     require './runtime/modules'
-  evaluation:  require './runtime/evaluation'
-  console:     require './runtime/console'
-  console2:    require './runtime/console2'
-  workspace:   require './runtime/workspace'
-  plots:       require './runtime/plots'
-  frontend:    require './runtime/frontend'
-  debugger:    require './runtime/debugger'
-  profiler:    require './runtime/profiler'
-  linter:      require './runtime/linter'
-  packages:    require './runtime/packages'
-  debuginfo:   require './runtime/debuginfo'
-  formatter:   require './runtime/formatter'
-  goto:        require './runtime/goto'
+  modules:    require './runtime/modules'
+  evaluation: require './runtime/evaluation'
+  console:    require './runtime/console'
+  workspace:  require './runtime/workspace'
+  plots:      require './runtime/plots'
+  frontend:   require './runtime/frontend'
+  debugger:   require './runtime/debugger'
+  profiler:   require './runtime/profiler'
+  linter:     require './runtime/linter'
+  packages:   require './runtime/packages'
+  debuginfo:  require './runtime/debuginfo'
+  formatter:  require './runtime/formatter'
+  goto:       require './runtime/goto'
 
   activate: ->
     @subs = new CompositeDisposable()
@@ -29,13 +28,13 @@ module.exports =
   consumeInk: (ink) ->
     @evaluation.ink = ink
     @frontend.ink = ink
-    for mod in [@console2, @debugger, @profiler, @linter, @goto]
+    for mod in [@console, @debugger, @profiler, @linter, @goto]
       mod.activate(ink)
-    for mod in [@console, @workspace, @plots]
+    for mod in [@workspace, @plots]
       mod.ink = ink
       mod.activate()
     @subs.add new Disposable(=>
-      mod.deactivate() for mod in [@console, @debugger, @profiler, @console2, @linter])
+      mod.deactivate() for mod in [@console, @debugger, @profiler, @linter])
 
   provideAutoComplete: ->
     require './runtime/completions'

@@ -4,9 +4,6 @@ client = require './client'
 
 junorc = client.import 'junorc', false
 
-# legacy
-basic  = require './process/basic'
-
 cycler = require './process/cycler'
 ssh = require './process/remote'
 # server = require './process/server'
@@ -31,9 +28,7 @@ module.exports =
       when 'Cycler' then cycler
       when 'Remote' then ssh
       when 'Basic'
-        switch atom.config.get('julia-client.consoleOptions.consoleStyle')
-          when 'REPL-based' then basic2
-          when 'Legacy' then basic
+        basic2
 
   activate: ->
     if process.platform == 'win32'

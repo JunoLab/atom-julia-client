@@ -38,11 +38,6 @@
         "*": "consumeInk"
       }
     },
-    "runInTerminal": {
-      "versions": {
-        "*": "consumeTerminal"
-      }
-    },
     "ftp-remote.getCurrentServerConfig": {
       "versions": {
         "0.1.0": "consumeGetServerConfig"
