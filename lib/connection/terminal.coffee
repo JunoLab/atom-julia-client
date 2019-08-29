@@ -6,7 +6,6 @@ client = require './client'
 {paths} = require '../misc'
 
 disrequireClient = (a, f) -> client.disrequire a, f
-platformioTerm = null
 
 module.exports =
 

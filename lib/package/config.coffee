@@ -17,11 +17,13 @@ config =
         description: '`Basic` spins up a local Julia process on demand and is the most
                       robust option. The `Cycler` will keep three local Julia processes
                       around at all times to reduce downtime when a process exits.
+                      `External Terminal` opens an external terminal and connects it to Juno,
+                      much like the `Connect Terminal` command.
                       `Remote` is similar to the `Start Remote Julia Process`
                       command but changes the default, so that evaluating a line
                       in the editor or pressing `Enter` in the REPL tab will start
                       a remote Julia process instead of a local one.'
-        enum: ['Basic', 'Cycler', 'Remote']
+        enum: ['Basic', 'Cycler', 'External Terminal', 'Remote']
         default: 'Cycler'
         radio: true
         order: 1

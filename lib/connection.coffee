@@ -1,4 +1,5 @@
 {time} = require './misc'
+externalTerminal = require './connection/terminal'
 
 metrics = ->
   if id = localStorage.getItem 'metrics.userId'
@@ -36,7 +37,11 @@ module.exports =
     if not @client.isActive() and not @booting
       @booting = true
       @client.setBootMode(provider)
-      p = @local.start(provider)
+      if provider is 'External Terminal'
+        p = externalTerminal.connectedRepl()
+      else
+        p = @local.start(provider)
+
       if @ink?
         @ink.Opener.allowRemoteFiles(provider == 'Remote')
       p.then =>

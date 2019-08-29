@@ -6,10 +6,7 @@ junorc = client.import 'junorc', false
 
 cycler = require './process/cycler'
 ssh = require './process/remote'
-# server = require './process/server'
-
-# new console
-basic2 = require './process/basic2'
+basic = require './process/basic2'
 
 module.exports =
   consumeGetServerConfig: (getconf) ->
@@ -27,8 +24,7 @@ module.exports =
     switch bootMode
       when 'Cycler' then cycler
       when 'Remote' then ssh
-      when 'Basic'
-        basic2
+      when 'Basic'  then basic
 
   activate: ->
     if process.platform == 'win32'
