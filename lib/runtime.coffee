@@ -1,4 +1,9 @@
 { CompositeDisposable, Disposable } = require 'atom'
+{ client } = require './connection'
+{ docpane, views } = require './ui'
+
+{ moduleinfo } = client.import({ rpc: ['moduleinfo'] })
+searchDoc = client.import('docs')
 
 module.exports =
   modules:    require './runtime/modules'
@@ -58,3 +63,21 @@ module.exports =
     datatipDisposable = datatipService.addProvider(datatipProvider)
     @subs.add(datatipDisposable)
     datatipDisposable
+
+  handleURI: (parsedURI) ->
+    query = parsedURI.query
+    if not query.word # for module info
+      moduleinfo({ mod: query.mod })
+        .then ({ doc, items }) =>
+          items.map (item) =>
+            docpane.processItem item
+          docpane.ensureVisible()
+          docpane.showDocument views.render(doc), items
+    else if query.word
+      editor = atom.workspace.getActiveTextEditor()
+      searchDoc({ word: query.word, mod: query.mod }).then (result) =>
+        if result.error then return
+        view = views.render result
+        docpane.processLinks view.getElementsByTagName 'a'
+        docpane.ensureVisible()
+        docpane.showDocument view, []

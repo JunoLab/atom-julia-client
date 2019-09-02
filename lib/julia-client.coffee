@@ -63,3 +63,5 @@ module.exports = JuliaClient =
   provideAutoComplete: -> @runtime.provideAutoComplete()
 
   provideHyperclick: -> @runtime.provideHyperclick()
+
+  handleURI: (parsedURI) -> @runtime.handleURI parsedURI

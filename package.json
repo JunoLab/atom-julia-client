@@ -72,6 +72,10 @@
       }
     }
   },
+  "uriHandler": {
+    "method": "handleURI",
+    "deferActivation": false
+  },
   "package-deps": [
     "ink"
   ]
