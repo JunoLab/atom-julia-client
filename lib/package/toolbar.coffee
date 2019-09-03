@@ -89,6 +89,11 @@ module.exports =
       callback: 'julia-client:open-workspace'
 
     @bar.addButton
+      icon: 'list-unordered'
+      tooltip: 'Show Outline'
+      callback: 'julia-client:open-outline-pane'
+
+    @bar.addButton
       icon: 'info'
       tooltip: 'Show Documentation Browser'
       callback: 'julia-client:open-documentation-browser'

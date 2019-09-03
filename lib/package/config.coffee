@@ -334,6 +334,26 @@ config =
                 default: 'no split'
                 radio: true
                 order: 2
+          outline:
+            title: 'Outline'
+            type: 'object'
+            order: 9
+            collapsed: true
+            properties:
+              defaultLocation:
+                title: 'Default location of Outline Pane'
+                type: 'string'
+                enum: ['center', 'left', 'bottom', 'right']
+                default: 'left'
+                radio: true
+                order: 1
+              split:
+                title: 'Splitting rule of Outline Pane'
+                type: 'string'
+                enum: ['no split', 'left', 'up', 'right', 'down']
+                default: 'down'
+                radio: true
+                order: 2
           defaultPanes:
             title: 'Default Panes'
             description: 'Specify panes that are opened by `Julia-Client:Restore-Default-Layout`.

@@ -93,6 +93,7 @@ module.exports =
       'julia-client:connect-external-process': -> disrequireClient -> juno.connection.messages.connectExternal()
       'julia-client:connect-terminal': -> disrequireClient -> juno.connection.terminal.connectedRepl()
       'julia-client:open-plot-pane': => @withInk -> juno.runtime.plots.open()
+      'julia-client:open-outline-pane': => @withInk -> juno.runtime.outline.open()
       'julia-client:open-workspace': => @withInk -> juno.runtime.workspace.open()
       'julia-client:restore-default-layout': -> juno.ui.layout.restoreDefaultLayout()
       'julia-client:close-juno-panes': -> juno.ui.layout.closePromises()
