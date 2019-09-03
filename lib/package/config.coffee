@@ -359,7 +359,7 @@ config =
             description: 'Specify panes that are opened by `Julia-Client:Restore-Default-Layout`.
                           The location and splitting rule of each pane follow the settings above.'
             type: 'object'
-            order: 9
+            order: 10
             properties:
               console:
                 title: 'Console'
@@ -391,6 +391,11 @@ config =
                 type: 'boolean'
                 default: false
                 order: 6
+              outline:
+                title: 'Outline'
+                type: 'boolean'
+                default: false
+                order: 7
           openDefaultPanesOnStartUp:
             title: 'Open Default Panes on Startup'
             description: 'If enabled, opens panes specified above on startup.
@@ -399,7 +404,7 @@ config =
                           to keep the deserialized layout.'
             type: 'boolean'
             default: true
-            order: 10
+            order: 11
   consoleOptions:
     type: 'object'
     order: 4
