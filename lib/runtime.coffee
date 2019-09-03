@@ -9,6 +9,7 @@ module.exports =
   frontend:   require './runtime/frontend'
   debugger:   require './runtime/debugger'
   profiler:   require './runtime/profiler'
+  outline:    require './runtime/outline'
   linter:     require './runtime/linter'
   packages:   require './runtime/packages'
   debuginfo:  require './runtime/debuginfo'
@@ -28,13 +29,13 @@ module.exports =
   consumeInk: (ink) ->
     @evaluation.ink = ink
     @frontend.ink = ink
-    for mod in [@console, @debugger, @profiler, @linter, @goto]
+    for mod in [@console, @debugger, @profiler, @linter, @goto, @outline]
       mod.activate(ink)
     for mod in [@workspace, @plots]
       mod.ink = ink
       mod.activate()
     @subs.add new Disposable(=>
-      mod.deactivate() for mod in [@console, @debugger, @profiler, @linter])
+      mod.deactivate() for mod in [@console, @debugger, @profiler, @linter, @outline])
 
   provideAutoComplete: ->
     require './runtime/completions'
