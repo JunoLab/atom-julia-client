@@ -2,21 +2,21 @@
 
 module.exports =
   show: (xs, {active, emptyMessage, allowCustom} = {}) ->
-    @selector ?= new SelectListView
-    @selector.addClass('command-palette')
-    @selector.addClass('julia-client-selector')
-    @selector.list.addClass('mark-active') if active
-    @selector.getEmptyMessage = () => emptyMessage or ''
+    selector = new SelectListView
+    selector.addClass('command-palette')
+    selector.addClass('julia-clientselector')
+    selector.list.addClass('mark-active') if active
+    selector.getEmptyMessage = () => emptyMessage or ''
 
-    @selector.setItems []
-    @selector.storeFocusedElement()
-    @selector.viewForItem = (item) =>
+    selector.setItems []
+    selector.storeFocusedElement()
+    selector.viewForItem = (item) =>
       name = item
       if item instanceof Object
         name = item.primary
       view = document.createElement 'li'
       view.classList.add 'active' if item is active
-      primary = @ink.matchHighlighter.highlightMatches(name, @selector.getFilterQuery(), 0)
+      primary = @ink.matchHighlighter.highlightMatches(name, selector.getFilterQuery(), 0)
       view.appendChild(primary)
       if item.secondary
         view.classList.add('two-lines')
@@ -28,36 +28,35 @@ module.exports =
         view.appendChild(secondary)
       view
 
-    panel = atom.workspace.addModalPanel(item: @selector)
-    @selector.focusFilterEditor()
+    panel = atom.workspace.addModalPanel(item: selector)
+    selector.focusFilterEditor()
 
     confirmed = false
 
     new Promise (resolve, reject) =>
       if xs.constructor == Promise
-        @selector.setLoading "Loading..."
+        selector.setLoading "Loading..."
         xs.then (xs) =>
           if xs.length > 0 and xs[0] instanceof Object
-            @selector.getFilterKey = => 'primary'
-          @selector.setItems xs
+            selector.getFilterKey = => 'primary'
+          selector.setItems xs
         xs.catch (e) =>
           reject e
-          @selector.cancel()
+          selector.cancel()
       else
         if xs.length > 0 and xs[0] instanceof Object
-          @selector.getFilterKey = => 'primary'
-        @selector.setItems xs
+          selector.getFilterKey = => 'primary'
+        selector.setItems xs
 
-      @selector.confirmed = (item) =>
+      selector.confirmed = (item) =>
         confirmed = true
-        @selector.cancel()
+        selector.cancel()
         resolve item
-      @selector.cancelled = =>
+      selector.cancelled = =>
         panel.destroy()
-        @selector.restoreFocus()
-        query = @selector.getFilterQuery()
+        selector.restoreFocus()
+        query = selector.getFilterQuery()
         if not confirmed
-          console.log query
           if allowCustom and query.length > 0
             resolve(query)
           else
