@@ -16,6 +16,7 @@
     "etch": "*",
     "fuzzaldrin-plus": "^0.6.0",
     "physical-cpu-count": "*",
+    "semver": "^6.3.0",
     "ssh2": "^0.8.4",
     "underscore-plus": "*"
   },

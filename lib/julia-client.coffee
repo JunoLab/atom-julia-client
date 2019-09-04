@@ -5,6 +5,10 @@ config = require './package/config'
 menu = require './package/menu'
 settings = require './package/settings'
 toolbar = require './package/toolbar'
+semver = require 'semver'
+
+# IMPORTANT: Update this when a new ink version is required:
+INK_VERSION_COMPAT = "^0.11"
 
 module.exports = JuliaClient =
   misc:       require './misc'
@@ -28,7 +32,16 @@ module.exports = JuliaClient =
           setTimeout (=> @ui.layout.restoreDefaultLayout()), 150
 
   requireInk: (fn) ->
-    if atom.packages.isPackageLoaded "ink" then fn()
+    if atom.packages.isPackageLoaded("ink")
+      inkVersion = atom.packages.loadedPackages["ink"].metadata.version
+      if not atom.devMode and not semver.satisfies(inkVersion, INK_VERSION_COMPAT)
+        atom.notifications.addWarning "Potentially incompatible `ink` version detected.",
+          description: 'Please make sure to upgrade `ink` to a version compatible with `' +
+                        INK_VERSION_COMPAT + '`. Current version is `' + inkVersion + '`. ' +
+                        'If this is not the latest version, then install it manually with e.g. ' +
+                        '`apm install ink@x.y.z`.'
+          dismissable: true
+      fn()
     else
       require('atom-package-deps').install('julia-client')
         .then  -> fn()
