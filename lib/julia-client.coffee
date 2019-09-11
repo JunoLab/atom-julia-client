@@ -19,6 +19,7 @@ module.exports = JuliaClient =
   activate: (state) ->
     etch.setScheduler(atom.views)
     @requireInk =>
+      process.env['TERM'] = 'xterm-256color'
       commands.activate @
       x.activate() for x in [menu, @connection, @runtime]
       @ui.activate @connection.client
