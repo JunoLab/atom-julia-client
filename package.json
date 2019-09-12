@@ -78,6 +78,7 @@
     "deferActivation": false
   },
   "package-deps": [
-    "ink"
+    "ink",
+    "language-julia"
   ]
 }
