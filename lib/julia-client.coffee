@@ -18,12 +18,12 @@ module.exports = JuliaClient =
 
   activate: (state) ->
     etch.setScheduler(atom.views)
-    @requireInk =>
-      process.env['TERM'] = 'xterm-256color'
-      commands.activate @
-      x.activate() for x in [menu, @connection, @runtime]
-      @ui.activate @connection.client
+    process.env['TERM'] = 'xterm-256color'
+    commands.activate @
+    x.activate() for x in [menu, @connection, @runtime]
+    @ui.activate @connection.client
 
+    @requireDeps =>
       settings.updateSettings()
 
       if atom.config.get('julia-client.firstBoot')
@@ -32,29 +32,61 @@ module.exports = JuliaClient =
         if atom.config.get('julia-client.uiOptions.layouts.openDefaultPanesOnStartUp')
           setTimeout (=> @ui.layout.restoreDefaultLayout()), 150
 
-  requireInk: (fn) ->
-    if atom.packages.isPackageLoaded("ink")
-      inkVersion = atom.packages.loadedPackages["ink"].metadata.version
-      if not atom.devMode and not semver.satisfies(inkVersion, INK_VERSION_COMPAT)
-        atom.notifications.addWarning "Potentially incompatible `ink` version detected.",
-          description:
-            """
-            Please make sure to upgrade `ink` to a version compatible with `#{INK_VERSION_COMPAT}`.
-            The currently installed version is `#{inkVersion}`.
+  requireDeps: (fn) ->
+    isLoaded = atom.packages.isPackageLoaded("ink") and atom.packages.isPackageLoaded("language-julia")
 
-            If you cannot install an appropriate version through the `Packages` menu, open a terminal
-            and type in `apm install ink@x.y.z`, where `x.y.z` is satisfies `#{INK_VERSION_COMPAT}`.
-            """
-          dismissable: true
+    if isLoaded
       fn()
     else
       require('atom-package-deps').install('julia-client')
-        .then  -> fn()
-        .catch ->
-          atom.notifications.addError 'Installing the Ink package failed.',
-            detail: 'Julia Client requires the Ink package to run.
-                     Please install it manually from the settings view.'
+        .then  => @enableDeps fn
+        .catch (err) ->
+          console.error err
+          atom.notifications.addError 'Installing Juno\'s dependencies failed.',
+            detail: 'Juno requires the packages `ink` and `language-julia` to run.
+                     Please install them manually from the settings view.'
             dismissable: true
+
+  enableDeps: (fn) ->
+    isEnabled = atom.packages.isPackageLoaded("ink") and atom.packages.isPackageLoaded("language-julia")
+
+    if isEnabled
+      fn()
+    else
+      atom.packages.enablePackage('ink')
+      atom.packages.enablePackage('language-julia')
+
+      if atom.packages.isPackageLoaded("ink") and atom.packages.isPackageLoaded("language-julia")
+        atom.notifications.addSuccess "Automatically enabled Juno's dependencies.",
+          description:
+            """
+            Juno requires the `ink` and `language-julia` packages. We've automatically enabled them
+            for you.
+            """
+          dismissable: true
+
+        inkVersion = atom.packages.loadedPackages["ink"].metadata.version
+        if not atom.devMode and not semver.satisfies(inkVersion, INK_VERSION_COMPAT)
+          atom.notifications.addWarning "Potentially incompatible `ink` version detected.",
+            description:
+              """
+              Please make sure to upgrade `ink` to a version compatible with `#{INK_VERSION_COMPAT}`.
+              The currently installed version is `#{inkVersion}`.
+
+              If you cannot install an appropriate version through the `Packages` menu, open a terminal
+              and type in `apm install ink@x.y.z`, where `x.y.z` is satisfies `#{INK_VERSION_COMPAT}`.
+              """
+            dismissable: true
+
+        fn()
+      else
+        atom.notifications.addError "Failed to enable Juno's dependencies.",
+          description:
+            """
+            Juno requires the `ink` and `language-julia` packages. Please install and enable them
+            and restart Atom.
+            """
+          dismissable: true
 
   config: config
 
@@ -65,8 +97,7 @@ module.exports = JuliaClient =
     commands.ink = ink
     x.consumeInk ink for x in [@connection, @runtime, @ui]
 
-  consumeStatusBar: (bar) ->
-    @runtime.consumeStatusBar bar
+  consumeStatusBar: (bar) -> @runtime.consumeStatusBar bar
 
   consumeToolBar: (bar) -> toolbar.consumeToolBar bar
 
