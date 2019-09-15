@@ -64,7 +64,6 @@ module.exports =
       delete proc.events
 
   boot: (ipc) -> ipc.rpc 'ping'
-  console: (ipc) -> ipc.rpc 'evalrepl', {code: 'nothing'}
   completions: (ipc) -> ipc.rpc 'cacheCompletions', 'Main'
   repl: (ipc) -> ipc.rpc 'changemodule', {mod: 'Main'}
 
@@ -74,7 +73,7 @@ module.exports =
       .then (sock) =>
         return unless obj.cached
         ipc = new IPC sock
-        [@boot, @console, @completions, @repl].forEach (f) ->
+        [@boot, @completions, @repl].forEach (f) ->
           obj.init = obj.init.then ->
             if obj.cached then f ipc
         obj.init = obj.init

@@ -8,8 +8,8 @@ path = require 'path'
 {processLinks} = require '../ui/docs'
 workspace = require './workspace'
 modules = require './modules'
-{eval: evaluate, evalall, evalrepl, evalshow, cd, clearLazy} =
-    client.import rpc: ['eval', 'evalall', 'evalrepl', 'evalshow'], msg: ['cd', 'clearLazy']
+{eval: evaluate, evalall, evalshow, cd, clearLazy} =
+  client.import rpc: ['eval', 'evalall', 'evalshow'], msg: ['cd', 'clearLazy']
 searchDoc = client.import('docs')
 
 module.exports =
