@@ -20,6 +20,11 @@ module.exports =
       pending: atom.config.get('core.allowPendingPaneItems')
     })
 
+    client.handle versionwarning: (msg) ->
+      atom.notifications.addWarning "Outdated version of Atom.jl detected.",
+        description: msg
+        dismissable: true
+
     # Blink APIs
 
     client.handle

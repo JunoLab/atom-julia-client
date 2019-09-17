@@ -7,7 +7,7 @@ settings = require './package/settings'
 toolbar = require './package/toolbar'
 semver = require 'semver'
 
-# IMPORTANT: Update this when a new ink version is required:
+# TODO: Update me when tagging a new relase:
 INK_VERSION_COMPAT = "^0.11"
 
 module.exports = JuliaClient =
