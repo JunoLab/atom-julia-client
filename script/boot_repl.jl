@@ -26,7 +26,7 @@ if (VERSION > v"0.7-" ? Base.find_package("Atom") : Base.find_in_path("Atom")) =
 end
 
 # TODO: Update me when tagging a new relase:
-MIN_REQUIRED_ATOM_JL_VERSION = v"0.12.2"
+MIN_REQUIRED_ATOM_JL_VERSION = v"0.10.2"
 atom_outdated = false
 
 # check package versions:
