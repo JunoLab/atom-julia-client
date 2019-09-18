@@ -8,7 +8,10 @@ toolbar = require './package/toolbar'
 semver = require 'semver'
 
 # TODO: Update me when tagging a new relase:
-INK_VERSION_COMPAT = "^0.11"
+INK_VERSION_COMPAT  = "^0.11"
+
+INK_LINK            = '[`ink`](https://github.com/JunoLab/atom-ink)'
+LANGUAGE_JULIA_LINK = '[`language-julia`](https://github.com/JuliaEditorSupport/atom-language-julia)'
 
 module.exports = JuliaClient =
   misc:       require './misc'
@@ -43,8 +46,17 @@ module.exports = JuliaClient =
         .catch (err) ->
           console.error err
           atom.notifications.addError 'Installing Juno\'s dependencies failed.',
-            detail: 'Juno requires the packages `ink` and `language-julia` to run.
-                     Please install them manually from the settings view.'
+            description:
+              """
+              Juno requires the packages #{INK_LINK} and #{LANGUAGE_JULIA_LINK} to run.
+              Please install them manually via `File -> Settings -> Packages`,
+              or open a terminal and run
+
+                  apm install ink
+                  apm install language-julia
+
+              and then restart Atom.
+              """
             dismissable: true
 
   enableDeps: (fn) ->
@@ -60,8 +72,8 @@ module.exports = JuliaClient =
         atom.notifications.addSuccess "Automatically enabled Juno's dependencies.",
           description:
             """
-            Juno requires the `ink` and `language-julia` packages. We've automatically enabled them
-            for you.
+            Juno requires the #{INK_LINK} and #{LANGUAGE_JULIA_LINK} packages.
+            We've automatically enabled them for you.
             """
           dismissable: true
 
@@ -70,11 +82,15 @@ module.exports = JuliaClient =
           atom.notifications.addWarning "Potentially incompatible `ink` version detected.",
             description:
               """
-              Please make sure to upgrade `ink` to a version compatible with `#{INK_VERSION_COMPAT}`.
+              Please make sure to upgrade #{INK_LINK} to a version compatible with `#{INK_VERSION_COMPAT}`.
               The currently installed version is `#{inkVersion}`.
 
-              If you cannot install an appropriate version through the `Packages` menu, open a terminal
-              and type in `apm install ink@x.y.z`, where `x.y.z` is satisfies `#{INK_VERSION_COMPAT}`.
+              If you cannot install an appropriate version via via `File -> Settings -> Packages`,
+              open a terminal and run
+
+                  apm install ink@x.y.z
+
+              where `x.y.z` is satisfies `#{INK_VERSION_COMPAT}`.
               """
             dismissable: true
 
@@ -83,8 +99,14 @@ module.exports = JuliaClient =
         atom.notifications.addError "Failed to enable Juno's dependencies.",
           description:
             """
-            Juno requires the `ink` and `language-julia` packages. Please install and enable them
-            and restart Atom.
+            Juno requires the #{INK_LINK} and #{LANGUAGE_JULIA_LINK} packages.
+            Please install them manually via `File -> Settings -> Packages`,
+            or open a terminal and run
+
+                apm install ink
+                apm install language-julia
+
+            and then restart Atom.
             """
           dismissable: true
 
