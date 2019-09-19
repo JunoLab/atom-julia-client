@@ -7,8 +7,16 @@ Any global commands should either be non-default or, ideally, prefixed with `C-J
 
 ## Common
 # Debug operations
-'atom-text-editor[data-grammar="source julia"]':
+'.platform-darwin atom-text-editor[data-grammar="source julia"]:not(.mini),
+  ink-terminal.julia-terminal,
+  .ink-debugger-container':
+  'shift-f5': 'julia-debug:stop-debugging'
+  'f8': 'julia-debug:continue'
+  'shift-f8': 'julia-debug:step-to-selected-line'
+  'f9': 'julia-debug:toggle-breakpoint'
+  'shift-f9': 'julia-debug:toggle-conditional-breakpoint'
   'f10': 'julia-debug:step-to-next-expression'
+  'shift-f10': 'julia-debug:step-to-next-line'
   'f11': 'julia-debug:step-into-function'
   'shift-f11': 'julia-debug:finish-function'
 
@@ -27,8 +35,6 @@ Any global commands should either be non-default or, ideally, prefixed with `C-J
   'cmd-j cmd-d': 'julia-client:show-documentation'
   'cmd-j cmd-m': 'julia-client:set-working-module'
   'cmd-j cmd-f': 'julia-client:format-code'
-  'ctrl-x': 'julia-debug:toggle-breakpoint'
-  'ctrl-shift-x': 'julia-debug:toggle-conditional-breakpoint'
 
 # Julia REPL
 '.platform-darwin .julia-terminal':
