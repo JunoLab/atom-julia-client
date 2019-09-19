@@ -7,7 +7,9 @@ Any global commands should either be non-default or, ideally, prefixed with `C-J
 
 ## Common
 # Debug operations
-'atom-text-editor[data-grammar="source julia"]':
+'.platform-darwin atom-text-editor[data-grammar="source julia"]:not(.mini),
+  ink-terminal.julia-terminal,
+  .ink-debugger-container':
   'shift-f5': 'julia-debug:stop-debugging'
   'f8': 'julia-debug:continue'
   'shift-f8': 'julia-debug:step-to-selected-line'
