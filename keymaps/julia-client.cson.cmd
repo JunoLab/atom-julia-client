@@ -5,7 +5,6 @@ register only in Julia-scoped places (e.g. Julia-syntax buffer, console)
 Any global commands should either be non-default or, ideally, prefixed with `C-J`.
 ###
 
-## Common
 # Debug operations
 '.platform-darwin atom-text-editor[data-grammar="source julia"]:not(.mini),
   ink-terminal.julia-terminal,
@@ -20,7 +19,6 @@ Any global commands should either be non-default or, ideally, prefixed with `C-J
   'f11': 'julia-debug:step-into-function'
   'shift-f11': 'julia-debug:finish-function'
 
-## macOS
 # Julia atom-text-editor
 '.platform-darwin atom-text-editor[data-grammar="source julia"]':
   'cmd-enter': 'julia-client:run-block'
