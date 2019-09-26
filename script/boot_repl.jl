@@ -43,7 +43,7 @@ try
         atom_outdated = """
           Please upgrade Atom.jl to at least version `$(MIN_REQUIRED_ATOM_JL_VERSION)` with e.g. `using Pkg; Pkg.update()`.
 
-          If Juno's integrated REPL is non-functional as a consequence of an old version of Atom.jl you will
+          If the integrated REPL is non-functional as a consequence of an old version of Atom.jl you will
           need to update in a terminal, which you can open with e.g. the `Julia Client: Open A Repl` command.
         """
       end
