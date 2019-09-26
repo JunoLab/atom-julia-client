@@ -18,8 +18,8 @@ config =
                       robust option. The `Cycler` will keep three local Julia processes
                       around at all times to reduce downtime when a process exits.
                       `External Terminal` opens an external terminal and connects it to Juno,
-                      much like the `Connect Terminal` command.
-                      `Remote` is similar to the `Start Remote Julia Process`
+                      much like the `Julia Client: Connect Terminal` command.
+                      `Remote` is similar to the `Julia Client: Start Remote Julia Process`
                       command but changes the default, so that evaluating a line
                       in the editor or pressing `Enter` in the REPL tab will start
                       a remote Julia process instead of a local one.'
@@ -86,8 +86,8 @@ config =
         title: 'Auto-Completion Suggestion Priority'
         description:
           '''
-          Specify the sort order of Auto-completion suggestion from Julia-Client.
-          Note the default providers like snippets have priority of 1.
+          Specify the sort order of Auto-completion suggestions provided by Juno.
+          Note the default providers like snippets have priority of `1`.
           Requires Atom restart to take an effect.
           '''
         type: 'integer'
@@ -356,7 +356,7 @@ config =
                 order: 2
           defaultPanes:
             title: 'Default Panes'
-            description: 'Specify panes that are opened by `Julia-Client:Restore-Default-Layout`.
+            description: 'Specify panes that are opened by `Julia Client: Restore Default Layout`.
                           The location and splitting rule of each pane follow the settings above.'
             type: 'object'
             order: 10
