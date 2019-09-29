@@ -5,7 +5,9 @@
 
 modules = require './modules'
 
-{workspace, clearLazy} = client.import rpc: 'workspace', msg: 'clearLazy'
+{ workspace, goto, clearLazy } = client.import rpc: ['workspace', 'goto'], msg: 'clearLazy'
+
+grammar = atom.grammars.grammarForScopeName 'source.julia'
 
 module.exports =
   activate: ->
@@ -29,11 +31,26 @@ module.exports =
       for {items} in ws
         for item in items
           item.value = views.render item.value, {registerLazy}
+          item.onClick = @onClick(item.name)
       @ws.setItems ws
     p.catch (err) ->
       if err isnt 'disconnected'
         console.error 'Error refreshing workspace'
         console.error err
+
+  onClick: (name) ->
+    () =>
+      editor = atom.workspace.getActiveTextEditor()
+      path = if editor.getGrammar() == grammar then editor.getPath() else undefined
+      goto
+        word: name,
+        mod: @mod,
+        path: path, # as a fallback path
+        onlytoplevel: true
+      .then (symbols) =>
+        return if symbols.error
+        @ink.goto.goto symbols,
+          pending: atom.config.get('core.allowPendingPaneItems')
 
   create: ->
     @ws = @ink.Workspace.fromId 'julia'
