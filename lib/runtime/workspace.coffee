@@ -7,8 +7,6 @@ modules = require './modules'
 
 { workspace, goto, clearLazy } = client.import rpc: ['workspace', 'goto'], msg: 'clearLazy'
 
-grammar = atom.grammars.grammarForScopeName 'source.julia'
-
 module.exports =
   activate: ->
     @create()
@@ -40,12 +38,9 @@ module.exports =
 
   onClick: (name) ->
     () =>
-      editor = atom.workspace.getActiveTextEditor()
-      path = if editor.getGrammar() == grammar then editor.getPath() else undefined
       goto
         word: name,
         mod: @mod,
-        path: path, # as a fallback path
         onlytoplevel: true
       .then (symbols) =>
         return if symbols.error
