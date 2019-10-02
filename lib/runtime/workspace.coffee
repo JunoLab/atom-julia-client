@@ -5,7 +5,7 @@
 
 modules = require './modules'
 
-{ workspace, goto, clearLazy } = client.import rpc: ['workspace', 'goto'], msg: 'clearLazy'
+{ workspace, gotosymbol: gotoSymbol, clearLazy } = client.import rpc: ['workspace', 'gotosymbol'], msg: 'clearLazy'
 
 module.exports =
   activate: ->
@@ -38,10 +38,9 @@ module.exports =
 
   onClick: (name) ->
     () =>
-      goto
+      gotoSymbol
         word: name,
-        mod: @mod,
-        onlytoplevel: true
+        mod: @mod
       .then (symbols) =>
         return if symbols.error
         @ink.goto.goto symbols,
