@@ -37,18 +37,18 @@ module.exports =
 
     @bar.addButton
       iconset: 'ion'
-      icon: 'planet'
+      icon: 'md-planet'
       tooltip: 'Start Remote Julia Process'
       callback: 'julia-client:start-remote-julia-process'
 
     @bar.addButton
-      icon: 'pause'
+      icon: 'md-pause'
       iconset: 'ion'
       tooltip: 'Interrupt Julia'
       callback: 'julia-client:interrupt-julia'
 
     @bar.addButton
-      icon: 'stop'
+      icon: 'md-square'
       iconset: 'ion'
       tooltip: 'Stop Julia'
       callback: 'julia-client:kill-julia'
@@ -63,7 +63,7 @@ module.exports =
       callback: 'julia-client:run-and-move'
 
     @bar.addButton
-      icon: 'play'
+      icon: 'md-play'
       iconset: 'ion'
       tooltip: 'Run All'
       callback: 'julia-client:run-all'
