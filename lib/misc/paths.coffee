@@ -70,11 +70,14 @@ module.exports =
     if atom.config.get('julia-client.juliaOptions.persistWorkingDir')
       return new Promise (resolve) =>
         p = atom.config.get('julia-client.juliaOptions.workingDir')
-        fs.stat p, (err, stats) =>
-          if err
-            resolve(@atomProjectDir())
-          else
-            resolve(p)
+        try
+          fs.stat p, (err, stats) =>
+            if err
+              resolve(@atomProjectDir())
+            else
+              resolve(p)
+        catch err
+          resolve(@atomProjectDir())
     else
       return @atomProjectDir()
 
@@ -86,12 +89,18 @@ module.exports =
     new Promise (resolve) ->
       # use the first open project folder (or its parent folder for files) if
       # it is valid
-      fs.stat dirs[0].path, (err, stats) =>
-        if err? then return resolve ws
-        if stats.isFile()
-          resolve path.dirname dirs[0].path
-        else
-          resolve dirs[0].path
+      try
+        fs.stat dirs[0].path, (err, stats) =>
+          if err?
+            resolve(ws)
+            return
+
+          if stats.isFile()
+            resolve path.dirname dirs[0].path
+          else
+            resolve dirs[0].path
+      catch err
+        resolve(ws)
 
   packageDir: (s...) ->
     packageRoot = path.resolve __dirname, '..', '..'
