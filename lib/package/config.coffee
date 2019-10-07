@@ -115,6 +115,11 @@ config =
           {value:'console', description:'Display results in the console'}
         ]
         order: 1
+      scrollToResult:
+        title: 'Scroll to Inline Results'
+        type: 'boolean'
+        default: false
+        order: 2
       docsDisplayMode:
         title: 'Documentation Display Mode'
         type: 'string'
@@ -123,13 +128,7 @@ config =
           {value: 'inline', description: 'Show documentation in the editor'}
           {value: 'pane', description: 'Show documentation in the documentation pane'}
         ]
-        order: 2
-      # notifications:
-      #   title: 'Notifications'
-      #   type: 'boolean'
-      #   default: true
-      #   description: 'Enable notifications for evaluation.'
-      #   order: 3
+        order: 3
       errorNotifications:
         title: 'Error Notifications'
         type: 'boolean'

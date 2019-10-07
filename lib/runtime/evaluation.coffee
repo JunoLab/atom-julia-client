@@ -29,17 +29,22 @@ module.exports =
   eval: ({move, cell}={}) ->
     {editor, mod, edpath} = @_currentContext()
     selector = if cell? then cells else blocks
+    # global options
+    resultsDisplayMode = atom.config.get('julia-client.uiOptions.resultsDisplayMode')
+    errorInRepl = atom.config.get('julia-client.uiOptions.errorInRepl')
+    scrollToResult = atom.config.get('julia-client.uiOptions.scrollToResult')
+
     Promise.all selector.get(editor).map ({range, line, text, selection}) =>
       selector.moveNext editor, selection, range if move
       [[start], [end]] = range
       @ink.highlight editor, start, end
-      rtype = if cell? then "block" else atom.config.get 'julia-client.uiOptions.resultsDisplayMode'
+      rtype = if cell? then "block" else resultsDisplayMode
       if rtype is 'console'
         evalshow({text, line: line+1, mod, path: edpath})
       else
         r = null
-        setTimeout (=> r ?= new @ink.Result editor, [start, end], {type: rtype, scope: 'julia'}), 0.1
-        evaluate({text, line: line+1, mod, path: edpath, errorInRepl: atom.config.get('julia-client.uiOptions.errorInRepl')})
+        setTimeout (=> r ?= new @ink.Result editor, [start, end], {type: rtype, scope: 'julia', goto: scrollToResult}), 0.1
+        evaluate({text, line: line+1, mod, path: edpath, errorInRepl})
           .catch -> r?.destroy()
           .then (result) =>
             if not result?
@@ -48,14 +53,16 @@ module.exports =
               return
             error = result.type == 'error'
             view = if error then result.view else result
-            if not r? or r.isDestroyed then r = new @ink.Result editor, [start, end], {type: rtype, scope: 'julia'}
+            if not r? or r.isDestroyed then r = new @ink.Result editor, [start, end], {type: rtype, scope: 'julia', goto: scrollToResult}
             registerLazy = (id) ->
               r.onDidDestroy client.withCurrent -> clearLazy [id]
               editor.onDidDestroy client.withCurrent -> clearLazy id
             r.setContent views.render(view, {registerLazy}), {error}
-            if error and result.highlights?
-              @_showError r, result.highlights
-            atom.beep() if error
+            if error
+              atom.beep() if error
+              @ink.highlight editor, start, end, 'error-line'
+              if result.highlights?
+                @_showError r, result.highlights
             notifications.show "Evaluation Finished"
             workspace.update()
             result
