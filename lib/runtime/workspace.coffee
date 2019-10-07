@@ -5,7 +5,7 @@
 
 modules = require './modules'
 
-{workspace, clearLazy} = client.import rpc: 'workspace', msg: 'clearLazy'
+{ workspace, gotosymbol: gotoSymbol, clearLazy } = client.import rpc: ['workspace', 'gotosymbol'], msg: 'clearLazy'
 
 module.exports =
   activate: ->
@@ -29,11 +29,23 @@ module.exports =
       for {items} in ws
         for item in items
           item.value = views.render item.value, {registerLazy}
+          item.onClick = @onClick(item.name)
       @ws.setItems ws
     p.catch (err) ->
       if err isnt 'disconnected'
         console.error 'Error refreshing workspace'
         console.error err
+
+  onClick: (name) ->
+    () =>
+      mod = if @mod == modules.follow then modules.current() else (@mod or 'Main')
+      gotoSymbol
+        word: name,
+        mod: mod
+      .then (symbols) =>
+        return if symbols.error
+        @ink.goto.goto symbols,
+          pending: atom.config.get('core.allowPendingPaneItems')
 
   create: ->
     @ws = @ink.Workspace.fromId 'julia'
