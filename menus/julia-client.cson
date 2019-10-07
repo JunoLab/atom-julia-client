@@ -19,3 +19,6 @@
 
     {type: 'separator'}
   ]
+  '.tree-view li.directory': [
+    { label: 'Juno: Work in Folder', command: 'julia-client:work-in-current-folder' }
+  ]

@@ -99,10 +99,20 @@ module.exports =
       atom.config.set('julia-client.juliaOptions.workingDir', dir)
     cd(dir)
 
-  cdHere: ->
-    file = client.editorPath(atom.workspace.getActiveTextEditor())
-    if !file then atom.notifications.addError 'This file has no path.'
-    @_cd path.dirname(file)
+  cdHere: (el) ->
+    # invoked from tree-view context menu
+    dirEl = el.closest('.directory')
+    if dirEl
+      pathEl = dirEl.querySelector('[data-path]')
+      if pathEl
+        path = pathEl.dataset.path
+        return @_cd(path)
+    # invoked from normal command usage
+    file = client.editorPath(atom.workspace.getCenter().getActiveTextEditor())
+    if !file
+      atom.notifications.addError 'This file has no path.'
+    else
+      @_cd path.dirname(file)
 
   cdProject: ->
     dirs = atom.project.getPaths()

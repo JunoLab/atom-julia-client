@@ -121,9 +121,9 @@ module.exports =
         boot()
         juno.runtime.debuginfo()
 
-      'julia-client:work-in-file-folder': ->
+      'julia-client:work-in-current-folder': (ev) ->
         requireClient 'change working folder', ->
-          juno.runtime.evaluation.cdHere()
+          juno.runtime.evaluation.cdHere(ev.target)
       'julia-client:work-in-project-folder': ->
         requireClient 'change working folder', ->
           juno.runtime.evaluation.cdProject()
