@@ -38,9 +38,10 @@ module.exports =
 
   onClick: (name) ->
     () =>
+      mod = if @mod == modules.follow then modules.current() else (@mod or 'Main')
       gotoSymbol
         word: name,
-        mod: @mod
+        mod: mod
       .then (symbols) =>
         return if symbols.error
         @ink.goto.goto symbols,
