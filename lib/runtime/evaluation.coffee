@@ -39,7 +39,7 @@ module.exports =
       else
         r = null
         setTimeout (=> r ?= new @ink.Result editor, [start, end], {type: rtype, scope: 'julia'}), 0.1
-        evaluate({text, line: line+1, mod, path: edpath})
+        evaluate({text, line: line+1, mod, path: edpath, errorInRepl: atom.config.get('julia-client.uiOptions.errorInRepl')})
           .catch -> r?.destroy()
           .then (result) =>
             if not result?

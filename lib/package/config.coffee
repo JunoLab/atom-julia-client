@@ -135,43 +135,49 @@ config =
         type: 'boolean'
         default: true
         description: 'When evaluating a script, show errors in a notification as
-                      well as in the console.'
+                      well as in the REPL.'
         order: 4
+      errorInRepl:
+        title: 'Show Errors in REPL (Inline Evaluation)'
+        type: 'boolean'
+        default: false
+        description: 'If enabled, Juno always shows errors in the REPL when using inline evaluation.'
+        order: 5
       enableMenu:
         title: 'Enable Menu'
         type: 'boolean'
         default: false
         description: 'Show a Julia menu in the menu bar (requires restart).'
-        order: 5
+        order: 6
       enableToolBar:
         title: 'Enable Toolbar'
         type: 'boolean'
         default: false
         description: 'Show Julia icons in the tool bar (requires restart).'
-        order: 6
+        order: 7
       usePlotPane:
         title: 'Enable Plot Pane'
         type: 'boolean'
         description: 'Show plots in Atom.'
         default: true
-        order: 7
+        order: 8
       openNewEditorWhenDebugging:
         title: 'Open New Editor When Debugging'
         type: 'boolean'
         default: false
         description: 'Opens a new editor tab when stepping into a new file instead
                       of reusing the current one (requires restart).'
-        order: 8
+        order: 9
       cellDelimiter:
         title: 'Cell Delimiter'
         type: 'array'
         default: ['##', '#---', '#%%', '# %%']
         description: 'Regular expressions for determining cell delimiters.'
-        order: 9
+        order: 10
       layouts:
         title: 'Layout Options'
         type: 'object'
-        order: 10
+        order: 11
         collapsed: true
         properties:
           console:
