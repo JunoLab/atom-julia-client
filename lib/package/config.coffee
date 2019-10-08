@@ -367,7 +367,7 @@ config =
             order: 10
             properties:
               console:
-                title: 'Console'
+                title: 'REPL'
                 type: 'boolean'
                 default: true
                 order: 1
