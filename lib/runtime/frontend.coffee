@@ -14,6 +14,8 @@ module.exports =
   activate: ->
     client.handle select: (items) -> selector.show items
 
+    client.handle input: () -> selector.show([], {allowCustom: true})
+
     client.handle syntaxcolors: (selectors) -> colors.getColors(selectors)
 
     client.handle openFile: (file, line) => @ink?.Opener.open(file, line, {
