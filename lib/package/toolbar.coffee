@@ -80,8 +80,8 @@ module.exports =
 
     @bar.addButton
       icon: 'terminal'
-      tooltip: 'Show Console'
-      callback: 'julia-client:open-console'
+      tooltip: 'Show REPL'
+      callback: 'julia-client:open-REPL'
 
     @bar.addButton
       icon: 'book'
@@ -100,7 +100,7 @@ module.exports =
 
     @bar.addButton
       icon: 'graph'
-      tooltip: 'Show Plots'
+      tooltip: 'Show Plot Pane'
       callback: 'julia-client:open-plot-pane'
 
     @bar.addButton

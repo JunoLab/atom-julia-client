@@ -36,7 +36,7 @@ module.exports =
         description:
           """
           Julia's first run will take a couple of minutes.
-          See the console below for progress.
+          See the REPL below for progress.
           """
         dismissable: true
       @openConsole()
@@ -47,7 +47,7 @@ module.exports =
         description:
           """
           Julia's first run will take a couple of minutes.
-          See the console below for progress.
+          See the REPL below for progress.
           """
         dismissable: true
       @openConsole()
@@ -58,14 +58,14 @@ module.exports =
         description:
           """
           Success! Juno is set up and ready to roll.
-          Try entering `2+2` in the console below.
+          Try entering `2+2` in the REPL below.
           """
         dismissable: true
       @openConsole()
 
   openConsole: ->
     atom.commands.dispatch atom.views.getView(atom.workspace),
-      'julia-client:open-console'
+      'julia-client:open-REPL'
 
   jlNotFound: (path, details = '') ->
     atom.notifications.addError "Julia could not be started.",

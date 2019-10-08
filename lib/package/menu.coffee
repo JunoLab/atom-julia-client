@@ -26,9 +26,12 @@ module.exports =
       {label: 'Start Remote Julia Process', command: 'julia-client:start-remote-julia-process'}
       {label: 'Interrupt Julia', command: 'julia-client:interrupt-julia'}
       {label: 'Stop Julia', command: 'julia-client:kill-julia'}
-      {label: 'Open Console', command: 'julia-client:open-console'}
-      {label: 'Clear Console', command: 'julia-client:clear-console'}
-      {label: 'Open REPL', command: 'julia-client:open-a-repl'}
+
+      {type: 'separator'}
+
+      {label: 'Open REPL', command: 'julia-client:open-REPL'}
+      {label: 'Clear REPL', command: 'julia-client:clear-REPL'}
+      {label: 'Open External REPL', command: 'julia-client:open-external-repl'}
       {
         label: 'Working Directory'
         submenu: [
@@ -38,12 +41,7 @@ module.exports =
           {label: 'Select...', command: 'julia-client:select-working-folder'}
         ]
       }
-      {
-        label: 'Working Module'
-        submenu: [
-          {label: 'Select...', command: 'julia-client:select-working-module'}
-        ]
-      }
+      {label: 'Select Working Module', command: 'julia-client:select-working-module'}
 
       {type: 'separator'}
 
