@@ -31,7 +31,7 @@ module.exports =
 
       {label: 'Open REPL', command: 'julia-client:open-REPL'}
       {label: 'Clear REPL', command: 'julia-client:clear-REPL'}
-      {label: 'Open External REPL', command: 'julia-client:open-external-repl'}
+      {label: 'Open External REPL', command: 'julia-client:open-external-REPL'}
       {
         label: 'Working Directory'
         submenu: [

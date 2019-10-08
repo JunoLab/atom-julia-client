@@ -83,7 +83,7 @@ module.exports =
 
     # atom-work-space
     @subs.add atom.commands.add 'atom-workspace',
-      'julia-client:open-external-repl': -> juno.connection.terminal.repl()
+      'julia-client:open-external-REPL': -> juno.connection.terminal.repl()
       'julia-client:start-julia': -> disrequireClient 'boot Julia', -> boot()
       'julia-client:start-remote-julia-process': -> disrequireClient 'boot a remote Julia process', -> juno.connection.bootRemote()
       'julia-client:kill-julia': -> juno.connection.client.kill()

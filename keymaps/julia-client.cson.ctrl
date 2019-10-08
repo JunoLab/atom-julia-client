@@ -47,7 +47,7 @@ Any global commands should either be non-default or, ideally, prefixed with `C-J
 # atom-workspace
 '.platform-win32 atom-workspace,
  .platform-linux atom-workspace':
-  'ctrl-j ctrl-r': 'julia-client:open-external-repl'
+  'ctrl-j ctrl-r': 'julia-client:open-external-REPL'
   'ctrl-j ctrl-o': 'julia-client:open-REPL'
   'ctrl-j ctrl-c': 'julia-client:clear-REPL'
   'ctrl-j ctrl-s': 'julia-client:start-julia'
