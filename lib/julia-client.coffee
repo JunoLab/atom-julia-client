@@ -8,7 +8,7 @@ toolbar = require './package/toolbar'
 semver = require 'semver'
 
 # TODO: Update me when tagging a new relase:
-INK_VERSION_COMPAT  = "^0.11"
+INK_VERSION_COMPAT  = "^0.11.2"
 
 INK_LINK            = '[`ink`](https://github.com/JunoLab/atom-ink)'
 LANGUAGE_JULIA_LINK = '[`language-julia`](https://github.com/JuliaEditorSupport/atom-language-julia)'
