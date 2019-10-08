@@ -41,9 +41,9 @@ Any global commands should either be non-default or, ideally, prefixed with `C-J
 
 # atom-workspace
 '.platform-darwin atom-workspace':
-  'cmd-j cmd-r': 'julia-client:open-a-repl'
-  'cmd-j cmd-o': 'julia-client:open-console'
-  'cmd-j cmd-c': 'julia-client:clear-console'
+  'cmd-j cmd-r': 'julia-client:open-external-repl'
+  'cmd-j cmd-o': 'julia-client:open-REPL'
+  'cmd-j cmd-c': 'julia-client:clear-REPL'
   'cmd-j cmd-s': 'julia-client:start-julia'
   'cmd-j cmd-k': 'julia-client:kill-julia'
   'cmd-j cmd-p': 'julia-client:open-plot-pane'

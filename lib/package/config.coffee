@@ -112,7 +112,7 @@ config =
         enum: [
           {value:'inline', description:'Float results next to code'}
           {value:'block', description:'Display results under code'}
-          {value:'console', description:'Display results in the console'}
+          {value:'console', description:'Display results in the REPL'}
         ]
         order: 1
       scrollToResult:
@@ -180,20 +180,20 @@ config =
         collapsed: true
         properties:
           console:
-            title: 'Console'
+            title: 'REPL'
             type: 'object'
             order: 1
             collapsed: true
             properties:
               defaultLocation:
-                title: 'Default location of Console Pane'
+                title: 'Default location of REPL Pane'
                 type: 'string'
                 enum: ['center', 'left', 'bottom', 'right']
                 default: 'bottom'
                 radio: true
                 order: 1
               split:
-                title: 'Splitting rule of Console Pane'
+                title: 'Splitting rule of REPL Pane'
                 type: 'string'
                 enum: ['no split', 'left', 'up', 'right', 'down']
                 default: 'no split'
@@ -412,6 +412,7 @@ config =
             order: 11
   consoleOptions:
     type: 'object'
+    title: 'Terminal Options'
     order: 4
     collapsed: true
     properties:
