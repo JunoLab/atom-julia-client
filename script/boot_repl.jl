@@ -1,4 +1,5 @@
 let
+# NOTE: Single quotes in this file break remote execution. So dont use them.
 if VERSION > v"0.7-"
   port = parse(Int, popfirst!(ARGS))
 else
