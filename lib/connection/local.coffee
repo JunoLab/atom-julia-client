@@ -6,7 +6,7 @@ junorc = client.import 'junorc', false
 
 cycler = require './process/cycler'
 ssh = require './process/remote'
-basic = require './process/basic2'
+basic = require './process/basic'
 
 module.exports =
   consumeGetServerConfig: (getconf) ->

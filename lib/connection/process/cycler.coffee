@@ -1,11 +1,11 @@
 {isEqual} = require 'underscore-plus'
-basic2 = require './basic2'
+basic = require './basic'
 
 IPC = require '../ipc'
 
 module.exports =
   provider: ->
-    basic2
+    basic
 
   cacheLength: 1
 
