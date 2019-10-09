@@ -510,6 +510,15 @@ config =
     type: 'array'
     default: ['source.julia', 'source.weave.md', 'source.weave.latex']
     order: 6
+  disableProxy:
+    title: 'Disable System Proxy for Child Processes'
+    description:
+      'This unsets the `HTTP_PROXY` and `HTTPS_PROXY` environment variables in all integrated
+       terminals. Try this option if you\'re experiencing issues when installing Julia packages
+       in Juno.'
+    type: 'boolean'
+    default: false
+    order: 7
 
   firstBoot:
     type: 'boolean'
