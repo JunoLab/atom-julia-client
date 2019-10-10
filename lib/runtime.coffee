@@ -15,6 +15,7 @@ module.exports =
   debuginfo:  require './runtime/debuginfo'
   formatter:  require './runtime/formatter'
   goto:       require './runtime/goto'
+  refactor:   require './runtime/refactor'
 
   activate: ->
     @subs = new CompositeDisposable()
@@ -29,7 +30,7 @@ module.exports =
   consumeInk: (ink) ->
     @evaluation.ink = ink
     @frontend.ink = ink
-    for mod in [@console, @debugger, @profiler, @linter, @goto, @outline]
+    for mod in [@console, @debugger, @profiler, @linter, @goto, @outline, @refactor]
       mod.activate(ink)
     for mod in [@workspace, @plots]
       mod.ink = ink

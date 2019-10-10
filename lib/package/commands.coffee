@@ -52,6 +52,10 @@ module.exports =
           @withInk ->
             boot()
             juno.runtime.evaluation.toggleDocs()
+        'julia-client:rename-refactor': =>
+          @withInk ->
+            boot()
+            juno.runtime.refactor.refactor()
         # @NOTE: `'clear-workspace'` is now not handled by Atom.jl
         # 'julia-client:reset-workspace': =>
         #   requireClient 'reset the workspace', ->
