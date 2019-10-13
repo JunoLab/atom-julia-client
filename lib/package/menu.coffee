@@ -52,6 +52,7 @@ module.exports =
       {type: 'separator'}
 
       {label: 'Open Workspace', command: 'julia-client:open-workspace'}
+      {label: 'Open Outline Pane', command: 'julia-client:open-outline-pane'}
       {label: 'Open Documentation Browser', command: 'julia-client:open-documentation-browser'}
       {label: 'Open Plot Pane', command: 'julia-client:open-plot-pane'}
       {label: 'Open Debugger Pane', command: 'julia-client:open-debugger-pane'}
@@ -62,6 +63,11 @@ module.exports =
       {label: 'Open Juno Startup File', command: 'julia:open-juno-startup-file'}
       {label: 'Open Julia Home', command: 'julia:open-julia-home'}
       {label: 'Open Package in New Window...', command: 'julia:open-package-in-new-window'}
+
+      {type: 'separator'}
+
+      {label: 'New Terminal', command: 'julia-client:new-terminal'}
+      {label: 'New Remote Terminal', command: 'julia-client:new-remote-terminal'}
 
       {type: 'separator'}
 
