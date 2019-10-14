@@ -35,7 +35,7 @@ module.exports =
       mod.ink = ink
       mod.activate()
     @subs.add new Disposable(=>
-      mod.deactivate() for mod in [@console, @debugger, @profiler, @linter, @outline])
+      mod.deactivate() for mod in [@console, @debugger, @profiler, @linter, @goto, @outline])
 
   provideAutoComplete: ->
     require './runtime/completions'

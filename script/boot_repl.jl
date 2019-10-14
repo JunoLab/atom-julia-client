@@ -41,7 +41,7 @@ try
         outdated = """
           Please upgrade Atom.jl to at least version `$(MIN_ATOM_VER)` with e.g. `using Pkg; Pkg.update()`.
 
-          If the integrated REPL is non-functional, try an external terminal opened with the `Julia Client: Open External Repl` command.
+          If the integrated REPL is non-functional, try an external terminal opened with the `Julia Client: Open External REPL` command.
         """
       end
     end
