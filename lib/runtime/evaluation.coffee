@@ -41,6 +41,8 @@ module.exports =
       rtype = if cell? then "block" else resultsDisplayMode
       if rtype is 'console'
         evalshow({text, line: line+1, mod, path: edpath})
+        notifications.show "Evaluation Finished"
+        workspace.update()
       else
         r = null
         setTimeout (=> r ?= new @ink.Result editor, [start, end], {type: rtype, scope: 'julia', goto: scrollToResult}), 0.1
