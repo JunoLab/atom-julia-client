@@ -16,7 +16,7 @@
     "workspace",
     "outline",
     "documentation",
-    "plot",    
+    "plot",
     "debugger"
   ],
   "repository": "https://github.com/JunoLab/atom-julia-client",
@@ -25,7 +25,7 @@
     "atom": ">=1.39.0 <2.0.0"
   },
   "dependencies": {
-    "@pfitzseb/node-pty-prebuilt": "0.8.1-prebuilt3",
+    "node-pty-prebuilt-multiarch": "0.9.0",
     "atom-package-deps": "*",
     "atom-space-pen-views": "^2.0.0",
     "etch": "^0.14",
