@@ -1,7 +1,6 @@
 'context-menu':
   'atom-text-editor[data-grammar="source julia"]': [
     {type: 'separator'}
-
     {
       label: 'Juno',
       submenu: [
@@ -16,10 +15,17 @@
         {label: 'Toggle Conditional Breakpoint', command: 'julia-debug:toggle-conditional-breakpoint'}
       ]
     }
-
     {type: 'separator'}
   ]
+
   '.tree-view li.directory': [
-    { label: 'Juno: Work in Folder', command: 'julia-client:work-in-current-folder' }
-    { label: 'Juno: Activate Project', command: 'julia-client:activate-current-folder' }
+    {type: 'separator'}
+    {
+      label: 'Juno',
+      submenu: [
+        { label: 'Work in Folder', command: 'julia-client:work-in-current-folder' }
+        { label: 'Activate Project', command: 'julia-client:activate-current-folder' }
+      ]
+    }
+    {type: 'separator'}
   ]

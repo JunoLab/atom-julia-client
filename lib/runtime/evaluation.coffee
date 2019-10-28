@@ -127,8 +127,7 @@ module.exports =
     if dirEl
       pathEl = dirEl.querySelector('[data-path]')
       if pathEl
-        path = pathEl.dataset.path
-        return path
+        return pathEl.dataset.path
     # invoked from normal command usage
     file = client.editorPath(atom.workspace.getCenter().getActiveTextEditor())
     if file

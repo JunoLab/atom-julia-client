@@ -157,26 +157,32 @@ config =
       usePlotPane:
         title: 'Enable Plot Pane'
         type: 'boolean'
-        description: 'Show plots in Atom.'
         default: true
+        description: 'Show plots in Atom.'
         order: 8
+      maxNumberPlots:
+        title: 'Maximum Number of Plots in History'
+        type: 'number'
+        default: 50
+        description: 'Increasing this number may lead to high memory consumption and poor performance.'
+        order: 9
       openNewEditorWhenDebugging:
         title: 'Open New Editor When Debugging'
         type: 'boolean'
         default: false
         description: 'Opens a new editor tab when stepping into a new file instead
                       of reusing the current one (requires restart).'
-        order: 9
+        order: 10
       cellDelimiter:
         title: 'Cell Delimiter'
         type: 'array'
         default: ['##', '#---', '#%%', '# %%']
         description: 'Regular expressions for determining cell delimiters.'
-        order: 10
+        order: 11
       layouts:
         title: 'Layout Options'
         type: 'object'
-        order: 11
+        order: 12
         collapsed: true
         properties:
           console:
@@ -410,12 +416,6 @@ config =
             type: 'boolean'
             default: true
             order: 11
-      maxNumberPlots:
-        title: 'Maximum Number of Plots in History'
-        type: 'number'
-        description: 'Increasing this number may lead to high memory consumption and poor performance.'
-        default: 50
-        order: 12
   consoleOptions:
     type: 'object'
     title: 'Terminal Options'
