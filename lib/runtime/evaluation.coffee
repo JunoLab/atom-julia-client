@@ -131,10 +131,11 @@ module.exports =
         return path
     # invoked from normal command usage
     file = client.editorPath(atom.workspace.getCenter().getActiveTextEditor())
-    if !file
-      atom.notifications.addError 'This file has no path.'
-    else
+    if file
       return path.dirname(file)
+
+    atom.notifications.addError 'This file has no path.'
+    return null
 
   cdProject: ->
     dirs = atom.project.getPaths()
