@@ -124,6 +124,12 @@ module.exports =
       'julia-client:work-in-current-folder': (ev) ->
         requireClient 'change working folder', ->
           juno.runtime.evaluation.cdHere(ev.target)
+      'julia-client:activate-current-folder': (ev) ->
+        requireClient 'activate an environment', ->
+          juno.runtime.evaluation.activateProject(ev.target)
+      'julia-client:activate-default-environment': (ev) ->
+        requireClient 'activate an environment', ->
+          juno.runtime.evaluation.activateDefaultProject()
       'julia-client:work-in-project-folder': ->
         requireClient 'change working folder', ->
           juno.runtime.evaluation.cdProject()

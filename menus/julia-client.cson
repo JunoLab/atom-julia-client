@@ -21,4 +21,5 @@
   ]
   '.tree-view li.directory': [
     { label: 'Juno: Work in Folder', command: 'julia-client:work-in-current-folder' }
+    { label: 'Juno: Activate Project', command: 'julia-client:activate-current-folder' }
   ]

@@ -8,8 +8,8 @@ path = require 'path'
 {processLinks} = require '../ui/docs'
 workspace = require './workspace'
 modules = require './modules'
-{eval: evaluate, evalall, evalshow, cd, clearLazy} =
-  client.import rpc: ['eval', 'evalall', 'evalshow'], msg: ['cd', 'clearLazy']
+{eval: evaluate, evalall, evalshow, cd, clearLazy, activateProject, activateDefaultProject} =
+  client.import rpc: ['eval', 'evalall', 'evalshow'], msg: ['cd', 'clearLazy', 'activateProject', 'activateDefaultProject']
 searchDoc = client.import('docs')
 
 module.exports =
@@ -109,19 +109,32 @@ module.exports =
     cd(dir)
 
   cdHere: (el) ->
+    dir = @currentDir(el)
+    if dir
+      @_cd(dir)
+
+  activateProject: (el) ->
+    dir = @currentDir(el)
+    if dir
+      activateProject(dir)
+
+  activateDefaultProject: ->
+    activateDefaultProject()
+
+  currentDir: (el) ->
     # invoked from tree-view context menu
     dirEl = el.closest('.directory')
     if dirEl
       pathEl = dirEl.querySelector('[data-path]')
       if pathEl
         path = pathEl.dataset.path
-        return @_cd(path)
+        return path
     # invoked from normal command usage
     file = client.editorPath(atom.workspace.getCenter().getActiveTextEditor())
     if !file
       atom.notifications.addError 'This file has no path.'
     else
-      @_cd path.dirname(file)
+      return path.dirname(file)
 
   cdProject: ->
     dirs = atom.project.getPaths()
