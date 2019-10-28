@@ -28,14 +28,14 @@ module.exports =
 
   eval: ({move, cell}={}) ->
     {editor, mod, edpath} = @_currentContext()
-    selector = if cell? then cells else blocks
+    codeSelector = if cell? then cells else blocks
     # global options
     resultsDisplayMode = atom.config.get('julia-client.uiOptions.resultsDisplayMode')
     errorInRepl = atom.config.get('julia-client.uiOptions.errorInRepl')
     scrollToResult = atom.config.get('julia-client.uiOptions.scrollToResult')
 
-    Promise.all selector.get(editor).map ({range, line, text, selection}) =>
-      selector.moveNext editor, selection, range if move
+    Promise.all codeSelector.get(editor).map ({range, line, text, selection}) =>
+      codeSelector.moveNext editor, selection, range if move
       [[start], [end]] = range
       @ink.highlight editor, start, end
       rtype = if cell? then "block" else resultsDisplayMode
