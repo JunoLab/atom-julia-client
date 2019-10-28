@@ -60,11 +60,11 @@ looks and then explain a few of the details that make it possible:
 ![](static/main_modulename.png)
 
 - If `foo.jl` is not on the Julia `LOAD_PATH` you should evaluate the
-  whole file by executing the `Julia client: evaluate all` command
+  whole file by executing the `Julia Client: Run All` command
   (`cmd-shift-enter` or `ctrl-shift-enter`)
 - Now open a different file and set the syntax to Julia (`ctrl+shift+l` on all
   platforms and select `Julia`). With this file active, run the
-  `Julia Client: Set working module` command (`cmd-j cmd-m` or `ctrl-j ctrl-m`)
+  `Julia Client: Set Working Module` command (`cmd-j cmd-m` or `ctrl-j ctrl-m`)
   and select the name of the module defined in `foo.jl`. After doing this you
   should see `Tmp` on the status bar where `Main/Tmp` was:
 
@@ -96,7 +96,7 @@ help?> Base.eval
 Notice that if one argument is given, `Expr` is evaluated in the current working
 module. However, if two arguments are given the first argument gives the name of
 the module in which the `Expr` should be evaluated. So, when you run `Julia
-Client: Set working module` what you are doing is telling Atom to evaluate all
+Client: Set Working Module` what you are doing is telling Atom to evaluate all
 the code from the current file directly into the chosen module. In our example
 above, this means that all the code we evaluate from `scratch.jl` is evaluated
 within the `Tmp` module _as if_ we had put the code in the module to begin with.
@@ -137,14 +137,14 @@ you are working on.
   directory in calls to functions like `include`, sometimes it is still useful
   to have the Julia instance work from the directory of your main file (e.g.
   when you are writing output files to disk)
-    - The commands `Julia Client: Work in File Folder` will set the working
+    - The commands `Julia Client: Work In Current Folder` will set the working
       directory for the Julia process to be the directory where your file is
       contained
     - I bind this function to a keybinding in my `~/.atom/keymaps.cson` to make
       this more convenient:
         ```coffeescript
         'atom-text-editor[data-grammar="source julia"]':
-          'cmd-j cmd-f': 'julia-client:work-in-file-folder'
+          'cmd-j cmd-f': 'julia-client:work-in-current-folder'
         ```
     - There are also commands `Julia Client: Work in Project Folder` and
       `Julia Client: Work in Home Folder` that can set the directory for the
