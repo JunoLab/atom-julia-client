@@ -410,6 +410,12 @@ config =
             type: 'boolean'
             default: true
             order: 11
+      maxNumberPlots:
+        title: 'Maximum Number of Plots in History'
+        type: 'number'
+        description: 'Increasing this number may lead to high memory consumption and poor performance.'
+        default: 50
+        order: 12
   consoleOptions:
     type: 'object'
     title: 'Terminal Options'
