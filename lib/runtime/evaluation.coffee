@@ -85,8 +85,8 @@ module.exports =
       workspace.update()
 
   toggleDocs: (word, range) ->
-    {editor, mod, edpath} = @_currentContext()
-    {word, range} = words.getWord(editor) unless word? and range?
+    { editor, mod, edpath } = @_currentContext()
+    { word, range } = words.getWordAndRange(editor) unless word? and range?
     if word.length == 0 || !isNaN(word) then return
     searchDoc({word: word, mod: mod}).then (result) =>
       if result.error then return
