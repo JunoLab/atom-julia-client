@@ -86,8 +86,11 @@ module.exports =
 
   toggleDocs: (word, range) ->
     { editor, mod, edpath } = @_currentContext()
-    { word, range } = words.getWordAndRange(editor) unless word? and range?
-    if word.length == 0 || !isNaN(word) then return
+    { word, range } = words.getWordAndRange(editor,
+      beginWordRegex: words.wordRegex
+      endWordRegex: words.wordRegexWithoutDotAccessor
+    ) unless word? and range?
+    return unless words.isValidWordToInspect(word)
     searchDoc({word: word, mod: mod}).then (result) =>
       if result.error then return
       v = views.render result

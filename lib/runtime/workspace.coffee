@@ -41,7 +41,6 @@ module.exports =
       mod = if @mod == modules.follow then modules.current() else (@mod or 'Main')
       gotoSymbol
         word: name,
-        fullWord: name,
         mod: mod
       .then (symbols) =>
         return if symbols.error
