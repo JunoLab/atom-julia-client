@@ -24,11 +24,12 @@ if (VERSION > v"0.7-" ? Base.find_package("Atom") : Base.find_in_path("Atom")) =
   println()
 end
 
-# TODO: Update me when tagging a new relase:
-MIN_ATOM_VER = v"0.11.3"
-outdated = false
 
 try
+  # TODO: Update me when tagging a new relase:
+  MIN_ATOM_VER = v"0.11.3"
+  outdated = false
+  
   if VERSION >= v"1.0-"
     using Pkg
     atompath = Base.find_package("Atom")
@@ -46,8 +47,6 @@ try
       end
     end
   end
-catch err
-  @error exception=err
 end
 
 println("Starting Julia...")
