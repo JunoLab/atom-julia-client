@@ -55,7 +55,7 @@ module.exports =
       {label: 'Open Outline Pane', command: 'julia-client:open-outline-pane'}
       {label: 'Open Documentation Browser', command: 'julia-client:open-documentation-browser'}
       {label: 'Open Plot Pane', command: 'julia-client:open-plot-pane'}
-      {label: 'Open Debugger Pane', command: 'julia-client:open-debugger-pane'}
+      {label: 'Open Debugger Pane', command: 'julia-debug:open-debugger-pane'}
 
       {type: 'separator'}
 
