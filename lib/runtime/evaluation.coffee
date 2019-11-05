@@ -86,10 +86,11 @@ module.exports =
 
   toggleDocs: (word, range) ->
     { editor, mod, edpath } = @_currentContext()
-    { word, range } = words.getWordAndRange(editor,
-      beginWordRegex: words.wordRegex
-      endWordRegex: words.wordRegexWithoutDotAccessor
-    ) unless word? and range?
+    # get word without trailing dot accessors at the buffer position
+    { word, range } = words.getWordAndRange(editor) unless word? and range?
+    range = words.getWordRangeWithoutTrailingDots(word, range, bufferPosition)
+    word = editor.getTextInBufferRange(range)
+
     return unless words.isValidWordToInspect(word)
     searchDoc({word: word, mod: mod}).then (result) =>
       if result.error then return
