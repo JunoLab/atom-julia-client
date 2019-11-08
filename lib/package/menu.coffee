@@ -42,7 +42,7 @@ module.exports =
         ]
       }
       {
-        label: 'Active Project',
+        label: 'Environment',
         submenu: [
           {label: 'Current File\'s Folder', command: 'julia-client:activate-current-folder'}
           {label: 'Default Environment', command: 'julia-client:activate-default-environment'}
