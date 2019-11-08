@@ -36,9 +36,16 @@ module.exports =
         label: 'Working Directory'
         submenu: [
           {label: 'Current File\'s Folder', command: 'julia-client:work-in-current-folder'}
-          {label: 'Current Project\'s Folder', command: 'julia-client:work-in-project-folder'}
+          {label: 'Select Project Folder', command: 'julia-client:work-in-project-folder'}
           {label: 'Home Folder', command: 'julia-client:work-in-home-folder'}
           {label: 'Select...', command: 'julia-client:select-working-folder'}
+        ]
+      }
+      {
+        label: 'Environment',
+        submenu: [
+          {label: 'Environment in Current File\'s Folder', command: 'julia-client:activate-environment-in-current-folder'}
+          {label: 'Default Environment', command: 'julia-client:activate-default-environment'}
         ]
       }
       {label: 'Select Working Module', command: 'julia-client:select-working-module'}
@@ -66,7 +73,13 @@ module.exports =
 
       {type: 'separator'}
 
-      {label: 'New Terminal', command: 'julia-client:new-terminal'}
+      {
+        label: 'New Terminal'
+        submenu: [
+          {label: 'Current File\'s Folder', command: 'julia-client:new-terminal-from-current-folder'}
+          {label: 'Select Project Folder', command: 'julia-client:new-terminal'}
+        ]
+      }
       {label: 'New Remote Terminal', command: 'julia-client:new-remote-terminal'}
 
       {type: 'separator'}
