@@ -24,8 +24,8 @@
       label: 'Juno',
       submenu: [
         { label: 'Work in Folder', command: 'julia-client:work-in-current-folder' }
-        { label: 'Activate Project', command: 'julia-client:activate-current-folder' }
-        { label: 'New Terminal', command: 'julia-client:new-terminal-from-current-folder'}
+        { label: 'Activate Environment in Folder', command: 'julia-client:activate-environment-in-current-folder' }
+        { label: 'New Terminal from Folder', command: 'julia-client:new-terminal-from-current-folder'}
       ]
     }
     {type: 'separator'}
