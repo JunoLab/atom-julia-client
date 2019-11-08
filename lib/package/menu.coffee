@@ -77,7 +77,7 @@ module.exports =
         label: 'New Terminal'
         submenu: [
           {label: 'Current File\'s Folder', command: 'julia-client:new-terminal-from-current-folder'}
-          {label: 'Current Project\'s Folders', command: 'julia-client:new-terminal'}
+          {label: 'Select Project Folder', command: 'julia-client:new-terminal'}
         ]
       }
       {label: 'New Remote Terminal', command: 'julia-client:new-remote-terminal'}
