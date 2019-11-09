@@ -84,10 +84,11 @@ module.exports =
       notifications.show "Evaluation Finished"
       workspace.update()
 
-  toggleDocs: (word, range) ->
+  toggleDocs: () ->
     { editor, mod, edpath } = @_currentContext()
+    bufferPosition = editor.getLastCursor().getBufferPosition()
     # get word without trailing dot accessors at the buffer position
-    { word, range } = words.getWordAndRange(editor) unless word? and range?
+    { word, range } = words.getWordAndRange(editor, { bufferPosition })
     range = words.getWordRangeWithoutTrailingDots(word, range, bufferPosition)
     word = editor.getTextInBufferRange(range)
 
