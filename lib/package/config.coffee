@@ -469,11 +469,15 @@ config =
         type: 'boolean'
         default: false
         order: 8
-      rendererType:
-        title: 'Fallback Renderer'
-        type: 'boolean'
-        default: false
-        description: 'Enable this if you\'re experiencing slowdowns in the built-in terminals.'
+      terminalRendererType:
+        title: 'Terminal Renderer'
+        type: 'string'
+        enum: ['webgl', 'canvas', 'dom']
+        default: 'webgl'
+        radio: true
+        description: 'The `webgl` renderer is fastest, but is still experimental. `canvas` performs well
+                      in many cases, while `dom` is a slow falback. Note that it\'s not possible
+                      to hot-swap to the `webgl` renderer.'
         order: 9
   remoteOptions:
     type: 'object'
