@@ -129,6 +129,10 @@ module.exports =
   currentDir: (el) ->
     # invoked from tree-view context menu
     dirEl = el.closest('.directory')
+    # invoked from command with focusing on tree-view
+    if not dirEl
+      activeEl = el.querySelector('.tree-view .selected')
+      dirEl = activeEl.closest('.directory') if activeEl
     if dirEl
       pathEl = dirEl.querySelector('[data-path]')
       if pathEl
