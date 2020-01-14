@@ -111,6 +111,11 @@ module.exports =
       'julia-debug:continue': (ev) => juno.runtime.debugger.continueForward(ev)
       'julia-debug:open-debugger-pane': => juno.runtime.debugger.open()
 
+      'julia:new-julia-file': =>
+        atom.workspace.open().then((ed) =>
+          gr = atom.grammars.grammarForScopeName('source.julia')
+          ed.setGrammar(gr) if gr
+        )
       'julia:open-julia-startup-file': -> atom.workspace.open(juno.misc.paths.home('.julia', 'config', 'startup.jl'))
       'julia:open-juno-startup-file': -> atom.workspace.open(juno.misc.paths.home('.julia', 'config', 'juno_startup.jl'))
       'julia:open-julia-home': -> shell.openItem juno.misc.paths.juliaHome()
