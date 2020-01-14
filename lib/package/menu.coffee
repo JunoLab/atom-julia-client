@@ -66,6 +66,7 @@ module.exports =
 
       {type: 'separator'}
 
+      {label: 'Open New Julia File', command: 'julia:new-julia-file'}
       {label: 'Open Julia Startup File', command: 'julia:open-julia-startup-file'}
       {label: 'Open Juno Startup File', command: 'julia:open-juno-startup-file'}
       {label: 'Open Julia Home', command: 'julia:open-julia-home'}
