@@ -1,9 +1,9 @@
 let
-# NOTE: Single quotes break remote execution. File needs to be shorter than 2000 chars.
+# NOTE: No single quotes. File needs to be shorter than 2000 chars.
 if VERSION > v"0.7-"
-  port = parse(Int, popfirst!(ARGS))
+  port = parse(Int, popfirst!(Base.ARGS))
 else
-  port = parse(Int, shift!(ARGS))
+  port = parse(Int, shift!(Base.ARGS))
 end
 
 junorc = haskey(ENV, "JUNORC_PATH") ? joinpath(ENV["JUNORC_PATH"], "juno_startup.jl") : joinpath(homedir(), ".julia", "config", "juno_startup.jl")
