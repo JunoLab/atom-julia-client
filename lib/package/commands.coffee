@@ -132,6 +132,9 @@ module.exports =
       'julia-client:activate-environment-in-current-folder': (ev) ->
         requireClient 'activate an environment', ->
           juno.runtime.evaluation.activateProject(ev.target)
+      'julia-client:activate-environment-in-parent-folder': (ev) ->
+        requireClient 'activate an environment', ->
+          juno.runtime.evaluation.activateParentProject(ev.target)
       'julia-client:activate-default-environment': (ev) ->
         requireClient 'activate an environment', ->
           juno.runtime.evaluation.activateDefaultProject()

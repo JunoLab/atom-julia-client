@@ -8,8 +8,8 @@ path = require 'path'
 {processLinks} = require '../ui/docs'
 workspace = require './workspace'
 modules = require './modules'
-{eval: evaluate, evalall, evalshow, cd, clearLazy, activateProject, activateDefaultProject} =
-  client.import rpc: ['eval', 'evalall', 'evalshow'], msg: ['cd', 'clearLazy', 'activateProject', 'activateDefaultProject']
+{eval: evaluate, evalall, evalshow, cd, clearLazy, activateProject, activateParentProject, activateDefaultProject} =
+  client.import rpc: ['eval', 'evalall', 'evalshow'], msg: ['cd', 'clearLazy', 'activateProject', 'activateParentProject', 'activateDefaultProject']
 searchDoc = client.import('docs')
 
 module.exports =
@@ -122,6 +122,11 @@ module.exports =
     dir = @currentDir(el)
     if dir
       activateProject(dir)
+
+  activateParentProject: (el) ->
+    dir = @currentDir(el)
+    if dir
+      activateParentProject(dir)
 
   activateDefaultProject: ->
     activateDefaultProject()
