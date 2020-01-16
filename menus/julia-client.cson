@@ -13,6 +13,8 @@
         {type: 'separator'}
         {label: 'Toggle Breakpoint', command: 'julia-debug:toggle-breakpoint'}
         {label: 'Toggle Conditional Breakpoint', command: 'julia-debug:toggle-conditional-breakpoint'}
+        {type: 'separator'}
+        {label: 'Activate Environment in Parent Folder', command: 'julia-client:activate-environment-in-parent-folder'}
       ]
     }
     {type: 'separator'}
@@ -25,6 +27,7 @@
       submenu: [
         { label: 'Work in Folder', command: 'julia-client:work-in-current-folder' }
         { label: 'Activate Environment in Folder', command: 'julia-client:activate-environment-in-current-folder' }
+        { label: 'Activate Environment in Parent Folder', command: 'julia-client:activate-environment-in-parent-folder' }
         { label: 'New Terminal from Folder', command: 'julia-client:new-terminal-from-current-folder'}
       ]
     }
