@@ -14,7 +14,10 @@
         {label: 'Toggle Breakpoint', command: 'julia-debug:toggle-breakpoint'}
         {label: 'Toggle Conditional Breakpoint', command: 'julia-debug:toggle-conditional-breakpoint'}
         {type: 'separator'}
+        {label: 'Work in Current Folder', command: 'julia-client:work-in-current-folder'}
+        {label: 'Activate Environment in Current Folder', command: 'julia-client:activate-environment-in-current-folder'}
         {label: 'Activate Environment in Parent Folder', command: 'julia-client:activate-environment-in-parent-folder'}
+        {label: 'Set Working Module', command: 'julia-client:set-working-module'}
       ]
     }
     {type: 'separator'}
