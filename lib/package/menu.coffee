@@ -49,7 +49,7 @@ module.exports =
           {label: 'Default Environment', command: 'julia-client:activate-default-environment'}
         ]
       }
-      {label: 'Select Working Module', command: 'julia-client:select-working-module'}
+      {label: 'Set Working Module', command: 'julia-client:set-working-module'}
 
       {type: 'separator'}
 
