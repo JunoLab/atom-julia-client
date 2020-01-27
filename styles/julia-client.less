@@ -116,6 +116,15 @@ atom-text-editor.editor {
   }
 }
 
+.ink-profile-line {
+  &.isdispatch > div {
+    background: fade(@background-color-warning, 20%);
+  }
+  &.isgc > div {
+    background: fade(@background-color-error, 20%);
+  }
+}
+
 atom-text-editor.editor[data-grammar$="source julia"],
 atom-text-editor.editor[data-grammar$="source weave md"],
 atom-text-editor.editor[data-grammar$="source weave latex"] {
