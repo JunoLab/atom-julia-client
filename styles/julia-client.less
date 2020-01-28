@@ -99,14 +99,14 @@ atom-text-editor.editor {
 
 .ink-canopy.julia-profile {
   .node {
-    &.isdispatch > div {
+    &.dynamic-dispatch > div {
       border: solid fade(@background-color-warning, 20%) 1px;
       background: fade(@background-color-warning, 10%);
       &:hover {
         background: fade(@background-color-warning, 20%);
       }
     }
-    &.isgc > div {
+    &.garbage-collection > div {
       border: solid fade(@background-color-error, 20%) 1px;
       background: fade(@background-color-error, 10%);
       &:hover {
@@ -117,10 +117,10 @@ atom-text-editor.editor {
 }
 
 .ink-profile-line {
-  &.isdispatch {
+  &.dynamic-dispatch {
     background: fade(@background-color-warning, 20%)!important;
   }
-  &.isgc {
+  &.garbage-collection {
     background: fade(@background-color-error, 20%)!important;
   }
 }
