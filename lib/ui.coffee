@@ -8,11 +8,13 @@ module.exports =
   layout:        require './ui/layout'
   docpane:       require './ui/docs'
   focusutils:    require './ui/focusutils'
+  cellhighlighter:    require './ui/cellhighlighter'
 
   activate: (@client) ->
     @subs = new CompositeDisposable
 
     @notifications.activate()
+    @cellhighlighter.activate()
 
     @subs.add @client.onAttached =>
       @notifications.show("Client Connected")
@@ -21,6 +23,7 @@ module.exports =
 
   deactivate: ->
     @subs.dispose()
+    @cellhighlighter.deactivate()
 
   consumeInk: (@ink) ->
     @views.ink = @ink
