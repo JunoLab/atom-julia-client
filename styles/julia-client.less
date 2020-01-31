@@ -154,3 +154,12 @@ atom-text-editor.editor[data-grammar$="source weave latex"] {
   font-family: @font-family;
   max-width: 500px;
 }
+
+.julia-current-cell {
+  background-color: fade(@syntax-selection-color, 30%);
+}
+
+.julia-cell-border {
+  border-top: solid fade(@syntax-text-color, 80%) 1px;
+  margin-top: -1px;
+}
