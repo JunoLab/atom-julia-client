@@ -179,10 +179,15 @@ config =
         default: ['##', '#---', '#%%', '# %%']
         description: 'Regular expressions for determining cell delimiters.'
         order: 11
+      highlightCells:
+        title: 'Highlight Cells'
+        type: 'boolean'
+        default: true
+        order: 12
       layouts:
         title: 'Layout Options'
         type: 'object'
-        order: 12
+        order: 13
         collapsed: true
         properties:
           console:

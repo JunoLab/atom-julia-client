@@ -14,7 +14,11 @@ module.exports =
     @subs = new CompositeDisposable
 
     @notifications.activate()
-    @cellhighlighter.activate()
+    @subs.add atom.config.observe 'julia-client.uiOptions.highlightCells', (val) =>
+      if val
+        @cellhighlighter.activate()
+      else
+        @cellhighlighter.deactivate()
 
     @subs.add @client.onAttached =>
       @notifications.show("Client Connected")
