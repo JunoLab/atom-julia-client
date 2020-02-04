@@ -20,8 +20,15 @@ module.exports =
     @subs = new CompositeDisposable()
     @modules.activate()
     @frontend.activate()
+
+    @subs.add atom.config.observe 'julia-client.juliaOptions.formatOnSave', (val) =>
+      if val
+        @formatter.activate()
+      else
+        @formatter.deactivate()
+
     @subs.add new Disposable(=>
-      mod.deactivate() for mod in [@modules, @frontend])
+      mod.deactivate() for mod in [@modules, @frontend, @formatter])
 
   deactivate: ->
     @subs.dispose()
