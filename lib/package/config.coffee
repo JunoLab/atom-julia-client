@@ -106,7 +106,7 @@ config =
         type: 'boolean'
         default: false
         order: 13
-      formattettingOptions:
+      formattingOptions:
         title: 'Formatting options'
         description: 'Specifies [formatting options for `JuliaFormatter.format_text`](https://domluna.github.io/JuliaFormatter.jl/stable/#Formatting-Options-1).'
         type: 'object'
