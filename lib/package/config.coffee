@@ -99,6 +99,12 @@ config =
         type: 'boolean'
         default: false
         order: 12
+      formatOnSave:
+        title: 'Format the current editor when saving'
+        description: 'If enabled, Juno will format the current editor on save if a Julia session is running.'
+        type: 'boolean'
+        default: false
+        order: 13
   uiOptions:
     title: 'UI Options'
     type: 'object'
