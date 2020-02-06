@@ -19,6 +19,8 @@ module.exports =
         @cellhighlighter.activate()
       else
         @cellhighlighter.deactivate()
+    @subs.add new Disposable =>
+      @cellhighlighter.deactivate()
 
     @subs.add @client.onAttached =>
       @notifications.show("Client Connected")
@@ -27,7 +29,6 @@ module.exports =
 
   deactivate: ->
     @subs.dispose()
-    @cellhighlighter.deactivate()
 
   consumeInk: (@ink) ->
     @views.ink = @ink
