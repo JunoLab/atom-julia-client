@@ -561,7 +561,11 @@ config =
                       in many cases, while `dom` is a slow falback. Note that it\'s not possible
                       to hot-swap to the `webgl` renderer.'
         order: 9
-
+      linkModifier:
+        title: 'Ctrl/Cmd modifier for link activation'
+        type: 'boolean'
+        default: true
+        order: 10
   remoteOptions:
     type: 'object'
     order: 5
