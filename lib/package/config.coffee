@@ -6,6 +6,7 @@ config =
     default: 'julia'
     description: 'The location of the Julia binary.'
     order: 1
+
   juliaOptions:
     type: 'object'
     order: 2
@@ -105,6 +106,75 @@ config =
         type: 'boolean'
         default: false
         order: 13
+      formattingOptions:
+        title: 'Formatting options'
+        description: 'Specifies [formatting options for `JuliaFormatter.format_text`](https://domluna.github.io/JuliaFormatter.jl/stable/#Formatting-Options-1).'
+        type: 'object'
+        order: 14
+        collapsed: true
+        properties:
+          indent:
+            title: 'indent'
+            description:
+              '''
+              Specifies the number of spaces used for an indentation.
+              With the default value (`-1`), `indent` will be automatically set to the current editor's [tab length](https://flight-manual.atom.io/using-atom/sections/basic-customization/#configuration-key-reference).
+              '''
+            type: 'integer'
+            default: -1
+            order: 1
+          margin:
+            title: 'margin'
+            description:
+              '''
+              Specifies the maximum length of a line. Code exceeding this margin will be formatted
+              across multiple lines.
+              With the default value (`-1`), `indent` will be automatically set to the current editor's [preferred line length](https://flight-manual.atom.io/using-atom/sections/basic-customization/#configuration-key-reference).
+              '''
+            type: 'integer'
+            default: -1
+            order: 2
+          always_for_in:
+            title: 'always_for_in'
+            description:
+              '''
+              If `always_for_in` is true `=` is always replaced with `in` if part of a
+              `for` loop condition.  For example, `for i = 1:10` will be transformed
+              to `for i in 1:10`.
+              '''
+            type: 'boolean'
+            default: false
+            order: 3
+          whitespace_typedefs:
+            title: 'whitespace_typedefs'
+            description:
+              '''
+              If `whitespace_typedefs` is true, whitespace is added for type definitions.
+              Make this `true` if you prefer `Union{A <: B, C}` to `Union{A<:B,C}`.
+              '''
+            type: 'boolean'
+            default: false
+            order: 4
+          whitespace_ops_in_indices:
+            title: 'whitespace_ops_in_indices'
+            description:
+              '''
+              If `whitespace_ops_in_indices` is true, whitespace is added for binary operations
+              in indices. Make this `true` if you prefer `arr[a + b]` to `arr[a+b]`. Additionally, if there's a colon `:` involved, parenthesis will be added to the LHS and RHS.
+              '''
+            type: 'boolean'
+            default: false
+            order: 5
+          remove_extra_newlines:
+            title: 'remove_extra_newlines'
+            description:
+              '''
+              If `remove_extra_newlines` is true superflous newlines will be removed.
+              '''
+            type: 'boolean'
+            default: false
+            order: 6
+
   uiOptions:
     title: 'UI Options'
     type: 'object'
@@ -427,6 +497,7 @@ config =
             type: 'boolean'
             default: true
             order: 11
+
   consoleOptions:
     type: 'object'
     title: 'Terminal Options'
@@ -490,6 +561,7 @@ config =
                       in many cases, while `dom` is a slow falback. Note that it\'s not possible
                       to hot-swap to the `webgl` renderer.'
         order: 9
+
   remoteOptions:
     type: 'object'
     order: 5
@@ -522,6 +594,7 @@ config =
         type: 'boolean'
         default: true
         order: 5
+
   juliaSyntaxScopes:
     title: 'Julia Syntax Scopes'
     description:
@@ -531,6 +604,7 @@ config =
     type: 'array'
     default: ['source.julia', 'source.weave.md', 'source.weave.latex']
     order: 6
+
   disableProxy:
     title: 'Disable System Proxy for Child Processes'
     description:
