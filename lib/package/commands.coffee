@@ -99,6 +99,8 @@ module.exports =
       'julia-client:close-juno-panes': -> juno.ui.layout.closePromises()
       'julia-client:reset-default-layout-settings': -> juno.ui.layout.resetDefaultLayoutSettings()
       'julia-client:settings': -> atom.workspace.open('atom://config/packages/julia-client')
+      'julia-debug:run-file': => juno.runtime.debugger.debugFile(false)
+      'julia-debug:step-through-file': => juno.runtime.debugger.debugFile(true)
       'julia-debug:toggle-breakpoint': => juno.runtime.debugger.togglebp()
       'julia-debug:toggle-conditional-breakpoint': => juno.runtime.debugger.togglebp(true)
       'julia-debug:clear-all-breakpoints': => juno.runtime.debugger.clearbps()
