@@ -15,7 +15,7 @@ searchDoc = client.import('docs')
 module.exports =
   _currentContext: ->
     editor = atom.workspace.getActiveTextEditor()
-    mod = modules.current() ? 'Main'
+    mod = modules.current() || 'Main'
     edpath = client.editorPath(editor) || 'untitled-' + editor.getBuffer().id
     {editor, mod, edpath}
 
