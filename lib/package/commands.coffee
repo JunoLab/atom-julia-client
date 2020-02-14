@@ -67,6 +67,12 @@ module.exports =
               done = true
               juno.connection.client.stdin s.getText()
             juno.connection.client.stdin ed.getText() unless done
+        'julia-debug:run-block': => juno.runtime.debugger.debugBlock(false, false)
+        'julia-debug:step-through-block': => juno.runtime.debugger.debugBlock(true, false)
+        'julia-debug:run-cell': => juno.runtime.debugger.debugBlock(false, true)
+        'julia-debug:step-through-cell': => juno.runtime.debugger.debugBlock(true, true)
+        'julia-debug:toggle-breakpoint': => juno.runtime.debugger.togglebp()
+        'julia-debug:toggle-conditional-breakpoint': => juno.runtime.debugger.togglebp(true)
 
     # atom-text-editor with Julia grammar scope
     @subs.add atom.commands.add 'atom-text-editor[data-grammar="source julia"]',
@@ -76,8 +82,6 @@ module.exports =
           juno.runtime.formatter.formatCode()
       'julia-debug:run-file': => juno.runtime.debugger.debugFile(false)
       'julia-debug:step-through-file': => juno.runtime.debugger.debugFile(true)
-      'julia-debug:toggle-breakpoint': => juno.runtime.debugger.togglebp()
-      'julia-debug:toggle-conditional-breakpoint': => juno.runtime.debugger.togglebp(true)
 
     # Where "module" matters
     @subs.add atom.commands.add 'atom-text-editor[data-grammar="source julia"],
