@@ -98,14 +98,6 @@ module.exports =
         @withInk ->
           boot()
           juno.runtime.formatter.formatCode()
-      'julia-debug:run-file': =>
-        @withInk ->
-          boot()
-          juno.runtime.debugger.debugFile(false)
-      'julia-debug:step-through-file': =>
-        @withInk ->
-          boot()
-          juno.runtime.debugger.debugFile(true)
 
     # Where "module" matters
     @subs.add atom.commands.add 'atom-text-editor[data-grammar="source julia"],
@@ -131,6 +123,15 @@ module.exports =
       'julia-client:close-juno-panes': -> juno.ui.layout.closePromises()
       'julia-client:reset-default-layout-settings': -> juno.ui.layout.resetDefaultLayoutSettings()
       'julia-client:settings': -> atom.workspace.open('atom://config/packages/julia-client')
+
+      'julia-debug:run-file': =>
+        @withInk ->
+          boot()
+          juno.runtime.debugger.debugFile(false)
+      'julia-debug:step-through-file': =>
+        @withInk ->
+          boot()
+          juno.runtime.debugger.debugFile(true)
       'julia-debug:clear-all-breakpoints': => juno.runtime.debugger.clearbps()
       'julia-debug:step-to-next-line': (ev) => juno.runtime.debugger.nextline(ev)
       'julia-debug:step-to-selected-line': (ev) => juno.runtime.debugger.toselectedline(ev)
