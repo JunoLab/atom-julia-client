@@ -105,6 +105,22 @@ module.exports =
                                  .ink-workspace',
       'julia-client:set-working-module': -> juno.runtime.modules.chooseModule()
 
+    # tree-view
+    @subs.add atom.commands.add '.tree-view',
+      'julia-client:run-all': (ev) =>
+        cancelComplete ev
+        @withInk ->
+          boot()
+          juno.runtime.evaluation.evalAll(ev.target)
+      'julia-debug:run-file': (ev) =>
+        @withInk ->
+          boot()
+          juno.runtime.debugger.debugFile(false, ev.target)
+      'julia-debug:step-through-file': (ev) =>
+        @withInk ->
+          boot()
+          juno.runtime.debugger.debugFile(true, ev.target)
+
     # atom-work-space
     @subs.add atom.commands.add 'atom-workspace',
       'julia-client:open-external-REPL': -> juno.connection.terminal.repl()

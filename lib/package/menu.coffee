@@ -55,6 +55,9 @@ module.exports =
 
       {label: 'Run Block', command: 'julia-client:run-block'}
       {label: 'Run All', command: 'julia-client:run-all'}
+
+      {type: 'separator'}
+
       {label: 'Format Code', command: 'julia-client:format-code'}
 
       {type: 'separator'}

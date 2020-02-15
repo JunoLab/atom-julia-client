@@ -38,3 +38,16 @@
     }
     {type: 'separator'}
   ]
+
+  '.tree-view li.file': [
+    {type: 'separator'}
+    {
+      label: 'Juno',
+      submenu: [
+        { label: 'Run All', command: 'julia-client:run-all' }
+        { label: 'Debug: Run File', command: 'julia-debug:run-file' }
+        { label: 'Debug: Step through File', command: 'julia-debug:step-through-file' }
+      ]
+    }
+    {type: 'separator'}
+  ]
