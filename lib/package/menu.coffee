@@ -59,6 +59,13 @@ module.exports =
 
       {type: 'separator'}
 
+      {label: 'Debug: Run Block', command: 'julia-debug:run-block'}
+      {label: 'Debug: Step through Block', command: 'julia-debug:step-through-block'}
+      {label: 'Debug: Run File', command: 'julia-debug:run-file'}
+      {label: 'Debug: Step through File', command: 'julia-debug:step-through-file'}
+
+      {type: 'separator'}
+
       {label: 'Open Workspace', command: 'julia-client:open-workspace'}
       {label: 'Open Outline Pane', command: 'julia-client:open-outline-pane'}
       {label: 'Open Documentation Browser', command: 'julia-client:open-documentation-browser'}

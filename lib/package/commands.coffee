@@ -67,12 +67,30 @@ module.exports =
               done = true
               juno.connection.client.stdin s.getText()
             juno.connection.client.stdin ed.getText() unless done
-        'julia-debug:run-block': => juno.runtime.debugger.debugBlock(false, false)
-        'julia-debug:step-through-block': => juno.runtime.debugger.debugBlock(true, false)
-        'julia-debug:run-cell': => juno.runtime.debugger.debugBlock(false, true)
-        'julia-debug:step-through-cell': => juno.runtime.debugger.debugBlock(true, true)
-        'julia-debug:toggle-breakpoint': => juno.runtime.debugger.togglebp()
-        'julia-debug:toggle-conditional-breakpoint': => juno.runtime.debugger.togglebp(true)
+        'julia-debug:run-block': =>
+          @withInk ->
+            boot()
+            juno.runtime.debugger.debugBlock(false, false)
+        'julia-debug:step-through-block': =>
+          @withInk ->
+            boot()
+            juno.runtime.debugger.debugBlock(true, false)
+        'julia-debug:run-cell': =>
+          @withInk ->
+            boot()
+            juno.runtime.debugger.debugBlock(false, true)
+        'julia-debug:step-through-cell': =>
+          @withInk ->
+            boot()
+            juno.runtime.debugger.debugBlock(true, true)
+        'julia-debug:toggle-breakpoint': =>
+          @withInk ->
+            boot()
+            juno.runtime.debugger.togglebp()
+        'julia-debug:toggle-conditional-breakpoint': =>
+          @withInk ->
+            boot()
+            juno.runtime.debugger.togglebp(true)
 
     # atom-text-editor with Julia grammar scope
     @subs.add atom.commands.add 'atom-text-editor[data-grammar="source julia"]',
@@ -80,8 +98,14 @@ module.exports =
         @withInk ->
           boot()
           juno.runtime.formatter.formatCode()
-      'julia-debug:run-file': => juno.runtime.debugger.debugFile(false)
-      'julia-debug:step-through-file': => juno.runtime.debugger.debugFile(true)
+      'julia-debug:run-file': =>
+        @withInk ->
+          boot()
+          juno.runtime.debugger.debugFile(false)
+      'julia-debug:step-through-file': =>
+        @withInk ->
+          boot()
+          juno.runtime.debugger.debugFile(true)
 
     # Where "module" matters
     @subs.add atom.commands.add 'atom-text-editor[data-grammar="source julia"],
@@ -111,9 +135,9 @@ module.exports =
       'julia-debug:step-to-next-line': (ev) => juno.runtime.debugger.nextline(ev)
       'julia-debug:step-to-selected-line': (ev) => juno.runtime.debugger.toselectedline(ev)
       'julia-debug:step-to-next-expression': (ev) => juno.runtime.debugger.stepexpr(ev)
-      'julia-debug:step-into-function': (ev) => juno.runtime.debugger.stepin(ev)
+      'julia-debug:step-into': (ev) => juno.runtime.debugger.stepin(ev)
       'julia-debug:stop-debugging': (ev) => juno.runtime.debugger.stop(ev)
-      'julia-debug:finish-function': (ev) => juno.runtime.debugger.finish(ev)
+      'julia-debug:step-out': (ev) => juno.runtime.debugger.finish(ev)
       'julia-debug:continue': (ev) => juno.runtime.debugger.continueForward(ev)
       'julia-debug:open-debugger-pane': => juno.runtime.debugger.open()
 
