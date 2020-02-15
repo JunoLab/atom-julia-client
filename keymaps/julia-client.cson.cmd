@@ -9,6 +9,8 @@ Any global commands should either be non-default or, ideally, prefixed with `C-J
 '.platform-darwin atom-text-editor[data-grammar="source julia"]:not(.mini),
   ink-terminal.julia-terminal,
   .ink-debugger-container':
+  'f5': 'julia-debug:run-file'
+  'cmd-f5': 'julia-debug:step-through-file'
   'shift-f5': 'julia-debug:stop-debugging'
   'f8': 'julia-debug:continue'
   'shift-f8': 'julia-debug:step-to-selected-line'
@@ -16,8 +18,8 @@ Any global commands should either be non-default or, ideally, prefixed with `C-J
   'shift-f9': 'julia-debug:toggle-conditional-breakpoint'
   'f10': 'julia-debug:step-to-next-expression'
   'shift-f10': 'julia-debug:step-to-next-line'
-  'f11': 'julia-debug:step-into-function'
-  'shift-f11': 'julia-debug:finish-function'
+  'f11': 'julia-debug:step-into'
+  'shift-f11': 'julia-debug:step-out'
 
 # Julia atom-text-editor
 '.platform-darwin atom-text-editor[data-grammar="source julia"]':

@@ -107,3 +107,28 @@ module.exports =
     path.join packageRoot, s...
 
   script: (s...) -> @packageDir 'script', s...
+
+  getPathFromTreeView: (el) ->
+    # invoked from tree-view context menu
+    pathEl = el.closest('[data-path]')
+    if not pathEl
+      # invoked from command with focusing on tree-view
+      activeEl = el.querySelector('.tree-view .selected')
+      pathEl = activeEl.querySelector('[data-path]') if activeEl
+    return pathEl.dataset.path if pathEl
+    return null
+
+  getDirPathFromTreeView: (el) ->
+    # invoked from tree-view context menu
+    dirEl = el.closest('.directory')
+    if not dirEl
+      # invoked from command with focusing on tree-view
+      activeEl = el.querySelector('.tree-view .selected')
+      dirEl = activeEl.closest('.directory') if activeEl
+    if dirEl
+      pathEl = dirEl.querySelector('[data-path]')
+      return pathEl.dataset.path if pathEl
+    return null
+
+  readCode: (path) ->
+    fs.readFileSync(path, 'utf-8')

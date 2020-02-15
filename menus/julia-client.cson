@@ -11,6 +11,8 @@
         {label: 'Show Documentation', command: 'julia-client:show-documentation'}
         {label: 'Format Code', command: 'julia-client:format-code'}
         {type: 'separator'}
+        {label: 'Debug: Run Block', command: 'julia-debug:run-block'}
+        {label: 'Debug: Step through Block', command: 'julia-debug:step-through-block'}
         {label: 'Toggle Breakpoint', command: 'julia-debug:toggle-breakpoint'}
         {label: 'Toggle Conditional Breakpoint', command: 'julia-debug:toggle-conditional-breakpoint'}
         {type: 'separator'}
@@ -32,6 +34,19 @@
         { label: 'Activate Environment in Folder', command: 'julia-client:activate-environment-in-current-folder' }
         { label: 'Activate Environment in Parent Folder', command: 'julia-client:activate-environment-in-parent-folder' }
         { label: 'New Terminal from Folder', command: 'julia-client:new-terminal-from-current-folder'}
+      ]
+    }
+    {type: 'separator'}
+  ]
+
+  '.tree-view li.file': [
+    {type: 'separator'}
+    {
+      label: 'Juno',
+      submenu: [
+        { label: 'Run All', command: 'julia-client:run-all' }
+        { label: 'Debug: Run File', command: 'julia-debug:run-file' }
+        { label: 'Debug: Step through File', command: 'julia-debug:step-through-file' }
       ]
     }
     {type: 'separator'}

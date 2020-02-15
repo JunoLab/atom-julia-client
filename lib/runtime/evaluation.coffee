@@ -8,14 +8,18 @@ path = require 'path'
 {processLinks} = require '../ui/docs'
 workspace = require './workspace'
 modules = require './modules'
-{eval: evaluate, evalall, evalshow, cd, clearLazy, activateProject, activateParentProject, activateDefaultProject} =
-  client.import rpc: ['eval', 'evalall', 'evalshow'], msg: ['cd', 'clearLazy', 'activateProject', 'activateParentProject', 'activateDefaultProject']
+{
+  eval: evaluate, evalall, evalshow, module: getmodule,
+  cd, clearLazy, activateProject, activateParentProject, activateDefaultProject
+} = client.import
+  rpc: ['eval', 'evalall', 'evalshow', 'module'],
+  msg: ['cd', 'clearLazy', 'activateProject', 'activateParentProject', 'activateDefaultProject']
 searchDoc = client.import('docs')
 
 module.exports =
   _currentContext: ->
     editor = atom.workspace.getActiveTextEditor()
-    mod = modules.current() ? 'Main'
+    mod = modules.current() || 'Main'
     edpath = client.editorPath(editor) || 'untitled-' + editor.getBuffer().id
     {editor, mod, edpath}
 
@@ -69,20 +73,44 @@ module.exports =
             workspace.update()
             result
 
-  evalAll: ->
-    {editor, mod, edpath} = @_currentContext()
-    atom.commands.dispatch atom.views.getView(editor), 'inline-results:clear-all'
-    [scope] = editor.getRootScopeDescriptor().getScopesArray()
-    weaveScopes = ['source.weave.md', 'source.weave.latex']
-    module = if weaveScopes.includes scope then mod else editor.juliaModule
-    code = if weaveScopes.includes scope then weave.getCode editor else editor.getText()
-    evalall({
-      path: edpath
-      module: module
-      code: code
-    }).then (result) ->
-      notifications.show "Evaluation Finished"
-      workspace.update()
+  evalAll: (el) ->
+    if el
+      path = paths.getPathFromTreeView el
+      if not path
+        return atom.notifications.addError 'This file has no path.'
+      try
+        code = paths.readCode(path)
+        data =
+          path: path
+          code: code
+          row: 1
+          column: 1
+        getmodule(data).then (mod) =>
+          evalall({
+            path: path
+            module: modules.current mod
+            code: code
+          }).then (result) ->
+            notifications.show "Evaluation Finished"
+            workspace.update()
+      catch error
+        atom.notifications.addError 'Error happened',
+          detail: error
+          dismissable: true
+    else
+      {editor, mod, edpath} = @_currentContext()
+      atom.commands.dispatch atom.views.getView(editor), 'inline-results:clear-all'
+      [scope] = editor.getRootScopeDescriptor().getScopesArray()
+      weaveScopes = ['source.weave.md', 'source.weave.latex']
+      module = if weaveScopes.includes scope then mod else editor.juliaModule
+      code = if weaveScopes.includes scope then weave.getCode editor else editor.getText()
+      evalall({
+        path: edpath
+        module: module
+        code: code
+      }).then (result) ->
+        notifications.show "Evaluation Finished"
+        workspace.update()
 
   toggleDocs: () ->
     { editor, mod, edpath } = @_currentContext()
@@ -132,21 +160,11 @@ module.exports =
     activateDefaultProject()
 
   currentDir: (el) ->
-    # invoked from tree-view context menu
-    dirEl = el.closest('.directory')
-    # invoked from command with focusing on tree-view
-    if not dirEl
-      activeEl = el.querySelector('.tree-view .selected')
-      dirEl = activeEl.closest('.directory') if activeEl
-    if dirEl
-      pathEl = dirEl.querySelector('[data-path]')
-      if pathEl
-        return pathEl.dataset.path
+    dirPath = paths.getDirPathFromTreeView el
+    return dirPath if dirPath
     # invoked from normal command usage
     file = client.editorPath(atom.workspace.getCenter().getActiveTextEditor())
-    if file
-      return path.dirname(file)
-
+    return path.dirname(file) if file
     atom.notifications.addError 'This file has no path.'
     return null
 

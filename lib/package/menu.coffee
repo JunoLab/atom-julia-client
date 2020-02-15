@@ -55,7 +55,17 @@ module.exports =
 
       {label: 'Run Block', command: 'julia-client:run-block'}
       {label: 'Run All', command: 'julia-client:run-all'}
+
+      {type: 'separator'}
+
       {label: 'Format Code', command: 'julia-client:format-code'}
+
+      {type: 'separator'}
+
+      {label: 'Debug: Run Block', command: 'julia-debug:run-block'}
+      {label: 'Debug: Step through Block', command: 'julia-debug:step-through-block'}
+      {label: 'Debug: Run File', command: 'julia-debug:run-file'}
+      {label: 'Debug: Step through File', command: 'julia-debug:step-through-file'}
 
       {type: 'separator'}
 
