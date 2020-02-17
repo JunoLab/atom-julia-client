@@ -163,3 +163,11 @@ atom-text-editor.editor[data-grammar$="source weave latex"] {
   border-top: solid fade(@syntax-text-color, 80%) 1px;
   margin-top: -1px;
 }
+
+.ink-debugger-container .ink-debug-toolbar .btn {
+  &.icon-alignment-align, &.icon-alignment-aligned-to {
+    &::before {
+      transform: translateY(3px) rotate(225deg) scale(0.8)
+    }
+  }
+}
