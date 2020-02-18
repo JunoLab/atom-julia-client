@@ -43,8 +43,8 @@ module.exports =
       [[start], [end]] = range
       @ink.highlight editor, start, end
       rtype = resultsDisplayMode
-      if rtype is not 'console' and cell?
-        rtype = 'block'
+      if cell and not (rtype is 'console')
+          rtype = 'block'
       if rtype is 'console'
         evalshow({text, line: line+1, mod, path: edpath})
         notifications.show "Evaluation Finished"
