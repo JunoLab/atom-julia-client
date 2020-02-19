@@ -42,7 +42,9 @@ module.exports =
       codeSelector.moveNext editor, selection, range if move
       [[start], [end]] = range
       @ink.highlight editor, start, end
-      rtype = if cell? then "block" else resultsDisplayMode
+      rtype = resultsDisplayMode
+      if cell and not (rtype is 'console')
+          rtype = 'block'
       if rtype is 'console'
         evalshow({text, line: line+1, mod, path: edpath})
         notifications.show "Evaluation Finished"
