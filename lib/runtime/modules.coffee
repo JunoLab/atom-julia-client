@@ -6,7 +6,7 @@
 {client} = require '../connection'
 {selector} = require '../ui'
 
-{module: getmodule, allmodules} = client.import ['module', 'allmodules']
+{module: getmodule, allmodules, ismodule} = client.import ['module', 'allmodules', 'ismodule']
 
 module.exports =
 
@@ -83,9 +83,9 @@ module.exports =
     else if atom.workspace.isTextEditor item
       @updateForEditor item
     else
-      allmodules().then (modules) =>
-        mod = item.juliaModule or 'Main'
-        @setCurrent main: mod, inactive: !(modules.indexOf(mod) > -1)
+      mod = item.juliaModule or 'Main'
+      ismodule(mod).then (ismod) =>
+        @setCurrent main: mod, inactive: !ismod
 
   updateForEditor: (editor) ->
     @setCurrent main: editor.juliaModule or 'Main', true
