@@ -163,3 +163,22 @@ atom-text-editor.editor[data-grammar$="source weave latex"] {
   border-top: solid fade(@syntax-text-color, 80%) 1px;
   margin-top: -1px;
 }
+
+.ink-debug-toolbar {
+  --color: @text-color;
+  --color-subtle: @text-color-subtle;
+  --color-highlight: @text-color-error;
+
+  button {
+    &.custom-svg-icon {
+      display: flex;
+      align-items: center;
+      height: 2.5em!important;
+
+      svg {
+        height: 1.6em;
+        margin: auto;
+      }
+    }
+  }
+}
