@@ -84,9 +84,6 @@ module.exports =
     [path, args] = [paths.jlpath(), client.clargs()]
     check = paths.getVersion()
 
-    args = args.map (arg) => arg.trim()
-    args = args.filter (arg) => arg.length > 0
-
     if provider is 'Remote'
       check = Promise.resolve()
     else

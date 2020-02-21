@@ -58,12 +58,13 @@ try
   Atom.handle("junorc") do path
     cd(path)
     ispath(junorc) && include(junorc)
+
+    if outdated != false
+      Atom.msg("versionwarning", outdated)
+    end
     nothing
   end
   Atom.connect(port)
-  if outdated != false
-    Atom.msg("versionwarning", outdated)
-  end
 catch
   if outdated != false
     printstyled("Outdated version of Atom.jl detected.\n", outdated, "\n", color = Base.error_color())

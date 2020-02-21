@@ -1,4 +1,5 @@
 {isEqual} = require 'underscore-plus'
+hash = require 'object-hash'
 basic = require './basic'
 
 IPC = require '../ipc'
@@ -11,7 +12,7 @@ module.exports =
 
   procs: {}
 
-  key: (path, args) -> [path, args...].join ' '
+  key: (path, args) -> hash([path, args...].join(' ').trim())
 
   cache: (path, args) -> @procs[@key(path, args)] ?= []
 
@@ -33,16 +34,17 @@ module.exports =
       p.proc
 
   start: (path, args) ->
+    allArgs = [args, atom.config.get('julia-client.juliaOptions')]
     @provider().lock (release) =>
-      if @cache(path, args).length < @cacheLength
+      if @cache(path, allArgs).length < @cacheLength
         p = @provider().get_(path, args).then (proc) =>
-          obj = {path, args, proc: proc}
+          obj = {path, allArgs, proc: proc}
           @monitor proc
           @warmup obj
-          @toCache path, args, obj
+          @toCache path, allArgs, obj
           proc.socket
-            .then => @start path, args
-            .catch (e) => @removeFromCache path, args, obj
+            .then => @start path, allArgs
+            .catch (e) => @removeFromCache path, allArgs, obj
           release proc.socket
         p.catch (err) =>
           release()
@@ -82,7 +84,8 @@ module.exports =
       .catch ->
 
   get: (path, args) ->
-    if (proc = @fromCache path, args) then p = proc
+    allArgs = [args, atom.config.get('julia-client.juliaOptions')]
+    if (proc = @fromCache path, allArgs) then p = proc
     else p = @provider().get path, args
     @start path, args
     p
