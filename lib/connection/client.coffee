@@ -170,6 +170,8 @@ module.exports =
     startupArgs = atom.config.get 'julia-client.juliaOptions.startupArguments'
     if startupArgs.length > 0
       as = as.concat startupArgs
+    as = as.map (arg) => arg.trim()
+    as = as.filter (arg) => arg.length > 0
     as
 
   connectedError: (action = 'do that') ->

@@ -25,11 +25,12 @@
     "atom": ">=1.39.0 <2.0.0"
   },
   "dependencies": {
-    "node-pty-prebuilt-multiarch": "0.9.0",
     "atom-package-deps": "*",
     "atom-space-pen-views": "^2.0.0",
     "etch": "^0.14",
     "fuzzaldrin-plus": "^0.6.0",
+    "node-pty-prebuilt-multiarch": "0.9.0",
+    "object-hash": "^2.0.3",
     "physical-cpu-count": "*",
     "semver": "^6.3.0",
     "ssh2": "^0.8.4",
