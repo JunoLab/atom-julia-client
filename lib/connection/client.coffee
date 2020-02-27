@@ -141,10 +141,7 @@ module.exports =
 
   interrupt: ->
     if @isActive()
-      if @isWorking()
-        @clientCall 'interrupts', 'interrupt'
-      else
-        @clientCall 'interrupts', 'interruptREPL'
+      @clientCall 'interrupts', 'interrupt'
 
   disconnect: ->
     if @isActive()

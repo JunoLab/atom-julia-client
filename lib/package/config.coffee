@@ -637,12 +637,4 @@ if process.platform == 'darwin'
     default: false
     order: 5.5
 
-if process.platform == 'win32'
-  config.juliaOptions.properties.enablePowershellWrapper =
-    title: 'Enable Powershell Wrapper'
-    type: 'boolean'
-    default: true
-    description: 'If enabled, use a Powershell wrapper to spawn Julia. Necessary to enable interrupts.'
-    order: 99
-
 module.exports = config
