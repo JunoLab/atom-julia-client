@@ -15,6 +15,8 @@ module.exports =
   debuginfo:  require './runtime/debuginfo'
   formatter:  require './runtime/formatter'
   goto:       require './runtime/goto'
+  urihandler: require './runtime/urihandler'
+  refactor:   require './runtime/refactor'
 
   activate: ->
     @subs = new CompositeDisposable()
@@ -36,7 +38,7 @@ module.exports =
   consumeInk: (ink) ->
     @evaluation.ink = ink
     @frontend.ink = ink
-    for mod in [@console, @debugger, @profiler, @linter, @goto, @outline]
+    for mod in [@console, @debugger, @profiler, @linter, @goto, @outline, @urihandler, @refactor]
       mod.activate(ink)
     for mod in [@workspace, @plots]
       mod.ink = ink
@@ -67,4 +69,4 @@ module.exports =
     @subs.add(datatipDisposable)
     datatipDisposable
 
-  handleURI: require './runtime/urihandler'
+  handleURI: (parsedURI) -> @urihandler.handleURI parsedURI
