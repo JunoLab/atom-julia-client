@@ -64,6 +64,8 @@ module.exports =
           else if @lastEditorModule?
             modules.unshift @follow
           modules
+        module.catch (err) =>
+          console.log err
         selector.show(modules, active: active).then (mod) =>
           return unless mod?
           if mod is @autodetect
@@ -84,8 +86,12 @@ module.exports =
       @updateForEditor item
     else
       mod = item.juliaModule or 'Main'
-      ismodule(mod).then (ismod) =>
-        @setCurrent main: mod, inactive: !ismod
+      m = ismodule(mod)
+      m
+        .then (ismod) =>
+          @setCurrent main: mod, inactive: !ismod
+        .catch (err) =>
+          console.log err
 
   updateForEditor: (editor) ->
     @setCurrent main: editor.juliaModule or 'Main', true
@@ -105,7 +111,8 @@ module.exports =
       code: ed.getText()
       row: row+1, column: column+1
       module: ed.juliaModule
-    getmodule(data)
+    getmodule(data).catch (err) =>
+      console.log err
 
   setEditorModule: (ed) ->
     modulePromise = @getEditorModule ed
