@@ -87,14 +87,21 @@ module.exports =
           code: code
           row: 1
           column: 1
-        getmodule(data).then (mod) =>
-          evalall({
-            path: path
-            module: modules.current mod
-            code: code
-          }).then (result) ->
-            notifications.show "Evaluation Finished"
-            workspace.update()
+        getmodule(data)
+          .then (mod) =>
+            evalall({
+              path: path
+              module: modules.current mod
+              code: code
+            })
+              .then (result) ->
+                notifications.show "Evaluation Finished"
+                workspace.update()
+              .catch (err) =>
+                console.log(err)
+          .catch (err) =>
+            console.log(err)
+
       catch error
         atom.notifications.addError 'Error happened',
           detail: error
@@ -110,9 +117,12 @@ module.exports =
         path: edpath
         module: module
         code: code
-      }).then (result) ->
-        notifications.show "Evaluation Finished"
-        workspace.update()
+      })
+        .then (result) ->
+          notifications.show "Evaluation Finished"
+          workspace.update()
+        .catch (err) =>
+          console.log(err)
 
   toggleDocs: () ->
     { editor, mod, edpath } = @_currentContext()
@@ -123,18 +133,21 @@ module.exports =
     word = editor.getTextInBufferRange(range)
 
     return unless words.isValidWordToInspect(word)
-    searchDoc({word: word, mod: mod}).then (result) =>
-      if result.error then return
-      v = views.render result
-      processLinks(v.getElementsByTagName('a'))
-      if atom.config.get('julia-client.uiOptions.docsDisplayMode') == 'inline'
-        d = new @ink.InlineDoc editor, range,
-          content: v
-          highlight: true
-        d.view.classList.add 'julia'
-      else
-        docpane.ensureVisible()
-        docpane.showDocument(v, [])
+    searchDoc({word: word, mod: mod})
+      .then (result) =>
+        if result.error then return
+        v = views.render result
+        processLinks(v.getElementsByTagName('a'))
+        if atom.config.get('julia-client.uiOptions.docsDisplayMode') == 'inline'
+          d = new @ink.InlineDoc editor, range,
+            content: v
+            highlight: true
+          d.view.classList.add 'julia'
+        else
+          docpane.ensureVisible()
+          docpane.showDocument(v, [])
+      .catch (err) =>
+        console.log(err)
 
   # Working Directory
 
@@ -177,9 +190,12 @@ module.exports =
     else if dirs.length == 1
       @_cd dirs[0]
     else
-      selector.show(dirs).then (dir) =>
-        return unless dir?
-        @_cd dir
+      selector.show(dirs)
+        .then (dir) =>
+          return unless dir?
+          @_cd dir
+        .catch (err) =>
+          console.log(err)
 
   cdHome: ->
     @_cd paths.home()

@@ -37,31 +37,7 @@ module.exports =
         @provider().start? paths.jlpath(), client.clargs()
       .catch ->
 
-  monitorExit: (proc) ->
-    proc.onExit (code, signal) ->
-      msg = "Julia has stopped"
-      if not proc.wrapper and code isnt 0
-        msg += ": #{code}"
-        if signal then msg += ", #{signal}"
-      else
-        msg += "."
-      client.info msg
-
-  pipeStreams: (proc) ->
-    out = (data) -> client.stdout data.toString()
-    err = (data) -> client.stderr data.toString()
-    proc.flush? out, err
-    proc.onStdout out
-    proc.onStderr err
-
   monitor: (proc) ->
-    proc.ready = -> false
-    @pipeStreams proc
-    @monitorExit proc
-    client.attach proc
-    proc
-
-  monitor2: (proc) ->
     client.emitter.emit('boot', proc)
     proc.ready = -> false
     client.attach(proc)
@@ -92,7 +68,7 @@ module.exports =
 
     proc = check
       .then => @spawnJulia(path, args, provider)
-      .then (proc) => if proc.ty? then @monitor2(proc) else @monitor(proc)
+      .then (proc) => @monitor(proc)
 
     # set working directory here, so we queue this task before anything else
     if provider is 'Remote'

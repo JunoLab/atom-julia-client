@@ -1,11 +1,6 @@
 {time} = require './misc'
 externalTerminal = require './connection/terminal'
 
-metrics = ->
-  if id = localStorage.getItem 'metrics.userId'
-    r = require('http').get "http://data.junolab.org/hit?id=#{id}&app=atom-julia-boot"
-    r.on 'error', ->
-
 module.exports =
   IPC:      require './connection/ipc'
   messages: require './connection/messages'
@@ -48,8 +43,7 @@ module.exports =
         @booting = false
       p.catch =>
         @booting = false
-      time "Julia Boot", @client.import('ping')().then =>
-        metrics()
+      time "Julia Boot", @client.import('ping')()
 
   bootRemote: ->
     @_boot('Remote')

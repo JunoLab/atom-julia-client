@@ -3,8 +3,6 @@
 
 IPC = require './ipc'
 
-metrics = throttle metrics, 60*60*1000
-
 module.exports =
 
   # Connection logic injects a connection via `attach`.
