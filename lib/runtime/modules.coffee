@@ -86,8 +86,7 @@ module.exports =
       @updateForEditor item
     else
       mod = item.juliaModule or 'Main'
-      m = ismodule(mod)
-      m
+      ismodule(mod)
         .then (ismod) =>
           @setCurrent main: mod, inactive: !ismod
         .catch (err) =>
