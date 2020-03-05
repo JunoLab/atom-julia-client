@@ -64,7 +64,7 @@ module.exports =
           else if @lastEditorModule?
             modules.unshift @follow
           modules
-        module.catch (err) =>
+        modules.catch (err) =>
           console.log err
         selector.show(modules, active: active).then (mod) =>
           return unless mod?
