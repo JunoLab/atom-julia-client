@@ -155,8 +155,8 @@ atom-text-editor.editor[data-grammar$="source weave latex"] {
   max-width: 500px;
 }
 
-.julia-current-cell {
-  background-color: fade(@syntax-selection-color, 30%);
+.line-number.julia-current-cell {
+  background-image:  linear-gradient(to right, rgba(255,255,0,0), 90%, fade(@syntax-text-color, 10%));
 }
 
 .julia-cell-border {
