@@ -110,8 +110,9 @@ module.exports =
       code: ed.getText()
       row: row+1, column: column+1
       module: ed.juliaModule
-    getmodule(data).catch (err) =>
-      console.log err
+    getmodule(data)
+      .catch (err) =>
+        console.log err
 
   setEditorModule: (ed) ->
     modulePromise = @getEditorModule ed
