@@ -258,6 +258,10 @@ config =
       highlightCells:
         title: 'Highlight Cells'
         type: 'boolean'
+        description: 'Customize the appearence of Juno\'s cell highlighting by
+                      adding styles for `.line.julia-current-cell` or
+                      `.line-number.julia-current-cell` to your personal
+                      stylesheet.'
         default: true
         order: 12
       layouts:
