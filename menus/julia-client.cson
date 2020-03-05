@@ -33,7 +33,8 @@
         { label: 'Work in Folder', command: 'julia-client:work-in-current-folder' }
         { label: 'Activate Environment in Folder', command: 'julia-client:activate-environment-in-current-folder' }
         { label: 'Activate Environment in Parent Folder', command: 'julia-client:activate-environment-in-parent-folder' }
-        { label: 'New Terminal from Folder', command: 'julia-client:new-terminal-from-current-folder'}
+        { label: 'Add Package Folder...', command: 'julia:open-package-as-project-folder' }
+        { label: 'New Terminal from Folder', command: 'julia-client:new-terminal-from-current-folder' }
       ]
     }
     {type: 'separator'}

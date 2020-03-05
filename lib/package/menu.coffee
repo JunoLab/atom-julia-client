@@ -82,6 +82,7 @@ module.exports =
       {label: 'Open Juno Startup File', command: 'julia:open-juno-startup-file'}
       {label: 'Open Julia Home', command: 'julia:open-julia-home'}
       {label: 'Open Package in New Window...', command: 'julia:open-package-in-new-window'}
+      {label: 'Open Package as Project Folder...', command: 'julia:open-package-as-project-folder'}
 
       {type: 'separator'}
 
