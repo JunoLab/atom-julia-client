@@ -73,15 +73,8 @@ module.exports =
         """
         We tried to launch Julia from: `#{path}`
         This path can be changed in the settings.
-        """ + if details isnt ''
-          """
-
-          Details:
-
-              #{details}
-          """
-        else
-          ""
+        """
+      detail: details
       dismissable: true
 
   connectExternal: ->

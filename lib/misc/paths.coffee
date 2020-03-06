@@ -21,6 +21,11 @@ module.exports =
     new Promise (resolve, reject) ->
       if fs.existsSync(path) then resolve(path)
 
+      if process.platform is 'win32'
+        if /[a-zA-Z]\:/.test(path)
+          reject("Couldn't resolve path.")
+          return
+
       which = if process.platform is 'win32' then 'where' else 'which'
       proc = child_process.exec "#{which} \"#{path}\"", (err, stdout, stderr) ->
         return reject(stderr) if err?
