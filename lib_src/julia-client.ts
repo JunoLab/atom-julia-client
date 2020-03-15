@@ -4,16 +4,16 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 let JuliaClient;
-import etch from 'etch';
+const etch = require('etch');
 import commands from './package/commands';
 import config from './package/config';
 import menu from './package/menu';
-import settings from './package/settings';
+const settings = require('./package/settings');
 import toolbar from './package/toolbar';
-import semver from 'semver';
+const semver = require('semver');
 
 // TODO: Update me when tagging a new relase:
-const INK_VERSION_COMPAT  = "^0.12.3";
+const INK_VERSION_COMPAT  = "^0.12.3"
 
 const INK_LINK            = '[`ink`](https://github.com/JunoLab/atom-ink)';
 const LANGUAGE_JULIA_LINK = '[`language-julia`](https://github.com/JuliaEditorSupport/atom-language-julia)';
