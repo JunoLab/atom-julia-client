@@ -7,6 +7,10 @@ let lastTerminal
 let subs
 
 class FocusHistory {
+	public size: any;
+	public history: any;
+	public openedItem: any;
+
   constructor (size) {
     this.size = size
     this.history = []

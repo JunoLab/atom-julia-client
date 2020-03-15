@@ -17,6 +17,14 @@ const completions = client.import('completions')
 const completionDetail = client.import('completiondetail')
 
 class AutoCompleteProvider {
+	public editor: any;
+	public bufferPosition: any;
+	public activatedManually: any;
+	public row: any;
+	public column: any;
+	public scopes: any;
+	public context: any;
+	public startRow: any;
   selector = '.source.julia'
   disableForSelector = `.source.julia .comment`
   excludeLowerPriority = true

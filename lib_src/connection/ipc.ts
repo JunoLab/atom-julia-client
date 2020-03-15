@@ -48,7 +48,7 @@ export default IPC = class IPC {
     });
   }
 
-  handle(type, f) {
+  handle(type, f?) {
     if (f != null) {
       return this.handlers[type] = f;
     } else {

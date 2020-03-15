@@ -175,7 +175,7 @@ export function close () {
   return terminal.close()
 }
 
-function newTerminal (cwd) {
+function newTerminal (cwd?) {
   const term = ink.InkTerminal.fromId(`terminal-julia-${Math.floor(Math.random()*10000000)}`, terminalOptions())
   term.attachCustomKeyEventHandler((e) => handleKeybinding(e, term))
   term.onDidOpenLink(hasKeyboardModifier)
@@ -286,7 +286,7 @@ function addLinkHandler (terminal) {
 
 let tooltip = null
 
-function showTooltip (event, uri, location, terminal) {
+function showTooltip (event, uri, location?, terminal?) {
   hideTooltip()
   
   if (atom.config.get('julia-client.consoleOptions.linkModifier')) {

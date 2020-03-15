@@ -25,6 +25,18 @@ const includeRegex = /(include|include_dependency)\(".+\.jl"\)/
 const filePathRegex = /".+\.jl"/
 
 class Goto {
+	public ink: any;
+	public subscriptions: any;
+	public filePath: any;
+	public word: any;
+	public range: any;
+	public column: any;
+	public row: any;
+	public context: any;
+	public startRow: any;
+	public main: any;
+	public sub: any;
+
   activate (ink) {
     this.ink = ink
     this.subscriptions = new CompositeDisposable()

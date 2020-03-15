@@ -23,6 +23,14 @@ const datatip = client.import('datatip')
 const grammar = atom.grammars.grammarForScopeName('source.julia')
 
 class DatatipProvider {
+	public range: any;
+	public word: any;
+	public main: any;
+	public sub: any;
+	public column: any;
+	public row: any;
+	public context: any;
+	public startRow: any;
   providerName = 'julia-client-datatip-provider'
 
   priority = 100
