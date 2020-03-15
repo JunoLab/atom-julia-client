@@ -33,6 +33,6 @@
     // "skipLibCheck": false,
      "outDir": "../lib/misc"
   },
-  "files" :  ["misc/scopes.ts"],
+  "files" :  ["misc/blocks.ts"],
   "compileOnSave": true
 }
