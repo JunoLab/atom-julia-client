@@ -17,9 +17,9 @@
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "incremental": true,
-    "inlineSourceMap": true,
+    // "inlineSourceMap": false,
     // "preserveConstEnums": true,
-    // "sourceMap": true,
+    "sourceMap": true,
     "preserveSymlinks": true,
     // "removeComments": true,
     // "jsx": "react",
@@ -31,9 +31,8 @@
     // "noLib": false,
     // "importHelpers": true, // if true you should add tslib to deps
     // "skipLibCheck": false,
-
-    "outDir": "../lib",
-    "files" : ["ui/selector.ts"]
+     "outDir": "../lib/misc"
   },
+  "files" :  ["misc/scopes.ts"],
   "compileOnSave": true
 }
