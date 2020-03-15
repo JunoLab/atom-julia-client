@@ -33,6 +33,7 @@
     // "skipLibCheck": false,
 
     "outDir": "../lib",
+    "files" : ["ui/selector.ts"]
   },
   "compileOnSave": true
 }
