@@ -38,17 +38,26 @@
   },
   "devDependencies": {
     "@types/atom": "^1.40.1",
-    "@types/ssh2": "^0.5.41",
     "@types/fuzzaldrin-plus": "^0.6.0",
     "@types/object-hash": "^1.3.1",
     "@types/semver": "^7.1.0",
+    "@types/ssh2": "^0.5.41",
     "@types/underscore": "^1.9.4",
+    "eslint": "latest",
+    "@typescript-eslint/eslint-plugin": "latest",
+    "@typescript-eslint/parser": "latest",
+    "babel-eslint": "latest",
+    "coffeescript": "latest",
+    "eslint-plugin-coffee": "latest",
+    "eslint-plugin-json": "latest",
+    "eslint-plugin-only-warn": "latest",
     "prettier": "latest",
     "tslint": "latest",
     "tslint-config-prettier": "latest"
   },
   "scripts": {
-    "postinstall": "node script/postinstall.js"
+    "postinstall": "node script/postinstall.js",
+    "lint": "eslint . --ext js,ts,coffee"
   },
   "consumedServices": {
     "status-bar": {

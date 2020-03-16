@@ -1,0 +1,80 @@
+{
+  // JS Files
+  "root": true,
+  "env": {
+    "atomtest": true,
+    "es6": true,
+    "node": true,
+    "browser": true,
+    "jasmine": true
+  },
+  "globals": { "atom": "writable" },
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaFeatures": { "jsx": true },
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "plugins": ["only-warn"],
+  "extends": ["eslint:recommended"],
+  "overrides": [
+    { // Bundled node version with atom has an old ESLint
+      // TypeScript files
+      "files": ["**/*.ts", "**/*.tsx"],
+      "env": {
+        "atomtest": true,
+        "es6": true,
+        "node": true,
+        "browser": true
+      },
+      "globals": { "atom": "writable" },
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+        "ecmaFeatures": { "jsx": true },
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+      },
+      "plugins": ["@typescript-eslint", "only-warn"],
+      "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended"
+      ],
+      "rules": {
+        "@typescript-eslint/explicit-function-return-type": "off",
+        "@typescript-eslint/camelcase": "off",
+        "@typescript-eslint/no-use-before-define": "off",
+        "@typescript-eslint/member-delimiter-style": "off"
+      }
+    },
+    {
+      // CoffeeScript files
+      "files": ["**/*.coffee"],
+      "env": {
+        "atomtest": true,
+        "es6": true,
+        "node": true,
+        "browser": true
+      },
+      "globals": { "atom": "writable" },
+      // "parser": "eslint-plugin-coffee",
+      "parser": "eslint-plugin-coffee",
+      "parserOptions": {
+        "ecmaFeatures": { "jsx": true },
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+      },
+      "plugins": ["coffee", "only-warn"],
+      "extends": ["plugin:coffee/eslint-recommended"]
+    },
+    {
+      // JSON files
+      "files": ["*.json"],
+      "plugins": ["json"],
+      "extends": ["plugin:json/recommended"],
+      "rules": {
+        "json/*": ["error", {"allowComments": true}]
+      }
+    }
+  ]
+}
