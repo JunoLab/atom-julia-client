@@ -1,16 +1,16 @@
-'use babel'
+// TODO make sure rgb2hex returns string
 
-export function getColors(selectors) {
-  let grammar = atom.grammars.grammarForScopeName("source.julia")
+export function getColors(selectors: { [P: string]: string }) {
+  // const grammar = atom.grammars.grammarForScopeName("source.julia")
+  const styled: { [P: string]: HTMLSpanElement } = {}
+  const color: { [P: string]: string } = {}
 
-  let styled = {}
-  let color = {}
-  let div = document.createElement('div')
-  div.classList.add('editor', 'editor-colors', 'julia-syntax-color-selector')
+  const div = document.createElement("div")
+  div.classList.add("editor", "editor-colors", "julia-syntax-color-selector")
 
-  for (let style in selectors) {
-    let child = document.createElement('span')
-    child.innerText = 'foo'
+  for (const style in selectors) {
+    const child = document.createElement("span")
+    child.innerText = "foo"
     child.classList.add(...selectors[style])
     div.appendChild(child)
     styled[style] = child
@@ -18,27 +18,35 @@ export function getColors(selectors) {
 
   document.body.appendChild(div)
   // wait till rendered?
-  for (let style in selectors) {
+  for (const style in selectors) {
+    // TODO do we need try catch
     try {
-      color[style] = rgb2hex(window.getComputedStyle(styled[style])['color'])
+      color[style] = rgb2hex(window.getComputedStyle(styled[style]).color)
     } catch (e) {
       console.error(e)
     }
   }
-  color['background'] = rgb2hex(window.getComputedStyle(div)['backgroundColor'])
+  color.background = rgb2hex(window.getComputedStyle(div).backgroundColor)
   document.body.removeChild(div)
 
   return color
 }
 
-function rgb2hex(rgb) {
-  if (rgb.search("rgb") == -1) {
+function rgb2hex(rgb: string) {
+  if (rgb.search("rgb") === -1) {
     return rgb
   } else {
-    rgb = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+))?\)$/)
-    function hex(x) {
-      return ("0" + parseInt(x).toString(16)).slice(-2);
+    const rgb_match = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+))?\)$/)
+
+    if (rgb_match) {
+    return hex(rgb_match[1]) + hex(rgb_match[2]) + hex(rgb_match[3])
+    } else {
+      console.warn(rgb.concat("rgb_match is undefined!"))
+      return undefined
     }
-    return hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
   }
+}
+
+function hex(x: string) {
+  return ("0" + parseInt(x, 10).toString(16)).slice(-2)
 }

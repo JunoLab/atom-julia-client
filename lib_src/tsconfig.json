@@ -33,6 +33,6 @@
     // "skipLibCheck": false,
      "outDir": "../lib/misc"
   },
-  "files" :  ["misc/blocks.ts"],
+  "files" :  ["misc/colors.ts"],
   "compileOnSave": true
 }
