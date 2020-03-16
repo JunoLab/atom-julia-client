@@ -1,0 +1,65 @@
+name: CI
+on:
+  - push
+  - pull_request
+
+jobs:
+  Test:
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    name: Julia ${{ matrix.julia_version }} - ${{ matrix.os }} - ${{ matrix.arch }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+        aom_channel: [stable, beta]
+        julia-version: ["1.3", "nightly"]
+        arch: ["x64"]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: UziTech/action-setup-atom@v1
+        with:
+          channel: ${{ matrix.atom-channel }}
+      - uses: julia-actions/setup-julia@latest
+        with:
+          version: ${{ matrix.julia_version }}
+          arch: ${{ matrix.arch }}
+      - name: Versions
+        run: |
+          julia -v
+          atom -v
+          apm -v
+          npm -v
+      - name: Install APM dependencies
+        run: |
+          apm ci  # uses locked module. use `apm install` for non-locked
+          node script/postinstall.js
+      - name: Julia CI
+        run: julia -e 'include("ci/packages.jl")'
+        shell: bash
+      - name: Run tests 👩🏾‍💻
+        run: atom --test spec
+
+  Lint:
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "13.x"
+      - name: Install NPM dependencies
+        run: |
+          npm ci  # uses locked module. use `npm install` for non-locked
+      - name: Lint ✨
+        run: npm run lint
+
+  Skip:
+    if: contains(github.event.head_commit.message, '[skip ci]')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Skip CI 🚫
+        run: echo skip ci
