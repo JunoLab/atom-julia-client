@@ -6,7 +6,7 @@ on:
 jobs:
   Test:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
-    name: Julia ${{ matrix.julia_version }} - ${{ matrix.os }} - ${{ matrix.arch }}
+    name: Julia ${{ matrix.julia_version }} - ${{ matrix.os }} - ${{ matrix.arch }} - Atom ${{ matrix.atom_channel }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -15,8 +15,8 @@ jobs:
           - ubuntu-latest
           - macos-latest
           - windows-latest
-        aom_channel: [stable, beta]
-        julia-version: ["1.3", "nightly"]
+        atom_channel: [stable] # beta
+        julia_version: ["1.3", "nightly"]
         arch: ["x64"]
     steps:
       - uses: actions/checkout@v2
@@ -30,18 +30,17 @@ jobs:
       - name: Versions
         run: |
           julia -v
-          atom -v
           apm -v
-          npm -v
       - name: Install APM dependencies
         run: |
           apm ci  # uses locked module. use `apm install` for non-locked
+          apm install ink language-julia
           node script/postinstall.js
       - name: Julia CI
         run: julia -e 'include("ci/packages.jl")'
         shell: bash
-      - name: Run tests 👩🏾‍💻
-        run: atom --test spec
+#      - name: Run tests 👩🏾‍💻
+#        run: atom --test spec
 
   Lint:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
