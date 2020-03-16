@@ -12,6 +12,7 @@
 
         "semicolon": false,
         "whitespace": false,
+        "no-trailing-whitespace": false,
         "curly": false,
         "variable-name": false,
         "arrow-parens": false,
