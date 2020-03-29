@@ -112,7 +112,7 @@ function getSelection(editor: TextEditor, selection: Selection) {
   return range
 }
 
-export function moveNext(editor: TextEditor, selection: Selection, range) {
+export function moveNext(editor: TextEditor, selection: Selection, range: [[number, number], [number, number]]) {
   // Ensure enough room at the end of the buffer
   const row = range[1][0]
   let last
