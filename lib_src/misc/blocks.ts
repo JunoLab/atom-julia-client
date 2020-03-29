@@ -27,11 +27,11 @@ function isBlank({ line, scope }: LineInfo, allowDocstrings = false) {
   }
   return /^\s*(#.*)?$/.test(line)
 }
-function isEnd({ line, scope }) {
-  if (isStringEnd({ line, scope })) {
+function isEnd(lineInfo: LineInfo) {
+  if (isStringEnd(lineInfo)) {
     return true
   }
-  return /^(end\b|\)|\]|\})/.test(line)
+  return /^(end\b|\)|\]|\})/.test(lineInfo.line)
 }
 function isStringEnd({ line, scope }) {
   scope = scope.join(" ")
