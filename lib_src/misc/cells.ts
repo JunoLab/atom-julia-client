@@ -19,7 +19,7 @@ export function getRange(editor: TextEditor): [Point, Point] {
   cursor.column = Infinity // cursor on delimiter line means eval cell below
 
   let foundDelim = false
-  for (let i = cursor.row + 1; i <= editor.getLastBufferRow(); i++) {
+  for (let i = cursor.row + 1, l = editor.getLastBufferRow(); i <= l; i++) {
     const { line, scope } = getLine(editor, i)
     foundDelim = regex.test(line) && scope.join(".").indexOf("comment.line") > -1
     end.row = i
