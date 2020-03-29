@@ -4,6 +4,11 @@
 import { forLines } from "./scopes"
 import { TextEditor, Selection } from "atom"
 
+interface LineInfo {
+  scope: readonly string[]
+  line: string
+}
+
 export function getLine(editor: TextEditor, l) {
   return {
     scope: editor.scopeDescriptorForBufferPosition([l, 0]).scopes,
