@@ -37,13 +37,13 @@ function isStringEnd(lineInfo: LineInfo) {
   const scope = lineInfo.scope.join(" ")
   return /\bstring\.multiline\.end\b/.test(scope) || (/\bstring\.end\b/.test(scope) && /\bbacktick\b/.test(scope))
 }
-function isCont({ line, scope }) {
-  scope = scope.join(" ")
+function isCont(lineInfo: LineInfo) {
+  const scope = lineInfo.scope.join(" ")
   if (/\bstring\b/.test(scope) && !/\bpunctuation\.definition\.string\b/.test(scope)) {
     return true
   }
 
-  return line.match(/^(else|elseif|catch|finally)\b/)
+  return lineInfo.line.match(/^(else|elseif|catch|finally)\b/)
 }
 function isStart(lineInfo) {
   return !(/^\s/.test(lineInfo.line) || isBlank(lineInfo) || isEnd(lineInfo) || isCont(lineInfo))
