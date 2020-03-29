@@ -102,10 +102,14 @@ export function movePrev(editor: TextEditor | undefined | null) {
   if (!editor) {
     editor = atom.workspace.getActiveTextEditor()
   }
-  if (editor.getGrammar().scopeName.indexOf("source.weave") > -1) {
-    return weaveMovePrev(editor)
+  if (editor) {
+    if (editor.getGrammar().scopeName.indexOf("source.weave") > -1) {
+      return weaveMovePrev(editor)
+    } else {
+      return jlMovePrev(editor)
+    }
   } else {
-    return jlMovePrev(editor)
+    console.error("No editor is given")
   }
 }
 
