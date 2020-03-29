@@ -1,5 +1,3 @@
-"use babel"
-
 import { get as weaveGet, moveNext as weaveMoveNext, movePrev as weaveMovePrev } from "./weave.js"
 
 import { getLine } from "./blocks.js"
