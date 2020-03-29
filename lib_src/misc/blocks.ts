@@ -82,7 +82,7 @@ function walkForward(editor: TextEditor, start: number) {
   return end
 }
 
-function getRange(editor: TextEditor, row) {
+function getRange(editor: TextEditor, row: number): [[number, number], [number, number]] {
   const start = walkBack(editor, row)
   const end = walkForward(editor, start)
   if (start <= row && row <= end) {
