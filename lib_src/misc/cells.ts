@@ -6,21 +6,21 @@ import { getLine } from "./blocks.js"
 
 import { Point } from "atom"
 
-export function getRange(ed) {
+export function getRange(editor) {
   // Cell range is:
   //  Start of line below top delimiter (and/or start of top row of file) to
   //  End of line before end delimiter
-  const buffer = ed.getBuffer()
+  const buffer = editor.getBuffer()
   const start = buffer.getFirstPosition()
   const end = buffer.getEndPosition()
   const regexString = "^(" + atom.config.get("julia-client.uiOptions.cellDelimiter").join("|") + ")"
   const regex = new RegExp(regexString)
-  const cursor = ed.getCursorBufferPosition()
+  const cursor = editor.getCursorBufferPosition()
   cursor.column = Infinity // cursor on delimiter line means eval cell below
 
   let foundDelim = false
-  for (let i = cursor.row + 1; i <= ed.getLastBufferRow(); i++) {
-    const { line, scope } = getLine(ed, i)
+  for (let i = cursor.row + 1; i <= editor.getLastBufferRow(); i++) {
+    const { line, scope } = getLine(editor, i)
     foundDelim = regex.test(line) && scope.join(".").indexOf("comment.line") > -1
     end.row = i
     if (foundDelim) break
@@ -35,7 +35,7 @@ export function getRange(ed) {
   foundDelim = false
   if (cursor.row > 0) {
     for (let i = end.row; i >= 0; i--) {
-      const { line, scope } = getLine(ed, i)
+      const { line, scope } = getLine(editor, i)
       foundDelim = regex.test(line) && scope.join(".").indexOf("comment.line") > -1
       start.row = i
       if (foundDelim) {
@@ -48,44 +48,44 @@ export function getRange(ed) {
   return [start, end]
 }
 
-export function get(ed) {
-  if (ed.getGrammar().scopeName.indexOf("source.julia") > -1) {
-    return jlGet(ed)
+export function get(editor) {
+  if (editor.getGrammar().scopeName.indexOf("source.julia") > -1) {
+    return jlGet(editor)
   } else {
-    return weaveGet(ed)
+    return weaveGet(editor)
   }
 }
 
-function jlGet(ed) {
-  const range = getRange(ed)
-  let text = ed.getTextInBufferRange(range)
+function jlGet(editor) {
+  const range = getRange(editor)
+  let text = editor.getTextInBufferRange(range)
   if (text.trim() === "") text = " "
   const res = {
     range: [
       [range[0].row, range[0].column],
       [range[1].row, range[1].column],
     ],
-    selection: ed.getSelections()[0],
+    selection: editor.getSelections()[0],
     line: range[0].row,
     text: text,
   }
   return [res]
 }
 
-export function moveNext(ed) {
-  if (ed == null) {
-    ed = atom.workspace.getActiveTextEditor()
+export function moveNext(editor) {
+  if (editor == null) {
+    editor = atom.workspace.getActiveTextEditor()
   }
-  if (ed.getGrammar().scopeName.indexOf("source.julia") > -1) {
-    return jlMoveNext(ed)
+  if (editor.getGrammar().scopeName.indexOf("source.julia") > -1) {
+    return jlMoveNext(editor)
   } else {
-    return weaveMoveNext(ed)
+    return weaveMoveNext(editor)
   }
 }
 
-function jlMoveNext(ed) {
-  const range = getRange(ed)
-  const sel = ed.getSelections()[0]
+function jlMoveNext(editor) {
+  const range = getRange(editor)
+  const sel = editor.getSelections()[0]
   const nextRow = range[1].row + 2 // 2 = 1 to get to delimiter line + 1 more to go past it
   return sel.setBufferRange([
     [nextRow, 0],
@@ -93,21 +93,21 @@ function jlMoveNext(ed) {
   ])
 }
 
-export function movePrev(ed) {
-  if (ed == null) {
-    ed = atom.workspace.getActiveTextEditor()
+export function movePrev(editor) {
+  if (editor == null) {
+    editor = atom.workspace.getActiveTextEditor()
   }
-  if (ed.getGrammar().scopeName.indexOf("source.weave") > -1) {
-    return weaveMovePrev(ed)
+  if (editor.getGrammar().scopeName.indexOf("source.weave") > -1) {
+    return weaveMovePrev(editor)
   } else {
-    return jlMovePrev(ed)
+    return jlMovePrev(editor)
   }
 }
 
-function jlMovePrev(ed) {
-  const range = getRange(ed)
+function jlMovePrev(editor) {
+  const range = getRange(editor)
   const prevRow = range[0].row - 2 // 2 = 1 to get to delimiter line + 1 more to go past it
-  const sel = ed.getSelections()[0]
+  const sel = editor.getSelections()[0]
   return sel.setBufferRange([
     [prevRow, 0],
     [prevRow, 0],
