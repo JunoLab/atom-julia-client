@@ -1,39 +1,55 @@
 /** @babel */
 
-import { Point, Range } from 'atom'
+import { Point, Range } from "atom"
 
-const juliaScopes = ['source.julia', 'source.embedded.julia']
+const juliaScopes = ["source.julia", "source.embedded.julia"]
 const openers = [
-  'if', 'while', 'for', 'begin', 'function', 'macro', 'module', 'baremodule', 'type', 'immutable',
-  'struct', 'mutable struct', 'try', 'let', 'do', 'quote', 'abstract type', 'primitive type'
+  "if",
+  "while",
+  "for",
+  "begin",
+  "function",
+  "macro",
+  "module",
+  "baremodule",
+  "type",
+  "immutable",
+  "struct",
+  "mutable struct",
+  "try",
+  "let",
+  "do",
+  "quote",
+  "abstract type",
+  "primitive type"
 ]
-const reopeners = [ 'else', 'elseif', 'catch', 'finally' ]
+const reopeners = ["else", "elseif", "catch", "finally"]
 
-function isKeywordScope (scopes) {
+function isKeywordScope(scopes) {
   // Skip 'source.julia'
   return scopes.slice(1).some(scope => {
-    return scope.indexOf('keyword') > -1
+    return scope.indexOf("keyword") > -1
   })
 }
 
-export function isStringScope (scopes) {
+export function isStringScope(scopes) {
   let isString = false
   let isInterp = false
   for (const scope of scopes) {
-    if (scope.indexOf('string') > -1) {
+    if (scope.indexOf("string") > -1) {
       isString = true
     }
-    if (scope.indexOf('interpolation') > -1) {
+    if (scope.indexOf("interpolation") > -1) {
       isInterp = true
     }
   }
   return isString && !isInterp
 }
 
-function forRange (editor, range) {
+function forRange(editor, range) {
   // this should happen here and not a top-level so that we aren't relying on
   // Atom to load packages in a specific order:
-  const juliaGrammar = atom.grammars.grammarForScopeName('source.julia')
+  const juliaGrammar = atom.grammars.grammarForScopeName("source.julia")
 
   if (juliaGrammar === undefined) return []
 
@@ -45,46 +61,46 @@ function forRange (editor, range) {
     lineTokens.forEach(token => {
       const { value } = token
       if (!isStringScope(token.scopes)) {
-        if (n_parens > 0 && value === ')') {
+        if (n_parens > 0 && value === ")") {
           n_parens -= 1
-          scopes.splice(scopes.lastIndexOf('paren'), 1)
+          scopes.splice(scopes.lastIndexOf("paren"), 1)
           return
-        } else if (n_brackets > 0 && value === ']') {
+        } else if (n_brackets > 0 && value === "]") {
           n_brackets -= 1
-          scopes.splice(scopes.lastIndexOf('bracket'), 1)
+          scopes.splice(scopes.lastIndexOf("bracket"), 1)
           return
-        } else if (value === '(') {
+        } else if (value === "(") {
           n_parens += 1
-          scopes.push('paren')
+          scopes.push("paren")
           return
-        } else if (value === '[') {
+        } else if (value === "[") {
           n_brackets += 1
-          scopes.push('bracket')
+          scopes.push("bracket")
           return
         }
       }
-      if (!(isKeywordScope(token.scopes))) return
+      if (!isKeywordScope(token.scopes)) return
       if (!(n_parens === 0 && n_brackets === 0)) return
 
       const reopen = reopeners.includes(value)
-      if (value === 'end' || reopen) scopes.pop()
+      if (value === "end" || reopen) scopes.pop()
       if (openers.includes(value) || reopen) scopes.push(value)
     })
   })
   return scopes
 }
 
-export function forLines (editor, start, end) {
+export function forLines(editor, start, end) {
   const startPoint = new Point(start, 0)
   const endPoint = new Point(end, Infinity)
   const range = new Range(startPoint, endPoint)
   return forRange(editor, range)
 }
 
-export function isCommentScope (scopes) {
+export function isCommentScope(scopes) {
   // Skip 'source.julia'
   return scopes.slice(1).some(scope => {
-    return scope.indexOf('comment') > -1
+    return scope.indexOf("comment") > -1
   })
 }
 
@@ -93,13 +109,11 @@ export function isCommentScope (scopes) {
  * Supposed to be used within Atom-IDE integrations, whose `grammarScopes` setting doesn't support
  * embedded scopes by default.
  */
-export function isValidScopeToInspect (editor, bufferPosition) {
-  const scopes = editor
-    .scopeDescriptorForBufferPosition(bufferPosition)
-    .getScopesArray()
+export function isValidScopeToInspect(editor, bufferPosition) {
+  const scopes = editor.scopeDescriptorForBufferPosition(bufferPosition).getScopesArray()
   return scopes.some(scope => {
     return juliaScopes.includes(scope)
-  }) ?
-    !isCommentScope(scopes) && !isStringScope(scopes) :
-    false
+  })
+    ? !isCommentScope(scopes) && !isStringScope(scopes)
+    : false
 }
