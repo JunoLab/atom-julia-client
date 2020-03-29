@@ -1,5 +1,3 @@
-/** @babel */
-
 import { Point, Range, RangeCompatible, TextEditor, PointCompatible } from "atom"
 
 const juliaScopes = ["source.julia", "source.embedded.julia"]
