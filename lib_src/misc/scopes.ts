@@ -90,7 +90,7 @@ function forRange(editor: TextEditor, range: RangeCompatible) {
   return scopes
 }
 
-export function forLines(editor, start, end) {
+export function forLines(editor: TextEditor, start: number, end: number) {
   const startPoint = new Point(start, 0)
   const endPoint = new Point(end, Infinity)
   const range = new Range(startPoint, endPoint)
