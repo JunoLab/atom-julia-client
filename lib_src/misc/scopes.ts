@@ -1,6 +1,6 @@
 /** @babel */
 
-import { Point, Range } from "atom"
+import {Point, Range, RangeCompatible, TextEditor} from "atom"
 
 const juliaScopes = ["source.julia", "source.embedded.julia"]
 const openers = [
@@ -46,14 +46,14 @@ export function isStringScope(scopes: readonly string[]) {
   return isString && !isInterp
 }
 
-function forRange(editor, range) {
+function forRange(editor: TextEditor, range: RangeCompatible) {
   // this should happen here and not a top-level so that we aren't relying on
   // Atom to load packages in a specific order:
   const juliaGrammar = atom.grammars.grammarForScopeName("source.julia")
 
   if (juliaGrammar === undefined) return []
 
-  const scopes = []
+  const scopes: string[] = []
   let n_parens = 0
   let n_brackets = 0
   const text = editor.getTextInBufferRange(range)
