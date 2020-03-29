@@ -24,7 +24,7 @@
   "scripts": {
     "typescript": "tsc -p ./lib_src/tsconfig.json",
     "prettier_src": "prettier --write ./lib_src/**/*.ts",
-    "prettier_out": "prettier --write ./lib/misc/colors.js",
+    "prettier_out": "prettier --write ./lib/misc/scopes.js",
     "build": "npm run typescript -s & npm run prettier_out -s",
     "lint": "eslint . --ext js,ts,coffee,json",
     "postinstall": "node script/postinstall.js"
