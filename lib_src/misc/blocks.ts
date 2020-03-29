@@ -45,9 +45,11 @@ function isCont(lineInfo: LineInfo) {
 
   return lineInfo.line.match(/^(else|elseif|catch|finally)\b/)
 }
-function isStart(lineInfo) {
+
+function isStart(lineInfo: LineInfo) {
   return !(/^\s/.test(lineInfo.line) || isBlank(lineInfo) || isEnd(lineInfo) || isCont(lineInfo))
 }
+
 
 function walkBack(editor: TextEditor, row) {
   while (row > 0 && !isStart(getLine(editor, row))) {
