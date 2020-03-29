@@ -1,12 +1,12 @@
 'use babel'
 
-export function getColors(selectors) {
+export function getColors(selectors: { [P: string]: string }) {
   // const grammar = atom.grammars.grammarForScopeName("source.julia") // TODO ?
 
-  const styled = {}
-  const color = {}
   const div = document.createElement('div')
   div.classList.add('editor', 'editor-colors', 'julia-syntax-color-selector')
+  const styled: { [P: string]: HTMLSpanElement } = {}
+  const color: { [P: string]: string } = {}
 
   for (const style in selectors) {
     const child = document.createElement('span')
