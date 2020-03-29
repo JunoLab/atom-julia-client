@@ -4,9 +4,9 @@ import { get as weaveGet, moveNext as weaveMoveNext, movePrev as weaveMovePrev }
 
 import { getLine } from "./blocks.js"
 
-import { Point } from "atom"
+import { Point, TextEditor } from "atom"
 
-export function getRange(editor) {
+export function getRange(editor: TextEditor) {
   // Cell range is:
   //  Start of line below top delimiter (and/or start of top row of file) to
   //  End of line before end delimiter
@@ -48,7 +48,7 @@ export function getRange(editor) {
   return [start, end]
 }
 
-export function get(editor) {
+export function get(editor: TextEditor) {
   if (editor.getGrammar().scopeName.indexOf("source.julia") > -1) {
     return jlGet(editor)
   } else {
@@ -56,7 +56,7 @@ export function get(editor) {
   }
 }
 
-function jlGet(editor) {
+function jlGet(editor: TextEditor) {
   const range = getRange(editor)
   let text = editor.getTextInBufferRange(range)
   if (text.trim() === "") text = " "
@@ -72,7 +72,7 @@ function jlGet(editor) {
   return [res]
 }
 
-export function moveNext(editor) {
+export function moveNext(editor: TextEditor) {
   if (editor == null) {
     editor = atom.workspace.getActiveTextEditor()
   }
@@ -83,7 +83,7 @@ export function moveNext(editor) {
   }
 }
 
-function jlMoveNext(editor) {
+function jlMoveNext(editor: TextEditor) {
   const range = getRange(editor)
   const sel = editor.getSelections()[0]
   const nextRow = range[1].row + 2 // 2 = 1 to get to delimiter line + 1 more to go past it
@@ -93,7 +93,7 @@ function jlMoveNext(editor) {
   ])
 }
 
-export function movePrev(editor) {
+export function movePrev(editor: TextEditor) {
   if (editor == null) {
     editor = atom.workspace.getActiveTextEditor()
   }
@@ -104,7 +104,7 @@ export function movePrev(editor) {
   }
 }
 
-function jlMovePrev(editor) {
+function jlMovePrev(editor: TextEditor) {
   const range = getRange(editor)
   const prevRow = range[0].row - 2 // 2 = 1 to get to delimiter line + 1 more to go past it
   const sel = editor.getSelections()[0]
