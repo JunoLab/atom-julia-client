@@ -40,6 +40,6 @@ function rgb2hex(rgb) {
   }
 }
 
-function hex(x) {
+function hex(x: string) {
   return ("0" + parseInt(x, 10).toString(16)).slice(-2)
 }
