@@ -3,10 +3,10 @@
 
 import { forLines } from "./scopes"
 
-export function getLine(ed, l) {
+export function getLine(editor, l) {
   return {
-    scope: ed.scopeDescriptorForBufferPosition([l, 0]).scopes,
-    line: ed.getTextInBufferRange([
+    scope: editor.scopeDescriptorForBufferPosition([l, 0]).scopes,
+    line: editor.getTextInBufferRange([
       [l, 0],
       [l, Infinity]
     ])
@@ -43,19 +43,19 @@ function isStart(lineInfo) {
   return !(/^\s/.test(lineInfo.line) || isBlank(lineInfo) || isEnd(lineInfo) || isCont(lineInfo))
 }
 
-function walkBack(ed, row) {
-  while (row > 0 && !isStart(getLine(ed, row))) {
+function walkBack(editor, row) {
+  while (row > 0 && !isStart(getLine(editor, row))) {
     row--
   }
   return row
 }
 
-function walkForward(ed, start) {
+function walkForward(editor, start) {
   let end = start
   let mark = start
-  while (mark < ed.getLastBufferRow()) {
+  while (mark < editor.getLastBufferRow()) {
     mark++
-    const lineInfo = getLine(ed, mark)
+    const lineInfo = getLine(editor, mark)
 
     if (isStart(lineInfo)) {
       break
@@ -64,7 +64,7 @@ function walkForward(ed, start) {
       // An `end` only counts when  there still are unclosed blocks (indicated by `forLines`
       // returning a non-empty array).
       // If the line closes a multiline string we also take that as ending the block.
-      if (!(forLines(ed, start, mark - 1).length === 0) || isStringEnd(lineInfo)) {
+      if (!(forLines(editor, start, mark - 1).length === 0) || isStringEnd(lineInfo)) {
         end = mark
       }
     } else if (!(isBlank(lineInfo) || isStart(lineInfo))) {
@@ -74,9 +74,9 @@ function walkForward(ed, start) {
   return end
 }
 
-function getRange(ed, row) {
-  const start = walkBack(ed, row)
-  const end = walkForward(ed, start)
+function getRange(editor, row) {
+  const start = walkBack(editor, row)
+  const end = walkForward(editor, start)
   if (start <= row && row <= end) {
     return [
       [start, 0],
@@ -85,29 +85,29 @@ function getRange(ed, row) {
   }
 }
 
-function getSelection(ed, sel) {
+function getSelection(editor, sel) {
   const { start, end } = sel.getBufferRange()
   const range = [
     [start.row, start.column],
     [end.row, end.column]
   ]
-  while (isBlank(getLine(ed, range[0][0]), true) && range[0][0] <= range[1][0]) {
+  while (isBlank(getLine(editor, range[0][0]), true) && range[0][0] <= range[1][0]) {
     range[0][0]++
     range[0][1] = 0
   }
-  while (isBlank(getLine(ed, range[1][0]), true) && range[1][0] >= range[0][0]) {
+  while (isBlank(getLine(editor, range[1][0]), true) && range[1][0] >= range[0][0]) {
     range[1][0]--
     range[1][1] = Infinity
   }
   return range
 }
 
-export function moveNext(ed, sel, range) {
+export function moveNext(editor, sel, range) {
   // Ensure enough room at the end of the buffer
   const row = range[1][0]
   let last
-  while ((last = ed.getLastBufferRow()) < row + 2) {
-    if (last !== row && !isBlank(getLine(ed, last))) {
+  while ((last = editor.getLastBufferRow()) < row + 2) {
+    if (last !== row && !isBlank(getLine(editor, last))) {
       break
     }
     sel.setBufferRange([
@@ -118,35 +118,35 @@ export function moveNext(ed, sel, range) {
   }
   // Move the cursor
   let to = row + 1
-  while (to < ed.getLastBufferRow() && isBlank(getLine(ed, to))) {
+  while (to < editor.getLastBufferRow() && isBlank(getLine(editor, to))) {
     to++
   }
-  to = walkForward(ed, to)
+  to = walkForward(editor, to)
   return sel.setBufferRange([
     [to, Infinity],
     [to, Infinity]
   ])
 }
 
-function getRanges(ed) {
-  const ranges = ed.getSelections().map(sel => {
+function getRanges(editor) {
+  const ranges = editor.getSelections().map(sel => {
     return {
       selection: sel,
-      range: sel.isEmpty() ? getRange(ed, sel.getHeadBufferPosition().row) : getSelection(ed, sel)
+      range: sel.isEmpty() ? getRange(editor, sel.getHeadBufferPosition().row) : getSelection(editor, sel)
     }
   })
   return ranges.filter(({ range }) => {
-    return range && ed.getTextInBufferRange(range).trim()
+    return range && editor.getTextInBufferRange(range).trim()
   })
 }
 
-export function get(ed) {
-  return getRanges(ed).map(({ range, selection }) => {
+export function get(editor) {
+  return getRanges(editor).map(({ range, selection }) => {
     return {
       range,
       selection,
       line: range[0][0],
-      text: ed.getTextInBufferRange(range)
+      text: editor.getTextInBufferRange(range)
     }
   })
 }
@@ -165,10 +165,10 @@ export function getLocalContext(editor, row) {
   }
 }
 
-export function select(ed = atom.workspace.getActiveTextEditor()) {
-  if (!ed) return
-  return ed.mutateSelectedText(selection => {
-    const range = getRange(ed, selection.getHeadBufferPosition().row)
+export function select(editor = atom.workspace.getActiveTextEditor()) {
+  if (!editor) return
+  return editor.mutateSelectedText(selection => {
+    const range = getRange(editor, selection.getHeadBufferPosition().row)
     if (range) {
       selection.setBufferRange(range)
     }
