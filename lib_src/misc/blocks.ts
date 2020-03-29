@@ -1,5 +1,6 @@
 "use babel"
 // TODO: docstrings
+// TODO: Fix RangeCompatible types
 
 import { forLines } from "./scopes"
 import { TextEditor, Selection } from "atom"
