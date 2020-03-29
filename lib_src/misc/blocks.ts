@@ -33,8 +33,8 @@ function isEnd(lineInfo: LineInfo) {
   }
   return /^(end\b|\)|\]|\})/.test(lineInfo.line)
 }
-function isStringEnd({ line, scope }) {
-  scope = scope.join(" ")
+function isStringEnd(lineInfo: LineInfo) {
+  const scope = lineInfo.scope.join(" ")
   return /\bstring\.multiline\.end\b/.test(scope) || (/\bstring\.end\b/.test(scope) && /\bbacktick\b/.test(scope))
 }
 function isCont({ line, scope }) {
