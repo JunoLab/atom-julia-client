@@ -35,8 +35,15 @@ function rgb2hex(rgb: string): string {
   if (rgb.search("rgb") === -1) {
     return rgb
   } else {
-    rgb = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+))?\)$/)
-    return hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+    const rgb_match = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+))?\)$/)
+
+    if (rgb_match) {
+      return hex(rgb_match[1]) + hex(rgb_match[2]) + hex(rgb_match[3])
+    } else {
+      // TODO should we check for this error?
+      console.error(rgb.concat(" isn't a rgb string!"))
+      return "#000000" // black
+    }
   }
 }
 
