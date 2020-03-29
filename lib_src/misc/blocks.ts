@@ -2,8 +2,9 @@
 // TODO: docstrings
 
 import { forLines } from "./scopes"
+import { TextEditor } from "atom"
 
-export function getLine(editor, l) {
+export function getLine(editor: TextEditor, l) {
   return {
     scope: editor.scopeDescriptorForBufferPosition([l, 0]).scopes,
     line: editor.getTextInBufferRange([
@@ -43,14 +44,14 @@ function isStart(lineInfo) {
   return !(/^\s/.test(lineInfo.line) || isBlank(lineInfo) || isEnd(lineInfo) || isCont(lineInfo))
 }
 
-function walkBack(editor, row) {
+function walkBack(editor: TextEditor, row) {
   while (row > 0 && !isStart(getLine(editor, row))) {
     row--
   }
   return row
 }
 
-function walkForward(editor, start) {
+function walkForward(editor: TextEditor, start) {
   let end = start
   let mark = start
   while (mark < editor.getLastBufferRow()) {
@@ -74,7 +75,7 @@ function walkForward(editor, start) {
   return end
 }
 
-function getRange(editor, row) {
+function getRange(editor: TextEditor, row) {
   const start = walkBack(editor, row)
   const end = walkForward(editor, start)
   if (start <= row && row <= end) {
@@ -85,7 +86,7 @@ function getRange(editor, row) {
   }
 }
 
-function getSelection(editor, selection) {
+function getSelection(editor: TextEditor, selection) {
   const { start, end } = selection.getBufferRange()
   const range = [
     [start.row, start.column],
@@ -102,7 +103,7 @@ function getSelection(editor, selection) {
   return range
 }
 
-export function moveNext(editor, selection, range) {
+export function moveNext(editor: TextEditor, selection, range) {
   // Ensure enough room at the end of the buffer
   const row = range[1][0]
   let last
@@ -128,7 +129,7 @@ export function moveNext(editor, selection, range) {
   ])
 }
 
-function getRanges(editor) {
+function getRanges(editor: TextEditor) {
   const ranges = editor.getSelections().map(selection => {
     return {
       selection: selection,
@@ -140,7 +141,7 @@ function getRanges(editor) {
   })
 }
 
-export function get(editor) {
+export function get(editor: TextEditor) {
   return getRanges(editor).map(({ range, selection }) => {
     return {
       range,
@@ -151,7 +152,7 @@ export function get(editor) {
   })
 }
 
-export function getLocalContext(editor, row) {
+export function getLocalContext(editor: TextEditor, row) {
   const range = getRange(editor, row)
   const context = range ? editor.getTextInBufferRange(range) : ""
   // NOTE:
