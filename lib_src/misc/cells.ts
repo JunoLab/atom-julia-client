@@ -6,7 +6,7 @@ import { getLine } from "./blocks.js"
 
 import { Point, TextEditor } from "atom"
 
-export function getRange(editor: TextEditor) {
+export function getRange(editor: TextEditor): [Point, Point] {
   // Cell range is:
   //  Start of line below top delimiter (and/or start of top row of file) to
   //  End of line before end delimiter
