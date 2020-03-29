@@ -1,4 +1,3 @@
-"use babel"
 // TODO: docstrings
 
 import { forLines } from "./scopes"
