@@ -76,10 +76,15 @@ export function moveNext(editor: TextEditor | null | undefined) {
   if (!editor) {
     editor = atom.workspace.getActiveTextEditor()
   }
-  if (editor.getGrammar().scopeName.indexOf("source.julia") > -1) {
-    return jlMoveNext(editor)
+  // TODO: getActiveTextEditor may return undefined
+  if (editor) {
+    if (editor.getGrammar().scopeName.indexOf("source.julia") > -1) {
+      return jlMoveNext(editor)
+    } else {
+      return weaveMoveNext(editor)
+    }
   } else {
-    return weaveMoveNext(editor)
+    console.error("No editor is given")
   }
 }
 
