@@ -41,5 +41,5 @@ function rgb2hex(rgb) {
 }
 
 function hex(x) {
-  return ("0" + parseInt(x).toString(16)).slice(-2);
+  return ("0" + parseInt(x, 10).toString(16)).slice(-2)
 }
