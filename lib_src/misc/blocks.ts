@@ -82,7 +82,7 @@ function walkForward(editor: TextEditor, start: number) {
   return end
 }
 
-function getRange(editor: TextEditor, row: number): [[number, number], [number, number]] {
+function getRange(editor: TextEditor, row: number): [[number, number], [number, number]] | undefined {
   const start = walkBack(editor, row)
   const end = walkForward(editor, start)
   if (start <= row && row <= end) {
@@ -90,6 +90,8 @@ function getRange(editor: TextEditor, row: number): [[number, number], [number, 
       [start, 0],
       [end, Infinity]
     ]
+  } else {
+    return undefined // TODO: make sure returned range from getRanges is not undefined
   }
 }
 
