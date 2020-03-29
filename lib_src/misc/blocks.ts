@@ -11,7 +11,7 @@ interface LineInfo {
 
 export function getLine(editor: TextEditor, l) {
   return {
-    scope: editor.scopeDescriptorForBufferPosition([l, 0]).scopes,
+    scope: editor.scopeDescriptorForBufferPosition([l, 0]).getScopesArray(),
     line: editor.getTextInBufferRange([
       [l, 0],
       [l, Infinity]
