@@ -1,15 +1,15 @@
 'use babel'
 
 export function getColors(selectors) {
-  let grammar = atom.grammars.grammarForScopeName("source.julia")
+  const grammar = atom.grammars.grammarForScopeName("source.julia")
 
-  let styled = {}
-  let color = {}
-  let div = document.createElement('div')
+  const styled = {}
+  const color = {}
+  const div = document.createElement('div')
   div.classList.add('editor', 'editor-colors', 'julia-syntax-color-selector')
 
-  for (let style in selectors) {
-    let child = document.createElement('span')
+  for (const style in selectors) {
+    const child = document.createElement('span')
     child.innerText = 'foo'
     child.classList.add(...selectors[style])
     div.appendChild(child)
@@ -18,7 +18,7 @@ export function getColors(selectors) {
 
   document.body.appendChild(div)
   // wait till rendered?
-  for (let style in selectors) {
+  for (const style in selectors) {
     try {
       color[style] = rgb2hex(window.getComputedStyle(styled[style])['color'])
     } catch (e) {
