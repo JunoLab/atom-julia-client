@@ -167,7 +167,7 @@ export function get(editor: TextEditor) {
   })
 }
 
-export function getLocalContext(editor: TextEditor, row) {
+export function getLocalContext(editor: TextEditor, row: number) {
   const range = getRange(editor, row)
   const context = range ? editor.getTextInBufferRange(range) : ""
   // NOTE:
