@@ -32,7 +32,7 @@ export function getColors(selectors) {
 }
 
 function rgb2hex(rgb) {
-  if (rgb.search("rgb") == -1) {
+  if (rgb.search("rgb") === -1) {
     return rgb
   } else {
     rgb = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+))?\)$/)
