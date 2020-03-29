@@ -19,7 +19,7 @@ export function getLine(editor: TextEditor, l: number): LineInfo {
   }
 }
 
-function isBlank({ line, scope }, allowDocstrings = false) {
+function isBlank({ line, scope }: LineInfo, allowDocstrings = false) {
   for (const s of scope) {
     if (/\bcomment\b/.test(s) || (!allowDocstrings && /\bdocstring\b/.test(s))) {
       return true
