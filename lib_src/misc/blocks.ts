@@ -51,7 +51,7 @@ function isStart(lineInfo: LineInfo) {
 }
 
 
-function walkBack(editor: TextEditor, row) {
+function walkBack(editor: TextEditor, row: number) {
   while (row > 0 && !isStart(getLine(editor, row))) {
     row--
   }
