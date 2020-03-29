@@ -98,8 +98,8 @@ function jlMoveNext(editor: TextEditor) {
   ])
 }
 
-export function movePrev(editor: TextEditor) {
-  if (editor == null) {
+export function movePrev(editor: TextEditor | undefined | null) {
+  if (!editor) {
     editor = atom.workspace.getActiveTextEditor()
   }
   if (editor.getGrammar().scopeName.indexOf("source.weave") > -1) {
