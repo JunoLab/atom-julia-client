@@ -10,17 +10,17 @@ export function getRange(ed) {
   // Cell range is:
   //  Start of line below top delimiter (and/or start of top row of file) to
   //  End of line before end delimiter
-  var buffer = ed.getBuffer()
-  var start = buffer.getFirstPosition()
-  var end = buffer.getEndPosition()
-  var regexString = "^(" + atom.config.get("julia-client.uiOptions.cellDelimiter").join("|") + ")"
-  var regex = new RegExp(regexString)
-  var cursor = ed.getCursorBufferPosition()
+  const buffer = ed.getBuffer()
+  const start = buffer.getFirstPosition()
+  const end = buffer.getEndPosition()
+  const regexString = "^(" + atom.config.get("julia-client.uiOptions.cellDelimiter").join("|") + ")"
+  const regex = new RegExp(regexString)
+  const cursor = ed.getCursorBufferPosition()
   cursor.column = Infinity // cursor on delimiter line means eval cell below
 
   let foundDelim = false
   for (let i = cursor.row + 1; i <= ed.getLastBufferRow(); i++) {
-    let { line, scope } = getLine(ed, i)
+    const { line, scope } = getLine(ed, i)
     foundDelim = regex.test(line) && scope.join(".").indexOf("comment.line") > -1
     end.row = i
     if (foundDelim) break
@@ -35,7 +35,7 @@ export function getRange(ed) {
   foundDelim = false
   if (cursor.row > 0) {
     for (let i = end.row; i >= 0; i--) {
-      let { line, scope } = getLine(ed, i)
+      const { line, scope } = getLine(ed, i)
       foundDelim = regex.test(line) && scope.join(".").indexOf("comment.line") > -1
       start.row = i
       if (foundDelim) {
@@ -57,10 +57,10 @@ export function get(ed) {
 }
 
 function jlGet(ed) {
-  var range = getRange(ed)
-  var text = ed.getTextInBufferRange(range)
+  const range = getRange(ed)
+  let text = ed.getTextInBufferRange(range)
   if (text.trim() === "") text = " "
-  var res = {
+  const res = {
     range: [
       [range[0].row, range[0].column],
       [range[1].row, range[1].column],
@@ -84,9 +84,9 @@ export function moveNext(ed) {
 }
 
 function jlMoveNext(ed) {
-  var range = getRange(ed)
-  var sel = ed.getSelections()[0]
-  var nextRow = range[1].row + 2 // 2 = 1 to get to delimiter line + 1 more to go past it
+  const range = getRange(ed)
+  const sel = ed.getSelections()[0]
+  const nextRow = range[1].row + 2 // 2 = 1 to get to delimiter line + 1 more to go past it
   return sel.setBufferRange([
     [nextRow, 0],
     [nextRow, 0],
@@ -105,9 +105,9 @@ export function movePrev(ed) {
 }
 
 function jlMovePrev(ed) {
-  var range = getRange(ed)
-  var prevRow = range[0].row - 2 // 2 = 1 to get to delimiter line + 1 more to go past it
-  var sel = ed.getSelections()[0]
+  const range = getRange(ed)
+  const prevRow = range[0].row - 2 // 2 = 1 to get to delimiter line + 1 more to go past it
+  const sel = ed.getSelections()[0]
   return sel.setBufferRange([
     [prevRow, 0],
     [prevRow, 0],
