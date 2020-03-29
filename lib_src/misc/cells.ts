@@ -72,8 +72,8 @@ function jlGet(editor: TextEditor) {
   return [res]
 }
 
-export function moveNext(editor: TextEditor) {
-  if (editor == null) {
+export function moveNext(editor: TextEditor | null | undefined) {
+  if (!editor) {
     editor = atom.workspace.getActiveTextEditor()
   }
   if (editor.getGrammar().scopeName.indexOf("source.julia") > -1) {
