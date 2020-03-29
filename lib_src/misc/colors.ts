@@ -20,12 +20,12 @@ export function getColors(selectors) {
   // wait till rendered?
   for (const style in selectors) {
     try {
-      color[style] = rgb2hex(window.getComputedStyle(styled[style])['color'])
+      color[style] = rgb2hex(window.getComputedStyle(styled[style]).color)
     } catch (e) {
       console.error(e)
     }
   }
-  color['background'] = rgb2hex(window.getComputedStyle(div)['backgroundColor'])
+  color.background = rgb2hex(window.getComputedStyle(div).backgroundColor)
   document.body.removeChild(div)
 
   return color
