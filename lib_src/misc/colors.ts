@@ -1,14 +1,15 @@
 export function getColors(selectors: { [P: string]: string }) {
   // const grammar = atom.grammars.grammarForScopeName("source.julia") // TODO ?
 
-  const div = document.createElement('div')
-  div.classList.add('editor', 'editor-colors', 'julia-syntax-color-selector')
   const styled: { [P: string]: HTMLSpanElement } = {}
   const color: { [P: string]: string } = {}
 
+  const div = document.createElement("div")
+  div.classList.add("editor", "editor-colors", "julia-syntax-color-selector")
+
   for (const style in selectors) {
-    const child = document.createElement('span')
-    child.innerText = 'foo'
+    const child = document.createElement("span")
+    child.innerText = "foo"
     child.classList.add(...selectors[style])
     div.appendChild(child)
     styled[style] = child
