@@ -58,7 +58,7 @@ function walkBack(editor: TextEditor, row: number) {
   return row
 }
 
-function walkForward(editor: TextEditor, start) {
+function walkForward(editor: TextEditor, start: number) {
   let end = start
   let mark = start
   while (mark < editor.getLastBufferRow()) {
