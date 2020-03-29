@@ -85,8 +85,8 @@ function getRange(editor, row) {
   }
 }
 
-function getSelection(editor, sel) {
-  const { start, end } = sel.getBufferRange()
+function getSelection(editor, selection) {
+  const { start, end } = selection.getBufferRange()
   const range = [
     [start.row, start.column],
     [end.row, end.column]
@@ -102,7 +102,7 @@ function getSelection(editor, sel) {
   return range
 }
 
-export function moveNext(editor, sel, range) {
+export function moveNext(editor, selection, range) {
   // Ensure enough room at the end of the buffer
   const row = range[1][0]
   let last
@@ -110,11 +110,11 @@ export function moveNext(editor, sel, range) {
     if (last !== row && !isBlank(getLine(editor, last))) {
       break
     }
-    sel.setBufferRange([
+    selection.setBufferRange([
       [last, Infinity],
       [last, Infinity]
     ])
-    sel.insertText("\n")
+    selection.insertText("\n")
   }
   // Move the cursor
   let to = row + 1
@@ -122,17 +122,17 @@ export function moveNext(editor, sel, range) {
     to++
   }
   to = walkForward(editor, to)
-  return sel.setBufferRange([
+  return selection.setBufferRange([
     [to, Infinity],
     [to, Infinity]
   ])
 }
 
 function getRanges(editor) {
-  const ranges = editor.getSelections().map(sel => {
+  const ranges = editor.getSelections().map(selection => {
     return {
-      selection: sel,
-      range: sel.isEmpty() ? getRange(editor, sel.getHeadBufferPosition().row) : getSelection(editor, sel)
+      selection: selection,
+      range: selection.isEmpty() ? getRange(editor, selection.getHeadBufferPosition().row) : getSelection(editor, selection)
     }
   })
   return ranges.filter(({ range }) => {
