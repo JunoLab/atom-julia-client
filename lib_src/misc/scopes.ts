@@ -1,6 +1,6 @@
 /** @babel */
 
-import {Point, Range, RangeCompatible, TextEditor} from "atom"
+import { Point, Range, RangeCompatible, TextEditor, PointCompatible } from "atom"
 
 const juliaScopes = ["source.julia", "source.embedded.julia"]
 const openers = [
@@ -109,7 +109,7 @@ export function isCommentScope(scopes: readonly string[]) {
  * Supposed to be used within Atom-IDE integrations, whose `grammarScopes` setting doesn't support
  * embedded scopes by default.
  */
-export function isValidScopeToInspect(editor, bufferPosition) {
+export function isValidScopeToInspect(editor: TextEditor, bufferPosition: PointCompatible) {
   const scopes = editor.scopeDescriptorForBufferPosition(bufferPosition).getScopesArray()
   return scopes.some(scope => {
     return juliaScopes.includes(scope)
