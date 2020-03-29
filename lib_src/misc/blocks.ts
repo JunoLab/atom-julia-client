@@ -32,7 +32,7 @@ function isEnd(lineInfo: LineInfo) {
   if (isStringEnd(lineInfo)) {
     return true
   }
-  return /^(end\b|\)|\]|\})/.test(lineInfo.line)
+  return /^(end\b|\)|]|})/.test(lineInfo.line)
 }
 
 function isStringEnd(lineInfo: LineInfo) {
