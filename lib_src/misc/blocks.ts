@@ -9,7 +9,7 @@ interface LineInfo {
   line: string
 }
 
-export function getLine(editor: TextEditor, l) {
+export function getLine(editor: TextEditor, l: number): LineInfo {
   return {
     scope: editor.scopeDescriptorForBufferPosition([l, 0]).getScopesArray(),
     line: editor.getTextInBufferRange([
