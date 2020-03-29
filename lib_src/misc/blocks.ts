@@ -27,16 +27,19 @@ function isBlank({ line, scope }: LineInfo, allowDocstrings = false) {
   }
   return /^\s*(#.*)?$/.test(line)
 }
+
 function isEnd(lineInfo: LineInfo) {
   if (isStringEnd(lineInfo)) {
     return true
   }
   return /^(end\b|\)|\]|\})/.test(lineInfo.line)
 }
+
 function isStringEnd(lineInfo: LineInfo) {
   const scope = lineInfo.scope.join(" ")
   return /\bstring\.multiline\.end\b/.test(scope) || (/\bstring\.end\b/.test(scope) && /\bbacktick\b/.test(scope))
 }
+
 function isCont(lineInfo: LineInfo) {
   const scope = lineInfo.scope.join(" ")
   if (/\bstring\b/.test(scope) && !/\bpunctuation\.definition\.string\b/.test(scope)) {
@@ -142,8 +145,11 @@ function getRanges(editor: TextEditor) {
   const ranges = editor.getSelections().map(selection => {
     return {
       selection: selection,
-      range: selection.isEmpty() ? getRange(editor, selection.getHeadBufferPosition().row) : getSelection(editor, selection)
+      range: selection.isEmpty()
+            ? getRange(editor, selection.getHeadBufferPosition().row)
+            : getSelection(editor, selection)
     }
+    // TODO: replace with getBufferRowRange? (getHeadBufferPosition isn't a public API)
   })
   return ranges.filter(({ range }) => {
     return range && editor.getTextInBufferRange(range).trim()
@@ -183,4 +189,5 @@ export function select(editor = atom.workspace.getActiveTextEditor()) {
       selection.setBufferRange(range)
     }
   })
+  // TODO: replace with getBufferRowRange? (getHeadBufferPosition isn't a public API)
 }
