@@ -1,7 +1,7 @@
 'use babel'
 
 export function getColors(selectors) {
-  const grammar = atom.grammars.grammarForScopeName("source.julia")
+  // const grammar = atom.grammars.grammarForScopeName("source.julia") // TODO ?
 
   const styled = {}
   const color = {}
