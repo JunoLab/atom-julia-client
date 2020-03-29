@@ -19,6 +19,7 @@ export function getColors(selectors: { [P: string]: string }) {
   document.body.appendChild(div)
   // wait till rendered?
   for (const style in selectors) {
+    // TODO do we need try catch
     try {
       color[style] = rgb2hex(window.getComputedStyle(styled[style]).color)
     } catch (e) {
