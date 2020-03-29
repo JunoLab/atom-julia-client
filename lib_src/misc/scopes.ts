@@ -25,14 +25,14 @@ const openers = [
 ]
 const reopeners = ["else", "elseif", "catch", "finally"]
 
-function isKeywordScope(scopes) {
+function isKeywordScope(scopes: readonly string[]) {
   // Skip 'source.julia'
   return scopes.slice(1).some(scope => {
     return scope.indexOf("keyword") > -1
   })
 }
 
-export function isStringScope(scopes) {
+export function isStringScope(scopes: readonly string[]) {
   let isString = false
   let isInterp = false
   for (const scope of scopes) {
@@ -97,7 +97,7 @@ export function forLines(editor, start, end) {
   return forRange(editor, range)
 }
 
-export function isCommentScope(scopes) {
+export function isCommentScope(scopes: readonly string[]) {
   // Skip 'source.julia'
   return scopes.slice(1).some(scope => {
     return scope.indexOf("comment") > -1
