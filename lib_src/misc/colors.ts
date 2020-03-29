@@ -31,7 +31,7 @@ export function getColors(selectors) {
   return color
 }
 
-function rgb2hex(rgb) {
+function rgb2hex(rgb: string): string {
   if (rgb.search("rgb") === -1) {
     return rgb
   } else {
