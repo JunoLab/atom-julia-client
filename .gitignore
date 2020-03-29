@@ -5,3 +5,5 @@ lib_src/**/*
 !lib_src/tsconfig.json
 !lib_src/tslint.json
 tsconfig.tsbuildinfo
+
+!lib_src/misc/cells.ts

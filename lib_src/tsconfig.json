@@ -35,6 +35,6 @@
 
     "outDir": "../lib/misc"
   },
-  "files": ["misc/colors.ts"],
+  "files": ["misc/cells.ts"],
   "compileOnSave": false
 }
