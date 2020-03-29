@@ -2,7 +2,7 @@
 // TODO: docstrings
 
 import { forLines } from "./scopes"
-import { TextEditor } from "atom"
+import { TextEditor, Selection } from "atom"
 
 export function getLine(editor: TextEditor, l) {
   return {
@@ -86,7 +86,7 @@ function getRange(editor: TextEditor, row) {
   }
 }
 
-function getSelection(editor: TextEditor, selection) {
+function getSelection(editor: TextEditor, selection: Selection) {
   const { start, end } = selection.getBufferRange()
   const range = [
     [start.row, start.column],
@@ -103,7 +103,7 @@ function getSelection(editor: TextEditor, selection) {
   return range
 }
 
-export function moveNext(editor: TextEditor, selection, range) {
+export function moveNext(editor: TextEditor, selection: Selection, range) {
   // Ensure enough room at the end of the buffer
   const row = range[1][0]
   let last
