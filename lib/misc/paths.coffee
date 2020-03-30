@@ -23,12 +23,14 @@ module.exports =
 
       current_dir = process.cwd()
       exepath = path.dirname(process.execPath)
-      
+
       try
         process.chdir(exepath)
         realpath = fs.realpathSync(p)
         if fs.existsSync(realpath) then resolve(realpath)
       catch err
+        console.error(err)
+      finally
         try
           process.chdir(current_dir)
         catch err
