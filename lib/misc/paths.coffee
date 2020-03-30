@@ -17,17 +17,30 @@ module.exports =
   expandHome: (p) ->
     if p.startsWith '~' then p.replace '~', @home() else p
 
-  fullPath: (path) ->
+  fullPath: (p) ->
     new Promise (resolve, reject) ->
-      if fs.existsSync(path) then resolve(path)
+      if fs.existsSync(p) then resolve(p)
+
+      current_dir = process.cwd()
+      exepath = path.dirname(process.execPath)
+      
+      try
+        process.chdir(exepath)
+        realpath = fs.realpathSync(p)
+        if fs.existsSync(realpath) then resolve(realpath)
+      catch err
+        try
+          process.chdir(current_dir)
+        catch err
+          console.error(err)
 
       if process.platform is 'win32'
-        if /[a-zA-Z]\:/.test(path)
+        if /[a-zA-Z]\:/.test(p)
           reject("Couldn't resolve path.")
           return
 
       which = if process.platform is 'win32' then 'where' else 'which'
-      proc = child_process.exec "#{which} \"#{path}\"", (err, stdout, stderr) ->
+      proc = child_process.exec "#{which} \"#{p}\"", (err, stdout, stderr) ->
         return reject(stderr) if err?
         p = stdout.trim()
         return resolve(p) if fs.existsSync(p)
