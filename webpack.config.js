@@ -4,6 +4,12 @@ const EntryFile = "./lib/julia-client.coffee"
 const OutDirectory = "dist"
 const JSOutFile = "indent-detective.js"
 
+const CoffeeLoaderOptions = {
+  transpile: {
+     presets: ["@babel/env"]
+   }
+}
+
 // const TsLoaderOptions = {
 //     transpileOnly: true, // transpileOnly to ignore typescript errors,
 //     compiler: "ttypescript" // set to ttypescript use transform-for-of. Default is "typescript"
@@ -43,10 +49,9 @@ const config = {
         test: /\.coffee$/,
         exclude: /node_modules/,
         use: [
-          // ts
           {
             loader: "coffee-loader",
-            // options: CoffeeLoaderOptions
+            options: CoffeeLoaderOptions
           }
         ]
       }
