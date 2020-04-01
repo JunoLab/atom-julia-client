@@ -1,6 +1,6 @@
 {
   "name": "julia-client",
-  "main": "./lib/julia-client",
+  "main": "./dist/julia-client",
   "version": "0.12.4",
   "description": "The core package of Juno, the Julia IDE",
   "keywords": [
@@ -26,6 +26,9 @@
   },
   "scripts": {
     "lint": "eslint . --ext js,ts,coffee,json",
+    "build": "webpack --mode production",
+    "dev": "webpack --mode none --watch",
+    "prepare": "npm run build",
     "postinstall": "node script/postinstall.js"
   },
   "dependencies": {
@@ -41,6 +44,9 @@
     "underscore-plus": "*"
   },
   "devDependencies": {
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11",
+    "coffee-loader": "^0.9.0",
     "coffeescript": "^2.5.1",
     "eslint": "latest",
     "babel-eslint": "latest",
