@@ -24,6 +24,10 @@
   "engines": {
     "atom": ">=1.39.0 <2.0.0"
   },
+  "scripts": {
+    "lint": "eslint . --ext js,ts,coffee,json",
+    "postinstall": "node script/postinstall.js"
+  },
   "dependencies": {
     "atom-package-deps": "*",
     "atom-space-pen-views": "^2.0.0",
@@ -36,8 +40,13 @@
     "ssh2": "^0.8.4",
     "underscore-plus": "*"
   },
-  "scripts": {
-    "postinstall": "node script/postinstall.js"
+  "devDependencies": {
+    "coffeescript": "^2.5.1",
+    "eslint": "latest",
+    "babel-eslint": "latest",
+    "eslint-plugin-coffee": "latest",
+    "eslint-plugin-json": "latest",
+    "eslint-plugin-only-warn": "latest"
   },
   "consumedServices": {
     "status-bar": {

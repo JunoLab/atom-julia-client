@@ -1,0 +1,51 @@
+{
+  // JS Files
+  "root": true,
+  "env": {
+    "atomtest": true,
+    "es6": true,
+    "node": true,
+    "browser": true,
+    "jasmine": true
+  },
+  "globals": { "atom": "writable" },
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaFeatures": { "jsx": true },
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "plugins": ["only-warn"],
+  "extends": ["eslint:recommended"],
+  "overrides": [
+    {
+      // CoffeeScript files
+      "files": ["**/*.coffee"],
+      "env": {
+        "atomtest": true,
+        "es6": true,
+        "node": true,
+        "browser": true
+      },
+      "globals": { "atom": "writable" },
+      // "parser": "eslint-plugin-coffee",
+      "parser": "eslint-plugin-coffee",
+      "parserOptions": {
+        "ecmaFeatures": { "jsx": true },
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+      },
+      "plugins": ["coffee", "only-warn"],
+      "extends": ["plugin:coffee/eslint-recommended"]
+    },
+    {
+      // JSON files
+      "files": ["*.json"],
+      "plugins": ["json"],
+      "extends": ["plugin:json/recommended"],
+      "rules": {
+        "json/*": ["error", {"allowComments": true}]
+      }
+    }
+  ]
+}
