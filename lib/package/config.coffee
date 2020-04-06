@@ -83,11 +83,23 @@ config =
         type: 'string'
         default: ''
         order: 9
+      fuzzyCompletionMode:
+        title: 'Fuzzy Completion Mode'
+        description:
+          '''
+          If `true`, in-editor auto-completions are generated based on fuzzy (i.e. more permissive) matches,
+          otherwise based on strict matches as in REPL.
+          ***NOTE***: this setting doesn't affect completions in REPL,
+          and so in-REPL completions will still work as usual (i.e. based on strict matches and will complete eagerly).
+          '''
+        type: 'boolean'
+        default: true
+        order: 10
       autoCompletionSuggestionPriority:
         title: 'Auto-Completion Suggestion Priority'
         description:
           '''
-          Specify the sort order of Auto-completion suggestions provided by Juno.
+          Specify the sort order of auto-completion suggestions provided by Juno.
           Note the default providers like snippets have priority of `1`.
           Requires Atom restart to take an effect.
           '''

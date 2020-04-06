@@ -1,26 +1,28 @@
 { CompositeDisposable, Disposable } = require 'atom'
 
 module.exports =
-  modules:    require './runtime/modules'
-  evaluation: require './runtime/evaluation'
-  console:    require './runtime/console'
-  workspace:  require './runtime/workspace'
-  plots:      require './runtime/plots'
-  frontend:   require './runtime/frontend'
-  debugger:   require './runtime/debugger'
-  profiler:   require './runtime/profiler'
-  outline:    require './runtime/outline'
-  linter:     require './runtime/linter'
-  packages:   require './runtime/packages'
-  debuginfo:  require './runtime/debuginfo'
-  formatter:  require './runtime/formatter'
-  goto:       require './runtime/goto'
+  modules:     require './runtime/modules'
+  evaluation:  require './runtime/evaluation'
+  console:     require './runtime/console'
+  completions: require './runtime/completions'
+  workspace:   require './runtime/workspace'
+  plots:       require './runtime/plots'
+  frontend:    require './runtime/frontend'
+  debugger:    require './runtime/debugger'
+  profiler:    require './runtime/profiler'
+  outline:     require './runtime/outline'
+  linter:      require './runtime/linter'
+  packages:    require './runtime/packages'
+  debuginfo:   require './runtime/debuginfo'
+  formatter:   require './runtime/formatter'
+  goto:        require './runtime/goto'
 
   activate: ->
     @subs = new CompositeDisposable()
-    @modules.activate()
-    @frontend.activate()
 
+    @modules.activate()
+    @completions.activate()
+    @frontend.activate()
     @subs.add atom.config.observe 'julia-client.juliaOptions.formatOnSave', (val) =>
       if val
         @formatter.activate()
@@ -28,7 +30,7 @@ module.exports =
         @formatter.deactivate()
 
     @subs.add new Disposable(=>
-      mod.deactivate() for mod in [@modules, @frontend, @formatter])
+      mod.deactivate() for mod in [@modules, @completions, @frontend, @formatter])
 
   deactivate: ->
     @subs.dispose()
@@ -44,8 +46,7 @@ module.exports =
     @subs.add new Disposable(=>
       mod.deactivate() for mod in [@console, @debugger, @profiler, @linter, @goto, @outline])
 
-  provideAutoComplete: ->
-    require './runtime/completions'
+  provideAutoComplete: -> @completions
 
   provideHyperclick: -> @goto.provideHyperclick()
 
