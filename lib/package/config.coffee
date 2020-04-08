@@ -25,7 +25,7 @@ config =
                       in the editor or pressing `Enter` in the REPL tab will start
                       a remote Julia process instead of a local one.'
         enum: ['Basic', 'Cycler', 'External Terminal', 'Remote']
-        default: 'Cycler'
+        default: 'Basic'
         radio: true
         order: 1
       optimisationLevel:
