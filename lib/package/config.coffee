@@ -16,7 +16,7 @@ config =
         title: 'Boot Mode'
         type: 'string'
         description: '`Basic` spins up a local Julia process on demand and is the most
-                      robust option. The `Cycler` will keep three local Julia processes
+                      robust option. The `Cycler` will keep a few local Julia processes
                       around at all times to reduce downtime when a process exits.
                       `External Terminal` opens an external terminal and connects it to Juno,
                       much like the `Julia Client: Connect Terminal` command.
@@ -25,7 +25,7 @@ config =
                       in the editor or pressing `Enter` in the REPL tab will start
                       a remote Julia process instead of a local one.'
         enum: ['Basic', 'Cycler', 'External Terminal', 'Remote']
-        default: 'Cycler'
+        default: 'Basic'
         radio: true
         order: 1
       optimisationLevel:
