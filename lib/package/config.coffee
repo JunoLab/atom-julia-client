@@ -186,6 +186,53 @@ config =
             type: 'boolean'
             default: false
             order: 6
+          import_to_using:
+            title: 'import_to_using'
+            description:
+              '''
+              If true import expressions are rewritten to using expressions in cases like:
+              `import A` is rewritten to `using A: A`
+              '''
+            type: 'boolean'
+            default: false
+            order: 7
+          pipe_to_function_call:
+            title: 'pipe_to_function_call'
+            description:
+              '''
+              If true `f |> x` is rewritten to `f(x)`.
+              '''
+            type: 'boolean'
+            default: false
+            order: 8
+          short_to_long_function_def:
+            title: 'short_to_long_function_def'
+            description:
+              '''
+              Transforms a _short_ function definition to a _long_ function definition
+              '''
+            type: 'boolean'
+            default: false
+            order: 9
+          always_use_return:
+            title: 'always_use_return'
+            description:
+              '''
+              If true `return` will be prepended to the last expression where applicable in function definitions, macro definitions, and do blocks.
+              '''
+            type: 'boolean'
+            default: false
+            order: 10
+          use_YAS_style:
+            title: 'YAS style'
+            description:
+              '''
+              If true use formatting style based on [YASGuide](https://github.com/jrevels/YASGuide).
+              See [JuliaFormatter's documentation](https://domluna.github.io/JuliaFormatter.jl/dev/yas_style/#) for more details.
+              '''
+            type: 'boolean'
+            default: false
+            order: 11
 
   uiOptions:
     title: 'UI Options'
