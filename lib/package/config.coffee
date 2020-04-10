@@ -311,7 +311,7 @@ config =
       cellDelimiter:
         title: 'Cell Delimiter'
         type: 'array'
-        default: ['##', '#---', '#%%', '# %%']
+        default: ['##\\s', '#---', '#%%', '# %%']
         description: 'Regular expressions for determining cell delimiters.'
         order: 11
       highlightCells:
