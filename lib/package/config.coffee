@@ -200,7 +200,7 @@ config =
             title: 'pipe_to_function_call'
             description:
               '''
-              If true `f |> x` is rewritten to `f(x)`.
+              If true `x |> f` is rewritten to `f(x)`.
               '''
             type: 'boolean'
             default: false
