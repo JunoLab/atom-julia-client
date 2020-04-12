@@ -66,7 +66,7 @@ module.exports =
           modules
         modules.catch (err) =>
           console.log err
-        selector.show(modules, active: active).then (mod) =>
+        selector.show(modules, { active, infoMessage: 'Select module to evaluate in' }).then (mod) =>
           return unless mod?
           if mod is @autodetect
             delete item.juliaModule
