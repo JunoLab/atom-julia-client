@@ -98,6 +98,7 @@ module.exports =
       {type: 'separator'}
 
       {label: 'Debug Information', command: 'julia-client:debug-info'}
+      {label: 'Release Note...', command: 'julia-client:open-release-note'}
       {label: 'Help...', command: 'julia:get-help'}
       {label: 'Settings...', command: 'julia-client:settings'}
     ]
