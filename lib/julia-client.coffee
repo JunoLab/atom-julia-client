@@ -44,9 +44,11 @@ module.exports = JuliaClient =
           minor = semver.minor(LATEST_RELEASE_NOTE_VERSION)
           if semver.minor(v) < minor
             major = semver.major(LATEST_RELEASE_NOTE_VERSION)
-            release.showStartupNote("#{major}.#{minor}.0") # current minor release
+            release.activate("#{major}.#{minor}.0") # current minor release
           else
-            release.showStartupNote(LATEST_RELEASE_NOTE_VERSION) # current patch
+            release.activate(LATEST_RELEASE_NOTE_VERSION) # current patch
+        else
+          release.activate()
       catch err
         console.log(err)
       finally
@@ -131,11 +133,10 @@ module.exports = JuliaClient =
   config: config
 
   deactivate: ->
-    x.deactivate() for x in [commands, menu, toolbar, @connection, @runtime, @ui]
+    x.deactivate() for x in [commands, menu, toolbar, release, @connection, @runtime, @ui]
 
   consumeInk: (ink) ->
     commands.ink = ink
-    release.activate(ink)
     x.consumeInk ink for x in [@connection, @runtime, @ui]
 
   consumeStatusBar: (bar) -> @runtime.consumeStatusBar bar
