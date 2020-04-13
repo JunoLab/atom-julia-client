@@ -27,7 +27,7 @@
     // "jsxFactory": "etch.dom",
     "lib": ["ES2018", "dom"],
     "target": "ES2018",
-    "module": "commonjs",
+    "module": "ES6",
     "moduleResolution": "node",
     // "noLib": false,
     // "importHelpers": true, // if true you should add tslib to deps
