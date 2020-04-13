@@ -688,6 +688,11 @@ config =
     default: true
     order: 99
 
+  currentVersion:
+    type: 'string'
+    default: '0.0.0'
+    order: 100
+
 if process.platform != 'darwin'
   config.consoleOptions.properties.whitelistedKeybindingsREPL.default =
     ['Ctrl-C', 'Ctrl-J', 'Ctrl-K', 'Ctrl-E', 'Ctrl-V', 'Ctrl-M', 'F5', 'F8', 'F9',

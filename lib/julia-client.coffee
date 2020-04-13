@@ -4,11 +4,14 @@ commands = require './package/commands'
 config = require './package/config'
 menu = require './package/menu'
 settings = require './package/settings'
+release = require './package/release-note'
 toolbar = require './package/toolbar'
 semver = require 'semver'
 
 # TODO: Update me when tagging a new relase:
 INK_VERSION_COMPAT  = "^0.12.3"
+# TODO: Update me when tagging a new relase with a release note
+LATEST_RELEASE_NOTE_VERSION  = "0.12.0"
 
 INK_LINK            = '[`ink`](https://github.com/JunoLab/atom-ink)'
 LANGUAGE_JULIA_LINK = '[`language-julia`](https://github.com/JuliaEditorSupport/atom-language-julia)'
@@ -34,6 +37,21 @@ module.exports = JuliaClient =
       else
         if atom.config.get('julia-client.uiOptions.layouts.openDefaultPanesOnStartUp')
           setTimeout (=> @ui.layout.restoreDefaultLayout()), 150
+
+      try
+        v = atom.config.get('julia-client.currentVersion')
+        if not semver.gte(v, LATEST_RELEASE_NOTE_VERSION)
+          minor = semver.minor(LATEST_RELEASE_NOTE_VERSION)
+          if semver.minor(v) < minor
+            major = semver.major(LATEST_RELEASE_NOTE_VERSION)
+            release.showStartupNote("#{major}.#{minor}.0") # current minor release
+          else
+            release.showStartupNote(LATEST_RELEASE_NOTE_VERSION) # current patch
+      catch err
+        console.log(err)
+      finally
+        juliaClientVersion = atom.packages.loadedPackages["julia-client"].metadata.version
+        atom.config.set('julia-client.currentVersion', juliaClientVersion)
 
   requireDeps: (fn) ->
     isLoaded = atom.packages.isPackageLoaded("ink") and atom.packages.isPackageLoaded("language-julia")
@@ -117,6 +135,7 @@ module.exports = JuliaClient =
 
   consumeInk: (ink) ->
     commands.ink = ink
+    release.activate(ink)
     x.consumeInk ink for x in [@connection, @runtime, @ui]
 
   consumeStatusBar: (bar) -> @runtime.consumeStatusBar bar
