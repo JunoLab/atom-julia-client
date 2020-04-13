@@ -22,10 +22,10 @@
   "repository": "https://github.com/JunoLab/atom-julia-client",
   "license": "MIT",
   "scripts": {
-    "typescript": "tsc -p ./lib_src/tsconfig.json",
+    "typescript": "(tsc -p ./lib_src/tsconfig.json) || echo done",
     "prettier_src": "prettier --write ./lib_src/**/*.ts",
-    "prettier_out": "prettier --write ./lib/misc/colors.js",
-    "build": "npm run typescript -s & npm run prettier_out -s",
+    "prettier_out": "prettier --write ./lib/misc/blocks.js",
+    "build": "npm run typescript -s && npm run prettier_out",
     "lint": "eslint . --ext js,ts,coffee,json",
     "postinstall": "node script/postinstall.js"
   },
@@ -124,6 +124,7 @@
   ],
   "prettier": {
     "semi": false,
+    "singleQuote": true,
     "tabWidth": 2,
     "printWidth": 120
   }
