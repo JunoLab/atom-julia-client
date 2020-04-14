@@ -25,6 +25,10 @@ const openers = [
 ]
 const reopeners = ["else", "elseif", "catch", "finally"]
 
+/**
+ * 
+ * @param {readonly string[]} scopes
+ */
 function isKeywordScope(scopes: readonly string[]) {
   // Skip 'source.julia'
   return scopes.slice(1).some(scope => {
@@ -32,6 +36,10 @@ function isKeywordScope(scopes: readonly string[]) {
   })
 }
 
+/**
+ *
+ * @param {readonly string[]} scopes
+ */
 export function isStringScope(scopes: readonly string[]) {
   let isString = false
   let isInterp = false
@@ -46,6 +54,11 @@ export function isStringScope(scopes: readonly string[]) {
   return isString && !isInterp
 }
 
+/**
+ *
+ * @param {TextEditor} editor
+ * @param {RangeCompatible} range
+ */
 function forRange(editor: TextEditor, range: RangeCompatible) {
   // this should happen here and not a top-level so that we aren't relying on
   // Atom to load packages in a specific order:
@@ -90,6 +103,12 @@ function forRange(editor: TextEditor, range: RangeCompatible) {
   return scopes
 }
 
+/**
+ *
+ * @param {TextEditor} editor
+ * @param {number} start
+ * @param {number} end
+ */
 export function forLines(editor: TextEditor, start: number, end: number) {
   const startPoint = new Point(start, 0)
   const endPoint = new Point(end, Infinity)
@@ -97,6 +116,10 @@ export function forLines(editor: TextEditor, start: number, end: number) {
   return forRange(editor, range)
 }
 
+/**
+ *
+ * @param {readonly string[]} scopes
+ */
 export function isCommentScope(scopes: readonly string[]) {
   // Skip 'source.julia'
   return scopes.slice(1).some(scope => {
@@ -108,6 +131,9 @@ export function isCommentScope(scopes: readonly string[]) {
  * Returns `true` if the scope at `bufferPosition` in `editor` is valid code scope to be inspected.
  * Supposed to be used within Atom-IDE integrations, whose `grammarScopes` setting doesn't support
  * embedded scopes by default.
+ *
+ * @param {TextEditor} editor
+ * @param {PointCompatible} bufferPosition
  */
 export function isValidScopeToInspect(editor: TextEditor, bufferPosition: PointCompatible) {
   const scopes = editor.scopeDescriptorForBufferPosition(bufferPosition).getScopesArray()
