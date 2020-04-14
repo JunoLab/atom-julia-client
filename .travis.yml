@@ -1,0 +1,52 @@
+language: julia
+
+julia:
+  - 1
+  - nightly
+
+env:
+  global:
+    - APM_TEST_PACKAGES="ink language-julia"
+    - ATOM_LINT_WITH_BUNDLED_NODE="true"
+
+  matrix:
+    - ""
+    - ATOMJL=master
+
+os:
+  - linux
+
+matrix:
+  include:
+    # # Sanity check for OS X
+    # - os: osx
+    #   julia: 1
+    #   env: ATOMJL=master
+    # Sanity check for Atom Beta
+    - os: linux
+      julia: 1
+      env: ATOM_CHANNEL=beta
+  allow_failures:
+    - julia: nightly
+    - env: ATOM_CHANNEL=beta
+
+script:
+  - julia ci/packages.jl
+  - curl -s -O https://raw.githubusercontent.com/atom/ci/master/build-package.sh
+  - chmod u+x build-package.sh
+  - ./build-package.sh
+
+dist: xenial
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - g++-6
+    - build-essential
+    - fakeroot
+    - git
+    - libsecret-1-dev
+
+notifications:
+  email: false
