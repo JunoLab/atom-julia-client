@@ -190,7 +190,7 @@ module.exports =
     else if dirs.length == 1
       @_cd dirs[0]
     else
-      selector.show(dirs)
+      selector.show(dirs, { infoMessage: 'Select project to work in' })
         .then (dir) =>
           return unless dir?
           @_cd dir
