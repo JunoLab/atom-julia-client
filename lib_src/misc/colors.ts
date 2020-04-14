@@ -1,11 +1,22 @@
 'use babel'
 
+/**
+ *
+ * @param {{ [P: string]: string }} selectors
+ */
 export function getColors(selectors: { [P: string]: string }) {
   // const grammar = atom.grammars.grammarForScopeName("source.julia") // TODO ?
 
   const div = document.createElement('div')
   div.classList.add('editor', 'editor-colors', 'julia-syntax-color-selector')
+
+  /**
+   * @type { [P: string]: HTMLSpanElement }
+   */
   const styled: { [P: string]: HTMLSpanElement } = {}
+  /**
+   * { [P: string]: string }
+   */
   const color: { [P: string]: string } = {}
 
   for (const style in selectors) {
@@ -32,6 +43,11 @@ export function getColors(selectors: { [P: string]: string }) {
   return color
 }
 
+/**
+ *
+ * @param {string} rgb
+ * @return {string}
+ */
 function rgb2hex(rgb: string): string {
   if (rgb.search("rgb") === -1) {
     return rgb
@@ -48,6 +64,10 @@ function rgb2hex(rgb: string): string {
   }
 }
 
+/**
+ *
+ * @param {string} x
+ */
 function hex(x: string) {
   return ("0" + parseInt(x, 10).toString(16)).slice(-2)
 }
