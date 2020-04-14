@@ -33,7 +33,7 @@ config =
         description: 'Higher levels take longer to compile, but produce faster code.'
         type: 'integer'
         enum: [0, 1, 2, 3]
-        default: 3
+        default: 2
         radio: true
         order: 2
       deprecationWarnings:
