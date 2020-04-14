@@ -5,11 +5,19 @@
 import { forLines } from "./scopes"
 import { TextEditor, Selection } from "atom"
 
-interface LineInfo {
-  scope: readonly string[]
-  line: string
-}
+/**
+ * interface LineInfo {
+ * scope: readonly string[]
+ * line: string
+ * }
+ */
 
+/**
+ *
+ * @param {TextEditor} editor
+ * @param {number} l
+ * @returns {LineInfo}
+ */
 export function getLine(editor: TextEditor, l: number): LineInfo {
   return {
     scope: editor.scopeDescriptorForBufferPosition([l, 0]).getScopesArray(),
@@ -20,6 +28,12 @@ export function getLine(editor: TextEditor, l: number): LineInfo {
   }
 }
 
+/**
+ *
+ * @param {LineInfo.line} line
+ * @param {LineInfo.scope} scope
+ * @param {boolean} allowDocstrings
+ */
 function isBlank({ line, scope }: LineInfo, allowDocstrings = false) {
   for (const s of scope) {
     if (/\bcomment\b/.test(s) || (!allowDocstrings && /\bdocstring\b/.test(s))) {
@@ -29,6 +43,10 @@ function isBlank({ line, scope }: LineInfo, allowDocstrings = false) {
   return /^\s*(#.*)?$/.test(line)
 }
 
+/**
+ *
+ * @param {LineInfo} lineInfo
+ */
 function isEnd(lineInfo: LineInfo) {
   if (isStringEnd(lineInfo)) {
     return true
@@ -36,11 +54,19 @@ function isEnd(lineInfo: LineInfo) {
   return /^(end\b|\)|]|})/.test(lineInfo.line)
 }
 
+/**
+ *
+ * @param {LineInfo} lineInfo
+ */
 function isStringEnd(lineInfo: LineInfo) {
   const scope = lineInfo.scope.join(" ")
   return /\bstring\.multiline\.end\b/.test(scope) || (/\bstring\.end\b/.test(scope) && /\bbacktick\b/.test(scope))
 }
 
+/**
+ *
+ * @param {LineInfo} lineInfo
+ */
 function isCont(lineInfo: LineInfo) {
   const scope = lineInfo.scope.join(" ")
   if (/\bstring\b/.test(scope) && !/\bpunctuation\.definition\.string\b/.test(scope)) {
@@ -50,11 +76,19 @@ function isCont(lineInfo: LineInfo) {
   return lineInfo.line.match(/^(else|elseif|catch|finally)\b/)
 }
 
+/**
+ *
+ * @param {LineInfo} lineInfo
+ */
 function isStart(lineInfo: LineInfo) {
   return !(/^\s/.test(lineInfo.line) || isBlank(lineInfo) || isEnd(lineInfo) || isCont(lineInfo))
 }
 
-
+/**
+ *
+ * @param {TextEditor} editor
+ * @param {number} row
+ */
 function walkBack(editor: TextEditor, row: number) {
   while (row > 0 && !isStart(getLine(editor, row))) {
     row--
@@ -62,6 +96,11 @@ function walkBack(editor: TextEditor, row: number) {
   return row
 }
 
+/**
+ *
+ * @param {TextEditor} editor
+ * @param {number} start
+ */
 function walkForward(editor: TextEditor, start: number) {
   let end = start
   let mark = start
@@ -86,6 +125,12 @@ function walkForward(editor: TextEditor, start: number) {
   return end
 }
 
+/**
+ *
+ * @param {TextEditor} editor
+ * @param {number} row
+ * @returns {[[number, number], [number, number]] | undefined}
+ */
 function getRange(editor: TextEditor, row: number): [[number, number], [number, number]] | undefined {
   const start = walkBack(editor, row)
   const end = walkForward(editor, start)
@@ -99,6 +144,11 @@ function getRange(editor: TextEditor, row: number): [[number, number], [number, 
   }
 }
 
+/**
+ *
+ * @param {TextEditor} editor
+ * @param {Selection} selection
+ */
 function getSelection(editor: TextEditor, selection: Selection) {
   const { start, end } = selection.getBufferRange()
   const range = [
@@ -116,6 +166,12 @@ function getSelection(editor: TextEditor, selection: Selection) {
   return range
 }
 
+/**
+ *
+ * @param {TextEditor} editor
+ * @param {Selection} selection
+ * @param {[[number, number], [number, number]]} range
+ */
 export function moveNext(editor: TextEditor, selection: Selection, range: [[number, number], [number, number]]) {
   // Ensure enough room at the end of the buffer
   const row = range[1][0]
@@ -142,6 +198,10 @@ export function moveNext(editor: TextEditor, selection: Selection, range: [[numb
   ])
 }
 
+/**
+ *
+ * @param {TextEditor} editor
+ */
 function getRanges(editor: TextEditor) {
   const ranges = editor.getSelections().map(selection => {
     return {
@@ -157,6 +217,10 @@ function getRanges(editor: TextEditor) {
   })
 }
 
+/**
+ *
+ * @param {TextEditor} editor
+ */
 export function get(editor: TextEditor) {
   return getRanges(editor).map(({ range, selection }) => {
     return {
@@ -168,6 +232,11 @@ export function get(editor: TextEditor) {
   })
 }
 
+/**
+ *
+ * @param {TextEditor} editor
+ * @param {number} row
+ */
 export function getLocalContext(editor: TextEditor, row: number) {
   const range = getRange(editor, row)
   const context = range ? editor.getTextInBufferRange(range) : ""
@@ -182,6 +251,10 @@ export function getLocalContext(editor: TextEditor, row: number) {
   }
 }
 
+/**
+ *
+ * @param {TextEditor | undefined} editor
+ */
 export function select(editor = atom.workspace.getActiveTextEditor()) {
   if (!editor) return
   return editor.mutateSelectedText(selection => {
