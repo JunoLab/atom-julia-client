@@ -8,9 +8,8 @@ release = require './package/release-note'
 toolbar = require './package/toolbar'
 semver = require 'semver'
 
-# TODO: Update me when tagging a new relase:
+# TODO: Update me when tagging a new relase (and release note)
 INK_VERSION_COMPAT  = "^0.12.3"
-# TODO: Update me when tagging a new relase with a release note
 LATEST_RELEASE_NOTE_VERSION  = "0.12.0"
 
 INK_LINK            = '[`ink`](https://github.com/JunoLab/atom-ink)'
