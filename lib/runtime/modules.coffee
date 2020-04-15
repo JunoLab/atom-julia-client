@@ -4,7 +4,7 @@
 {debounce} = require 'underscore-plus'
 
 {client} = require '../connection'
-{selector} = require '../ui'
+{show} = require '../ui/selector'
 
 {module: getmodule, allmodules, ismodule} = client.import ['module', 'allmodules', 'ismodule']
 
@@ -66,7 +66,7 @@ module.exports =
           modules
         modules.catch (err) =>
           console.log err
-        selector.show(modules, { active, infoMessage: 'Select module to evaluate in' }).then (mod) =>
+        show(modules, { active }).then (mod) =>
           return unless mod?
           if mod is @autodetect
             delete item.juliaModule
