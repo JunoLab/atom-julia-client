@@ -41,7 +41,6 @@ module.exports = JuliaClient =
       try
         v = atom.config.get('julia-client.currentVersion')
         if v isnt LATEST_RELEASE_NOTE_VERSION
-          atom.config.set('julia-client.currentVersion', LATEST_RELEASE_NOTE_VERSION)
           release.activate(LATEST_RELEASE_NOTE_VERSION)
         else
           release.activate()
