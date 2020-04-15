@@ -1,8 +1,8 @@
 {CompositeDisposable} = require 'atom'
 
-{views} = require '../ui'
 {client} = require '../connection'
-
+{views} = require '../ui'
+goto = require './goto'
 modules = require './modules'
 
 { workspace, gotosymbol: gotoSymbol, clearLazy } = client.import rpc: ['workspace', 'gotosymbol'], msg: 'clearLazy'
@@ -42,10 +42,9 @@ module.exports =
       gotoSymbol
         word: name,
         mod: mod
-      .then (symbols) =>
-        return if symbols.error
-        @ink.goto.goto symbols,
-          pending: atom.config.get('core.allowPendingPaneItems')
+      .then (results) =>
+        return if results.error
+        goto.selectItemsAndGo(results.items)
 
   create: ->
     @ws = @ink.Workspace.fromId 'julia'
