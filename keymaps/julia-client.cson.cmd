@@ -41,6 +41,10 @@ Any global commands should either be non-default or, ideally, prefixed with `C-J
   'ctrl-c': 'julia-client:interrupt-julia'
   'cmd-j cmd-m': 'julia-client:set-working-module'
 
+# release note
+'.julia-client-release-note':
+  'escape': 'julia-client:cancel-release-note'
+
 # atom-workspace
 '.platform-darwin atom-workspace':
   'cmd-j cmd-r': 'julia-client:open-external-REPL'
