@@ -5,12 +5,6 @@
 @import "ui-variables";
 @import "syntax-variables";
 
-.julia-client-selector {
-  .character-match {
-    font-weight: bold;
-  }
-}
-
 .julia {
   table {
     td {
@@ -88,6 +82,21 @@ atom-text-editor.editor {
     .title {
       font-weight: bold;
     }
+  }
+}
+
+.julia-client-selector {
+  .two-lines {
+    padding: 0.5em 1em  !important;
+    .primary-line, .secondary-line {
+      line-height: 2em;
+    }
+  }
+  .error-message {
+    color: @text-color-error;
+  }
+  .character-match {
+    font-weight: bold;
   }
 }
 
