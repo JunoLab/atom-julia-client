@@ -40,20 +40,15 @@ module.exports = JuliaClient =
 
       try
         v = atom.config.get('julia-client.currentVersion')
-        if not semver.gte(v, LATEST_RELEASE_NOTE_VERSION)
-          minor = semver.minor(LATEST_RELEASE_NOTE_VERSION)
-          if semver.minor(v) < minor
-            major = semver.major(LATEST_RELEASE_NOTE_VERSION)
-            release.activate("#{major}.#{minor}.0") # current minor release
-          else
-            release.activate(LATEST_RELEASE_NOTE_VERSION) # current patch
+        if v isnt LATEST_RELEASE_NOTE_VERSION
+          atom.config.set('julia-client.currentVersion', LATEST_RELEASE_NOTE_VERSION)
+          release.activate(LATEST_RELEASE_NOTE_VERSION)
         else
           release.activate()
       catch err
         console.log(err)
       finally
-        juliaClientVersion = atom.packages.loadedPackages["julia-client"].metadata.version
-        atom.config.set('julia-client.currentVersion', juliaClientVersion)
+        atom.config.set('julia-client.currentVersion', LATEST_RELEASE_NOTE_VERSION)
 
   requireDeps: (fn) ->
     isLoaded = atom.packages.isPackageLoaded("ink") and atom.packages.isPackageLoaded("language-julia")
