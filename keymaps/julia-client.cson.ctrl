@@ -46,10 +46,6 @@ Any global commands should either be non-default or, ideally, prefixed with `C-J
   'ctrl-shift-c': 'julia-client:copy-or-interrupt'
   'ctrl-v': 'ink-terminal:paste'
 
-# release note
-'.julia-client-release-note':
-  'escape': 'julia-client:cancel-release-note'
-
 # atom-workspace
 '.platform-win32 atom-workspace,
  .platform-linux atom-workspace':

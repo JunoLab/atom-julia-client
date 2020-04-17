@@ -37,17 +37,6 @@ module.exports = JuliaClient =
         if atom.config.get('julia-client.uiOptions.layouts.openDefaultPanesOnStartUp')
           setTimeout (=> @ui.layout.restoreDefaultLayout()), 150
 
-      try
-        v = atom.config.get('julia-client.currentVersion')
-        if v isnt LATEST_RELEASE_NOTE_VERSION
-          release.activate(LATEST_RELEASE_NOTE_VERSION)
-        else
-          release.activate()
-      catch err
-        console.log(err)
-      finally
-        atom.config.set('julia-client.currentVersion', LATEST_RELEASE_NOTE_VERSION)
-
   requireDeps: (fn) ->
     isLoaded = atom.packages.isPackageLoaded("ink") and atom.packages.isPackageLoaded("language-julia")
 
@@ -131,6 +120,16 @@ module.exports = JuliaClient =
   consumeInk: (ink) ->
     commands.ink = ink
     x.consumeInk ink for x in [@connection, @runtime, @ui]
+    try
+      v = atom.config.get('julia-client.currentVersion')
+      if v isnt LATEST_RELEASE_NOTE_VERSION
+        release.activate(ink, LATEST_RELEASE_NOTE_VERSION)
+      else
+        release.activate(ink)
+    catch err
+      console.log(err)
+    finally
+      atom.config.set('julia-client.currentVersion', LATEST_RELEASE_NOTE_VERSION)
 
   consumeStatusBar: (bar) -> @runtime.consumeStatusBar bar
 
