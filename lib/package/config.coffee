@@ -120,119 +120,16 @@ config =
         order: 13
       formattingOptions:
         title: 'Formatting Options'
-        description: 'Specifies [formatting options for `JuliaFormatter.format_text`](https://domluna.github.io/JuliaFormatter.jl/stable/#Formatting-Options-1).'
+        description:
+          '''
+          This config is deprecated. In order to specify [Formatting Options](https://domluna.github.io/JuliaFormatter.jl/dev/#Formatting-Options-1),
+          use `.JuliaFormatter.toml` configuration file instead.
+          See the ["Configuration File" section in JuliaFormatter.jl's documentation](https://domluna.github.io/JuliaFormatter.jl/dev/config/)
+          for more details.
+          '''
         type: 'object'
+        default: {}
         order: 14
-        collapsed: true
-        properties:
-          indent:
-            title: 'indent'
-            description:
-              '''
-              Specifies the number of spaces used for an indentation.
-              With the default value (`-1`), `indent` will be automatically set to the current editor's [tab length](https://flight-manual.atom.io/using-atom/sections/basic-customization/#configuration-key-reference).
-              '''
-            type: 'integer'
-            default: -1
-            order: 1
-          margin:
-            title: 'margin'
-            description:
-              '''
-              Specifies the maximum length of a line. Code exceeding this margin will be formatted
-              across multiple lines.
-              With the default value (`-1`), `indent` will be automatically set to the current editor's [preferred line length](https://flight-manual.atom.io/using-atom/sections/basic-customization/#configuration-key-reference).
-              '''
-            type: 'integer'
-            default: -1
-            order: 2
-          always_for_in:
-            title: 'always_for_in'
-            description:
-              '''
-              If `always_for_in` is true `=` is always replaced with `in` if part of a
-              `for` loop condition.  For example, `for i = 1:10` will be transformed
-              to `for i in 1:10`.
-              '''
-            type: 'boolean'
-            default: false
-            order: 3
-          whitespace_typedefs:
-            title: 'whitespace_typedefs'
-            description:
-              '''
-              If `whitespace_typedefs` is true, whitespace is added for type definitions.
-              Make this `true` if you prefer `Union{A <: B, C}` to `Union{A<:B,C}`.
-              '''
-            type: 'boolean'
-            default: false
-            order: 4
-          whitespace_ops_in_indices:
-            title: 'whitespace_ops_in_indices'
-            description:
-              '''
-              If `whitespace_ops_in_indices` is true, whitespace is added for binary operations
-              in indices. Make this `true` if you prefer `arr[a + b]` to `arr[a+b]`. Additionally, if there's a colon `:` involved, parenthesis will be added to the LHS and RHS.
-              '''
-            type: 'boolean'
-            default: false
-            order: 5
-          remove_extra_newlines:
-            title: 'remove_extra_newlines'
-            description:
-              '''
-              If `remove_extra_newlines` is true superflous newlines will be removed.
-              '''
-            type: 'boolean'
-            default: false
-            order: 6
-          import_to_using:
-            title: 'import_to_using'
-            description:
-              '''
-              If true import expressions are rewritten to using expressions in cases like:
-              `import A` is rewritten to `using A: A`
-              '''
-            type: 'boolean'
-            default: false
-            order: 7
-          pipe_to_function_call:
-            title: 'pipe_to_function_call'
-            description:
-              '''
-              If true `x |> f` is rewritten to `f(x)`.
-              '''
-            type: 'boolean'
-            default: false
-            order: 8
-          short_to_long_function_def:
-            title: 'short_to_long_function_def'
-            description:
-              '''
-              Transforms a _short_ function definition to a _long_ function definition
-              '''
-            type: 'boolean'
-            default: false
-            order: 9
-          always_use_return:
-            title: 'always_use_return'
-            description:
-              '''
-              If true `return` will be prepended to the last expression where applicable in function definitions, macro definitions, and do blocks.
-              '''
-            type: 'boolean'
-            default: false
-            order: 10
-          use_YAS_style:
-            title: 'YAS style'
-            description:
-              '''
-              If true use formatting style based on [YASGuide](https://github.com/jrevels/YASGuide).
-              See [JuliaFormatter's documentation](https://domluna.github.io/JuliaFormatter.jl/dev/yas_style/#) for more details.
-              '''
-            type: 'boolean'
-            default: false
-            order: 11
 
   uiOptions:
     title: 'UI Options'
