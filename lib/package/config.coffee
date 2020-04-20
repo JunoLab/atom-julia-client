@@ -128,8 +128,13 @@ config =
           for more details.
           '''
         type: 'object'
-        default: {}
         order: 14
+        collapsed: true
+        properties:
+          mock:
+            title: 'mock (not appear in the settings view)'
+            type: 'object'
+            default: {}
 
   uiOptions:
     title: 'UI Options'
