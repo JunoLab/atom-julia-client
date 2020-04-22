@@ -122,19 +122,20 @@ config =
         title: 'Formatting Options'
         description:
           '''
-          This config is deprecated. In order to specify [Formatting Options](https://domluna.github.io/JuliaFormatter.jl/dev/#Formatting-Options-1),
+          ⚠ This config is deprecated. In order to specify
+          [Formatting Options](https://domluna.github.io/JuliaFormatter.jl/dev/#Formatting-Options-1),
           use `.JuliaFormatter.toml` configuration file instead.
-          See the ["Configuration File" section in JuliaFormatter.jl's documentation](https://domluna.github.io/JuliaFormatter.jl/dev/config/)
-          for more details.
+          See the ["Configuration File" section](https://domluna.github.io/JuliaFormatter.jl/stable/config/)
+          in JuliaFormatter.jl's documentation for more details.
           '''
         type: 'object'
         order: 14
         collapsed: true
         properties:
-          mock:
-            title: 'mock (not appear in the settings view)'
-            type: 'object'
-            default: {}
+          mock: # NOTE: otherwise the deprecated description doesn't show up
+            title: "mock (doesn't have any effect)"
+            type: 'boolean'
+            default: false
 
   uiOptions:
     title: 'UI Options'
