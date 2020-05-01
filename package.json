@@ -21,6 +21,10 @@
   ],
   "repository": "https://github.com/JunoLab/atom-julia-client",
   "license": "MIT",
+  "scripts": {
+    "build": "NODE_ENV=production BABEL_ENV=production rollup -c",
+    "postinstall": "node script/postinstall.js"
+  },
   "engines": {
     "atom": ">=1.39.0 <2.0.0"
   },
