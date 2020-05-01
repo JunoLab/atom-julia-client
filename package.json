@@ -1,6 +1,6 @@
 {
   "name": "julia-client",
-  "main": "./lib/julia-client",
+  "main": "./dist/julia-client",
   "version": "0.12.4",
   "description": "The core package of Juno, the Julia IDE",
   "keywords": [
