@@ -32,10 +32,9 @@ module.exports =
 
   consumeInk: (@ink) ->
     @views.ink = @ink
-    @progress.ink = @ink
     @selector.activate(@ink)
     @docpane.activate(@ink)
-    @progress.activate()
+    @progress.activate(@ink)
     @focusutils.activate(@ink)
     @subs.add(new Disposable(=>
       @docpane.deactivate()

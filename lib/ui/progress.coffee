@@ -5,14 +5,18 @@
 module.exports =
   progs: {}
 
-  activate: ->
+  activate: (ink) ->
     @subs = new CompositeDisposable
+    @ink = ink
     client.handle 'progress': (t, id, m) => @[t] id, m
     status = []
-    @subs.add client.onWorking  =>
-        status = @ink?.progress.add(null, description: 'Julia')
-    @subs.add client.onDone     => status?.destroy()
-    @subs.add client.onDetached => @clear()
+    @subs.add(
+      client.onWorking  =>
+        status = @ink.progress.add(null, description: 'Julia')
+      client.onDone     => status?.destroy()
+      client.onAttached => @ink.progress.show()
+      client.onDetached => @clear()
+    )
 
   deactivate: ->
     @clear()
@@ -55,3 +59,4 @@ module.exports =
     for _, p of @progs
       p?.destroy()
     @progs = {}
+    @ink.progress.hide()
