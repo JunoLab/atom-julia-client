@@ -153,7 +153,7 @@ module.exports =
     @subs.add(disposable)
     disposable
 
-  updateView: (m) ->
+  updateView: (m = @_current) ->
     return unless @tile?
     if not m?
       @dom.style.display = 'none'
