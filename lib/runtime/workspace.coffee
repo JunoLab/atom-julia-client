@@ -11,6 +11,7 @@ module.exports =
   activate: ->
     @create()
 
+    client.handle { updateWorkspace: => @update() }
     client.onDetached =>
       @ws.setItems []
       @lazyTrees = []
