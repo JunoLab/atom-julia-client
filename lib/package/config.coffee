@@ -28,6 +28,15 @@ config =
         default: 'Basic'
         radio: true
         order: 1
+      packageServer:
+        title: 'Package Server'
+        type: 'string'
+        description: 'Julia package server. Set\'s the `JULIA_PKG_SERVER` environment
+                      variable *before* starting a Julia process. Leave this empty to
+                      use the systemwide default.
+                      Requires a restart of the Julia process.'
+        default: ''
+        order: 1.5
       optimisationLevel:
         title: 'Optimisation Level'
         description: 'Higher levels take longer to compile, but produce faster code.'
