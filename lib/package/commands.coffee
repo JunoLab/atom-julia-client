@@ -194,6 +194,8 @@ module.exports =
       'julia-client:activate-default-environment': (ev) ->
         requireClient 'activate an environment', ->
           juno.runtime.evaluation.activateDefaultProject()
+      'julia-client:set-working-environment': (ev) ->
+        juno.runtime.environments.chooseEnvironment()
 
   deactivate: ->
     @subs.dispose()
