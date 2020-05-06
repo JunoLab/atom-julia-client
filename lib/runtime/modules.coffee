@@ -162,7 +162,7 @@ module.exports =
       if main is @follow
         return @updateView @lastEditorModule
       @dom.style.display = ''
-      @mainView.innerText = main or 'Main'
+      @mainView.innerText = 'Module: ' + (main or 'Main')
       if sub
         @subView.innerText = sub
         @dividerView.innerText = '/'
