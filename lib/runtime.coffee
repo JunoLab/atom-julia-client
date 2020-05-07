@@ -22,7 +22,6 @@ module.exports =
 
     @modules.activate()
     @completions.activate()
-    @frontend.activate()
     @subs.add atom.config.observe 'julia-client.juliaOptions.formatOnSave', (val) =>
       if val
         @formatter.activate()
@@ -30,15 +29,14 @@ module.exports =
         @formatter.deactivate()
 
     @subs.add new Disposable(=>
-      mod.deactivate() for mod in [@modules, @completions, @frontend, @formatter])
+      mod.deactivate() for mod in [@modules, @completions, @formatter])
 
   deactivate: ->
     @subs.dispose()
 
   consumeInk: (ink) ->
     @evaluation.ink = ink
-    @frontend.ink = ink
-    for mod in [@console, @debugger, @profiler, @linter, @goto, @outline]
+    for mod in [@console, @debugger, @profiler, @linter, @goto, @outline, @frontend]
       mod.activate(ink)
     for mod in [@workspace, @plots]
       mod.ink = ink
