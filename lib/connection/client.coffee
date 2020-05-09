@@ -155,7 +155,7 @@ module.exports =
       @ipc.reset()
 
   clargs: ->
-    {precompiled, optimisationLevel, deprecationWarnings} =
+    {optimisationLevel, deprecationWarnings} =
       atom.config.get 'julia-client.juliaOptions'
     as = []
     as.push "--depwarn=#{if deprecationWarnings then 'yes' else 'no'}"

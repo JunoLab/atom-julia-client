@@ -153,7 +153,7 @@ module.exports =
     @subs.add(disposable)
     disposable
 
-  updateView: (m) ->
+  updateView: (m = @_current) ->
     return unless @tile?
     if not m?
       @dom.style.display = 'none'
@@ -162,7 +162,7 @@ module.exports =
       if main is @follow
         return @updateView @lastEditorModule
       @dom.style.display = ''
-      @mainView.innerText = main or 'Main'
+      @mainView.innerText = 'Module: ' + (main or 'Main')
       if sub
         @subView.innerText = sub
         @dividerView.innerText = '/'

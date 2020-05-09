@@ -47,6 +47,7 @@ module.exports =
           {label: 'Environment in Current File\'s Folder', command: 'julia-client:activate-environment-in-current-folder'}
           {label: 'Environment in Parent Folder', command: 'julia-client:activate-environment-in-parent-folder'}
           {label: 'Default Environment', command: 'julia-client:activate-default-environment'}
+          {label: 'Set Working Environment', command: 'julia-client:set-working-environment'}
         ]
       }
       {label: 'Set Working Module', command: 'julia-client:set-working-module'}
