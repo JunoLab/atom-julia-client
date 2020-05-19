@@ -26,7 +26,7 @@ end
 
 
 # TODO: Update me when tagging a new relase:
-MIN_ATOM_VER = v"0.12.8"
+MIN_ATOM_VER = v"0.12.11"
 outdated = false
 
 try
