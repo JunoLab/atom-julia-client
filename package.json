@@ -25,7 +25,7 @@
     "atom": ">=1.39.0 <2.0.0"
   },
   "dependencies": {
-    "atom-package-deps": "*",
+    "atom-package-deps": "^6.0.0",
     "atom-select-list": "^0.7.2",
     "etch": "^0.14",
     "fuzzaldrin-plus": "^0.6.0",
