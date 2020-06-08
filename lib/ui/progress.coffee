@@ -1,5 +1,5 @@
 {CompositeDisposable} = require 'atom'
-{client} = require '../connection'
+client =  require '../connection/client'
 {formatTimePeriod} = require '../misc'
 
 module.exports =
