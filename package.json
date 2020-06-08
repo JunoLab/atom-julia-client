@@ -34,7 +34,10 @@
     "physical-cpu-count": "*",
     "semver": "^7.3.2",
     "ssh2": "^0.8.4",
-    "underscore-plus": "*"
+    "underscore-plus": "*",
+    "katex": "0.11.0",
+    "replace-in-file": "^3.0.0",
+    "fs-extra": "^5.0.0"
   },
   "scripts": {
     "postinstall": "node script/postinstall.js"
