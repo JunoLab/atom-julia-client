@@ -32,7 +32,7 @@
     "node-pty-prebuilt-multiarch": "0.9.0",
     "object-hash": "^2.0.3",
     "physical-cpu-count": "*",
-    "semver": "^6.3.0",
+    "semver": "^7.3.2",
     "ssh2": "^0.8.4",
     "underscore-plus": "*"
   },
