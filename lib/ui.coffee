@@ -31,7 +31,7 @@ module.exports =
     @subs.dispose()
 
   consumeInk: (@ink) ->
-    @views.ink = @ink
+    @views.activate(@ink)
     @selector.activate(@ink)
     @docpane.activate(@ink)
     @progress.activate(@ink)
