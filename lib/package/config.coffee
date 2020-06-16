@@ -505,7 +505,7 @@ config =
       whitelistedKeybindingsREPL:
         title: 'Whitelisted Keybindings for the Julia REPL'
         type: 'array'
-        default: ['Ctrl-C', 'F5', 'F8', 'F9', 'F10', 'F11', 'Shift-F5', 'Shift-F8', 'Shift-F9', 'Shift-F10', 'Shift-F11']
+        default: ['Ctrl-C', 'Ctrl-S', 'F5', 'F8', 'F9', 'F10', 'F11', 'Shift-F5', 'Shift-F8', 'Shift-F9', 'Shift-F10', 'Shift-F11']
         description: 'The listed keybindings are not handled by the REPL and instead directly passed to Atom.'
         order: 5
       whitelistedKeybindingsTerminal:
