@@ -97,6 +97,15 @@ atom-text-editor.editor {
       }
     }
 
+    &.compat {
+      .admonition-title {
+        background-color: mix(@background-color-info, @syntax-selection-color, 20%);
+      }
+      .markdown {
+        background-color: mix(@background-color-info, @syntax-selection-color, 15%);
+      }
+    }
+
     .title {
       font-weight: bold;
     }
