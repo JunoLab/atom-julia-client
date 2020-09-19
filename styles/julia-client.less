@@ -79,6 +79,24 @@ atom-text-editor.editor {
       }
     }
 
+    &.danger {
+      .admonition-title {
+        background-color: mix(@background-color-error, @syntax-background-color, 15%);
+      }
+      .markdown {
+        background-color: mix(@background-color-error, @syntax-background-color, 10%);
+      }
+    }
+
+    &.tip {
+      .admonition-title {
+        background-color: mix(@background-color-success, @syntax-background-color, 15%);
+      }
+      .markdown {
+        background-color: mix(@background-color-success, @syntax-background-color, 10%);
+      }
+    }
+
     .title {
       font-weight: bold;
     }
