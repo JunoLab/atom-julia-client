@@ -10,7 +10,7 @@ semver = require 'semver'
 
 # TODO: Update me when tagging a new relase (and release note)
 INK_VERSION_COMPAT  = "^0.12.4"
-LATEST_RELEASE_NOTE_VERSION  = "0.12.5"
+LATEST_RELEASE_NOTE_VERSION  = "0.12.6"
 
 INK_LINK            = '[`ink`](https://github.com/JunoLab/atom-ink)'
 LANGUAGE_JULIA_LINK = '[`language-julia`](https://github.com/JuliaEditorSupport/atom-language-julia)'
