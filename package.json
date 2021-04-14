@@ -22,7 +22,7 @@
   "repository": "https://github.com/JunoLab/atom-julia-client",
   "license": "MIT",
   "engines": {
-    "atom": ">=1.39.0 <2.0.0"
+    "atom": ">=1.56.0 <2.0.0"
   },
   "dependencies": {
     "atom-package-deps": "*",
