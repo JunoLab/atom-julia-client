@@ -1,6 +1,6 @@
 Highlighter = require './highlighter'
 
-{client} = require '../connection'
+client =  require '../connection/client'
 {once} = require '../misc'
 
 getlazy = client.import 'getlazy'

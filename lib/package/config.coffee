@@ -1,4 +1,4 @@
-{terminal} = require '../connection'
+terminal = require '../connection/terminal'
 
 config =
   juliaPath:

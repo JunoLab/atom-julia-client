@@ -2,7 +2,7 @@
 path = require 'path'
 {dialog, BrowserWindow} = require('electron').remote
 
-{client} =  require '../connection'
+client =  require '../connection/client'
 {notifications, views, selector, docpane} = require '../ui'
 {paths, blocks, cells, words, weave} = require '../misc'
 {processLinks} = require '../ui/docs'
