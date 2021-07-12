@@ -95,7 +95,13 @@ module.exports = views =
 
   latex: ({attrs, text}) ->
     block = attrs?.block || false
-    latex = @ink.KaTeX.texify(text, block)
+
+    # dynamic import simulation
+    latex = null
+    texify = Promise.resolve()
+      .then( () -> return require("./katexify.js"))
+      .then( (texify) -> latex = texify(text, block));
+
     @render {type: 'html', block, content: latex}
 
   views:
