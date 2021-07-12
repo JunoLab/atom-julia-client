@@ -4,19 +4,21 @@
  *
  * @param {{ [P: string]: string }} selectors
  */
-export function getColors(selectors) {
+export function getColors(selectors: { [P: string]: string }) {
   // const grammar = atom.grammars.grammarForScopeName("source.julia") // TODO ?
+
   const div = document.createElement('div')
   div.classList.add('editor', 'editor-colors', 'julia-syntax-color-selector')
 
   /**
    * @type { [P: string]: HTMLSpanElement }
    */
-  const styled = {}
+  const styled: { [P: string]: HTMLSpanElement } = {}
   /**
    * { [P: string]: string }
    */
-  const color = {}
+  const color: { [P: string]: string } = {}
+
   for (const style in selectors) {
     const child = document.createElement('span')
     child.innerText = 'foo'
@@ -24,6 +26,7 @@ export function getColors(selectors) {
     div.appendChild(child)
     styled[style] = child
   }
+
   document.body.appendChild(div)
   // wait till rendered?
   for (const style in selectors) {
@@ -36,6 +39,7 @@ export function getColors(selectors) {
   }
   color.background = rgb2hex(window.getComputedStyle(div).backgroundColor)
   document.body.removeChild(div)
+
   return color
 }
 
@@ -44,17 +48,18 @@ export function getColors(selectors) {
  * @param {string} rgb
  * @return {string}
  */
-function rgb2hex(rgb) {
-  if (rgb.search('rgb') === -1) {
+function rgb2hex(rgb: string): string {
+  if (rgb.search("rgb") === -1) {
     return rgb
   } else {
     const rgb_match = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+))?\)$/)
+
     if (rgb_match) {
       return hex(rgb_match[1]) + hex(rgb_match[2]) + hex(rgb_match[3])
     } else {
       // TODO should we check for this error?
       console.error(rgb.concat(" isn't a rgb string!"))
-      return '#000000' // black
+      return "#000000" // black
     }
   }
 }
@@ -63,6 +68,6 @@ function rgb2hex(rgb) {
  *
  * @param {string} x
  */
-function hex(x) {
-  return ('0' + parseInt(x, 10).toString(16)).slice(-2)
+function hex(x: string) {
+  return ("0" + parseInt(x, 10).toString(16)).slice(-2)
 }
