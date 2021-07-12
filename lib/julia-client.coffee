@@ -6,7 +6,6 @@ menu = require './package/menu'
 settings = require './package/settings'
 release = require './package/release-note'
 toolbar = require './package/toolbar'
-semver = require 'semver'
 
 # TODO: Update me when tagging a new relase (and release note)
 INK_VERSION_COMPAT  = "^0.12.4"
@@ -80,7 +79,8 @@ module.exports = JuliaClient =
           dismissable: true
 
         inkVersion = atom.packages.loadedPackages["ink"].metadata.version
-        if not atom.devMode and not semver.satisfies(inkVersion, INK_VERSION_COMPAT)
+        semverSatisfies = require('semver/functions/satisfies');
+        if not atom.devMode and not semverSatisfies(inkVersion, INK_VERSION_COMPAT)
           atom.notifications.addWarning "Potentially incompatible `ink` version detected.",
             description:
               """
