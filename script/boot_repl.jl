@@ -9,14 +9,14 @@ end
 junorc = haskey(ENV, "JUNORC_PATH") ? joinpath(ENV["JUNORC_PATH"], "juno_startup.jl") : joinpath(homedir(), ".julia", "config", "juno_startup.jl")
 junorc = abspath(normpath(expanduser(junorc)))
 
+if VERSION > v"0.7-"
+  using Pkg
+  Pkg.activate(@__DIR__, io=devnull)
+end
+
 if (VERSION > v"0.7-" ? Base.find_package("Atom") : Base.find_in_path("Atom")) == nothing
   p = VERSION > v"0.7-" ? x -> printstyled(x, color=:cyan, bold=true) : x -> print_with_color(:cyan, x, bold=true)
   p("\nHold on tight while we are installing some packages for you.\nThis should only take a few seconds...\n\n")
-
-  if VERSION > v"0.7-"
-    using Pkg
-    Pkg.activate()
-  end
 
   Pkg.add("Atom")
   Pkg.add("Juno")
@@ -40,9 +40,7 @@ try
 
       if atomversion < MIN_ATOM_VER
         outdated = """
-          Please upgrade Atom.jl to at least version `$(MIN_ATOM_VER)` with e.g. `using Pkg; Pkg.update()`.
-
-          If the integrated REPL is non-functional, try an external terminal opened with the `Julia Client: Open External REPL` command.
+          Please upgrade Atom.jl to at least version `$(MIN_ATOM_VER)` with e.g. `using Pkg; Pkg.update()` in an external REPL.
         """
       end
     end
@@ -55,6 +53,9 @@ println("Starting Julia...")
 try
   import Atom
   using Juno
+  if VERSION > v"0.7-"
+    Pkg.activate(io=devnull)
+  end
   Atom.handle("junorc") do path
     cd(path)
     ispath(junorc) && include(junorc)
