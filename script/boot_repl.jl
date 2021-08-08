@@ -9,6 +9,12 @@ end
 junorc = haskey(ENV, "JUNORC_PATH") ? joinpath(ENV["JUNORC_PATH"], "juno_startup.jl") : joinpath(homedir(), ".julia", "config", "juno_startup.jl")
 junorc = abspath(normpath(expanduser(junorc)))
 
+if isdefined(Base, :ACTIVE_PROJECT)
+  active_project = Base.ACTIVE_PROJECT[]
+else
+  active_project = nothing
+end
+
 if VERSION > v"0.7-"
   using Pkg
   Pkg.activate(@__DIR__, io=devnull)
@@ -54,7 +60,9 @@ try
   import Atom
   using Juno
   if VERSION > v"0.7-"
-    Pkg.activate(io=devnull)
+    if active_project !== nothing
+      Pkg.activate(active_project, io=devnull)
+    end
   end
   Atom.handle("junorc") do path
     cd(path)
