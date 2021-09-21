@@ -33,7 +33,7 @@
     "object-hash": "^2.0.3",
     "physical-cpu-count": "*",
     "semver": "^6.3.0",
-    "ssh2": "^0.8.4",
+    "ssh2": "^1.4.0",
     "underscore-plus": "*"
   },
   "scripts": {
