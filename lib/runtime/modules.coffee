@@ -3,7 +3,7 @@
 {CompositeDisposable, Disposable, Emitter} = require 'atom'
 {debounce} = require 'underscore-plus'
 
-{client} = require '../connection'
+client =  require '../connection/client'
 {show} = require '../ui/selector'
 
 {module: getmodule, allmodules, ismodule} = client.import ['module', 'allmodules', 'ismodule']
