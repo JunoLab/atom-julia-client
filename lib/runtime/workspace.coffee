@@ -1,7 +1,7 @@
 {CompositeDisposable} = require 'atom'
 
-{client} = require '../connection'
-{views} = require '../ui'
+client = require '../connection/client'
+views = require '../ui/views'
 goto = require './goto'
 modules = require './modules'
 
