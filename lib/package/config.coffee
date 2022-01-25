@@ -161,12 +161,12 @@ config =
           {value:'block', description:'Display results under code'}
           {value:'console', description:'Display results in the REPL'}
         ]
-        order: 1
+        order: 0
       scrollToResult:
         title: 'Scroll to Inline Results'
         type: 'boolean'
         default: false
-        order: 2
+        order: 1
       docsDisplayMode:
         title: 'Documentation Display Mode'
         type: 'string'
@@ -175,6 +175,12 @@ config =
           {value: 'inline', description: 'Show documentation in the editor'}
           {value: 'pane', description: 'Show documentation in the documentation pane'}
         ]
+        order: 2
+      notifications:
+        title: 'Notifications'
+        type: 'boolean'
+        default: true
+        description: 'Enable notifications for evaluation.'
         order: 3
       errorNotifications:
         title: 'Error Notifications'
